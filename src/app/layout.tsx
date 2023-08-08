@@ -5,6 +5,9 @@ import Header from '@/components/Header'
 const inter = Inter({ subsets: ['latin'] })
 import Footer from '@/components/Footer'
 
+
+
+
 // Create metadata base
 export const metadata: Metadata = {
   title: 'Be Fitness Frenzy',
@@ -19,9 +22,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+      
+     
       <Header />
-        {children}</body>
+
+
+    
+
+        {children}
+
+   
+    
         <Footer />
+        </body>
     </html>
   )
 }
