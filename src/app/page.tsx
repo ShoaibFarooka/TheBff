@@ -89,7 +89,12 @@ export default function Home() {
         </div>
 
         {/* ===================== {Overlay} ===================== */}
-        <div className="absolute inset-0 w-full h-full bg-black opacity-50"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 center z-50">
+          <div className='w-full md:w-1/2 center mx-auto'>
+            <h2 className="text-4xl font-bold text-white"> Achieve your fitness goals without stepping out of your comfort zone </h2>
+          </div>
+
+        </div>
       </div>
 
       {/* ===================== {Contact Form} ===================== */}
