@@ -36,17 +36,17 @@ const ContactForm = () => {
     return (
     <div className="py-5 px-4 md:px-8 lg:px-12 my-8">
         <div className="rounded-3xl bg-gradient-to-r from-[#4A2F70] to-[#344363] px-8 py-8 lg:py-14" id="contactForm">
-            <div className="flex flex-col lg:flex-row md:gap-x-10">
+            <div className="flex flex-col md:flex-row md:gap-x-10">
 
-                <div className="text-gray-100 col-span-1 w-5/12 my-auto">
+                <div className="text-gray-100 col-span-1  md:w-5/12 my-auto">
                     <h2 className="text-5xl font-semibold text-center">Stay tuned!</h2>
                     <p className="max-w-[80%] mx-auto text-center mt-5">Get the latest articles and business updates that you need to know, you’ll even get special recommendations weekly.</p>
                 </div>
 
-                <div className="col-span-1 my-auto w-4/12">
+                <div className="col-span-1 my-auto md:w-4/12">
                     <label htmlFor='emailInput' className="py-2 pl-5 pr-3 bg-gray-300 bg-opacity-30 rounded-full my-auto flex">
                         <input type="text" id="emailInput" onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" className="pr-3 bg-transparent outline-none w-8/12 border-none text-white" />
-                        <button onClick={handleSubmit} className="bg-[#FED25B] rounded-full px-4 py-2 w-4/12 text-black font-semibold">Sign Up</button>
+                        <button onClick={handleSubmit} className="bg-[#FED25B] rounded-full px-3 py-1 md:px-4 md:py-2 md:w-4/12 text-black font-semibold">Sign Up</button>
                     </label>
                 </div>
                 
