@@ -2,11 +2,9 @@ import '@/styles/globals.scss'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Header from '@/components/Header'
-const inter = Inter({ subsets: ['latin'] })
+// const inter = Inter({ subsets: ['latin'] })
 import Footer from '@/components/Footer'
-
-
-
+import ContactButton from '@/components/ContactButton'
 
 // Create metadata base
 export const metadata: Metadata = {
@@ -21,20 +19,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-      
-     
-      <Header />
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
 
-
-    
-
+      <body className={'inter.className bg-gradient-to-r to-background from-gray-900' }>
+        {/* main. */}
+        <Header />
         {children}
-
-   
-    
+        <ContactButton />
         <Footer />
-        </body>
+
+      </body>
     </html>
   )
 }

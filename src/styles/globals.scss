@@ -4,7 +4,7 @@
  
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 265, 41%, 15%;
     --foreground: 222.2 84% 4.9%;
  
     --muted: 210 40% 96.1%;
@@ -73,7 +73,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    background: radial-gradient(130.69% 72.54% at 50.00% 50.00%, rgba(0, 0, 0, 0.35) 99.99%, rgba(0, 0, 0, 0.23) 100%), radial-gradient(229.67% 123.39% at 6.13% 14.64%, rgba(36, 37, 73, 0.20) 24.18%, rgba(36, 37, 73, 0.20) 70.49%), rgba(217, 217, 217, 0.01);;
   }
 }
 
@@ -97,7 +97,14 @@
 .container > * + *:last-child {
   margin-bottom: 1rem;
 }
+
 ul li{
   margin-right: 40px;
   margin-left: 40px;
+}
+
+
+// add smooth scrolling on html
+html {
+  scroll-behavior: smooth;
 }
