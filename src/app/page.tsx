@@ -159,7 +159,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="col-span-1 flex flex-col gap-y-7 md:mt-10">
+          <div className="hidden  md:col-span-1 md:flex flex-col gap-y-7 md:mt-10">
             <div className="w-full">
               <Image
                 src={Component23}
@@ -183,7 +183,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="col-span-1 flex flex-col gap-y-7">
+          <div className="hidden col-span-1 md:flex flex-col gap-y-7">
             <div className="w-full">
               <Image
                 src={Component38}
@@ -210,8 +210,8 @@ export default function Home() {
 
         {/* ===================== {Overlay} ===================== */}
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 center z-50">
-          <div className="w-full md:w-1/2 center mx-auto">
-            <h2 className="text-4xl font-bold text-white">
+          <div className="w-full md:w-1/2  mx-auto">
+            <h2 className="text-4xl font-bold text-white text-center">
               {" "}
               Achieve your fitness goals without stepping out of your comfort
               zone{" "}
