@@ -27,21 +27,25 @@ export const GET = async (req: NextRequest) => {
         }
 
         const token = jwt.sign({ email }, process.env.JWT_SECRET || 'secret', { expiresIn: '1d' });
-        const url = `${process.env.NEXT_PUBLIC_APP_URL}/api/newsletter/subscribe?token=${token}`;
+        const url = `${process.env.NEXT_PUBLIC_APP_URL}/api/newsletter/verify?token=${token}`;
         // An email template with button to confirm subscription
         const html = `
             <div style="text-align: center;">
                 <h1>Confirm your subscription</h1>
                 <p>Click the button below to confirm your subscription</p>
-                <a href="${url}" style="padding: 1rem; background-color: #000; color: #fff; text-decoration: none;">Confirm</a>
+                <a href="${url}" style="cursor:pointer;">
+                    <button style="background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;">
+                        Confirm
+                    </button>
+                </a>
             </div>
         `
 
         const emailRes = await sendEmail({
             to: email,
-            subject: "Welcome to my newsletter",
+            subject: "Confirm your subscription",
             html,
-            text: 'Welcome to my newsletter'
+            text: 'Confirm your subscription for TheBFF newsletter'
         })
 
         if (emailRes.success) {

@@ -9,7 +9,7 @@ const subscriberSchema = new Schema({
     subscribed: {
         type: Boolean,
         required: true,
-        default: true
+        default: false
     }
 }, {
     timestamps: true

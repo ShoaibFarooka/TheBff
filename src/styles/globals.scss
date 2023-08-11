@@ -146,16 +146,16 @@ html {
 //   scrollbar-color: #888 #f1f1f1;
 //    /* Adjust the thumb and track colors as needed */
 // }
-$animationSpeed: 5s;
+// $animationSpeed: 5s;
 
-.slide-track {
-  animation: 5s scroll infinite linear;
+// .slide-track {
+//   animation: 5s scroll infinite linear;
 
-}
-@keyframes scroll {
-	0% { transform: translateX(0); }
-	100% { transform: translateX(calc(-250px * 7))}
-}
+// }
+// @keyframes scroll {
+// 	0% { transform: translateX(0); }
+// 	100% { transform: translateX(calc(-250px * 7))}
+// }
 // @keyframes scroll {
 //   from {
 //     transform: translateX(0);
