@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import Header from '@/components/Header'
 // const inter = Inter({ subsets: ['latin'] })
 import Footer from '@/components/Footer'
-import ContactButton from '@/components/ContactButton'
+// import ContactButton from '@/components/ContactButton'
 
 // Create metadata base
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function RootLayout({
         {/* main. */}
         <Header />
         {children}
-        <ContactButton />
+        {/* <ContactButton /> */}
         <Footer />
 
       </body>

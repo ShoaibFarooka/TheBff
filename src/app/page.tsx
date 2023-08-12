@@ -1,6 +1,5 @@
 import React from "react";
-import emoji from "@/assets/Frame 407.png";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Head from "next/head";
 import ContactForm from "@/components/ContactForm";
 import ContactButton from "@/components/home/HeaderContactButton";
@@ -23,6 +22,25 @@ import div1 from "@/assets/div (1).png";
 import coach1 from "@/assets/kindpng_218182.png";
 import coach2 from "@/assets/Frame 39.png";
 import coach3 from "@/assets/Frame 40.png";
+
+
+
+// ===================== {Coach} =====================
+const Coach = ({ image, name, title } : { image: StaticImageData | string, name: string, title?: string }) => {
+
+  return <div className="inline-block flex-shrink-0 text-white ">
+    <Image
+      className="md:h-[431px] object-cover hover:scale-105 duration-300"
+      src={image}
+      alt="/"
+    />
+
+    <p className="text-center"> { name } </p>
+    {
+      title && <p className="text-center"> { title } </p>
+    }
+  </div>
+}
 
 export default function Home() {
   return (
@@ -56,8 +74,8 @@ export default function Home() {
             </div>
           </div>
 
-          <ContactButton />
         </div>
+          <ContactButton />
       </div>
 
       {/* ===========================Types of Programs===================== */}
@@ -94,7 +112,7 @@ export default function Home() {
         </div>
 
         <div className="lg:w-[45%]">
-          <div className="w-full">
+          <div className="w-full mb-6">
             <div className="text-[#AFCCF8] text-center text-[24px] md:text-[40px] font-bold">
               Workout Program
             </div>
@@ -113,11 +131,7 @@ export default function Home() {
               nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum
               tellus elit sed risus. Maecenas eget condimentum velit, sit amet
               feugiat lectus. Class aptent taciti sociosqu ad litora torquent
-              per conubia nostra, per inceptos himenaeos. Praesent auctor purus
-              luctus enim egestas, ac scelerisque ante pulvinar. Donec ut
-              rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur
-              vel bibendum lorem. Morbi convallis convallis diam sit amet
-              lacinia. Aliquam in elementum
+              per conubia nostra, per inceptos himenaeos.
             </p>
             <div className="flex justify-center mt-5">
               <button className=" rounded-lg py-2  px-20 bg-[#aeb5e0]">
@@ -137,73 +151,37 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:px-32 lg:gap-x-7 mx-auto">
           <div className="col-span-1 flex flex-col gap-y-7">
             <div className="w-full">
-              <Image
-                src={Component22}
-                alt=""
-                className="w-10/12 rounded-md mx-auto"
-              />
+              <Image src={Component22} alt="" className="w-10/12 rounded-md mx-auto" />
             </div>
             <div className="w-full">
-              <Image
-                src={Component34}
-                alt=""
-                className="w-10/12 rounded-md mx-auto"
-              />
+              <Image src={Component34} alt="" className="w-10/12 rounded-md mx-auto" />
             </div>
             <div className="w-full">
-              <Image
-                src={Component42}
-                alt=""
-                className="w-10/12 rounded-md mx-auto"
-              />
+              <Image src={Component42} alt="" className="w-10/12 rounded-md mx-auto" />
             </div>
           </div>
 
           <div className="hidden  md:col-span-1 md:flex flex-col gap-y-7 md:mt-10">
             <div className="w-full">
-              <Image
-                src={Component23}
-                alt=""
-                className="w-10/12 rounded-md mx-auto"
-              />
+              <Image src={Component23} alt="" className="w-10/12 rounded-md mx-auto" />
             </div>
             <div className="w-full">
-              <Image
-                src={Component35}
-                alt=""
-                className="w-10/12 rounded-md mx-auto"
-              />
+              <Image src={Component35} alt="" className="w-10/12 rounded-md mx-auto" />
             </div>
             <div className="w-full">
-              <Image
-                src={Component43}
-                alt=""
-                className="w-10/12 rounded-md mx-auto"
-              />
+              <Image src={Component43} alt="" className="w-10/12 rounded-md mx-auto" />
             </div>
           </div>
 
           <div className="hidden col-span-1 md:flex flex-col gap-y-7">
             <div className="w-full">
-              <Image
-                src={Component38}
-                alt=""
-                className="w-10/12 rounded-md mx-auto"
-              />
+              <Image src={Component38} alt="" className="w-10/12 rounded-md mx-auto" />
             </div>
             <div className="w-full">
-              <Image
-                src={Component36}
-                alt=""
-                className="w-10/12 rounded-md mx-auto"
-              />
+              <Image src={Component36} alt="" className="w-10/12 rounded-md mx-auto" />
             </div>
             <div className="w-full">
-              <Image
-                src={Component44}
-                alt=""
-                className="w-10/12 rounded-md mx-auto"
-              />
+              <Image src={Component44} alt="" className="w-10/12 rounded-md mx-auto" />
             </div>
           </div>
         </div>
@@ -220,7 +198,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ==============================YOGA COACHES======================= */}
+      {/* ============================== YOGA COACHES ======================= */}
       <div className="h-screen sm:px-[100px] sm:py-[60px] px-[40px] py-[20px]">
         <div className="text-2xl sm:text-[50px]  ">
           <p className="sm:mb-8 lg:mb-10 text-[#AFCCF8]  font-[600] text-center">
@@ -232,130 +210,21 @@ export default function Home() {
         </div>
 
         <div className="overflow-x-auto  whitespace-nowrap">
-          <div className={styles.slidetrack + " space-x-[200px] w-full mt-6 "}>
-            <div className=" inline-block  flex-shrink-0 text-white ">
-              <Image
-                className=" h-[431px]    object-cover   hover:scale-105 duration-300"
-                src={coach1}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-            <div className=" inline-block  flex-shrink-0  text-white  ">
-              <Image
-                className="h-[431px]    object-cover  hover:scale-105 duration-300 mb-3"
-                src={coach2}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-
-            <div className="  inline-block  flex-shrink-0  text-white  ">
-              <Image
-                className=" h-[431px]    object-cover  hover:scale-105 duration-300"
-                src={coach3}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-            <div className=" inline-block   flex-shrink-0 text-white ">
-              <Image
-                className=" h-[431px]    object-cover  hover:scale-105 duration-300"
-                src={coach1}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-            <div className="  inline-block  flex-shrink-0 text-white ">
-              <Image
-                className=" h-[431px]  object-cover  hover:scale-105 duration-300"
-                src={coach2}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-            <div className="  inline-block  flex-shrink-0 text-white ">
-              <Image
-                className=" h-[431px] object-cover  hover:scale-105 duration-300"
-                src={coach3}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-            <div className="  inline-block  flex-shrink-0 text-white ">
-              <Image
-                className=" h-[431px]    object-cover   hover:scale-105 duration-300"
-                src={coach1}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-            <div className="  inline-block  flex-shrink-0  text-white  ">
-              <Image
-                className="h-[431px]    object-cover  hover:scale-105 duration-300 mb-3"
-                src={coach2}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-
-            <div className="  inline-block  flex-shrink-0  text-white  ">
-              <Image
-                className=" h-[431px]    object-cover  hover:scale-105 duration-300"
-                src={coach3}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-            <div className="  inline-block   flex-shrink-0 text-white ">
-              <Image
-                className=" h-[431px]    object-cover  hover:scale-105 duration-300"
-                src={coach1}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-            <div className=" inline-block  flex-shrink-0 text-white ">
-              <Image
-                className=" h-[431px]  object-cover  hover:scale-105 duration-300"
-                src={coach2}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
-            <div className="  inline-block  flex-shrink-0 text-white ">
-              <Image
-                className=" h-[431px] object-cover  hover:scale-105 duration-300"
-                src={coach3}
-                alt="/"
-              />
-
-              <p className="text-center">Gurpreet Singh</p>
-              <p className="text-center">E-REPS</p>
-            </div>
+          <div className={styles.slidetrack + " space-x-[30px] lg:space-x-[200px] w-full mt-6 "}>
+            <Coach image={coach1} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach2} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach3} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach1} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach2} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach3} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach1} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach2} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach3} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach1} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach2} name="Gurpreet Singh" title="E-REPS" />
+            <Coach image={coach3} name="Gurpreet Singh" title="E-REPS" />
           </div>
+
         </div>
       </div>
 

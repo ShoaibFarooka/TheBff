@@ -1,58 +1,80 @@
-import Image from "next/image"
-import Instagram from "@/assets/instagram 1.png"
-import Twitter from "@/assets/Twitter (1).png"
-import Gmail from "@/assets/Gmail (1).png"
-import LinkedIn from "@/assets/linkedin-svgrepo-com 1.png"
+import Image from "next/image";
+import Instagram from "@/assets/instagram 1.png";
+import Twitter from "@/assets/Twitter (1).png";
+import Gmail from "@/assets/Gmail (1).png";
+import LinkedIn from "@/assets/linkedin-svgrepo-com 1.png";
+import Link from "next/link";
+
 export default function Footer() {
-   
   return (
     <div className="py-10 px-4 md:px-8 lg:px-12">
-        <div className="rounded-3xl bg-gradient-to-r from-[#4A2F70] to-[#344363]">
-            <div className="flex flex-col md:flex-row  md:justify-center md:items-start text-white px-10 py-20 rounded-xl">
-                <div className="md:w-1/5 md:mr-10">
-                    <div className=" text-[#AFCCF8] font-semibold text-[40px] text-center -mt-3 mb-5">LOGO</div>
-                    <div className="text-center ">Get the latest articles and business updates that you need to know, you’ll even get special recommendations weekly.</div>
-                </div>
-                <div>
-                    
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10 md:mt-0">
-                <div className="text-center md:text-left">
-                    <h1 className="text-xl font-semibold">Website Links</h1>
-                    <div className="md:text-sm font-[400] my-2">Home</div>
-                    <div className="text-sm font-[400] my-2"  >About</div>
-                    <div className="text-sm font-[400] my-2">Get in touch</div>
-                    <div className="text-sm font-[400] my-2">FAQs</div>
-                </div>
-                <div className="text-center  md:text-left">
-                    <h1 className="text-xl font-semibold">Services</h1>
-                    <div className="text-sm font-[400] my-2">Service 1</div>
-                    <div className="text-sm font-[400] my-2">Service 2</div>
-                    <div className="text-sm font-[400] my-2">Service 3</div>
-                </div>
-                <div className="text-center  md:text-left">
-                    <h1 className="text-xl font-semibold">Services</h1>
-                    <div className="text-sm font-[400] my-2">Service 1</div>
-                    <div className="text-sm font-[400] my-2">Service 2</div>
-                    <div className="text-sm font-[400] my-2">Service 3</div>
-                </div>
-                <div className="text-center ">
-                    <h1 className="text-xl font-semibold md:text-left">Soicals</h1>
-                    <div className="flex justify-center mt-2">
-                        <Image className="mr-3 w-8 h-8 md:w-full md:h-full" src={Instagram} alt={""} />
-                        <Image className="mr-3 w-8 h-8 md:w-full md:h-full" src={Twitter} alt={""} />
-                        <Image className="mr-3 w-8 h-8 md:w-full md:h-full" src={Gmail} alt={""} />
-                        <Image className="mr-3 w-8 h-8 md:w-full md:h-full" src={LinkedIn} alt={""} />
-                    </div>
-                </div>
+      <div className="rounded-3xl bg-gradient-to-r from-[#4A2F70] to-[#344363]">
+        <div className="flex flex-col md:flex-row  md:justify-center md:items-start text-white px-3 md:px-10 py-20 rounded-xl">
+          <div className="md:w-1/5 md:mr-10">
+            <div className=" text-[#AFCCF8] font-semibold text-[40px] text-center -mt-3 mb-5">
+              <Link href="/">LOGO</Link>
+            </div>
+            <div className="text-center ">
+              Get the latest articles and business updates that you need to
+              know, you{"’"}ll even get special recommendations weekly.
+            </div>
+          </div>
+          <div></div>
 
-                </div>
-                
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10 md:mt-0">
+            <div className="text-center md:text-left">
+              <h1 className="text-xl font-semibold">Website Links</h1>
+              <div className="md:text-sm font-[400] my-2">Home</div>
+              <div className="text-sm font-[400] my-2">About</div>
+              <div className="text-sm font-[400] my-2">Get in touch</div>
+              <div className="text-sm font-[400] my-2">FAQs</div>
             </div>
-            <div className="pb-10">
-                <p className="text-[#757575] text-center">©{new Date().getFullYear()} BFF. All rights reserved.</p>
+            <div className="text-center  md:text-left">
+              <h1 className="text-xl font-semibold">Services</h1>
+              <div className="text-sm font-[400] my-2">Service 1</div>
+              <div className="text-sm font-[400] my-2">Service 2</div>
+              <div className="text-sm font-[400] my-2">Service 3</div>
             </div>
+            <div className="text-center  md:text-left">
+              <h1 className="text-xl font-semibold">Services</h1>
+              <div className="text-sm font-[400] my-2">Service 1</div>
+              <div className="text-sm font-[400] my-2">Service 2</div>
+              <div className="text-sm font-[400] my-2">Service 3</div>
+            </div>
+            <div className="text-center ">
+              <h1 className="text-xl font-semibold md:text-left">Soicals</h1>
+              <div className="flex justify-center mt-2">
+                <Image
+                  className="mr-3 w-8 h-8 md:w-full md:h-full"
+                  src={Instagram}
+                  alt={""}
+                />
+                <Image
+                  className="mr-3 w-8 h-8 md:w-full md:h-full"
+                  src={Twitter}
+                  alt={""}
+                />
+                <Image
+                  className="mr-3 w-8 h-8 md:w-full md:h-full"
+                  src={Gmail}
+                  alt={""}
+                />
+                <Image
+                  className="mr-3 w-8 h-8 md:w-full md:h-full"
+                  src={LinkedIn}
+                  alt={""}
+                />
+              </div>
+            </div>
+          </div>
         </div>
+        
+        <div className="pb-10">
+          <p className="text-[#757575] text-center">
+            ©{new Date().getFullYear()} BFF. All rights reserved.
+          </p>
+        </div>
+      </div>
     </div>
-  )
+  );
 }

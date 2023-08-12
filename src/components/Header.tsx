@@ -1,13 +1,17 @@
 "use client";
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Header() {
   const [nav, setNav] = useState(false);
   const handleClick = () => setNav(!nav);
   return (
     <div className="fixed top-0 left-0 bg-transparent backdrop-blur text-white w-screen flex justify-between items-center p-5 px-[10%] md:px-[20%]" style={{zIndex: 999}}>
-      <h1 className="text-2xl font-bold">LOGO</h1>
+      <Link href="/">
+        <h1 className="text-2xl font-bold">LOGO</h1>
+      </Link>
+      
       {/* menu */}
       <ul className="hidden md:flex">
         <li>
