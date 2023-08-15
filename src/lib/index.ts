@@ -18,3 +18,4 @@ export function getQueryParams(url: string): any {
     return params;
 
 }
+
