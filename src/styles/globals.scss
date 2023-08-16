@@ -186,14 +186,10 @@ html {
   0% {
       opacity: 0;
       transform: scale3d(.3, .3, .3);
-      backdrop-filter: blur(5px);
   }
 
   100% {
       opacity: 1;
-      // restore all properties
-      transform: none;
-      backdrop-filter: blur(24px);
   }
 }
 
@@ -211,6 +207,7 @@ html {
       opacity: 1;
       transform: none;
       backdrop-filter: blur(24px);
+      
   }
 
   100% {
