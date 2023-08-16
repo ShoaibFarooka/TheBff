@@ -15,17 +15,17 @@ export default function Header() {
       {/* menu */}
       <ul className="hidden md:flex">
         <li>
-          <a href="#">Home</a>
+          <Link href="#">Home</Link>
         </li>
         <li>
-          <a href="#">Programs</a>
+          <Link href="/programs">Programs</Link>
         </li>
         <li>
-          <a href="#">Pricing</a>
+          <Link href="#">Pricing</Link>
         </li>
 
         <li>
-          <a href="#">Blogs</a>
+          <Link href="#">Blogs</Link>
         </li>
       </ul>
       <button className="hidden md:flex rounded-xl px-4 py-2 text-[#FED25B] border-2 border-[#FED25B] bg-[#FED25B] bg-opacity-20 hover:text-black hover:bg-opacity-100">

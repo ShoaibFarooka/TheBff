@@ -5,8 +5,10 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { RxDotFilled } from "react-icons/rx";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RxCrossCircled } from "react-icons/rx";
-
 import Image, { StaticImageData } from "next/image";
+import StayHealthy from "@/components/programs/StayHealthy";
+import Header from "@/components/programs/Header";
+
 import slide1 from "@/assets/Slide Item — 1.png";
 import slide2 from "@/assets/Slide Item — 2.png";
 import slide3 from "@/assets/Slide Item — 3.png";
@@ -72,6 +74,8 @@ export default function Page() {
   const goToSlide = (slideIndex: React.SetStateAction<number>) => {
     setCurrentIndex(slideIndex);
   };
+
+  
   return (
     <>
       <div className="mt-20 md:mt-32 flex flex-col justify-center items-center w-full relative group px-5 md:px-14">
@@ -80,7 +84,9 @@ export default function Page() {
           Weight Management{" "}
         </h1>
 
-        <div className="">
+        <Header />
+
+        {/* <div className="">
           <AiOutlineArrowLeft
             onClick={prevSlide}
             size={35}
@@ -110,88 +116,11 @@ export default function Page() {
             </div>
           ))}
           <AiOutlineArrowRight onClick={prevSlide} size={25} className=" text-white " />
-        </div>
-      </div>
-
-
-      {/* ============================== Stay Healthy ======================= */}
-      <div className="my-20">
-        <div>
-          <p className="text-center font-semibold text-[40px] lg:text-[72px] text-[#F2BD4D]">
-            How can you stay healthy?
-          </p>
-
-          <p className="text-center text-white px-5">
-            Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-            turpis molestie, dictum est a, mattis tellus.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 mt-10 mb-5 mx-auto px-3 md:px-5 lg:px-14">
-          <ImageWithTitle image={group1} title="Fruits" />
-          <ImageWithTitle image={group2} title="Yoga" />
-          <ImageWithTitle image={group3} title="Zumba" />
-          <ImageWithTitle image={group4} title="GYM" />
-        </div>
-        {/* <div className=" flex justify-center mt-5">
-          <RxDotFilled
-            className="text-[#fff] "
-            onClick={() => setStayHealthy(1)}
-          />
-          <RxDotFilled
-            className="text-[#fff] "
-            onClick={() => setStayHealthy(2)}
-          />
-          <RxDotFilled
-            className="text-[#fff]"
-            onClick={() => setStayHealthy(3)}
-          />
-          <RxDotFilled
-            className="text-[#fff]"
-            onClick={() => setStayHealthy(4)}
-          />
         </div> */}
       </div>
 
 
-      {/* ============================== Content With Heading ======================= */}
-
-      <div className="mb-20 mt-20 px-5">
-        <div className="mb-7 md:mb-10">
-          <h1 className="text-center font-semibold text-[40px] lg:text-[72px] text-[#F2BD4D]">
-            Heading 1
-          </h1>
-        </div>
-        <div className="flex flex-col md:flex-row justify-around lg:px-[80px] gap-y-10">
-          <div className="w-full md:w-1/2">
-            {/* <div className=""></div> */}
-            <Image
-              src={rectangle}
-              alt=""
-              className="max-w-full md:max-w-[90%]"
-            />
-          </div>
-
-          <div className="w-full md:w-1/2 text-white px-5 lg:px-[50px]">
-            <p className="text-center font-semibold text-[40px] mb-7 md:mb-10 text-[#AFCCF8]">
-              SubHeading 1
-            </p>
-            <p className="text-[17px] text-center">
-              Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-              turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
-              nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum
-              tellus elit sed risus. Gorem ipsum dolor sit amet, consectetur
-              adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis
-              tellus. Sed dignissim, metus nec fringilla accumsan, risus sem
-              sollicitudin lacus, ut interdum tellus elit sed risus. Gorem ipsum
-              dolor sit amet, consectetur adipiscing elit. Etiam eu turpis
-              molestie, dictum est a, mattis tellus. Sed dignissim, metus nec
-              fringilla accumsan, risus sem sollicitudin lacus, ut interdum
-              tellus elit sed risus.{" "}
-            </p>
-          </div>
-        </div>
-      </div>
+      <StayHealthy />
 
       {/* ============================== Unlimited Variety ======================= */}
       <div className="px-4 md:px-8 lg:px-12 mb-20 mt-20">
@@ -212,9 +141,9 @@ export default function Page() {
               </div>
             </div>
             <div className="flex justify-center my-10">
-              <button className="rounded-xl px-10 py-2.5 font-semibold bg-blue-500 border-solid bg-opacity-100 border-gradient">
+              {/* <button className="rounded-xl px-10 py-2.5 font-semibold bg-blue-500 border-solid bg-opacity-100 border-gradient">
                 Start training now
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -303,11 +232,11 @@ export default function Page() {
               </div>
               <div className="col-span-1 py-3 border border-gray-400/40 center flex-col">
                 <p className="text-base md:text-xl text-center mb-2.5"> Starting at Rs. 1999/- month </p>
-                <button className="shadow-xl shadow-red-800/10 mx-auto rounded px-2 py-1.5 border-none outline-none bg-white text-red-500 font-semibold focus:border"> View Plans </button>
+                {/* <button className="shadow-xl shadow-red-800/10 mx-auto rounded px-2 py-1.5 border-none outline-none bg-white text-red-500 font-semibold focus:border"> View Plans </button> */}
               </div>
               <div className="col-span-1 py-3 border border-gray-400/40 center flex-col">
                 <p className="text-base md:text-xl text-center mb-2.5"> Starting at Rs. 3499/- month </p>
-                <button className="shadow-xl shadow-red-800/10 mx-auto rounded px-2 py-1.5 border-none outline-none bg-white text-red-500 font-semibold focus:border"> View Plans </button>
+                {/* <button className="shadow-xl shadow-red-800/10 mx-auto rounded px-2 py-1.5 border-none outline-none bg-white text-red-500 font-semibold focus:border"> View Plans </button> */}
               </div>
 
 

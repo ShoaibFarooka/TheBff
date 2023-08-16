@@ -2,8 +2,7 @@ import React from "react";
 import Image, { StaticImageData } from "next/image";
 import Head from "next/head";
 import ContactForm from "@/components/ContactForm";
-import ContactButton from "@/components/home/HeaderContactButton";
-import styles from "@/styles/Home.module.scss";
+import Coaches from "@/components/home/Coaches";
 
 // Import Assets
 import Component22 from "@/assets/Component 22.png";
@@ -19,28 +18,6 @@ import Component44 from "@/assets/Component 44.png";
 import div from "@/assets/div.png";
 import div1 from "@/assets/div (1).png";
 
-import coach1 from "@/assets/kindpng_218182.png";
-import coach2 from "@/assets/Frame 39.png";
-import coach3 from "@/assets/Frame 40.png";
-
-
-
-// ===================== {Coach} =====================
-const Coach = ({ image, name, title } : { image: StaticImageData | string, name: string, title?: string }) => {
-
-  return <div className="inline-block flex-shrink-0 text-white ">
-    <Image
-      className="md:h-[431px] object-cover hover:scale-105 duration-300"
-      src={image}
-      alt="/"
-    />
-
-    <p className="text-center"> { name } </p>
-    {
-      title && <p className="text-center"> { title } </p>
-    }
-  </div>
-}
 
 export default function Home() {
   return (
@@ -75,7 +52,6 @@ export default function Home() {
           </div>
 
         </div>
-          <ContactButton />
       </div>
 
       {/* ===========================Types of Programs===================== */}
@@ -189,7 +165,7 @@ export default function Home() {
         {/* ===================== {Overlay} ===================== */}
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 center z-50">
           <div className="w-full md:w-1/2  mx-auto">
-            <h2 className="text-4xl font-bold text-white text-center">
+            <h2 className="text-4xl font-bold text-white text-center backdrop-blur bg-black bg-opacity-50">
               {" "}
               Achieve your fitness goals without stepping out of your comfort
               zone{" "}
@@ -199,34 +175,7 @@ export default function Home() {
       </div>
 
       {/* ============================== YOGA COACHES ======================= */}
-      <div className="h-screen sm:px-[100px] sm:py-[60px] px-[40px] py-[20px]">
-        <div className="text-2xl sm:text-[50px]  ">
-          <p className="sm:mb-8 lg:mb-10 text-[#AFCCF8]  font-[600] text-center">
-            Relax your body and mind
-          </p>
-          <p className="text-[#F2BD4D] font-[600] text-center sm:mb-12 ">
-            With your yoga coaches
-          </p>
-        </div>
-
-        <div className="overflow-x-auto  whitespace-nowrap">
-          <div className={styles.slidetrack + " space-x-[30px] lg:space-x-[200px] w-full mt-6 "}>
-            <Coach image={coach1} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach2} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach3} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach1} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach2} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach3} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach1} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach2} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach3} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach1} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach2} name="Gurpreet Singh" title="E-REPS" />
-            <Coach image={coach3} name="Gurpreet Singh" title="E-REPS" />
-          </div>
-
-        </div>
-      </div>
+      <Coaches />
 
       {/* ===================== {Contact Form} ===================== */}
 

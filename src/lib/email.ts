@@ -15,6 +15,7 @@ const transporter = createTransport({
 type EmailOptions = {
     to: string;
     subject: string;
+    replyTo?: string;
 } & (
     { text?: undefined; html: string } | { text: string; html?: string } | { text: string; html: string }
 )

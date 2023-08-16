@@ -17,6 +17,10 @@
   }
 }
  
+:root {
+  --primary-color: 44, 99%, 68%;
+}
+
 @layer base {
   :root {
     --background: 265, 41%, 15%;
@@ -49,6 +53,8 @@
     --ring: 215 20.2% 65.1%;
  
     --radius: 0.5rem;
+
+
   }
  
   .dark {
@@ -165,3 +171,50 @@ html {
 //     transform: translateX(-100%);
 //   }
 // }
+
+
+
+.zoomIn {
+  animation-name: zoomIn;
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+  // transform origin bottom right
+  transform-origin: 100% 100%;
+}
+
+@keyframes zoomIn {
+  0% {
+      opacity: 0;
+      transform: scale3d(.3, .3, .3);
+      backdrop-filter: blur(5px);
+  }
+
+  100% {
+      opacity: 1;
+      // restore all properties
+      transform: none;
+      backdrop-filter: blur(24px);
+  }
+}
+
+
+.zoomOut {
+  animation-name: zoomOut;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+  // transform origin bottom right
+  transform-origin: 100% 100%;
+}
+
+@keyframes zoomOut {
+  0% {
+      opacity: 1;
+      transform: none;
+      backdrop-filter: blur(24px);
+  }
+
+  100% {
+      opacity: 0;
+      transform: scale3d(.3, .3, .3);
+  }
+}
