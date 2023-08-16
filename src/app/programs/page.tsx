@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import {GrFormClose} from "react-icons/gr"
 import { RxDotFilled } from "react-icons/rx";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RxCrossCircled } from "react-icons/rx";
@@ -54,6 +55,16 @@ const ImageWithTitle = ({
 };
 
 export default function Page() {
+
+  const [isOpen, setIsOpen] = useState(true);
+
+  // const openPopup = () => {
+  //   setIsOpen(true);
+  // };
+
+  const closePopup = () => {
+    setIsOpen(false);
+  };
   const [stayHealthy, setStayHealthy] = useState(0);
 
   const slides = [slide1, slide2, slide3, slide4, slide5];
@@ -78,6 +89,7 @@ export default function Page() {
   
   return (
     <>
+     
       <div className="mt-20 md:mt-32 flex flex-col justify-center items-center w-full relative group px-5 md:px-14">
         <h1 className="font-semibold text-center text-[40px] lg:text-[72px] text-[#F2BD4D] mb-12">
           {" "}

@@ -14,19 +14,20 @@ import Component38 from "@/assets/Component 38.png";
 import Component42 from "@/assets/Component 42.png";
 import Component43 from "@/assets/Component 43.png";
 import Component44 from "@/assets/Component 44.png";
+import Classes from "@/components/home/Classes";
 
-import div from "@/assets/div.png";
-import div1 from "@/assets/div (1).png";
+
 
 
 export default function Home() {
+  
   return (
     <>
       <Head>
         <link rel="preload" href="/fitness.mp4" as="video" />
       </Head>
 
-      <div className="relative min-h-[90vh] bg-opacity-20">
+      <div id ="home"  className="relative min-h-[90vh] bg-opacity-20">
         {/* <div className="w-full bg-[#00000090]"></div> */}
 
         <video
@@ -55,68 +56,8 @@ export default function Home() {
       </div>
 
       {/* ===========================Types of Programs===================== */}
-
-      <div className="h-screen lg:flex justify-around px-[20px] lg:px-[100px] lg:pt-[50px]">
-        <div className="lg:w-2/6 h-1/3 lg:h-full">
-          <div className="h-full lg:h-[75%] overflow-y-scroll no-scrollbar mt-[100px]  md:pl-[100px] ">
-            <Image
-              className=" w-full md:w-[90%]  my-4 hover:shadow-white hover:shadow-lg hover:scale-110 duration-300"
-              src={div}
-              alt="Weight Management"
-            />
-            <Image
-              className=" w-full md:w-[90%]  my-4 hover:shadow-white hover:shadow-lg hover:scale-110 duration-300"
-              src={div1}
-              alt="Weight Management"
-            />
-            <Image
-              className=" w-full md:w-[90%]  my-4 hover:shadow-white hover:shadow-lg hover:scale-110 duration-300"
-              src={div}
-              alt="Weight Management"
-            />
-            <Image
-              className=" w-full md:w-[90%]  my-4 hover:shadow-white hover:shadow-lg hover:scale-110 duration-300"
-              src={div1}
-              alt="Weight Management"
-            />
-            <Image
-              className=" w-full md:w-[90%]  my-4 hover:shadow-white hover:shadow-lg hover:scale-110 duration-300"
-              src={div}
-              alt="Weight Management"
-            />
-          </div>
-        </div>
-
-        <div className="lg:w-[45%]">
-          <div className="w-full mb-6">
-            <div className="text-[#AFCCF8] text-center text-[24px] md:text-[40px] font-bold">
-              Workout Program
-            </div>
-
-            <div className="text-center text-[24px] md:text-[40px] font-bold text-[#FED25B]">
-              made for you
-            </div>
-          </div>
-          <div className="rounded-3xl bg-gradient-to-r from-[#4A2F70] to-[#344363] px-[25px] py-5  lg:px-[55px] lg:py-10">
-            <h1 className="text-center font-bold text-[24px] md:text-[30px] text-[#FED25B]">
-              Weight Management
-            </h1>
-            <p className="text-center text-white text-xs sm:text-lg">
-              Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-              turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
-              nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum
-              tellus elit sed risus. Maecenas eget condimentum velit, sit amet
-              feugiat lectus. Class aptent taciti sociosqu ad litora torquent
-              per conubia nostra, per inceptos himenaeos.
-            </p>
-            <div className="flex justify-center mt-5">
-              <button className=" rounded-lg py-2  px-20 bg-[#aeb5e0]">
-                Join Now
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Classes />
+      
 
       {/* <div className="mt-8">
         
