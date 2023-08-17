@@ -73,7 +73,10 @@ const ContactButtonPopup = () => {
               className={"absolute bottom-0 right-0 shadow-xl shadow-black/20 flex flex-col items-center justify-center rounded-md bg-black/30 backdrop-blur-xl py-3 " + (showPopup ? "zoomIn min-w-min min-h-min" : "w-16 h-16 md:w-28 md:h-28")}>
               {/* <div className="flex flex-col items-center justify-center rounded-md bg-black/30 backdrop-blur-xl py-3"> */}
 
-                <div className="mb-4 flex justify-end items-end w-full px-5">
+                <div className="mb-6 flex justify-between items-end w-full px-5">
+
+                  <h3 className="text-2xl font-bold text-purple-400"> Contact Us </h3>
+
                   <AiOutlineCloseCircle 
                     size={30} 
                     className="fill-red-400 hover:opacity-70 cursor-pointer" 
