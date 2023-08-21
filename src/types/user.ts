@@ -1,3 +1,9 @@
+export enum UserRole {
+    ADMIN = 1,
+    COACH,
+    USER
+}
+
 export interface User {
     _id: string;
     name: string;
@@ -6,5 +12,5 @@ export interface User {
     phone: string;
     emailVerified: boolean;
     phoneVerified: boolean;
-    role: 'user' | 'coach' | 'admin';
+    role: UserRole;
 }

@@ -1,7 +1,7 @@
 // define mongoose schema for user model
 
 import { Schema, model, models, Document } from "mongoose";
-import type { User } from "@/types/user"
+import { User, UserRole } from "@/types/user"
 
 const userSchema = new Schema<User>(
     {
@@ -44,9 +44,9 @@ const userSchema = new Schema<User>(
             default: false,
         },
         role: {
-            type: String,
-            enum: ['user', 'coach', 'admin'],
-            default: 'user',
+            type: Number,
+            enum: UserRole,
+            default: UserRole.USER,
             required: true
         }
     }, {

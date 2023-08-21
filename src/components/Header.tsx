@@ -28,9 +28,11 @@ export default function Header() {
           <Link href="#">Blogs</Link>
         </li>
       </ul>
-      <button className="hidden md:flex rounded-xl px-4 py-2 text-[#FED25B] border-2 border-[#FED25B] bg-[#FED25B] bg-opacity-20 hover:text-black hover:bg-opacity-100">
-        Login/Signup
-      </button>
+      <Link href="/login">
+        <button className="hidden md:flex rounded-xl px-4 py-2 text-[#FED25B] border-2 border-[#FED25B] bg-[#FED25B] bg-opacity-20 hover:text-black hover:bg-opacity-100">
+          Login
+        </button>
+      </Link>
 
       {/* Hamburger */}
       <div onClick={handleClick} className="md:hidden z-10">
