@@ -6,9 +6,13 @@ import { cookies } from 'next/headers'
 import nodemailer from 'nodemailer'
 import type { User as UserType } from '@/types/user'
 import '@/lib/db'
+import { UserRole } from '@/types/user'
+import { connectDB } from "@/lib/db"
+import { baseUrl } from './config'
 
 // methods to login, register, and authenticate users
 
+const secret = process.env.JWT_SECRET! || 'secret'
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -22,18 +26,29 @@ const transporter = nodemailer.createTransport({
     tls : { rejectUnauthorized: false }
 });
 
-const getRoleObject = (role: UserType['role']) => ['coach', 'admin'].includes(role) ? { role } : {}
+// function to verify JWT token
+function verifyToken(token: string) {
+    try {
+        const decoded = jwt.verify(token, secret) as { [key: string]: string | number }
+        return decoded
+    } catch (error) {
+        return null
+    }
+}
+
+const getSuperUserRoleObject = (role: UserRole) => [UserRole.ADMIN, UserRole.COACH, UserRole.USER].includes(role) ? { role } : {}
 
 // authenticate
-export async function authenticate( role: UserType['role'] = 'user' ) {
+export async function authenticate( role: UserRole | UserRole[] = UserRole.USER ) {
     try {
         const cookie = cookies()
         const token = cookie.get('token')
-        if (!token) return { success: false, message: 'No token found' }
+        if (!token) return { success: false, unAuthenticated: true, message: 'No token found' }
 
-        const decoded = jwt.verify(token.value, process.env.JWT_SECRET! || 'secret') as any
-        if (!decoded) return { success: false, message: 'Invalid token' }
+        const decoded = jwt.verify(token.value, secret) as any
+        if (!decoded) return { success: false, unAuthenticated: true, message: 'Invalid token' }
 
+        if(Array.isArray(role) && !role.includes(decoded.role)) return { success: false, message: 'Role mismatch' }
         if(decoded.role !== role) return { success: false, message: 'Role mismatch' }
 
         return { success: true, user: decoded }
@@ -41,15 +56,16 @@ export async function authenticate( role: UserType['role'] = 'user' ) {
     } catch (error: any) {
         if(error instanceof JsonWebTokenError) return {success: false, message: 'Token expired'}
         console.error(error)
-        return {success: false}
+        return {success: false, unAuthenticated: true}
     }
 }
 
 
 // login
-export async function login({email, password, role = 'user'} : {email: string, password: string, role?: UserType['role']}) {
+export async function login({email, password, role = UserRole.USER} : {email: string, password: string, role?: UserRole}) {
     // const user = await db.users.findOne({ email })
     try {
+        await connectDB()
         const user = await User.findOne({ email })
         if (!user) return { success: false, message: 'User not found' }
 
@@ -58,9 +74,10 @@ export async function login({email, password, role = 'user'} : {email: string, p
         const valid = await bcrypt.compare(password, user.password)
         if (!valid) return { success: false, message: 'Incorrect password' }
         
-        if (!user.verified) return { success: false, message: 'Please verify your email to login. Check your email for login.' }
+        if (!user.emailVerified) return { success: false, emailVerified: false, message: 'Please verify your email to login. Check your email for verfication link.' }
+        // if (!user.phoneVerified) return { success: false, phoneVerified: false, message: 'Please verify your phone number to login. Check WhatsApp for verfication link.' }
 
-        const token = jwt.sign({ email: user.email, name: user.name, phone: user.phone, ...getRoleObject(role) }, process.env.JWT_SECRET! || 'secret')
+        const token = jwt.sign({ email: user.email, name: user.name, phone: user.phone, ...getSuperUserRoleObject(role) }, secret)
 
         // set token in cookie for 30 days
         const cookie = cookies()
@@ -82,25 +99,18 @@ export async function register(
 ) {
     try {
         // check if user already exists, if so return error, else create user, hash password, send verification email, and return success
+        await connectDB()
         const exist = await User.findOne({ email })
         if (exist) return { success: false, message: 'User already exists' }
+        
         const hashedPassword = await bcrypt.hash(password, 10)
         const user = new User({
-            email, password: hashedPassword, name, phone, role: 'user'
+            email, password: hashedPassword, name, phone, role: UserRole.USER
         })
         await user.save()
 
-        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET! || 'secret', { expiresIn: '1hr' })
-
-        const url = `${process.env.BASE_URL || 'http://localhost:3000'}/auth/verify?token=${token}${callbackUrl ? '&cb=' + callbackUrl : ''}`
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: user.email,
-            subject: 'Verify your account',
-            html: `Please click this link to verify your account: <a href="${url}">${url}</a>`
-        }
-
-        await transporter.sendMail(mailOptions)
+        // send verification email
+        await sendVerifcationLinks({ method: 'ew', email, phone: phone ?? '' })
 
         return { success: true }
 
@@ -112,14 +122,15 @@ export async function register(
 
 
 export const addSuperUser = async (
-    { email, password, name, phone, role = 'admin' } :
-    { email: string, password: string, name: string, phone?: string, callbackUrl?: string, role: UserType['role'] }
+    { email, password, name, phone, role = UserRole.USER } :
+    { email: string, password: string, name: string, phone?: string, callbackUrl?: string, role: UserRole }
 ) => {
     try{
         
-        const auth = await authenticate('admin')
+        const auth = await authenticate(UserRole.ADMIN)
         if(!auth.success) return { success: false, message: auth.message ?? 'Not authorized' }
 
+        await connectDB()
         const exist = await User.findOne({ email })
         if (exist) return { success: false, message: 'User already exists' }
 
@@ -158,36 +169,42 @@ export const addSuperUser = async (
 // verify email
 export async function verifyEmail(token: string) {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET! || 'secret') as any
+        const decoded = verifyToken(token)
+        if (!decoded || !decoded.email || !decoded.verifyEmail) return { success: false, message: 'Invalid token' }
+        
+        await connectDB()
         const user = await User.findOne({ email: decoded.email })
         if (!user) return { success: false, message: 'User not found' }
 
         user.emailVerified = true
         await user.save()
 
-        return { success: true }
-    } catch (error) {
+        return { success: true, message: 'Email verified successfully' }
+    } catch (error: any) {
         console.error(error)
-        return {success: false}
+        return {success: false, message: error.message ?? 'Error verifying email'}
     }
 }
 
+// verify phone
 export async function verifyPhone(token: string) {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET! || 'secret') as any
+        const decoded = verifyToken(token)
+        if (!decoded || !decoded.phone || !decoded.verifyPhone) return { success: false, message: 'Invalid token' }
+        
+        await connectDB()
         const user = await User.findOne({ phone: decoded.phone })
         if (!user) return { success: false, message: 'User not found' }
 
-        user.phoneVerified = true
+        user.emailVerified = true
         await user.save()
 
-        return { success: true }
-    } catch (error) {
+        return { success: true, message: 'Phone number verified sucessfully' }
+    } catch (error: any) {
         console.error(error)
-        return {success: false}
+        return {success: false, message: error.message ?? 'Error verifying email'}
     }
 }
-
 
 
 // reset password
@@ -197,7 +214,9 @@ export async function resetPassword(
     {newPass: string, token: string}
 ) {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET! || 'secret') as any
+        const decoded = verifyToken(token) as any
+        if(!decoded || decoded.resetPassword !== true) return { success: false, message: 'Invalid token' }
+
         const user = await User.findOne({ email: decoded.email })
         if (!user) return { success: false, message: 'User not found' }
 
@@ -216,17 +235,17 @@ export async function resetPassword(
 
 // send reset password email
 // take email and send reset password email
-export async function sendResetPasswordEmail(
-    { email } : { email: string }
-) {
+export async function sendResetPasswordEmail( email: string ) {
     try {
+        await connectDB()
         const user = await User.findOne({ email })
+
         if (!user) return { success: false, message: 'User not found' }
 
         // create token for 10 minutes
-        const token = jwt.sign({ email }, process.env.JWT_SECRET! || 'secret', { expiresIn: '10m' })
+        const token = jwt.sign({ email, resetPassword: true }, secret, { expiresIn: '10m' })
 
-        const url = `${process.env.BASE_URL}/auth/reset-password/${token}`
+        const url = `${baseUrl}/reset-password?token=${token}`
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
@@ -243,3 +262,69 @@ export async function sendResetPasswordEmail(
     }
 }
 
+
+type IParams = { method: 'e', email: string } | { method: 'w', phone: string } | { method: 'ew', email: string, phone: string }
+export async function sendVerifcationLinks ( data : IParams ) {
+    try {
+        const { method } = data
+        switch (method) {
+            case 'e': 
+                return await sendEmailVerificationLink(data.email)
+            case 'w':
+                return await sendPhoneVerificationLink(data.phone)
+            case 'ew':
+                return await Promise.all([
+                    sendEmailVerificationLink(data.email),
+                    sendPhoneVerificationLink(data.phone)
+                ])
+            default:
+                return {success: false, message: 'Invalid method' }
+        }
+    } catch (error) {
+        console.error(error)
+        return {success: false, message: 'Something went wrong'}
+    }
+}
+
+async function sendEmailVerificationLink (email: string) {
+    try {
+        const emailToken = jwt.sign( { email, verifyEmail: true }, secret, { expiresIn: '1h' } )
+        const url = `${process.env.BASE_URL ?? 'http://localhost:3000'}/verify-token?token=${emailToken}`
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Verify your email',
+            html: `Please click this link to verify your email: <a href="${url}">${url}</a>`
+        }
+
+        await transporter.sendMail(mailOptions)
+
+        return { success: true }
+    } catch (error) {
+        console.error(error)
+        return {success: false}
+    }
+}
+
+async function sendPhoneVerificationLink (phone: string) {
+    try {
+        const phoneToken = jwt.sign( { phone, verifyPhone: true }, secret, { expiresIn: '1h' } )
+        const url = `${process.env.BASE_URL ?? 'http://localhost:3000'}/verify-token?token=${phoneToken}`
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: 'email',
+            subject: 'Verify your phone',
+            html: `Please click this link to verify your phone: <a href="${url}">${url}</a>`
+        }
+
+        await transporter.sendMail(mailOptions)
+
+        return { success: true }
+    } catch (error) {
+        console.error(error)
+        return {success: false}
+    }
+}
+// console.log(
+//     jwt.sign({ email: 'siddiquiaffan201@gmail.com' }, secret, { expiresIn: '1hr' })
+// )
