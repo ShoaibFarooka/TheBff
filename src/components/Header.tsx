@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
+import Image from "next/image";
+import profilePhoto from '@/assets/Photo.png'
 
 export default function Header() {
   const [nav, setNav] = useState(false);
@@ -30,9 +32,15 @@ export default function Header() {
       </ul>
       <Link href="/login">
         <button className="hidden md:flex rounded-xl px-4 py-2 text-[#FED25B] border-2 border-[#FED25B] bg-[#FED25B] bg-opacity-20 hover:text-black hover:bg-opacity-100">
-          Login
+        Login/Signup
         </button>
       </Link>
+      
+        <button className="w-[60px]">
+        <Image src={profilePhoto} alt="" />
+        </button>
+      
+
 
       {/* Hamburger */}
       <div onClick={handleClick} className="md:hidden z-10">

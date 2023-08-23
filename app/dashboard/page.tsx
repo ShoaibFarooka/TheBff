@@ -12,18 +12,18 @@ import tick from "@/assets/Not Started.png"
 export default function page() {
    
   return (
-    <div className='w-full  py-[80px] px-[100px]  '>
+    <div className='w-full py-[60px] px-[40px]  lg:py-[80px] lg:px-[100px]  '>
         <div className='flex justify-center items-center'>
-        <h1 className='text-[#F2BD4D] font-[600] text-[48px] mb-10'>Good Morning, Ayush</h1>
+        <h1 className='text-[#F2BD4D] font-[600] text-[32px] lg:text-[48px] mb-10'>Good Morning, Ayush</h1>
         </div>
        
-        <div className='grid grid-cols-4 gap-10'>
+        <div className='grid grid-cols-1  lg:grid-cols-4 gap-10'>
 
             {/* =================STATS================= */}
 
-            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 col-span-1'>
+            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1'>
                 <div className='text-white flex justify-between'>
-                    <h1>Stats</h1>
+                    <h1 className='font-semibold text-[32px]'>Stats</h1>
                     <p>...</p>
                 </div>
                 <p className='text-[#fff]'>Every large design company whether it’s a multi-national branding.</p>
@@ -71,12 +71,12 @@ export default function page() {
             </div>
 
             {/* ===================Scheduled Session================== */}
-            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl  py-5 px-10 col-span-2'>
+            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl  py-5 px-3 lg:px-10 lg:col-span-2'>
                 <h1 className='font-semibold text-[32px] text-center text-[#AFCCF8] mb-10'>Scheduled Session</h1>
                 <div className='flex justify-center'>
-                <div className='text-white flex justify-between rounded-lg px-4  py-4 border border-white my-4 w-4/5 items-center'>
-                    <p> 10:00 AM</p>
-                    <p>23rd April 2023</p>
+                <div className='text-white flex justify-between rounded-lg px-4  py-4 border border-white my-4 w-full lg:w-4/5 items-center'>
+                    <p className='text-xs lg:text-base'> 10:00 AM</p>
+                    <p className='text-xs lg:text-base'>23rd April 2023</p>
                     <button className='bg-[#E59F0B] px-5 py-2 text-white rounded-lg'>Reschedule</button>
                 </div>
 
@@ -89,7 +89,7 @@ export default function page() {
             </div>
 
             {/* =================PROFILE========================== */}
-            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 col-span-1'>
+            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1'>
                 <div className='flex justify-between'>
                     <Image src = {profilePhoto} alt = "" />
                     <BiDotsHorizontalRounded color="white" />
@@ -110,13 +110,13 @@ export default function page() {
 
 
                 {/* ===============Stats=================== */}
-            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 col-span-1'>
+            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1'>
                     <div className='text-white flex justify-between'>
                         <h1>Stats</h1>
                         <p>...</p>
                     </div>
                     <div className='flex justify-center items-center '>
-                        <div className=" w-[65%] h-[200px] mb-5  rounded-full bg-gray-200 border-[10px] border-orange-500 bg-gradient-to-r from-[#4A2F70] to-[#344363] px-10 py-10">
+                        <div className="w-full lg:w-[65%] h-[200px] mb-5  rounded-full bg-gray-200 border-[10px] border-orange-500 bg-gradient-to-r from-[#4A2F70] to-[#344363]  mx-[10%]  md:mx-[35%] xl:mx-[25%] px-10 py-10">
                             
                             <div className='flex justify-center items-center w-full h-full rounded-full bg-orange-500 text-white '>47%</div>
 
@@ -147,11 +147,11 @@ export default function page() {
 
 
                 {/* =======================Achievements ==================== */}
-            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-10 py-5 col-span-2'>
+            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-10 py-5 lg:col-span-2'>
                 <h1 className='text-white text-[24px]'>Achievements & Rewards</h1>
                 
-                <div className='flex justify-around  text-white '>
-                    <div className='rounded-2xl shadow-[#9747FF] shadow-2xl px-4 py-4 w-[167px]'>
+                <div className='flex flex-col md:flex-row md:justify-around  text-white '>
+                    <div className='rounded-2xl shadow-[#9747FF] shadow-2xl px-4 py-4 w-full lg:w-[167px]'>
                         <Image src={Achihievement} alt='' className='mb-5'/>
                         <p className='mb-5'>A Topic Name That Is Two Lines</p>
                         <div className='flex justify-between items-center'>
@@ -159,7 +159,7 @@ export default function page() {
                             <Image src={tick} alt="" />
                         </div>
                     </div>
-                    <div className='rounded-3xl shadow-[#9747FF] shadow-2xl px-4 py-4 w-[167px]'>
+                    <div className='rounded-3xl shadow-[#9747FF] shadow-2xl px-4 py-4 my-5 lg:my-0  w-full lg:w-[167px]'>
                         <Image src={Achihievement} alt='' className='mb-5'/>
                         <p className='mb-5'>A Topic Name That Is Two Lines</p>
                         <div className='flex justify-between items-center'>
@@ -167,7 +167,7 @@ export default function page() {
                             <Image src={tick} alt="" />
                         </div>
                     </div>
-                    <div className='rounded-3xl shadow-[#9747FF] shadow-2xl px-4 py-4 w-[167px]'>
+                    <div className='rounded-3xl shadow-[#9747FF] shadow-2xl px-4 py-4 w-full lg:w-[167px]'>
                         <Image src={Achihievement} alt='' className='mb-5'/>
                         <p className='mb-5'>A Topic Name That Is Two Lines</p>
                         <div className='flex justify-between items-center'>
@@ -189,13 +189,13 @@ export default function page() {
 
 
             {/* ======================Contact Trainer============== */}
-            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-10 py-5 col-span-1'>
+            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-10 py-5 lg:col-span-1'>
 
                 <h1 className='text-white text-[24px] mb-4'>Contact Trainer</h1>
 
                 <input type="text" className='mb-10  h-[100px] p-5 rounded-lg w-full ' placeholder='Type your query here' />
                 <div className='text-center'>
-                <button className='bg-[#514ED8] text-white px-[80px] py-3 rounded-lg'>Send query</button>
+                <button className='bg-[#514ED8] text-white px-[40px] xl:px-[80px] py-3 rounded-lg'>Send query</button>
 
                 </div>
                 

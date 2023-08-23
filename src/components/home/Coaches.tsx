@@ -12,7 +12,6 @@ import coach1 from "@/assets/kindpng_218182.png";
 import coach2 from "@/assets/Frame 39.png";
 import coach3 from "@/assets/Frame 40.png";
 
-
 const coches = [
     { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
     { name: "Arman", title: "E-REPS", image: coach2 },
