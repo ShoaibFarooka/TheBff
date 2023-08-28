@@ -10,7 +10,6 @@ export const GET = async (req: NextRequest) => {
     try {
 
         const { email } = getQueryParams(req.url)
-        console.log(email)
 
         if (!email || !isEmail(email)) {
             return NextResponse.json({ success: false, message: "Invalid email address" })
@@ -48,3 +47,7 @@ export const GET = async (req: NextRequest) => {
         return NextResponse.json({ success: false,  message: error.message ?? "Something went wrong" });
     }
 }
+
+
+
+export const dynamic = "force-dynamic"
