@@ -4,7 +4,7 @@ const nextConfig = {
         serverActions: true
     },
     images: {
-        domains: ['localhost', 'res.cloudinary.com', 'media.graphassets.com']
+        domains: ['localhost', 'res.cloudinary.com', 'media.graphassets.com', 'loremflickr.com', 'picsum.photos']
     }
 }
 

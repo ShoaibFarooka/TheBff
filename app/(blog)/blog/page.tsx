@@ -12,7 +12,11 @@ const Blogs = async () => {
 
     return (
         <div className="h-screen mt-32 px-4 md:px-16 lg:px-28 xl:px-36 py-8">
+            
             <FeaturedBlogs posts={featuredPosts} />
+
+            {/* Create a component for latets posts */}
+            
         </div>
     )
 }

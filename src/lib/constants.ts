@@ -15,9 +15,7 @@ const generateFakeData = (featured: boolean) => ({
         url: faker.image.url(),
     },
     content: {
-        raw: faker.lorem.paragraphs(faker.number.int({
-            min: 5,
-        })),
+        raw: faker.lorem.paragraphs(8),
     },
     author: {
         name: faker.person.fullName(),
@@ -25,7 +23,7 @@ const generateFakeData = (featured: boolean) => ({
         picture: {
             url: faker.image.avatar(),
         },
-        title: faker.name.jobTitle(),
+        title: faker.person.jobTitle(),
         biography: faker.lorem.paragraph(),
     },
     seoOverride: {
@@ -41,7 +39,7 @@ const generateFakeData = (featured: boolean) => ({
 // Generate 20 fake blog posts
 const generateFakePosts = (featured: boolean) => {
     const posts = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 12; i++) {
         const post = generateFakeData(featured);
         posts.push(post);
     }
