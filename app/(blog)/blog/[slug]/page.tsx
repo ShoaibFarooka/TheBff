@@ -7,9 +7,9 @@ import {  posts } from '@/lib/constants'
 const Blog = () => {
 
   return (
-    <div className='text-white mt-24 px-32'> 
-      <div className='flex justify-between'>
-        <div className='w-1/2'>
+    <div className='text-white mt-24 px-10 md:px-32'> 
+      <div className='flex flex-col md:flex-row  justify-between'>
+        <div className='md:w-1/2'>
             <h1 className='text-3xl font-semibold'>
          {posts[0].title}
           </h1>
@@ -19,11 +19,11 @@ const Blog = () => {
           <p className='text-xs text-gray-600'>
             <span>{posts[0].author.name}</span>
             <span>Aug 24, 2023</span>
-            </p> 
+            </p>  
         </div>
-        <div className='w-1/3'>
+        <div className='md:w-1/3'>
           <Image src = {posts[0].coverImage.url}  width={300}
-                    height={200}  alt = "" className='rounded-lg' />
+                    height={200}  alt = "" className='rounded-lg my-5 md:py-0' />
 
         </div>
 

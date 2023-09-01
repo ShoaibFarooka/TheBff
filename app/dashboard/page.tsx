@@ -1,18 +1,79 @@
+"use client"
 import ProgressBar from '@/components/dashboard/ProgressBar'
-import React from 'react'
+import React, { useState } from 'react'
 
 import {BiDotsHorizontalRounded} from 'react-icons/bi'
 import profilePhoto from '@/assets/Photo.png'
 import Image from 'next/image'
-
+import person from '@/assets/Person.png'
+import text from '@/assets/Text.png'
+import squaare from '@/assets/Square.png'
+import close from "@/assets/Close.png"
+import gift from '@/assets/Gift.png'
 
 import Achihievement from "@/assets/Artwork.png"
 import tick from "@/assets/Not Started.png"
+ 
 
-export default function page() {
+
+export default function Page() {
+    const [side , setSide] = useState(false)
+    const handleSide = () => {
+        setSide(!side)
+    }
    
   return (
-    <div className='w-full py-[60px] px-[40px]  lg:py-[80px] lg:px-[100px]  '>
+    <>{side && (
+        <aside
+        className={` bg-gradient-to-r from-[#001B61] to-[#00154A]  z-[10000] rounded-3xl w-64 h-screen fixed top-0 right-0 transition-transform transform text-white flex flex-col items-center justify-around 
+        }`}
+       
+      >
+       <div className='flex items-center mt-12 mb-5 justify-between '>
+           <Image src = {profilePhoto} className='w-12' alt = " " />
+           <div className='ml-5'>
+               <h1>Ayush Sharma</h1>
+               <p>Male 22</p>
+           </div>
+
+       </div>
+       <div>
+           <div className='flex items-center mb-2'>
+               <Image src = {person} alt = "" /> 
+               <p className='ml-5'>My Profile</p>
+           </div>
+           <div className='flex items-center  mb-2'>
+               <Image src = {text} alt = "" /> 
+               <p className='ml-5'>Health Reports</p>
+           </div>
+
+           <div className='flex items-center  mb-2'>
+               <Image src = {squaare} alt = "" /> 
+               <p className='ml-5'>Queries</p>
+           </div >
+           <div className='flex items-center  mb-2'>
+               <Image src = {close} alt = "" /> 
+               <p className='ml-5'>Blogs</p>
+           </div>
+           <div className='flex items-center  mb-2'>
+               <Image src = {gift} alt = "" /> 
+               <p className='ml-5'>Rewards</p>
+           </div>
+       </div>
+       <div>
+           <button className='px-10 py-1 bg-[#C56936] '>Logout</button>
+       </div>
+      </aside>
+
+)}
+ 
+<div onClick={handleSide} className={` w-full h-full py-[60px] px-[40px]  lg:py-[80px] lg:px-[100px]  ${
+          side && 'filter blur-md  inset-0  opacity-30'
+        }`}  >
+    
+                <button className="w-[60px]" onClick={handleSide}>
+        <Image src={profilePhoto} alt="" />
+        </button>
         <div className='flex justify-center items-center'>
         <h1 className='text-[#F2BD4D] font-[600] text-[32px] lg:text-[48px] mb-10'>Good Morning, Ayush</h1>
         </div>
@@ -71,7 +132,7 @@ export default function page() {
             </div>
 
             {/* ===================Scheduled Session================== */}
-            <div className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl  py-5 px-3 lg:px-10 lg:col-span-2'>
+            <div  className=' bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl  py-5 px-3 lg:px-10 lg:col-span-2'>
                 <h1 className='font-semibold text-[32px] text-center text-[#AFCCF8] mb-10'>Scheduled Session</h1>
                 <div className='flex justify-center'>
                 <div className='text-white flex justify-between rounded-lg px-4  py-4 border border-white my-4 w-full lg:w-4/5 items-center'>
@@ -202,5 +263,7 @@ export default function page() {
             </div>
         </div>
     </div>
+    </>
+   
   )
 }

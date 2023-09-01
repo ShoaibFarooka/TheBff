@@ -6,11 +6,11 @@ import Link from 'next/link';
 import type { Post } from "../../types/blog";
 export default function LatestBlogs({ posts }: { posts: Post[] }) {
   return (
-    <div className='h-full w-full'>
+    <div className='h-full w-full px-10'>
         <h2 className="text-2xl text-white font-semibold mb-10">
         Latest Posts
       </h2>
-      <div className='grid grid-cols-3 gap-10 h-full w-full'>
+      <div className='grid grid-cols-1  md:grid-cols-3 gap-10 h-full w-full'>
         
       {
           posts?.length > 0 && posts.map((post, index: number) => (

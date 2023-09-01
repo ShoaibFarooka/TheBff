@@ -4,10 +4,14 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import profilePhoto from '@/assets/Photo.png'
+import Dashboard from "../../app/(admin_only)/admin/page";
 
 export default function Header() {
   const [nav, setNav] = useState(false);
+  // const [side , setSide] = useState(false)
   const handleClick = () => setNav(!nav);
+  
+   
   return (
     <div className="fixed top-0 left-0 bg-transparent backdrop-blur text-white w-screen flex justify-between items-center p-5 px-[10%] md:px-[20%]" style={{zIndex: 999}}>
       <Link href="/">
@@ -36,9 +40,7 @@ export default function Header() {
         </button>
       </Link>
       
-        <button className="w-[60px]">
-        <Image src={profilePhoto} alt="" />
-        </button>
+
       
 
 
