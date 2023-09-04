@@ -13,6 +13,8 @@ import gift from '@/assets/Gift.png'
 
 import Achihievement from "@/assets/Artwork.png"
 import tick from "@/assets/Not Started.png"
+import { set } from 'mongoose'
+import { fa } from '@faker-js/faker'
  
 
 
@@ -66,11 +68,12 @@ export default function Page() {
       </aside>
 
 )}
+
  
-<div onClick={handleSide} className={` w-full h-full py-[60px] px-[40px]  lg:py-[80px] lg:px-[100px]  ${
+<div onClick={ side ? handleSide : undefined }  className={` w-full h-full py-[60px] px-[40px]  lg:py-[80px] lg:px-[100px]  ${
           side && 'filter blur-md  inset-0  opacity-30'
-        }`}  >
-    
+        }`}   > 
+          
                 <button className="w-[60px]" onClick={handleSide}>
         <Image src={profilePhoto} alt="" />
         </button>
