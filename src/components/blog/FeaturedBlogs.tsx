@@ -53,9 +53,12 @@ const FeaturedBlogs = ( { posts }: { posts: Post[] } ) => {
         >
         {
           posts?.length > 0 && posts.map((post, index: number) => (
+            
             <SwiperSlide key={"slide-" + index} className="bg-transparent">
+              
               <div  className="mb-10 md:h-full flex flex-col md:flex-row px-5 py-4 rounded-md bg-gray-100 text-black" key={"featured-post" + (index + 1)}>
                 {/* href={`/blog/${post.slug}`} */}
+                
                 <div className=" w-full md:w-5/12 md:my-auto">
                   <Image
                     src={post.coverImage.url}
