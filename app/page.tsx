@@ -113,7 +113,7 @@ export default async function Home() {
         {/* ===================== {Overlay} ===================== */}
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 center z-50">
           <div className="w-full md:w-1/2  mx-auto">
-            <h2 className="text-4xl font-bold text-white text-center backdrop-blur bg-black bg-opacity-50">
+            <h2 className="text-2xl md:text-4xl font-bold text-white text-center backdrop-blur bg-black bg-opacity-50">
               {" "}
               Achieve your fitness goals without stepping out of your comfort
               zone{" "}

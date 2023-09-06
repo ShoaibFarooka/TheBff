@@ -53,10 +53,13 @@ const FeaturedBlogs = ( { posts }: { posts: Post[] } ) => {
         >
         {
           posts?.length > 0 && posts.map((post, index: number) => (
+            
             <SwiperSlide key={"slide-" + index} className="bg-transparent">
-              <div  className="mb-10 h-full flex px-5 py-4 rounded-md bg-gray-100 text-black" key={"featured-post" + (index + 1)}>
+              
+              <div  className="mb-10 md:h-full flex flex-col md:flex-row px-5 py-4 rounded-md bg-gray-100 text-black" key={"featured-post" + (index + 1)}>
                 {/* href={`/blog/${post.slug}`} */}
-                <div className="w-5/12 my-auto">
+                
+                <div className=" w-full md:w-5/12 md:my-auto">
                   <Image
                     src={post.coverImage.url}
                     alt={post?.title}
@@ -65,8 +68,8 @@ const FeaturedBlogs = ( { posts }: { posts: Post[] } ) => {
                     className="rounded-md w-[100rem]"
                   />
                 </div>
-                <div className="w-7/12 px-5 my-auto">
-                  <h3 className="text-3xl text-gray-900 font-semibold mb-2">
+                <div className="w-full md:w-7/12 px-5 md:my-auto">
+                  <h3 className="text-xl md:text-3xl text-gray-900 font-semibold mb-2">
                     {post?.title}
                   </h3>
                   <p className="text-gray-700 text-base">

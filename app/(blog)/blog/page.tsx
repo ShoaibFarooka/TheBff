@@ -2,7 +2,7 @@ import React from 'react'
 import { getPosts } from '@/lib/hypgraph' 
 import FeaturedBlogs from '@/components/blog/FeaturedBlogs' 
 import { featuredPosts, posts } from '@/lib/constants'
-
+import LatestBlogs from '@/components/blog/LatestBlogs'
 const Blogs = async () => {
 
     // const [ featuredData , data ] = await Promise.all([
@@ -11,11 +11,13 @@ const Blogs = async () => {
     // ])
 
     return (
-        <div className="h-screen mt-32 px-4 md:px-16 lg:px-28 xl:px-36 py-8">
+        <div className="h-full mt-32 px-4 md:px-16 lg:px-28 xl:px-36 py-8">
             
             <FeaturedBlogs posts={featuredPosts} />
+            
 
             {/* Create a component for latets posts */}
+            <LatestBlogs posts = {posts}/>
             
         </div>
     )
