@@ -3,6 +3,7 @@ import Image, { StaticImageData } from "next/image";
 import Head from "next/head";
 import ContactForm from "@/components/ContactForm";
 import Coaches from "@/components/home/Coaches";
+import { getPageData } from "@/lib/db";
 
 // Import Assets
 import Component22 from "@/assets/Component 22.png";
@@ -18,8 +19,12 @@ import Classes from "@/components/home/Classes";
 
 
 
+export default async function Home() {
 
-export default function Home() {
+  // const pageData = await getPageData("home") as any;
+
+  // const classes = pageData?.classes;
+  // const coaches = pageData?.coaches;
   
   return (
     <>
@@ -56,7 +61,9 @@ export default function Home() {
       </div>
 
       {/* ===========================Types of Programs===================== */}
-      <Classes />
+      <Classes 
+        // classes={classes}
+      />
       
 
       {/* <div className="mt-8">

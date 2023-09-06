@@ -41,14 +41,10 @@ const content = [
 ]
 
 
-export default function Classes() {
+export default function Classes({ classes }: { classes?: any }) {
   const [active, setActive] = useState(0);
   const imageContainerRef = useRef<HTMLDivElement | null>(null); // Add type assertion
   
- 
-
-
-
   return (
     <div>
       <div className="h-screen lg:flex justify-around px-[20px] lg:px-[100px] lg:pt-[50px]">
