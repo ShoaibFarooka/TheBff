@@ -8,7 +8,14 @@ import div from '@/assets/div.png';
 import div1 from '@/assets/div (1).png';
 import {Link} from 'react-scroll'
 import ScrollToBottom from 'react-scroll-to-bottom';
+import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from 'swiper/react'
+import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules'
 
+// Swiper CSS
+import 'swiper/css'
+import 'swiper/css/effect-coverflow'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
 
 const content = [
   {
@@ -24,21 +31,25 @@ const content = [
     content: `Join our live interactive fitness workout classes to get fit without leaving your house. Choose from a variety of options including bodyweight training, resistance band training, HIIT, Pilates, and personalized workout plans tailored to your fitness goals.`,
     image: div1,
   }, 
-  // {
-  //   title: 'Yoga',
-  //   content: `Want to reduce stress and stay mindful while you exercise? Try our online live yoga classes that focus on the full mind-body connection. Whether you're a seasoned yogi or a newbie to the mat, our interactive yoga classes offer something for everyone. Choose your type as Hatha, Vinyasa, Ashtanga, or Power Yoga or simply let us help you find it!`,
-  //   image: div1,
-  // }, {
-  //   title: 'Meditation',
-  //   content: `Need a break from the daily grind? Our guided meditation classes offer a sanctuary of serenity and relaxation. Increase your focus and improve your overall well-being. Choose your starting point - beginner, intermediate, or advanced and Let BFF’s experts guide you to a healthier, more purposeful future`,
-  // }, {
-  //   title: 'Nutrition',
-  //   content: `Need some help with lifestyle changes? Want to say goodbye to fad diets and quick fixes?  We know it’s a battle! But your health is our priority. We're here to help you with weight management, PCOS (PCOD) relief plan, psoriasis relief, thyroid relief, general nutrition guidance, and more.`,
-  // }, {
-  //   title: 'In-Home',
-  //   content: `We guarantee the fitness results you’re looking for. Our unique in-home workout system is perfect if you have limited time and space. But that's not all – we prioritize convenience and affordability too! Time to prioritize your health and well-being without worrying about the cost of care. Ditch excuses with BFF’s In-Home workout sessions. `,
-  // }
+  {
+    title: 'Yoga',
+    content: `Want to reduce stress and stay mindful while you exercise? Try our online live yoga classes that focus on the full mind-body connection. Whether you're a seasoned yogi or a newbie to the mat, our interactive yoga classes offer something for everyone. Choose your type as Hatha, Vinyasa, Ashtanga, or Power Yoga or simply let us help you find it!`,
+    image: div1,
+  }, {
+    title: 'Meditation',
+    content: `Need a break from the daily grind? Our guided meditation classes offer a sanctuary of serenity and relaxation. Increase your focus and improve your overall well-being. Choose your starting point - beginner, intermediate, or advanced and Let BFF’s experts guide you to a healthier, more purposeful future`,
+    image: div1,
+  }, {
+    title: 'Nutrition',
+    content: `Need some help with lifestyle changes? Want to say goodbye to fad diets and quick fixes?  We know it’s a battle! But your health is our priority. We're here to help you with weight management, PCOS (PCOD) relief plan, psoriasis relief, thyroid relief, general nutrition guidance, and more.`,
+    image: div,
+  }, {
+    title: 'In-Home',
+    content: `We guarantee the fitness results you’re looking for. Our unique in-home workout system is perfect if you have limited time and space. But that's not all – we prioritize convenience and affordability too! Time to prioritize your health and well-being without worrying about the cost of care. Ditch excuses with BFF’s In-Home workout sessions. `,
+    image: div1,
+  }
 ]
+
 
 
 export default function Classes({ classes }: { classes?: any }) {
@@ -47,32 +58,54 @@ export default function Classes({ classes }: { classes?: any }) {
   
   return (
     <div>
-      <div className="h-screen lg:flex justify-around px-[20px] lg:px-[100px] lg:pt-[50px]">
+      
+      <div className="h-screen pb-28 lg:flex justify-around px-[20px] lg:px-[100px] lg:pt-[50px] " >
 
-          <div className="w-full mb-6 my-auto lg:hidden mt-12">
+          {/* <div className="w-full mb-6 my-auto lg:hidden mt-12">
             <div className="text-[#AFCCF8] text-center text-[24px] md:text-[40px] font-bold">
               Workout Program
             </div>
             <div className="text-center text-[24px] md:text-[40px] font-bold text-[#FED25B]">
               made for you
             </div>
-          </div>
+          </div> */}
+        <Swiper
+        slidesPerView={3}
+        mousewheel= { { forceToAxis: true, }}
+        spaceBetween={0}
+        keyboard={{ enabled: true, onlyInViewport: false }}
+        direction="vertical"
+        pagination={{ clickable: true , el:"#pagination" }}
+       modules={[Pagination , Navigation , Autoplay]}
+       autoplay
+        onSlideChange={(e: SwiperClass) => {
+          setActive(e.activeIndex)
+        }}
+      >
+        <div id='pagination'>
 
-        <div className="lg:w-2/6 mb-8 lg:mb-0 px-3 lg:px-0 lg:h-full">
-          <div className="image-container h-full flex justify-center items-center lg:flex-col gap-x-4" ref={imageContainerRef}>
+        </div>
+       
+        <div className="lg:w-2/6 mb-8 lg:mb-0 px-3 lg:px-0  lg:h-full">
+          <div className="image-container  flex justify-center items-center lg:flex-col gap-x-4" ref={imageContainerRef}>
             {content.map((c, index) => (
+              <SwiperSlide key={index}>
+
+              
               <Image
                 key={index}
-                className={`w-[33%] lg:w-[60%] my-4 hover:shadow-white/60 hover:shadow-lg hover:scale-110 duration-300 rounded-md ${
+                className={`w-[35%]  lg:w-[60%]  hover:shadow-white/60 hover:shadow-lg hover:scale-110 duration-300 rounded-md ${
                   index === active ? 'shadow-lg shadow-white/40' : ''
                 }`}
                 src={c.image!}
                 alt={`Image ${index}`}
                 onClick={() => setActive(index)}
               />
+              </SwiperSlide>
             ))}
           </div>
         </div>
+        </Swiper>
 
         <div className="lg:w-[45%] content h-full">
           {/* Display content based on activeImageIndex */}
