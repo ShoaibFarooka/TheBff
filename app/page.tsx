@@ -21,10 +21,10 @@ import Classes from "@/components/home/Classes";
 
 export default async function Home() {
 
-  // const pageData = await getPageData("home") as any;
+  const pageData = await getPageData("home") as any;
 
-  // const classes = pageData?.classes;
-  // const coaches = pageData?.coaches;
+  const classes = pageData?.classes;
+  const coaches = pageData?.coaches;
   
   return (
     <>
@@ -62,7 +62,7 @@ export default async function Home() {
 
       {/* ===========================Types of Programs===================== */}
       <Classes 
-        // classes={classes}
+         classes={classes}
       />
       
 

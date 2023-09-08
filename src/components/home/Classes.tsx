@@ -55,7 +55,10 @@ const content = [
 export default function Classes({ classes }: { classes?: any }) {
   const [active, setActive] = useState(0);
   const imageContainerRef = useRef<HTMLDivElement | null>(null); // Add type assertion
-  
+  // console.log(classes)
+  if(!classes){
+    return null
+  }
   return (
     <div>
       
@@ -88,7 +91,7 @@ export default function Classes({ classes }: { classes?: any }) {
        
         <div className="lg:w-2/6 mb-8 lg:mb-0 px-3 lg:px-0  lg:h-full">
           <div className="image-container  flex justify-center items-center lg:flex-col gap-x-4" ref={imageContainerRef}>
-            {content.map((c, index) => (
+            {classes?.map((c?: any, index?: any) => (
               <SwiperSlide key={index}>
 
               
@@ -100,6 +103,8 @@ export default function Classes({ classes }: { classes?: any }) {
                 src={c.image!}
                 alt={`Image ${index}`}
                 onClick={() => setActive(index)}
+                width = {500}
+                height={300}
               />
               </SwiperSlide>
             ))}
@@ -111,20 +116,20 @@ export default function Classes({ classes }: { classes?: any }) {
           {/* Display content based on activeImageIndex */}
           <div className="w-full mb-6 my-auto hidden lg:block">
             <div className="text-[#AFCCF8] text-center text-[24px] md:text-[40px] font-bold">
-              Workout Program
+            {classes[active]?.title}
             </div>
-            <div className="text-center text-[24px] md:text-[40px] font-bold text-[#FED25B]">
+            {/* <div className="text-center text-[24px] md:text-[40px] font-bold text-[#FED25B]">
               made for you
-            </div>
+            </div> */}
           </div>
           
           <div className="rounded-3xl bg-gradient-to-r from-[#4A2F70] to-[#344363] px-[25px] py-5 lg:px-[55px] lg:py-10 md:mt-20">
             <h1 className="text-center font-bold text-[24px] md:text-[30px] text-[#FED25B]">
-              {content[active].title}
+              {classes[active]?.subTitle}
             </h1>
             <p className="text-center text-white text-xs sm:text-lg">
               {/* Display content based on activeImageIndex */}
-              {content[active].content}
+              {classes[active]?.description}
             </p>
             <div className="flex justify-center mt-5">
               <button className="rounded-lg py-2 px-20 bg-[#aeb5e0]">Join Now</button>
