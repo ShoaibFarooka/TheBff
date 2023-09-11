@@ -215,3 +215,71 @@ html {
       transform: scale3d(.3, .3, .3);
   }
 }
+
+
+.swiper-scrollbar-drag {
+  background-color: #F2BD4D !important;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+  min-height: 5px;
+  margin-bottom: 10px;
+}
+
+.animate-slideInRight {
+  // animate on both, while opening and closing
+  animation: slideInRight 0.3s both;
+
+}
+
+.animate-slideInLeft {
+  // animate on both, while opening and closing
+  animation: slideInLeft 0.3s both;
+}
+
+.animate-slideOutRight {
+  // animate on both, while opening and closing
+  animation: slideOutRight 0.3s both;
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
