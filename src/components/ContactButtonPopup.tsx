@@ -5,7 +5,6 @@ import emoji from '@/assets/headset.png'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { toast, Toaster } from 'react-hot-toast'
 import { isEmail } from '@/lib'
-import { cookie } from '@/lib/dom'
 
 const ContactButtonPopup = () => {
 
@@ -64,7 +63,7 @@ const ContactButtonPopup = () => {
     <div className="fixed bottom-5 right-5 md:bottom-16 md:right-16 lg:bottom-10 lg:right-10 z-[9999]">
 
         <div className="max-w-max rounded-full bg-white/10 backdrop-blur-md cursor-pointer" onClick={() => setShowPopup(!showPopup)}>
-          <Image className='w-16 h-16 md:w-28 md:h-28' src={emoji} alt="" />
+          <Image className='w-16 h-16 md:w-24 md:h-24' src={emoji} alt="" />
         </div>
 
         {
