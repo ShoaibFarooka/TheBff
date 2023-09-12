@@ -12,20 +12,20 @@ import coach1 from "@/assets/kindpng_218182.png";
 import coach2 from "@/assets/Frame 39.png";
 import coach3 from "@/assets/Frame 40.png";
 
-const coches = [
-    { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-    { name: "Arman", title: "E-REPS", image: coach2 },
-    { name: "Birjot", title: "E-REPS", image: coach3 },
-    { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-    { name: "Arman", title: "E-REPS", image: coach2 },
-    { name: "Birjot", title: "E-REPS", image: coach3 },
-    { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-    { name: "Arman", title: "E-REPS", image: coach2 },
-    { name: "Birjot", title: "E-REPS", image: coach3 },
-    { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-    { name: "Arman", title: "E-REPS", image: coach2 },
-    { name: "Birjot", title: "E-REPS", image: coach3 },
-]
+// const coches = [
+//     { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
+//     { name: " Arman", title: "E-REPS", image: coach2 },
+//     { name: "Birjot", title: "E-REPS", image: coach3 },
+//     { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
+//     { name: "Arman", title: "E-REPS", image: coach2 },
+//     { name: "Birjot", title: "E-REPS", image: coach3 },
+//     { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
+//     { name: "Arman", title: "E-REPS", image: coach2 },
+//     { name: "Birjot", title: "E-REPS", image: coach3 },
+//     { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
+//     { name: "Arman", title: "E-REPS", image: coach2 },
+//     { name: "Birjot", title: "E-REPS", image: coach3 },
+// ]
 
 
 // ===================== {Coach} =====================
@@ -33,9 +33,11 @@ const Coach = ({ image, name, title } : { image: StaticImageData | string, name:
 
     return <div className="flex-shrink-0 text-white mb-14 center flex-col">
       <Image
-        className="md:h-[431px] object-cover hover:scale-105 duration-300 mb-3 mx-auto"
+        className="md:h-[431px] object-cover hover:scale-105 duration-300 mb-3 mx-auto "
         src={image}
         alt="/"
+        width = {280}
+                height={1000}
       />
   
       <p className="text-center"> { name } </p>
@@ -71,8 +73,8 @@ const settings: Settings = {
 
 
 
-const Coaches = () => {
-
+const Coaches = ({ coaches }: { coaches?: any }) => {
+    console.log(coaches)
     const ref = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
@@ -101,7 +103,7 @@ const Coaches = () => {
 
             <Slider {...settings} className=''>
                 {
-                    coches.map((coach, index) => (
+                    coaches?.map((coach? :any, index? :any) => (
                         <Coach key={'coach-' + index} image={coach.image} name={coach.name} title={coach.title} />
                     ))
                 }
