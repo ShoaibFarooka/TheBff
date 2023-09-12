@@ -74,7 +74,7 @@ const settings: Settings = {
 
 
 const Coaches = ({ coaches }: { coaches?: any }) => {
-    console.log(coaches)
+    
     const ref = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {

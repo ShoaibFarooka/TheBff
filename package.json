@@ -25,7 +25,6 @@
     "graphql-request": "^6.1.0",
     "jsonwebtoken": "^9.0.1",
     "lucide-react": "^0.263.1",
-    "mongodb": "^5.7.0",
     "mongoose": "^7.4.2",
     "next": "13.4.12",
     "nodemailer": "^6.9.4",
