@@ -16,6 +16,7 @@ import image4 from "@/assets/No equipment.png";
 import image5 from "@/assets/Toning.png";
 import image6 from "@/assets/Walking.png";
 import ChoosePlan from "@/components/programs/ChoosePlan";
+import { getPageData } from "@/lib/db";
 
 
 
@@ -27,7 +28,12 @@ const comparison = [
   { title: "No Cost EMI", standard: "No", premium: "Yes" },
 ];
 
-export default function Page() {
+export default   function Programs() {
+  const pageData =   getPageData("Programs") as any;
+  console.log(pageData)
+  const management = pageData?.management;
+  const stayHealthy = pageData?.stayHealthy;
+
   const [isOpen, setIsOpen] = useState(true);
 
   // const openPopup = () => {
@@ -53,7 +59,7 @@ export default function Page() {
           Weight Management{" "}
         </h1>
 
-        <Header />
+        <Header management = {management}/>
       </div>
 
       <StayHealthy />

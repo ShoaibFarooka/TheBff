@@ -24,7 +24,7 @@ export default async function Home() {
   const pageData = await getPageData("home") as any;
 
   const classes = pageData?.classes;
-  const coaches = pageData?.coaches;
+  const coaches = pageData?.coches;
   
   return (
     <>
@@ -123,7 +123,7 @@ export default async function Home() {
       </div>
 
       {/* ============================== YOGA COACHES ======================= */}
-      <Coaches />
+      <Coaches coaches = {coaches}/>
 
       {/* ===================== {Contact Form} ===================== */}
 

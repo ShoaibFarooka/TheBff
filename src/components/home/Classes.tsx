@@ -62,7 +62,7 @@ export default function Classes({ classes }: { classes?: any }) {
   return (
     <div>
       
-      <div className="h-screen pb-28 lg:flex justify-around px-[20px] lg:px-[100px] lg:pt-[50px] " >
+      <div className="h-screen pb-28 lg:flex justify-around  px-[20px] lg:px-[100px] lg:pt-[50px] " >
 
           {/* <div className="w-full mb-6 my-auto lg:hidden mt-12">
             <div className="text-[#AFCCF8] text-center text-[24px] md:text-[40px] font-bold">
@@ -112,7 +112,7 @@ export default function Classes({ classes }: { classes?: any }) {
         </div>
         </Swiper>
 
-        <div className="lg:w-[45%] content h-full">
+        <div className="lg:w-[45%] content h-full ">
           {/* Display content based on activeImageIndex */}
           <div className="w-full mb-6 my-auto hidden lg:block">
             <div className="text-[#AFCCF8] text-center text-[24px] md:text-[40px] font-bold">
