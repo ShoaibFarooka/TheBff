@@ -16,7 +16,7 @@ import image4 from "@/assets/No equipment.png";
 import image5 from "@/assets/Toning.png";
 import image6 from "@/assets/Walking.png";
 import ChoosePlan from "@/components/programs/ChoosePlan";
-import { getPageData } from "@/lib/db";
+// import { getPageData } from "@/lib/db";
 
 
 
@@ -28,11 +28,11 @@ const comparison = [
   { title: "No Cost EMI", standard: "No", premium: "Yes" },
 ];
 
-export default   function Programs() {
-  const pageData =   getPageData("Programs") as any;
-  console.log(pageData)
-  const management = pageData?.management;
-  const stayHealthy = pageData?.stayHealthy;
+export default function Programs() {
+  // const pageData =   getPageData("Programs") as any;
+  // console.log(pageData)
+  // const management = pageData?.management;
+  // const stayHealthy = pageData?.stayHealthy;
 
   const [isOpen, setIsOpen] = useState(true);
 
@@ -49,7 +49,6 @@ export default   function Programs() {
   const toggleOverlay = () => {
     setOverlayVisible(!overlayVisible);
   };
-  
 
   return (
     <>
@@ -59,7 +58,7 @@ export default   function Programs() {
           Weight Management{" "}
         </h1>
 
-        <Header management = {management}/>
+        <Header management={null as any} />
       </div>
 
       <StayHealthy />
@@ -185,10 +184,12 @@ export default   function Programs() {
           </div>
         </div>
 
-
         {/* ==========OVERLAY============ */}
-        {overlayVisible && ( <ChoosePlan  overlayVisible = {overlayVisible}  setOverlayVisible={ setOverlayVisible}/>
-          
+        {overlayVisible && (
+          <ChoosePlan
+            overlayVisible={overlayVisible}
+            setOverlayVisible={setOverlayVisible}
+          />
         )}
       </div>
 

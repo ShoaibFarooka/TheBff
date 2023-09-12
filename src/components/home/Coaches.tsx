@@ -75,7 +75,7 @@ const Coach = ({
 //     ]
 // };
 
-const Coaches = () => {
+const Coaches = ({ coaches }: { coaches: any }) => {
   // const ref = React.useRef<HTMLDivElement>(null);
 
   // React.useEffect(() => {
@@ -100,13 +100,6 @@ const Coaches = () => {
       </div>
 
       <div className="mt-8">
-        {/* <Slider {...settings} className=''>
-                {
-                    coaches?.map((coach? :any, index? :any) => (
-                        <Coach key={'coach-' + index} image={coach.image} name={coach.name} title={coach.title} />
-                    ))
-                }
-            </Slider> */}
         <Swiper
           modules={[Scrollbar, Mousewheel]}
           slidesPerView={2}

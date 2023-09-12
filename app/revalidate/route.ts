@@ -1,11 +1,14 @@
 import { NextRequest } from "next/server"
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidatePath } from "next/cache"
+import { headers } from 'next/headers'
 
 export const POST = async (req: NextRequest) => {
     try {
+        const headersList = headers()
 
         // get token from header
-        const token = req.headers.get('Token');
+        const token = headersList.get('Token');
+        console.log(token)
         if (!token || token !== process.env.REVALIDATE_TOKEN) return new Response("Invalid token", { status: 401 })
 
         const data = await req.json()

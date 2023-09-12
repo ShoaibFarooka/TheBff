@@ -55,9 +55,9 @@ const content = [
 export default function Classes({ classes }: { classes?: any }) {
   const [active, setActive] = useState(0);
   const imageContainerRef = useRef<HTMLDivElement | null>(null); // Add type assertion
-  // console.log(classes)
-  if(!classes){
-    return null
+
+  if (!classes) {
+    return <h2 className="text-white">Classes not found</h2>;
   }
   return (
     <div>
