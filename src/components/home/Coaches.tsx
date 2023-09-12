@@ -11,23 +11,6 @@ import coach1 from "@/assets/kindpng_218182.png";
 import coach2 from "@/assets/Frame 39.png";
 import coach3 from "@/assets/Frame 40.png";
 
-<<<<<<< Updated upstream
-// const coches = [
-//     { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-//     { name: " Arman", title: "E-REPS", image: coach2 },
-//     { name: "Birjot", title: "E-REPS", image: coach3 },
-//     { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-//     { name: "Arman", title: "E-REPS", image: coach2 },
-//     { name: "Birjot", title: "E-REPS", image: coach3 },
-//     { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-//     { name: "Arman", title: "E-REPS", image: coach2 },
-//     { name: "Birjot", title: "E-REPS", image: coach3 },
-//     { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-//     { name: "Arman", title: "E-REPS", image: coach2 },
-//     { name: "Birjot", title: "E-REPS", image: coach3 },
-// ]
-
-=======
 const coches = [
   { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
   { name: "Arman", title: "E-REPS", image: coach2 },
@@ -42,7 +25,6 @@ const coches = [
   { name: "Arman", title: "E-REPS", image: coach2 },
   { name: "Birjot", title: "E-REPS", image: coach3 },
 ];
->>>>>>> Stashed changes
 
 // ===================== {Coach} =====================
 const Coach = ({
@@ -57,15 +39,11 @@ const Coach = ({
   return (
     <div className="flex-shrink-0 text-white mb-1 center flex-col py-3">
       <Image
-<<<<<<< Updated upstream
-        className="md:h-[431px] object-cover hover:scale-105 duration-300 mb-3 mx-auto "
-=======
         className="h-[200px] object-contain md:h-[431px] md:object-cover hover:scale-105 duration-300 mb-3 mx-auto"
->>>>>>> Stashed changes
         src={image}
         alt="/"
-        width = {280}
-                height={1000}
+        width={280}
+        height={1000}
       />
 
       <p className="text-center"> {name} </p>
@@ -97,35 +75,18 @@ const Coach = ({
 //     ]
 // };
 
-<<<<<<< Updated upstream
-const Coaches = ({ coaches }: { coaches?: any }) => {
-    
-    const ref = React.useRef<HTMLDivElement>(null);
-
-    React.useEffect(() => {
-        // keep scrolling to the right
-        const interval = setInterval(() => {
-            if (ref.current) {
-                ref.current.scrollLeft += 50;
-            }
-            }
-        , 50);
-        return () => clearInterval(interval);
-    }, []);
-=======
 const Coaches = () => {
-  const ref = React.useRef<HTMLDivElement>(null);
+  // const ref = React.useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    // keep scrolling to the right
-    const interval = setInterval(() => {
-      if (ref.current) {
-        ref.current.scrollLeft += 50;
-      }
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
->>>>>>> Stashed changes
+  // React.useEffect(() => {
+  //   // keep scrolling to the right
+  //   const interval = setInterval(() => {
+  //     if (ref.current) {
+  //       ref.current.scrollLeft += 50;
+  //     }
+  //   }, 50);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <div className="mb-10 sm:px-[100px] sm:py-[60px] px-[40px] py-[20px]">
