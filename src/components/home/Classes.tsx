@@ -10,7 +10,7 @@ import {Link} from 'react-scroll'
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from 'swiper/react'
 import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules'
-
+import { useMediaQuery } from 'react-responsive';
 // Swiper CSS
 import 'swiper/css'
 import 'swiper/css/effect-coverflow'
@@ -53,6 +53,7 @@ const content = [
 
 
 export default function Classes({ classes }: { classes?: any }) {
+  const isSmallScreen = useMediaQuery({ maxWidth: 768 });
   const [active, setActive] = useState(0);
   const imageContainerRef = useRef<HTMLDivElement | null>(null); // Add type assertion
 
@@ -62,7 +63,7 @@ export default function Classes({ classes }: { classes?: any }) {
   return (
     <div>
       
-      <div className="h-screen pb-28 lg:flex justify-around  px-[20px] lg:px-[100px] lg:pt-[50px] " >
+      <div className="h-screen pb-28 flex justify-around flex-col lg:flex-row px-[20px] lg:px-[100px] lg:pt-[50px] " >
 
           {/* <div className="w-full mb-6 my-auto lg:hidden mt-12">
             <div className="text-[#AFCCF8] text-center text-[24px] md:text-[40px] font-bold">
@@ -72,6 +73,8 @@ export default function Classes({ classes }: { classes?: any }) {
               made for you
             </div>
           </div> */}
+          {isSmallScreen ? <div>Small Screen</div> : <div>Large Screen</div>}
+          
         <Swiper
         slidesPerView={3}
         mousewheel= { { forceToAxis: true, }}
@@ -89,21 +92,21 @@ export default function Classes({ classes }: { classes?: any }) {
 
         </div>
        
-        <div className="lg:w-2/6 mb-8 lg:mb-0 px-3 lg:px-0  lg:h-full">
-          <div className="image-container  flex justify-center items-center lg:flex-col gap-x-4" ref={imageContainerRef}>
+        <div className="lg:w-2/6 w-full mb-8 lg:mb-0 px-3 lg:px-0  h-full">
+          <div className="image-container  flex justify-center items-center lg:flex-col " ref={imageContainerRef}>
             {classes?.map((c?: any, index?: any) => (
               <SwiperSlide key={index}>
 
               
               <Image
                 key={index}
-                className={`w-[35%]  lg:w-[60%]  hover:shadow-white/60 hover:shadow-lg hover:scale-110 duration-300 rounded-md ${
+                className={`w-[60%]  lg:w-[60%]  hover:shadow-white/60 hover:shadow-lg hover:scale-110 duration-300 rounded-md ${
                   index === active ? 'shadow-lg shadow-white/40' : ''
                 }`}
                 src={c.image!}
                 alt={`Image ${index}`}
                 onClick={() => setActive(index)}
-                width = {500}
+                width = {300}
                 height={300}
               />
               </SwiperSlide>
@@ -112,10 +115,11 @@ export default function Classes({ classes }: { classes?: any }) {
         </div>
         </Swiper>
 
-        <div className="lg:w-[45%] content h-full ">
+        <div className="w-full lg:w-[45%] content h-full ">
           {/* Display content based on activeImageIndex */}
-          <div className="w-full mb-6 my-auto hidden lg:block">
-            <div className="text-[#AFCCF8] text-center text-[24px] md:text-[40px] font-bold">
+          <div className="w-full mb-6 my-auto text-white">
+            
+            <div className="text-[#AFCCF8] text-center text-[24px] xl:text-[40px] font-bold">
             {classes[active]?.title}
             </div>
             {/* <div className="text-center text-[24px] md:text-[40px] font-bold text-[#FED25B]">
@@ -123,11 +127,11 @@ export default function Classes({ classes }: { classes?: any }) {
             </div> */}
           </div>
           
-          <div className="rounded-3xl bg-gradient-to-r from-[#4A2F70] to-[#344363] px-[25px] py-5 lg:px-[55px] lg:py-10 md:mt-20">
+          <div className="rounded-3xl bg-gradient-to-r from-[#4A2F70] to-[#344363] px-[25px] py-5 lg:px-[55px] xl:py-10 xl:mt-20">
             <h1 className="text-center font-bold text-[24px] md:text-[30px] text-[#FED25B]">
               {classes[active]?.subTitle}
             </h1>
-            <p className="text-center text-white text-xs sm:text-lg">
+            <p className="text-center text-white text-md xl:text-lg">
               {/* Display content based on activeImageIndex */}
               {classes[active]?.description}
             </p>

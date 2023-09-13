@@ -9,14 +9,11 @@ export const connectDB = async () => {
         console.log(`MongoDB connected: ${conn.connection.host}`);
     } catch (error: any) {
         console.error(`Error: ${error.message}`);
-<<<<<<< HEAD
 
         // process.exit(1);
         throw error;
 
-=======
-        throw error;
->>>>>>> 01107153348b063effeaf5787d95214264bcd9a3
+
     }
 }
 
