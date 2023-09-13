@@ -20,19 +20,18 @@ import Classes from "@/components/home/Classes";
 
 
 export default async function Home() {
-
-  const pageData = await getPageData("home") as any;
-
+  const pageData = (await getPageData("home")) as any;
   const classes = pageData?.classes;
+
   const coaches = pageData?.coches;
-  
+
   return (
     <>
       <Head>
         <link rel="preload" href="/fitness.mp4" as="video" />
       </Head>
 
-      <div id ="home"  className="relative min-h-[90vh] bg-opacity-20">
+      <div id="home" className="relative min-h-[90vh] bg-opacity-20">
         {/* <div className="w-full bg-[#00000090]"></div> */}
 
         <video
@@ -56,56 +55,86 @@ export default async function Home() {
               try working out with BFF!
             </div>
           </div>
-
         </div>
       </div>
 
       {/* ===========================Types of Programs===================== */}
-      <Classes 
-         classes={classes}
-      />
-      
+      <Classes classes={classes} />
 
-      {/* <div className="mt-8">
-        
-      </div> */}
+      <div className="mt-8 text-white">Classes length - {classes?.length}</div>
 
       {/* ===================== {Gallery} ===================== */}
       <div className="relative py-5 md:py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:px-32 lg:gap-x-7 mx-auto">
           <div className="col-span-1 flex flex-col gap-y-7">
             <div className="w-full">
-              <Image src={Component22} alt="" className="w-10/12 rounded-md mx-auto" />
+              <Image
+                src={Component22}
+                alt=""
+                className="w-10/12 rounded-md mx-auto"
+              />
             </div>
             <div className="w-full">
-              <Image src={Component34} alt="" className="w-10/12 rounded-md mx-auto" />
+              <Image
+                src={Component34}
+                alt=""
+                className="w-10/12 rounded-md mx-auto"
+              />
             </div>
             <div className="w-full">
-              <Image src={Component42} alt="" className="w-10/12 rounded-md mx-auto" />
+              <Image
+                src={Component42}
+                alt=""
+                className="w-10/12 rounded-md mx-auto"
+              />
             </div>
           </div>
 
           <div className="hidden  md:col-span-1 md:flex flex-col gap-y-7 md:mt-10">
             <div className="w-full">
-              <Image src={Component23} alt="" className="w-10/12 rounded-md mx-auto" />
+              <Image
+                src={Component23}
+                alt=""
+                className="w-10/12 rounded-md mx-auto"
+              />
             </div>
             <div className="w-full">
-              <Image src={Component35} alt="" className="w-10/12 rounded-md mx-auto" />
+              <Image
+                src={Component35}
+                alt=""
+                className="w-10/12 rounded-md mx-auto"
+              />
             </div>
             <div className="w-full">
-              <Image src={Component43} alt="" className="w-10/12 rounded-md mx-auto" />
+              <Image
+                src={Component43}
+                alt=""
+                className="w-10/12 rounded-md mx-auto"
+              />
             </div>
           </div>
 
           <div className="hidden col-span-1 md:flex flex-col gap-y-7">
             <div className="w-full">
-              <Image src={Component38} alt="" className="w-10/12 rounded-md mx-auto" />
+              <Image
+                src={Component38}
+                alt=""
+                className="w-10/12 rounded-md mx-auto"
+              />
             </div>
             <div className="w-full">
-              <Image src={Component36} alt="" className="w-10/12 rounded-md mx-auto" />
+              <Image
+                src={Component36}
+                alt=""
+                className="w-10/12 rounded-md mx-auto"
+              />
             </div>
             <div className="w-full">
-              <Image src={Component44} alt="" className="w-10/12 rounded-md mx-auto" />
+              <Image
+                src={Component44}
+                alt=""
+                className="w-10/12 rounded-md mx-auto"
+              />
             </div>
           </div>
         </div>
@@ -123,7 +152,7 @@ export default async function Home() {
       </div>
 
       {/* ============================== YOGA COACHES ======================= */}
-      <Coaches coaches = {coaches}/>
+      <Coaches coaches={coaches as any} />
 
       {/* ===================== {Contact Form} ===================== */}
 
@@ -131,3 +160,5 @@ export default async function Home() {
     </>
   );
 }
+
+export const dynamic = "error";

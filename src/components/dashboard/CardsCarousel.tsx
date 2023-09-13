@@ -34,8 +34,8 @@ const CardsCarousel = () => {
               snapOnRelease: true,
             }}
             mousewheel={{
-                sensitivity: 2,
-                forceToAxis: true,
+              sensitivity: 2,
+              forceToAxis: true,
             }}
             breakpoints={{
               320: {
@@ -47,24 +47,23 @@ const CardsCarousel = () => {
             }}
             className="pt-4 min-h-min"
           >
-            {
-                Array(4).fill(0).map((_, i) => (
-                    <SwiperSlide className="mb-5" key={`slide-${i+1}`}>
-                    <div className="rounded-2xl shadow-[#9747FF]/10 shadow-lg px-4 py-4 w-full lg:w-[167px]">
-                        <Image src={Achihievement} alt="" className="mb-5" />
-                        <p className="mb-5">A Topic Name That Is Two Lines</p>
-                        <div className="flex justify-between items-center">
-                        <p className="text-[12px]">Recall 100%</p>
-                        <Image src={tick} alt="" />
-                        </div>
+            {Array(4)
+              .fill(0)
+              .map((_, i) => (
+                <SwiperSlide className="mb-5" key={`slide-${i + 1}`}>
+                  <div className="rounded-2xl shadow-[#9747FF]/10 shadow-lg px-4 py-4 w-full lg:w-[167px]">
+                    <Image src={Achihievement} alt="" className="mb-5" />
+                    <p className="mb-5">A Topic Name That Is Two Lines</p>
+                    <div className="flex justify-between items-center">
+                      <p className="text-[12px]">Recall 100%</p>
+                      <Image src={tick} alt="" />
                     </div>
-                    </SwiperSlide>
-                ))
-            }
+                  </div>
+                </SwiperSlide>
+              ))}
 
             <div className="slider-controller">
-              <div className="swiper-scrollbar">
-              </div>
+              <div className="swiper-scrollbar"></div>
             </div>
           </Swiper>
         </div>

@@ -9,10 +9,14 @@ export const connectDB = async () => {
         console.log(`MongoDB connected: ${conn.connection.host}`);
     } catch (error: any) {
         console.error(`Error: ${error.message}`);
+<<<<<<< HEAD
 
         // process.exit(1);
         throw error;
 
+=======
+        throw error;
+>>>>>>> 01107153348b063effeaf5787d95214264bcd9a3
     }
 }
 
@@ -71,7 +75,7 @@ export const savePageData = async (pageName: string, data: Record<string, any>) 
 // });
 
 savePageData("Programs", {
-    title: "program", 
+    title: "program",
     management: [
         //'/images/image_name.png',
         '/images/SlideItem1.png',
@@ -79,13 +83,13 @@ savePageData("Programs", {
         '/images/SlideItem3.png',
         '/images/SlideItem4.png',
         '/images/SlideItem5.png',
-    ], 
+    ],
     stayHealthy: [
         { image: '/images/fruits.webp', title: 'Fruits', subTitle: 'Fruits are necessary', description: 'Fruits are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.' },
         { image: 'https://picsum.photos/seed/800/600', title: 'Yoga', subTitle: 'Yoga is necessary', description: 'Yoga is a group of physical, mental, and spiritual practices or disciplines which originated in ancient India. Yoga is one of the six Āstika (orthodox) schools of Hindu philosophical traditions. There is a broad variety of yoga schools, practices, and goals in Hinduism, Buddhism, and Jainism.' },
         { image: 'https://picsum.photos/seed/800/600', title: 'Zumba', subTitle: 'Zumba is necessary', description: 'Zumba is an exercise fitness program created by Colombian dancer and choreographer Alberto "Beto" Pérez during the 1990s. Zumba is a trademark owned by Zumba Fitness, LLC. The Brazilian pop singer Claudia Leitte has become the international ambassador to Zumba Fitness.' },
         { image: 'https://picsum.photos/seed/800/600', title: 'GYM', subTitle: 'Gym is necessary', description: 'A gymnasium, also known as a gym, is a covered location for athletics. The word is derived from the ancient Greek gymnasium. They are commonly found in athletic and fitness centers, and as activity and learning spaces in educational institutions. "Gym" is also slang for "fitness center", which is often an indoor facility.' },
-       
+
     ],
-   
+
 });
