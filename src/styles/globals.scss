@@ -4,19 +4,22 @@
 
 @layer utilities {
   @variants responsive {
+
     /* Hide scrollbar for Chrome, Safari and Opera */
     .no-scrollbar::-webkit-scrollbar {
-        display: none;
+      display: none;
     }
 
     /* Hide scrollbar for IE, Edge and Firefox */
     .no-scrollbar {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
     }
   }
 }
- 
+
 :root {
   --primary-color: 44, 99%, 68%;
 }
@@ -25,76 +28,78 @@
   :root {
     --background: 265, 41%, 15%;
     --foreground: 222.2 84% 4.9%;
- 
+
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
- 
+
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
- 
+
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
- 
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
- 
+
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
- 
+
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
- 
+
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
- 
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
- 
+
     --ring: 215 20.2% 65.1%;
- 
+
     --radius: 0.5rem;
 
 
   }
- 
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
- 
+
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
- 
+
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
- 
+
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
- 
+
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
- 
+
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
- 
+
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
- 
+
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
- 
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
- 
+
     --ring: 217.2 32.6% 17.5%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
-    background: radial-gradient(130.69% 72.54% at 50.00% 50.00%, rgba(0, 0, 0, 0.35) 99.99%, rgba(0, 0, 0, 0.23) 100%), radial-gradient(229.67% 123.39% at 6.13% 14.64%, rgba(36, 37, 73, 0.20) 24.18%, rgba(36, 37, 73, 0.20) 70.49%), rgba(217, 217, 217, 0.01);;
+    background: radial-gradient(130.69% 72.54% at 50.00% 50.00%, rgba(0, 0, 0, 0.35) 99.99%, rgba(0, 0, 0, 0.23) 100%), radial-gradient(229.67% 123.39% at 6.13% 14.64%, rgba(36, 37, 73, 0.20) 24.18%, rgba(36, 37, 73, 0.20) 70.49%), rgba(217, 217, 217, 0.01);
+    ;
   }
 }
 
@@ -111,15 +116,15 @@
   padding: 0 1rem;
 }
 
-.container > * + * {
+.container>*+* {
   margin-top: 1rem;
 }
 
-.container > * + *:last-child {
+.container>*+*:last-child {
   margin-bottom: 1rem;
 }
 
-ul li{
+ul li {
   margin-right: 40px;
   margin-left: 40px;
 }
@@ -129,21 +134,22 @@ ul li{
 html {
   scroll-behavior: smooth;
 }
+
 // .custom-scrollbar::-webkit-scrollbar {
-  
+
 //   width: 10px; /* Adjust the width as needed */
 // }
 
 // .custom-scrollbar::-webkit-scrollbar-track {
 //   background: #888;
- 
+
 //   width: 10px; /* Adjust the background color as needed */
 // }
 
 // .custom-scrollbar::-webkit-scrollbar-thumb {
 //   background:  #F2BD4D; /* Adjust the thumb color as needed */
 //   border-radius: 4px;
-  
+
 //   /* Adjust the border-radius as needed */
 // }
 
@@ -184,12 +190,12 @@ html {
 
 @keyframes zoomIn {
   0% {
-      opacity: 0;
-      transform: scale3d(.3, .3, .3);
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
   }
 
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
@@ -206,16 +212,87 @@ html {
 
 @keyframes zoomOut {
   0% {
-      opacity: 1;
-      transform: none;
-      backdrop-filter: blur(24px);
-      
+    opacity: 1;
+    transform: none;
+    backdrop-filter: blur(24px);
+
   }
 
   100% {
-      opacity: 0;
-      transform: scale3d(.3, .3, .3);
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
   }
 }
 
 
+.swiper-scrollbar-drag {
+  background-color: #F2BD4D !important;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+  min-height: 5px;
+  margin-bottom: 10px;
+}
+
+.animate-slideInRight {
+  // animate on both, while opening and closing
+  animation: slideInRight 0.3s both;
+
+}
+
+.animate-slideInLeft {
+  // animate on both, while opening and closing
+  animation: slideInLeft 0.3s both;
+}
+
+.animate-slideOutRight {
+  // animate on both, while opening and closing
+  animation: slideOutRight 0.3s both;
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
