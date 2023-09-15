@@ -9,33 +9,33 @@ import group4 from "@/assets/Rectangle 1970 (1).png";
 import rectangle from "@/assets/Rectangle 1976.png";
 
 
-const content = [
-    {
-        image: group1,
-        title: "Fruits",
-        subTitle: "Fruits are necessary",
-        description: "Fruits are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.",
-        image1: rectangle,
-    }, {
-        image: group2,
-        title: "Yoga",
-        subTitle: "Yoga is necessary",
-        description: "Yoga is a group of physical, mental, and spiritual practices or disciplines which originated in ancient India. Yoga is one of the six Āstika (orthodox) schools of Hindu philosophical traditions. There is a broad variety of yoga schools, practices, and goals in Hinduism, Buddhism, and Jainism.",
-        image1: rectangle,
-    }, {
-        image: group3,
-        title: "Zumba",
-        subTitle: "Zumba is necessary",
-        description: "Zumba is an exercise fitness program created by Colombian dancer and choreographer Alberto \"Beto\" Pérez during the 1990s. Zumba is a trademark owned by Zumba Fitness, LLC. The Brazilian pop singer Claudia Leitte has become the international ambassador to Zumba Fitness.",
-        image1: rectangle,
-    }, {
-        image: group4,
-        title: "GYM",
-        subTitle: "GYM is necessary",
-        description: "A gymnasium, also known as a gym, is a covered location for athletics. The word is derived from the ancient Greek gymnasium. They are commonly found in athletic and fitness centers, and as activity and learning spaces in educational institutions. \"Gym\" is also slang for \"fitness center\", which is often an indoor facility.",
-        image1: rectangle,
-    }
-]
+// const content = [
+//     {
+//         image: group1,
+//         title: "Fruits",
+//         subTitle: "Fruits are necessary",
+//         description: "Fruits are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.",
+//         image1: rectangle,
+//     }, {
+//         image: group2,
+//         title: "Yoga",
+//         subTitle: "Yoga is necessary",
+//         description: "Yoga is a group of physical, mental, and spiritual practices or disciplines which originated in ancient India. Yoga is one of the six Āstika (orthodox) schools of Hindu philosophical traditions. There is a broad variety of yoga schools, practices, and goals in Hinduism, Buddhism, and Jainism.",
+//         image1: rectangle,
+//     }, {
+//         image: group3,
+//         title: "Zumba",
+//         subTitle: "Zumba is necessary",
+//         description: "Zumba is an exercise fitness program created by Colombian dancer and choreographer Alberto \"Beto\" Pérez during the 1990s. Zumba is a trademark owned by Zumba Fitness, LLC. The Brazilian pop singer Claudia Leitte has become the international ambassador to Zumba Fitness.",
+//         image1: rectangle,
+//     }, {
+//         image: group4,
+//         title: "GYM",
+//         subTitle: "GYM is necessary",
+//         description: "A gymnasium, also known as a gym, is a covered location for athletics. The word is derived from the ancient Greek gymnasium. They are commonly found in athletic and fitness centers, and as activity and learning spaces in educational institutions. \"Gym\" is also slang for \"fitness center\", which is often an indoor facility.",
+//         image1: rectangle,
+//     }
+// ]
 
 const ImageWithTitle = ({
     image,
@@ -64,7 +64,7 @@ const ImageWithTitle = ({
 };
 
 
-const StayHealthy = () => {
+const StayHealthy = ({stayHealthy} : {stayHealthy? :any}) => {
 
     const [active, setActive] = React.useState(0);
 
@@ -103,24 +103,26 @@ const StayHealthy = () => {
       <div className="mb-20 mt-20 px-5">
         <div className="mb-7 md:mb-10">
           <h1 className="text-center font-semibold text-[40px] lg:text-[72px] text-[#F2BD4D]">
-            {content[active].title}
+            {stayHealthy[active].title}
           </h1>
         </div>
         <div className="flex flex-col md:flex-row justify-around lg:px-[80px] gap-y-10">
           <div className="w-full md:w-1/2">
             <Image
-              src={content[active].image1 ?? content[active].image}
+              src={ stayHealthy[active].image}
               alt=""
-              className="max-w-full md:max-w-[75%] transition-all duration-200"
+              className="max-w-full md:max-w-[75%] transition-all duration-200 rounded-xl"
+              width = {300}
+              height={300}
             />
           </div>
 
           <div className="w-full md:w-1/2 text-white px-5 lg:px-[50px]">
             <p className="text-center font-semibold text-[40px] mb-7 md:mb-10 text-[#AFCCF8] transition-all duration-200">
-                {content[active].subTitle}
+                {stayHealthy[active].subTitle}
             </p>
             <p className="text-[17px] text-center transition-all duration-200">
-                {content[active].description}
+                {stayHealthy[active].description}
             </p>
           </div>
         </div>

@@ -23,7 +23,7 @@ import slide5 from "@/assets/Slide Item — 2 (1).png"
 const slides = [slide1, slide2, slide3, slide4, slide5]
 
 
-const Header = () => {
+const Header = ({bffBusiness} : {bffBusiness? :any}) => {
 
   const ref = React.useRef<SwiperRef>(null)
 
@@ -75,12 +75,14 @@ const Header = () => {
         ref={ref}
       >
         {
-          slides.map((slide, index) => (
+          bffBusiness.map((slide? :any, index? :any) => (
             <SwiperSlide key={"slide-" + index} className="max-w-max"> 
               <Image
                 src={slide}
                 alt={"Slide " + index + 1 }
                 className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[700px] duration-300"
+                width={500}
+                height={400}
               />
             </SwiperSlide>
           ))

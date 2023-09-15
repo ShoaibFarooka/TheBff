@@ -24,7 +24,7 @@ const slides = [slide1, slide2, slide3, slide4, slide5]
 
 
 const Header = ({ management }: { management?: any }) => {
-  console.log(management)
+ 
   const ref = React.useRef<SwiperRef>(null)
 
   return (

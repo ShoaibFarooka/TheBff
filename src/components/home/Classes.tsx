@@ -52,6 +52,7 @@ const content = [
 
 
 
+
 export default function Classes({ classes }: { classes?: any }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 768 });
   const [active, setActive] = useState(0);
@@ -73,26 +74,46 @@ export default function Classes({ classes }: { classes?: any }) {
               made for you
             </div>
           </div> */}
-          {isSmallScreen ? <div>Small Screen</div> : <div>Large Screen</div>}
-          
+          {/* {isSmallScreen ? <div>Small Screen</div> : <div>Large Screen</div>}
+           */}
         <Swiper
-        slidesPerView={3}
-        mousewheel= { { forceToAxis: true, }}
+        slidesPerView={3}        
+        // mousewheel= { { forceToAxis: true, }}
         spaceBetween={0}
         keyboard={{ enabled: true, onlyInViewport: false }}
-        direction="vertical"
+        // direction={window.innerWidth <= 768 ? 'horizontal' : 'vertical'}
         pagination={{ clickable: true , el:"#pagination" }}
        modules={[Pagination , Navigation , Autoplay]}
        autoplay
         onSlideChange={(e: SwiperClass) => {
           setActive(e.activeIndex)
         }}
+        
+        // breakpoints={{
+        //   320: {
+        //     slidesPerView: 2,
+        //   },
+        //   // 700: {
+        //   //   slidesPerView: 2,
+        //   // },
+        //   900: {
+        //     slidesPerView: 3,
+        //   },
+        // }}
+        breakpoints={{
+          320: {
+              direction: 'horizontal',
+          },
+          1080: {
+              direction: 'vertical'
+          }
+        }}
       >
         <div id='pagination'>
 
         </div>
        
-        <div className="lg:w-2/6 w-full mb-8 lg:mb-0 px-3 lg:px-0  h-full">
+        <div className="lg:w-2/6  w-1/5 mb-8 lg:mb-0 px-3 lg:px-0  h-full">
           <div className="image-container  flex justify-center items-center lg:flex-col " ref={imageContainerRef}>
             {classes?.map((c?: any, index?: any) => (
               <SwiperSlide key={index}>
