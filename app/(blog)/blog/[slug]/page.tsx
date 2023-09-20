@@ -7,10 +7,10 @@ import { useParams } from 'react-router-dom';
 import {  posts } from '@/lib/constants'
 const Blog = ({ params }: { params: { slug: string } }) => {
   
-  //console.log(slug)
+  
   const targetSlug = params.slug; 
-const targetIndex = posts.findIndex((post) => post.slug === targetSlug);
-console.log(targetIndex)
+const targetIndex = posts.findIndex((post) => post.slug == targetSlug);
+console.log(targetSlug)
   return (
     <div className='text-white mt-24 px-10 md:px-32'> 
       <div className='flex flex-col md:flex-row  justify-between'>
@@ -34,7 +34,7 @@ console.log(targetIndex)
         </div>
 
       </div>
-      <div className=''>
+      <div className='md:w-4/5'>
         <p>{posts[targetIndex]?.content.raw}</p>
       </div>
      

@@ -106,7 +106,7 @@ const StayHealthy = ({stayHealthy} : {stayHealthy? :any}) => {
             {stayHealthy[active].title}
           </h1>
         </div>
-        <div className="flex flex-col md:flex-row justify-around lg:px-[80px] gap-y-10">
+        <div className="flex px-5 flex-col md:flex-row justify-around lg:px-[80px] gap-y-10">
           <div className="w-full md:w-1/2">
             <Image
               src={ stayHealthy[active].image}

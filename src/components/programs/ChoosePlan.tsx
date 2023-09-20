@@ -3,27 +3,27 @@ import React , {useState} from 'react'
 import tick from "@/assets/Vector 2.png";
 import Image from "next/image";
 import { RxCrossCircled, RxCross2 } from "react-icons/rx";
-export default function ChoosePlan({overlayVisible , setOverlayVisible } : {overlayVisible : boolean , setOverlayVisible : (visible : boolean) => void}) {
+export default function ChoosePlan({priceContent , price , overlayVisible , setOverlayVisible } : { priceContent? :any , price?: any ,  overlayVisible : boolean , setOverlayVisible : (visible : boolean) => void}) {
     const onClose = () => {
         setOverlayVisible(!overlayVisible);
       };
-      const content = [
-        {
-          title1: '1999',
+      // const content = [
+      //   {
+      //     title1: '1999',
           
-          title2 : '3499'
-        }, {
-          title1: '5999',
+      //     title2 : '3499'
+      //   }, {
+      //     title1: '5999',
           
-          title2 : '10499'
+      //     title2 : '10499'
           
-        }, {
-          title1: '11999',
+      //   }, {
+      //     title1: '11999',
           
-          title2 : '20999'
+      //     title2 : '20999'
           
-        }, 
-      ]
+      //   }, 
+      // ]
       const [active, setActive] = useState(0);
   return (
     <div className="absolute md:fixed top-0 left-0 w-screen h-full md:h-screen bg-black bg-opacity-30 backdrop-blur-md z-[99999999] px-2 md:px-10 py-5">
@@ -71,30 +71,30 @@ export default function ChoosePlan({overlayVisible , setOverlayVisible } : {over
                 <div className="flex flex-col md:flex-row   justify-center md:items-center py-6  ">
                   <div className="bg-[#E7E7FF] px-3 py-2 md:py-7 md:px-10 rounded-lg md:mx-5 mb-5 md:mb-0">
                     <h2 className="font-[600] text-2xl text-center">
-                      Standard
+                    {priceContent[0].title}
                     </h2>
-                    <h3 className="text-center text-[24px] font-semibold"> ₹{content[active].title1} <span className='text-gray-500 text-[16px] font-light'>/month</span></h3>
+                    <h3 className="text-center text-[24px] font-semibold"> ₹{price[active].title1} <span className='text-gray-500 text-[16px] font-light'>/month</span></h3>
                     <hr className="border border-black mt-10" />
                     <div className="mt-10">
                       <div>
                         <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                           <Image src={tick} alt="" />
                         </button>
-                        <span>Create personal dashboard</span>
+                        <span>{priceContent[0].content1}</span>
                       </div>
 
                       <div className="mt-5">
                         <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                           <Image src={tick} alt="" />
                         </button>
-                        <span>Trainer Support</span>
+                        <span>{priceContent[0].content2}</span>
                       </div>
 
                       <div className="mt-5">
                         <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2 ">
                           <Image src={tick} alt="" />
                         </button>
-                        <span>Rewards & Achievement&#39;s</span>
+                        <span>{priceContent[0].content3}</span>
                       </div>
                       <div className="flex items-center justify-center pt-8 pb-3">
                         <button className="px-5 py-2 rounded-lg  text-white bg-[#6557FF]">
@@ -111,30 +111,30 @@ export default function ChoosePlan({overlayVisible , setOverlayVisible } : {over
                       </button>
                     </div>
                     <h2 className="font-[600] text-2xl  text-center">
-                      Premium
+                    {priceContent[1].title}
                     </h2>
-                    <h3 className="text-center text-[24px] font-semibold"> ₹{content[active].title2} <span className='text-gray-500 text-[16px] font-light'>/month</span></h3>
+                    <h3 className="text-center text-[24px] font-semibold"> ₹{price[active].title2} <span className='text-gray-500 text-[16px] font-light'>/month</span></h3>
                     <hr className="border border-black mt-10" />
                     <div className="mt-10">
                       <div>
                         <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                           <Image src={tick} alt="" />
                         </button>
-                        <span>All features in Stadard</span>
+                        <span>{priceContent[1].content1}</span>
                       </div>
 
                       <div className="mt-5">
                         <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                           <Image src={tick} alt="" />
                         </button>
-                        <span>Pause Membership on your ease</span>
+                        <span>{priceContent[1].content2}</span>
                       </div>
 
                       <div className="mt-5">
                         <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                           <Image src={tick} alt="" />
                         </button>
-                        <span>Custom Nutrition Plans</span>
+                        <span>{priceContent[1].content3}</span>
                       </div>
                       <div className="flex items-center justify-center pt-8">
                         <button className="px-5 py-2 rounded-lg  text-white bg-[#6557FF]">
@@ -146,7 +146,7 @@ export default function ChoosePlan({overlayVisible , setOverlayVisible } : {over
 
                   <div className="bg-[#E7E7FF] px-3 py-7 md:px-10 rounded-lg ">
                     <h2 className="font-[600] text-2xl  text-center">
-                      Enterprise
+                    {priceContent[2].title}
                     </h2>
                     <h3 className="text-center">Contact Us</h3>
                     <hr className="border border-black mt-10" />
@@ -155,21 +155,20 @@ export default function ChoosePlan({overlayVisible , setOverlayVisible } : {over
                         <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                           <Image src={tick} alt="" />
                         </button>
-                        <span>All features in Premium Plan</span>
+                        <span>{priceContent[2].content1}</span>
+                      </div>
+                      <div className="mt-5">
+                        <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
+                          <Image src={tick} alt="" />
+                        </button>
+                        <span>{priceContent[2].content2}</span>
                       </div>
 
                       <div className="mt-5">
                         <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                           <Image src={tick} alt="" />
                         </button>
-                        <span>Bulk Discount</span>
-                      </div>
-
-                      <div className="mt-5">
-                        <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
-                          <Image src={tick} alt="" />
-                        </button>
-                        <span>24*7 Support</span>
+                        <span>{priceContent[2].content3}</span>
                       </div>
                       <div className="flex items-center justify-center pt-8">
                         <button className="px-5 py-2 rounded-lg  text-white bg-[#6557FF]">

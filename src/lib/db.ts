@@ -96,7 +96,35 @@ savePageData("Programs", {
         '/images/Toning.png',
         '/images/Walking.png',
 
-    ]
+    ],
+    comparison : [
+        { title: "Live Interaction Classes", standard: "Yes", premium: "Yes" },
+        { title: "Frequency", standard: "18 Sessions", premium: "Unlimited" },
+        { title: "Diet Assitance", standard: "No", premium: "Yes" },
+        { title: "Pause Membership", standard: "No", premium: "Yes" },
+        { title: "No Cost EMI", standard: "No", premium: "Yes" },
+      ],
+    price : [
+        {
+          title1: '1999',
+          title2 : '3499'
+        }, {
+          title1: '5999',
+          
+          title2 : '10499'
+          
+        }, {
+          title1: '11999',
+          
+          title2 : '20999'
+          
+        }, 
+      ],
+      priceContent : [
+        {title : 'Standard' , content1  : 'Create personal dashboard' , content2 : 'Trainer Support' , content3 : `Rewards & Achievement's`  },
+        {title : 'Premium' ,content1  : 'All features in Stadard' , content2 : 'Pause Membership on your ease' , content3 : `Custom Nutrition Plans`  },
+        {title : 'Enterprise' ,content1  : 'All features in Premium Plan' , content2 : 'Bulk Discount' , content3 : `24*7 Support`  },
+      ]
 
 });
 
@@ -122,3 +150,39 @@ savePageData("Programs", {
 //     ],
   
 // });
+
+savePageData("checkout", {
+    title: "Checkout",
+    images: [
+        '/images/Click Area.png',
+        '/images/Frame 3927.png',
+        '/images/Rectangle 2812.png',
+        '/images/Rectangle 2812 (1).png',
+        '/images/Discount Badge.png',
+        '/images/Ellipse 203.png',
+      
+    ],
+    prices: 
+        { 
+            title: '1 Month Premium - Weight Management', 
+            price: '₹ 3499', 
+            offeredPrice: '₹ 6499', 
+            percentage : '-30%',
+            description: 'Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis mol'
+         },
+        
+    
+    offers: 
+        { 
+            
+            title: 'Offers', 
+            description: 'Only Today  | Additional  500 off applied.' ,
+            conditoins : 'T&C'
+        },
+    howItWorks : {
+        title : 'How it works',
+        description : ' Live workouts: Choose from the wide variety of online workouts and join in from anywhere'
+    }
+       
+    
+});

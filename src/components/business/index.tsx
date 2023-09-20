@@ -14,7 +14,7 @@ export default function Page({ pageData }: { pageData?: any }) {
   
   return (
     <>
-      <div className="mt:20 md:mt-32 flex flex-col justify-center items-center w-full">
+      <div className="mt-20 md:mt-32 flex flex-col justify-center items-center w-full">
         <h1 className="font-semibold text-center text-[40px] lg:text-[72px] text-[#F2BD4D] mb-12">
           Introducing BFF Business
         </h1>

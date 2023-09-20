@@ -19,13 +19,13 @@ import ChoosePlan from "@/components/programs/ChoosePlan";
 
 
 
-const comparison = [
-  { title: "Live Interaction Classes", standard: "Yes", premium: "Yes" },
-  { title: "Frequency", standard: "18 Sessions", premium: "Unlimited" },
-  { title: "Diet Assitance", standard: "No", premium: "Yes" },
-  { title: "Pause Membership", standard: "No", premium: "Yes" },
-  { title: "No Cost EMI", standard: "No", premium: "Yes" },
-];
+// const comparison = [
+//   { title: "Live Interaction Classes", standard: "Yes", premium: "Yes" },
+//   { title: "Frequency", standard: "18 Sessions", premium: "Unlimited" },
+//   { title: "Diet Assitance", standard: "No", premium: "Yes" },
+//   { title: "Pause Membership", standard: "No", premium: "Yes" },
+//   { title: "No Cost EMI", standard: "No", premium: "Yes" },
+// ];
 
 export default  function Programs( { pageData }: { pageData?: any }) {
  
@@ -34,6 +34,12 @@ export default  function Programs( { pageData }: { pageData?: any }) {
   const stayHealthy = pageData?.stayHealthy;
 
   const unlimitedVariety = pageData?.unlimitedVariety;
+
+  const comparison = pageData?.comparison;
+
+  const price = pageData?.price;
+
+  const priceContent = pageData?.priceContent;
  
   console.log(unlimitedVariety)
 
@@ -148,7 +154,7 @@ export default  function Programs( { pageData }: { pageData?: any }) {
                 </h3>
               </div>
 
-              {comparison.map((item, index) => (
+              {comparison?.map((item? :any, index? :any) => (
                 <>
                   <div className="col-span-1 py-3" key={"comparison-" + index}>
                     <h3 className="font-bold"> {item.title} </h3>
@@ -217,7 +223,7 @@ export default  function Programs( { pageData }: { pageData?: any }) {
 
 
         {/* ==========OVERLAY============ */}
-        {overlayVisible && ( <ChoosePlan  overlayVisible = {overlayVisible}  setOverlayVisible={ setOverlayVisible}/>
+        {overlayVisible && ( <ChoosePlan priceContent = {priceContent} price = {price} overlayVisible = {overlayVisible}  setOverlayVisible={ setOverlayVisible}/>
           
         )}
       </div>
