@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest) => {
         if (multiple) {
             if (!Array.isArray(path)) return new Response("Invalid path", { status: 400 })
 
-            await Promise.all(path.map(revalidatePath))
+            await Promise.all(path.map((path => revalidatePath(path))))
         } else {
             await revalidatePath(path as string)
         }
