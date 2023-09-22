@@ -1,5 +1,6 @@
 // import axios from 'axios'
 import { create } from 'zustand'
+import { useEffect, useCallback } from 'react';
 
 interface AuthState {
     user: any,
@@ -14,10 +15,10 @@ interface AuthState {
 export const useAuth = create<AuthState>((set, get) => {
 
     const authenticate = async () => {
-        try{
-            // wait 4 seconds before fetching session
-            // await new Promise((resolve) => setTimeout(resolve, 4000))
-            
+        // if authenticated, return
+        if (get().status === 'authenticated') return
+
+        try {
             const res = await fetch('/api/auth/me', {
                 method: 'POST',
                 headers: {
@@ -25,11 +26,11 @@ export const useAuth = create<AuthState>((set, get) => {
                     accept: 'application/json'
                 },
             });
-            
-            if(res.status === 200) {
-            const d = await res.json()
+
+            if (res.status === 200) {
+                const d = await res.json()
                 set({ user: d, isLoading: false, status: 'authenticated' })
-            }else {
+            } else {
                 set({ user: null as any, status: 'unauthenticated', isLoading: false })
             }
         } catch (error) {
@@ -48,7 +49,9 @@ export const useAuth = create<AuthState>((set, get) => {
         set({ user: null as any, status: 'unauthenticated', isLoading: false })
     }
 
-    return {    
+    // authenticate on mount
+
+    return {
         user: null,
         token: '',
         isLoading: true,

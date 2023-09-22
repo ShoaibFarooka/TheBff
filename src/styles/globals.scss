@@ -24,6 +24,9 @@
   --primary-color: 44, 99%, 68%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
 @layer base {
   :root {
     --background: 265, 41%, 15%;

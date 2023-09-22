@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RxCrossCircled, RxCross2 } from "react-icons/rx";
 import Image from "next/image";
 import StayHealthy from "@/components/programs/StayHealthy";
 import Header from "@/components/programs/Header";
 import ContactForm from "@/components/ContactForm";
+
+import { useAuth } from "@/hooks/auth";
 
 import image1 from "@/assets/Cardio.png";
 import image2 from "@/assets/Strength.png";
@@ -15,9 +17,7 @@ import image4 from "@/assets/No equipment.png";
 import image5 from "@/assets/Toning.png";
 import image6 from "@/assets/Walking.png";
 import ChoosePlan from "@/components/programs/ChoosePlan";
-
-
-
+import Link from "next/link";
 
 // const comparison = [
 //   { title: "Live Interaction Classes", standard: "Yes", premium: "Yes" },
@@ -27,55 +27,58 @@ import ChoosePlan from "@/components/programs/ChoosePlan";
 //   { title: "No Cost EMI", standard: "No", premium: "Yes" },
 // ];
 
-export default  function Programs( { pageData }: { pageData?: any }) {
- 
-  const management = pageData?.management;
-    
-  const stayHealthy = pageData?.stayHealthy;
+const btnClassName = `shadow-xl shadow-red-800/10 mx-auto rounded px-2 py-1.5 border-none outline-none bg-white text-red-500 font-semibold focus:border`;
 
-  const unlimitedVariety = pageData?.unlimitedVariety;
+const ViewPlan = ({
+  toggleOverlay,
+  authStatus,
+}: {
+  toggleOverlay: () => any;
+  authStatus: "loading" | "authenticated" | "unauthenticated";
+}) =>
+  authStatus === "authenticated" ? (
+    <button onClick={toggleOverlay} className={btnClassName}>
+      View Plans
+    </button>
+  ) : (
+    <Link href="/login?cb=/programs">
+      <button className={btnClassName}>Login to view Plans</button>
+    </Link>
+  );
 
-  const comparison = pageData?.comparison;
+export default function Programs({ pageData }: { pageData?: any }) {
+  const { user, status: authStatus, authenticate } = useAuth();
 
-  const price = pageData?.price;
-
-  const priceContent = pageData?.priceContent;
- 
-  console.log(unlimitedVariety)
+  const {
+    management,
+    stayHealthy,
+    unlimitedVariety,
+    comparison,
+    price,
+    priceContent,
+  } = pageData ?? {};
 
   const [isOpen, setIsOpen] = useState(true);
-
-  // const openPopup = () => {
-  //   setIsOpen(true);
-  // };
-
-  const closePopup = () => {
-    setIsOpen(false);
-  };
-
   const [overlayVisible, setOverlayVisible] = useState(false);
 
-  const toggleOverlay = () => {
-    setOverlayVisible(!overlayVisible);
-  };
-  
+  const closePopup = () => setIsOpen(false);
+  const toggleOverlay = () => setOverlayVisible(!overlayVisible);
+
+  useEffect(() => {
+    authenticate();
+  }, [authenticate]);
 
   return (
     <>
       <div className="mt-20 md:mt-32 flex flex-col justify-center items-center w-full relative group px-5 md:px-14">
         <h1 className="font-semibold text-center text-[40px] lg:text-[72px] text-[#F2BD4D] mb-12">
-          {" "}
-          Weight Management{" "}
+          Weight Management
         </h1>
 
-        <Header 
-        management = {management}
-        />
+        <Header management={management} />
       </div>
 
-      <StayHealthy 
-        stayHealthy = {stayHealthy}
-      />
+      <StayHealthy stayHealthy={stayHealthy} />
 
       {/* ============================== Unlimited Variety ======================= */}
       <div className="px-4 md:px-8 lg:px-12 mb-20 mt-20">
@@ -93,15 +96,14 @@ export default  function Programs( { pageData }: { pageData?: any }) {
                 <Image src={image4} alt="" />
                 <Image src={image5} alt="" />
                 <Image src={image6} alt="" /> */}
-                {unlimitedVariety?.map((image? :any, index? :any) => (
-                  <Image 
-                  key = {index} 
-                  src={image}
-                  alt = " "
-                  height={500}
-                  width={500}
-                    
-                    />
+                {unlimitedVariety?.map((image?: any, index?: any) => (
+                  <Image
+                    key={index}
+                    src={image}
+                    alt=" "
+                    height={500}
+                    width={500}
+                  />
                 ))}
                 {/* <Image src={unlimitedVariety[0]} alt = " "  height={500}
                 width={500} /> 
@@ -115,7 +117,6 @@ export default  function Programs( { pageData }: { pageData?: any }) {
                 width={500}/>
                 <Image src={unlimitedVariety[5]} alt = " "   height={500}
                 width={500}/> */}
-
               </div>
             </div>
             <div className="flex justify-center my-10">
@@ -128,14 +129,13 @@ export default  function Programs( { pageData }: { pageData?: any }) {
       </div>
 
       {/* ============================== Pricing ======================= */}
-      <div className="my-20 relative">
+      <div className="py-20 relative" id="pricing">
         <div className="max-w-2xl mx-auto">
           <h1 className="text-center font-semibold text-[40px] lg:text-[72px] text-[#F2BD4D]">
             Choose Your Plan
           </h1>
           <p className="text-blue-200 text-center">
-            {" "}
-            best prices offered , choose the plan that suits you{" "}
+            best prices offered , choose the plan that suits you
           </p>
 
           <div className="w-full mt-10">
@@ -143,18 +143,16 @@ export default  function Programs( { pageData }: { pageData?: any }) {
               <div className="col-span-1 mb-10"> </div>
               <div className="col-span-1 mb-10 text-center">
                 <h3 className="text-white text-2xl md:text-3xl font-semibold">
-                  {" "}
-                  Standard{" "}
+                  Standard
                 </h3>
               </div>
               <div className="col-span-1 mb-10 text-center">
                 <h3 className="text-2xl md:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-[#F2BD4D] to-red-600">
-                  {" "}
-                  Premium{" "}
+                  Premium
                 </h3>
               </div>
 
-              {comparison?.map((item? :any, index? :any) => (
+              {comparison?.map((item?: any, index?: any) => (
                 <>
                   <div className="col-span-1 py-3" key={"comparison-" + index}>
                     <h3 className="font-bold"> {item.title} </h3>
@@ -191,40 +189,39 @@ export default  function Programs( { pageData }: { pageData?: any }) {
               ))}
 
               <div className="col-span-1 py-3"></div>
+
               <div className="col-span-1 py-3 border border-gray-400/40 center flex-col">
                 <p className="text-base md:text-xl text-center mb-2.5">
-                  {" "}
-                  Starting at Rs. 1999/- month{" "}
+                  Starting at Rs. 1999/- month
                 </p>
-                <button
-                  onClick={toggleOverlay}
-                  className="shadow-xl shadow-red-800/10 mx-auto rounded px-2 py-1.5 border-none outline-none bg-white text-red-500 font-semibold focus:border"
-                >
-                  {" "}
-                  View Plans{" "}
-                </button>
+                <ViewPlan
+                  toggleOverlay={toggleOverlay}
+                  authStatus={authStatus}
+                />
               </div>
+              {/* eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNpZGRpcXVpYWZmYW4yMDFAZ21haWwuY29tIiwibmFtZSI6IkFmZmFuIiwicGhvbmUiOiI4NDUwOTQzMTQ0Iiwicm9sZSI6MywiaWF0IjoxNjk0MjM1MjQ4fQ.NzYYRVRFPwGFblsLlfSMo7uGQzCb6tJehD1sxScnv4c */}
+
               <div className="col-span-1 py-3 border border-gray-400/40 center flex-col">
                 <p className="text-base md:text-xl text-center mb-2.5">
-                  {" "}
-                  Starting at Rs. 3499/- month{" "}
+                  Starting at Rs. 3499/- month
                 </p>
-                <button
-                  onClick={toggleOverlay}
-                  className="shadow-xl shadow-red-800/10 mx-auto rounded px-2 py-1.5 border-none outline-none bg-white text-red-500 font-semibold focus:border"
-                >
-                  {" "}
-                  View Plans{" "}
-                </button>
+                <ViewPlan
+                  toggleOverlay={toggleOverlay}
+                  authStatus={authStatus}
+                />
               </div>
             </div>
           </div>
         </div>
 
-
         {/* ==========OVERLAY============ */}
-        {overlayVisible && ( <ChoosePlan priceContent = {priceContent} price = {price} overlayVisible = {overlayVisible}  setOverlayVisible={ setOverlayVisible}/>
-          
+        {overlayVisible && (
+          <ChoosePlan
+            priceContent={priceContent}
+            price={price}
+            overlayVisible={overlayVisible}
+            setOverlayVisible={setOverlayVisible}
+          />
         )}
       </div>
 
