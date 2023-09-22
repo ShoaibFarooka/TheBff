@@ -8,11 +8,12 @@ export interface Post {
         url: string;
     }
     content: {
-        raw: Object;
+        raw: any;
     }
     author: Author;
     seoOverride?: SeoOverride;
     featured: boolean;
+    createdAt: string | Date;
 }
 
 

@@ -33,7 +33,8 @@ const generateFakeData = (featured: boolean) => ({
             url: faker.image.url(),
         },
     },
-    featured 
+    featured,
+    createdAt: faker.date.recent().toISOString(),
 });
 
 // Generate 20 fake blog posts

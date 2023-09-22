@@ -9,7 +9,7 @@ const getString = (value: string | undefined) => value ? `"${value}"` : undefine
 /**
  * @description get queries for graphcms
 */
-const getQueries = (queries?: Record<string, string | number | boolean | undefined>) => {
+const sanitizeQueries = (queries?: Record<string, string | number | boolean | undefined>) => {
     const query = queries ?
         Object.entries(queries)
             .map(([key, value]) => ({ key, value }))
@@ -83,6 +83,7 @@ type IGetPostOptions = {
 
 type ReturnType = { posts: Post[], postsConnection: { aggregate: { count: number } } }
 
+
 const genrateSearchQuery = (search: string): string => {
 
     const searchString = getString(search)
@@ -99,11 +100,11 @@ const genrateSearchQuery = (search: string): string => {
 
 
 const getPosts = cache(async (queries?: IGetPostQueries, options?: IGetPostOptions): Promise<ReturnType> => {
-    console.log(queries, options)
+
     try {
         const query = `
             query GetPosts {
-                posts(${getQueries({
+                posts(${sanitizeQueries({
             ...queries,
             slug_contains: queries?.slug ?? undefined,
             slug: undefined,
@@ -128,6 +129,7 @@ const getPosts = cache(async (queries?: IGetPostQueries, options?: IGetPostOptio
         } as { posts: Post[], postsConnection: { aggregate: { count: number } } }
     }
 })
+
 
 const searchPosts = async (search: string, options?: IGetPostOptions): Promise<ReturnType> => {
     try {

@@ -1,28 +1,34 @@
-import React from 'react'
-import { getPosts } from '@/lib/hypgraph' 
-import FeaturedBlogs from '@/components/blog/FeaturedBlogs' 
-import { featuredPosts, posts } from '@/lib/constants'
-import LatestBlogs from '@/components/blog/LatestBlogs'
+import React from "react";
+import { getPosts } from "@/lib/hypgraph";
+import FeaturedBlogs from "@/components/blog/FeaturedBlogs";
+import LatestBlogs from "@/components/blog/LatestBlogs";
+
 const Blogs = async () => {
+  const data = await getPosts(undefined, {
+    last: 15,
+    orderBy: "createdAt_DESC",
+  });
 
-    // const [ featuredData , data ] = await Promise.all([
-    //     getPosts({ featured: true }),
-    //     getPosts(undefined, { last: 10, orderBy: 'createdAt_DESC' })
-    // ])
+  const {
+    posts,
+    // postsConnection: {
+    //   aggregate: { count },
+    // },
+  } = data;
 
-    return (
-        <div className="h-full mt-32 px-4 md:px-16 lg:px-28 xl:px-36 py-8">
-            
-            <FeaturedBlogs posts={featuredPosts} />
-            
+  const featuredPosts = posts.filter((post) => post.featured);
+  const latestPosts = posts.filter((post) => !post.featured);
 
-            {/* Create a component for latets posts */}
-            <LatestBlogs posts = {posts}/>
-            
-        </div>
-    )
-}
+  return (
+    <div className="h-full mt-32 px-4 md:px-16 lg:px-28 xl:px-36 py-8">
+      <FeaturedBlogs posts={featuredPosts} />
 
-export default Blogs
+      {/* Create a component for latets posts */}
+      <LatestBlogs posts={latestPosts} />
+    </div>
+  );
+};
 
-export const dynamic = "error"
+export default Blogs;
+
+export const dynamic = "error";

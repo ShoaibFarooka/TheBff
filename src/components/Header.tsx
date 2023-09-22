@@ -13,15 +13,18 @@ export default function Header() {
   
    
   return (
-    <div className="fixed top-0 left-0 bg-transparent backdrop-blur text-white w-screen flex justify-between items-center p-5 px-[10%] md:px-[20%]" style={{zIndex: 999}}>
+    <div
+      className="fixed top-0 left-0 bg-transparent backdrop-blur text-white w-screen flex justify-between items-center p-5 px-[10%] md:px-[20%]"
+      style={{ zIndex: 999 }}
+    >
       <Link href="/">
         <h1 className="text-2xl font-bold">LOGO</h1>
       </Link>
-      
+
       {/* menu */}
       <ul className="hidden md:flex">
         <li>
-          <Link href="#">Home</Link>
+          <Link href="/">Home</Link>
         </li>
         <li>
           <Link href="/programs">Programs</Link>
@@ -31,18 +34,14 @@ export default function Header() {
         </li>
 
         <li>
-          <Link href="#">Blogs</Link>
+          <Link href="/blog">Blogs</Link>
         </li>
       </ul>
       <Link href="/login">
         <button className="hidden md:flex rounded-xl px-4 py-2 text-[#FED25B] border-2 border-[#FED25B] bg-[#FED25B] bg-opacity-20 hover:text-black hover:bg-opacity-100">
-        Login/Signup
+          Login/Signup
         </button>
       </Link>
-      
-
-      
-
 
       {/* Hamburger */}
       <div onClick={handleClick} className="md:hidden z-10">
