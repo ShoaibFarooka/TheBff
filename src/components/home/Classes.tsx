@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import div from "@/assets/div.png";
-import div1 from "@/assets/div (1).png";
+// import div from "@/assets/div.png";
+// import div1 from "@/assets/div (1).png";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Mousewheel } from "swiper/modules";
 

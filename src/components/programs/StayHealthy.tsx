@@ -1,5 +1,5 @@
-"use client"
-import React from 'react'
+"use client";
+import React from "react";
 import Image, { StaticImageData } from "next/image";
 
 import group1 from "@/assets/fruits.webp";
@@ -7,7 +7,6 @@ import group2 from "@/assets/Rectangle 1969.png";
 import group3 from "@/assets/Rectangle 1970.png";
 import group4 from "@/assets/Rectangle 1970 (1).png";
 import rectangle from "@/assets/Rectangle 1976.png";
-
 
 // const content = [
 //     {
@@ -38,40 +37,53 @@ import rectangle from "@/assets/Rectangle 1976.png";
 // ]
 
 const ImageWithTitle = ({
-    image,
-    title,
-    active = false
-  }: {
-    image: StaticImageData | string,
-    title: string,
-    active?: boolean
-    // i: number
-  }) => {
-    return (
-      <div className="col-span-1 w-full h-[12rem] md:h-[18rem] lg:h-[22rem] cursor-pointer">
-        <div className={"relative mx-auto w-[90%] h-full "}>
-          <Image
-            className={"w-[100%] h-full shadow-xl hover:shadow-purple-400 rounded-xl mx-auto " + (active && "shadow-purple-400/60")}
-            src={image}
-            alt={title ?? ""}
-          />
-          <p className="text-white absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-purple-400 rounded-md px-5 py-1 md:px-7 md:py-2 lg:px-10 lg:py-3">
-            {title}
-          </p>
-        </div>
+  image,
+  title,
+  active = false,
+}: {
+  image: StaticImageData | string;
+  title: string;
+  active?: boolean;
+  // i: number
+}) => {
+  return (
+    <div className="col-span-1 w-full h-[12rem] md:h-[18rem] lg:h-[22rem] cursor-pointer">
+      <div className={"relative mx-auto w-[90%] h-full "}>
+        <Image
+          className={
+            "w-[100%] h-full shadow-xl hover:shadow-purple-400 rounded-xl mx-auto " +
+            (active && "shadow-purple-400/60")
+          }
+          src={image}
+          alt={title ?? ""}
+        />
+        <p className="text-white absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-purple-400 rounded-md px-5 py-1 md:px-7 md:py-2 lg:px-10 lg:py-3">
+          {title}
+        </p>
       </div>
-    );
+    </div>
+  );
 };
 
+const StayHealthy = ({ stayHealthy }: { stayHealthy?: any }) => {
+  const [active, setActive] = React.useState(0);
+  // const interval = React.useRef<any>(
+  //   setInterval(() => {
+  //     setActive((prev) => prev + 1);
+  //   }, 5000)
+  // );
 
-const StayHealthy = ({stayHealthy} : {stayHealthy? :any}) => {
-
-    const [active, setActive] = React.useState(0);
-
+  const handleClick = (i: number) => {
+    setActive(i);
+    // clearInterval(interval.current);
+    // interval.current = setInterval(() => {
+    //   setActive((prev) => prev + 1);
+    // }, 5000);
+  };
 
   return (
     <>
-        {/* ============================== Stay Healthy ======================= */}
+      {/* ============================== Stay Healthy ======================= */}
       <div className="my-20">
         <div>
           <p className="text-center font-semibold text-[40px] lg:text-[72px] text-[#F2BD4D]">
@@ -85,18 +97,22 @@ const StayHealthy = ({stayHealthy} : {stayHealthy? :any}) => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 mt-10 mb-5 mx-auto px-3 md:px-5 lg:px-14">
-            <div onClick={() => setActive(0)}>
-                <ImageWithTitle image={group1} title="Fruits" active={active == 0} />
-            </div>
-            <div onClick={() => setActive(1)}>
-                <ImageWithTitle image={group2} title="Yoga" active={active == 1} />
-            </div>
-            <div onClick={() => setActive(2)}>
-                <ImageWithTitle image={group3} title="Zumba" active={active == 2} />
-            </div>
-            <div onClick={() => setActive(3)}>
-                <ImageWithTitle image={group4} title="GYM" active={active == 3} />
-            </div>
+          <div onClick={() => handleClick(0)}>
+            <ImageWithTitle
+              image={group1}
+              title="Fruits"
+              active={active == 0}
+            />
+          </div>
+          <div onClick={() => handleClick(1)}>
+            <ImageWithTitle image={group2} title="Yoga" active={active == 1} />
+          </div>
+          <div onClick={() => handleClick(2)}>
+            <ImageWithTitle image={group3} title="Zumba" active={active == 2} />
+          </div>
+          <div onClick={() => handleClick(3)}>
+            <ImageWithTitle image={group4} title="GYM" active={active == 3} />
+          </div>
         </div>
       </div>
 
@@ -109,26 +125,26 @@ const StayHealthy = ({stayHealthy} : {stayHealthy? :any}) => {
         <div className="flex px-5 flex-col md:flex-row justify-around lg:px-[80px] gap-y-10">
           <div className="w-full md:w-1/2">
             <Image
-              src={ stayHealthy[active].image}
+              src={stayHealthy[active].image}
               alt=""
               className="max-w-full md:max-w-[75%] transition-all duration-200 rounded-xl"
-              width = {300}
+              width={300}
               height={300}
             />
           </div>
 
           <div className="w-full md:w-1/2 text-white px-5 lg:px-[50px]">
             <p className="text-center font-semibold text-[40px] mb-7 md:mb-10 text-[#AFCCF8] transition-all duration-200">
-                {stayHealthy[active].subTitle}
+              {stayHealthy[active].subTitle}
             </p>
             <p className="text-[17px] text-center transition-all duration-200">
-                {stayHealthy[active].description}
+              {stayHealthy[active].description}
             </p>
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default StayHealthy
+export default StayHealthy;

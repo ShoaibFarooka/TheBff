@@ -47,7 +47,7 @@ const ViewPlan = ({
   );
 
 export default function Programs({ pageData }: { pageData?: any }) {
-  const { user, status: authStatus, authenticate } = useAuth();
+  // const { user, status: authStatus, authenticate } = useAuth();
 
   const {
     management,
@@ -58,15 +58,15 @@ export default function Programs({ pageData }: { pageData?: any }) {
     priceContent,
   } = pageData ?? {};
 
-  const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
   const [overlayVisible, setOverlayVisible] = useState(false);
 
-  const closePopup = () => setIsOpen(false);
-  const toggleOverlay = () => setOverlayVisible(!overlayVisible);
+  // const closePopup = () => setIsOpen(false);
+  // const toggleOverlay = () => setOverlayVisible(!overlayVisible);
 
-  useEffect(() => {
-    authenticate();
-  }, [authenticate]);
+  // useEffect(() => {
+  //   authenticate();
+  // }, [authenticate]);
 
   return (
     <>
@@ -90,33 +90,15 @@ export default function Programs({ pageData }: { pageData?: any }) {
             <p className="my-5 text-center">Unlimited variety</p>
             <div className="flex justify-center">
               <div className="grid grid-cols-3 gap-3 md:gap-10">
-                {/* <Image src={image1} alt="" />
-                <Image src={image2} alt="" />
-                <Image src={image3} alt="" />
-                <Image src={image4} alt="" />
-                <Image src={image5} alt="" />
-                <Image src={image6} alt="" /> */}
                 {unlimitedVariety?.map((image?: any, index?: any) => (
                   <Image
                     key={index}
                     src={image}
-                    alt=" "
+                    alt=""
                     height={500}
                     width={500}
                   />
                 ))}
-                {/* <Image src={unlimitedVariety[0]} alt = " "  height={500}
-                width={500} /> 
-                <Image src={unlimitedVariety[1]} alt = " "  height={500}
-                width={500} />
-                <Image src={unlimitedVariety[2]} alt = " "   height={500}
-                width={500}/>
-                <Image src={unlimitedVariety[3]} alt = " "   height={500}
-                width={500}/>
-                <Image src={unlimitedVariety[4]} alt = " "   height={500}
-                width={500}/>
-                <Image src={unlimitedVariety[5]} alt = " "   height={500}
-                width={500}/> */}
               </div>
             </div>
             <div className="flex justify-center my-10">
@@ -194,21 +176,24 @@ export default function Programs({ pageData }: { pageData?: any }) {
                 <p className="text-base md:text-xl text-center mb-2.5">
                   Starting at Rs. 1999/- month
                 </p>
-                <ViewPlan
+
+                {/* Disabled in alpha preview - 1 */}
+                {/* <ViewPlan
                   toggleOverlay={toggleOverlay}
                   authStatus={authStatus}
-                />
+                /> */}
               </div>
-              {/* eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNpZGRpcXVpYWZmYW4yMDFAZ21haWwuY29tIiwibmFtZSI6IkFmZmFuIiwicGhvbmUiOiI4NDUwOTQzMTQ0Iiwicm9sZSI6MywiaWF0IjoxNjk0MjM1MjQ4fQ.NzYYRVRFPwGFblsLlfSMo7uGQzCb6tJehD1sxScnv4c */}
 
               <div className="col-span-1 py-3 border border-gray-400/40 center flex-col">
                 <p className="text-base md:text-xl text-center mb-2.5">
                   Starting at Rs. 3499/- month
                 </p>
-                <ViewPlan
+
+                {/* Disabled in alpha preview - 1 */}
+                {/* <ViewPlan
                   toggleOverlay={toggleOverlay}
                   authStatus={authStatus}
-                />
+                /> */}
               </div>
             </div>
           </div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 // import profilePhoto from "@/assets/Photo.png";
 // import Dashboard from "../../app/(admin_only)/admin/page";
-import logo from '@/assets/logo.png'
+// import logo from '@/assets/logo.png'
 
 export default function Header() {
   const [nav, setNav] = useState(false);
@@ -19,7 +19,13 @@ export default function Header() {
     >
       <Link href="/">
         {/* <h1 className="text-2xl font-bold">LOGO</h1> */}
-        <Image src={'/logo.png'} alt="logo" width={80} height={80} className="" />
+        <Image
+          src={"/logo.png"}
+          alt="logo"
+          width={80}
+          height={80}
+          className=""
+        />
       </Link>
 
       {/* menu */}
@@ -46,11 +52,13 @@ export default function Header() {
           </li>
         </Link>
       </ul>
-      <Link href="/login">
+
+      {/* Disabled in alpha preview - 1 */}
+      {/* <Link href="/login">
         <button className="hidden md:flex rounded-xl px-4 py-2 text-[#FED25B] border-2 border-[#FED25B] bg-[#FED25B] bg-opacity-20 hover:text-black hover:bg-opacity-100">
           Login/Signup
         </button>
-      </Link>
+      </Link> */}
 
       {/* Hamburger */}
       <div onClick={handleClick} className="md:hidden z-10">
@@ -78,11 +86,12 @@ export default function Header() {
         <li className="py-6 text-2xl">
           <a href="#">Blogs</a>
         </li>
-        <li>
+        {/* Disabled in alpha preview - 1 */}
+        {/* <li>
           <button className="rounded-xl px-4 py-2 text-[#FED25B] border-2 border-[#FED25B] bg-[#FED25B] bg-opacity-20">
             Login/Signup
           </button>
-        </li>
+        </li> */}
       </ul>
     </div>
   );
