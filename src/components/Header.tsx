@@ -3,8 +3,9 @@ import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
-import profilePhoto from "@/assets/Photo.png";
-import Dashboard from "../../app/(admin_only)/admin/page";
+// import profilePhoto from "@/assets/Photo.png";
+// import Dashboard from "../../app/(admin_only)/admin/page";
+import logo from '@/assets/logo.png'
 
 export default function Header() {
   const [nav, setNav] = useState(false);
@@ -17,7 +18,8 @@ export default function Header() {
       style={{ zIndex: 999 }}
     >
       <Link href="/">
-        <h1 className="text-2xl font-bold">LOGO</h1>
+        {/* <h1 className="text-2xl font-bold">LOGO</h1> */}
+        <Image src={'/logo.png'} alt="logo" width={80} height={80} className="" />
       </Link>
 
       {/* menu */}

@@ -90,12 +90,14 @@ const Coaches = ({ coaches }: { coaches: any }) => {
 
   return (
     <div className="mb-10 sm:px-[100px] sm:py-[60px] px-[40px] py-[20px]">
-      <div className="text-2xl sm:text-[50px]  ">
-        <p className="sm:mb-8 lg:mb-10 text-[#AFCCF8]  font-[600] text-center">
-          Relax your body and mind
+      <div className="">
+        <p className="text-2xl sm:text-[50px] sm:mb-8 lg:mb-8 text-[#AFCCF8] font-[600] text-center">
+          Meet Our Fitness Trainers
         </p>
-        <p className="text-[#F2BD4D] font-[600] text-center sm:mb-12 ">
-          With your yoga coaches
+        <p className="text-[#F2BD4D] font-[600] text-center sm:mb-12 lg:max-w-[50%] mx-auto">
+          Our certified fitness gurus will turn your workouts from Blah to
+          Ta-Da! Get personal training from the best online fitness coaches in
+          Delhi-NCR / Chandigarh.
         </p>
       </div>
 

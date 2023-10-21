@@ -61,8 +61,6 @@ export default async function Home() {
       {/* ===========================Types of Programs===================== */}
       <Classes classes={classes} />
 
-      <div className="mt-8 text-white">Classes length - {classes?.length}</div>
-
       {/* ===================== {Gallery} ===================== */}
       <div className="relative py-5 md:py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:px-32 lg:gap-x-7 mx-auto">
