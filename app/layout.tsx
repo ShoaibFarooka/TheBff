@@ -25,17 +25,20 @@ export default function RootLayout({
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/logo/logo-icon.png" />
       </head>
 
-      <body className={'inter.className bg-gradient-to-r to-background from-gray-900' }>
+      <body
+        className={
+          "inter.className bg-gradient-to-r to-background from-gray-900"
+        }
+      >
         {/* main. */}
         <Header />
         {children}
         <ContactButtonPopup />
         <Footer />
-
       </body>
     </html>
-  )
+  );
 }

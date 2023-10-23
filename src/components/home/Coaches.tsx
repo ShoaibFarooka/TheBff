@@ -39,43 +39,26 @@ const Coach = ({
   return (
     <div className="flex-shrink-0 text-white mb-1 center flex-col py-3">
       <Image
-        className="h-[200px] object-contain md:h-[431px] md:object-cover hover:scale-105 duration-300 mb-3 mx-auto"
+        className="max-h-[200px] object-contain md:max-h-[431px] hover:scale-105 duration-300 mb-3 mx-auto"
         src={image}
         alt="/"
         width={280}
         height={1000}
       />
 
-      <p className="text-center"> {name} </p>
-      {title && <p className="text-center"> {title} </p>}
+      {/* <p className="text-center"> {name} </p>
+      {title && <p className="text-center"> {title} </p>} */}
     </div>
   );
 };
 
-// const settings: Settings = {
-//     dots: true,
-//     infinite: true,
-//     speed: 500,
-//     slidesToShow: 3,
-//     slidesToScroll: 3,
-//     autoplay: true,
-//     // autoplaySpeed: 2000,
-//     arrows: false,
-//     dotsClass: styles.dots,
-//     swipeToSlide: true,
+type Coach = {
+  image: StaticImageData | string;
+  name: string;
+  title?: string;
+};
 
-//     responsive: [
-//         {
-//             breakpoint: 1024,
-//             settings: {
-//                 slidesToShow: 2,
-//                 slidesToScroll: 2
-//             },
-//         },
-//     ]
-// };
-
-const Coaches = ({ coaches }: { coaches: any }) => {
+const Coaches = ({ coaches }: { coaches: Coach[] }) => {
   // const ref = React.useRef<HTMLDivElement>(null);
 
   // React.useEffect(() => {
@@ -134,7 +117,7 @@ const Coaches = ({ coaches }: { coaches: any }) => {
           }}
           className="pt-4 min-h-min"
         >
-          {coches.map((coach, index) => (
+          {coaches.map((coach, index) => (
             <SwiperSlide className="mb-5" key={`slide-${index + 1}`}>
               <Coach
                 key={"coach-" + index}
