@@ -1,18 +1,15 @@
 import React from 'react'
 import { authenticate } from '@/lib/auth'
 import { UserRole } from '@/types/user'
-import { notFound } from 'next/navigation'
+// import { notFound } from 'next/navigation'
 
-const Layout = async () => {
+const Layout = async ({ children }: any) => {
+  const auth = await authenticate(UserRole.ADMIN);
 
-    const auth = await authenticate(UserRole.ADMIN)
+  if (auth.unAuthenticated) return <div>You are not logged in</div>;
+  if (!auth.success) return <div>Only admins can access this page</div>;
 
-    if (auth.unAuthenticated) throw new Error( 'You are not logged in' )
-    if (!auth.success) throw new Error( 'Only admins can access this page' )
-    
-    return (
-        <div>Layout</div>
-    )
-}
+  return <>{children}</>;
+};
 
 export default Layout

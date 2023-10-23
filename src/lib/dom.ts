@@ -8,7 +8,7 @@ export const cookie = {
         document.cookie = cookie
     },
     get: (name: string) => {
-        const cookie = document.cookie.split(';').find((c: string) => c.trim().startsWith(`${name}=`))
+        const cookie = document.cookie.split(';').find((c: string) => c.trim()?.startsWith(`${name}=`))
         if (!cookie) {
             return null
         }

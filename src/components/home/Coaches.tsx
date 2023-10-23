@@ -117,7 +117,7 @@ const Coaches = ({ coaches }: { coaches: Coach[] }) => {
           }}
           className="pt-4 min-h-min"
         >
-          {coaches.map((coach, index) => (
+          {coaches?.map((coach, index) => (
             <SwiperSlide className="mb-5" key={`slide-${index + 1}`}>
               <Coach
                 key={"coach-" + index}

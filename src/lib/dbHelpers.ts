@@ -73,10 +73,18 @@ export const getUserData = async (email: string) => {
                     path: "$plan",
                     preserveNullAndEmptyArrays: true
                 }
+            },
+            {
+                // convert _id to string
+                $addFields: {
+                    "plan._id": { $toString: "$plan._id" },
+                    "membership._id": { $toString: "$membership._id" },
+                    "classes._id": { $toString: "$classes._id" }
+                }
             }
         ])
 
-        return data?.length ? data as any : null;
+        return data?.length ? data[0] : null;
     } catch (error: any) {
         return null
     }

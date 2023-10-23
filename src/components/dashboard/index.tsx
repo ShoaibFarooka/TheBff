@@ -17,7 +17,6 @@ import gift from "@/assets/Gift.png";
 // import
 
 export default function Dashboard({ userdata }: { userdata: any }) {
-  console.log(userdata);
   const [side, setSide] = useState(false);
   const ref = React.useRef<HTMLElement>(null);
 

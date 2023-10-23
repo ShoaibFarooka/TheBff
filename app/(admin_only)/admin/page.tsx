@@ -5,3 +5,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+// do not pre-render this page
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
