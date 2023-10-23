@@ -1,18 +1,19 @@
 import React from 'react'
 import Image from 'next/image'
 import back from '@/assets/Click Area.png'
-import frame from '@/assets/Frame 3927.png'
-import frame1 from "@/assets/Rectangle 2812.png"
-import frame2 from "@/assets/Rectangle 2812 (1).png"
-import discount from '@/assets/Discount Badge.png'
-import ellipse from '@/assets/Ellipse 203.png'
-import { getPageData } from "@/lib/db";
+// import frame from '@/assets/Frame 3927.png'
+// import frame1 from "@/assets/Rectangle 2812.png"
+// import frame2 from "@/assets/Rectangle 2812 (1).png"
+// import discount from '@/assets/Discount Badge.png'
+// import ellipse from '@/assets/Ellipse 203.png'
+// import { getPageData } from "@/lib/db";
+
 export default function page({ pageData }: { pageData?: any }) {
   
-    const images = pageData?.images;
-    const prices = pageData?.prices;
-    const offers = pageData?.offers;
-    const howItWorks = pageData?.howItWorks;
+    const images = pageData?.images ?? [];
+    const prices = pageData?.prices ?? {};
+    const offers = pageData?.offers ?? {};
+    const howItWorks = pageData?.howItWorks ?? {};
     
   return (
     <div className='mt-24 md:mt-30'>
@@ -28,6 +29,7 @@ export default function page({ pageData }: { pageData?: any }) {
             <div className='flex flex-col md:flex-row justify-around px-5'>
                 <div className='w-full md:w-[40%]'>
                     <Image className='w-full' src={images[1]} width={300} height={300} alt=""/>
+
                     <div>
                         <h1 className='text-white text-[32px] font-[600] mt-5 mb-2'>Suggested Plans</h1>
                         <div className='flex flex-row justify-between px-3 py-4 rounded-xl items-center  bg-gradient-to-r from-[#4A2F70] to-[#344363]'>
