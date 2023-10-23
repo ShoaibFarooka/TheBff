@@ -6,7 +6,7 @@ import Image from "next/image";
 import { RxCross2 } from "react-icons/rx";
 
 export default function ChoosePlan({
-  priceContent,
+  priceContent = [],
   price,
   overlayVisible,
   setOverlayVisible,
@@ -102,11 +102,11 @@ export default function ChoosePlan({
           <div className="flex flex-col md:flex-row   justify-center md:items-center py-6  ">
             <div className="bg-[#E7E7FF] px-3 py-2 md:py-7 md:px-10 rounded-lg md:mx-5 mb-5 md:mb-0">
               <h2 className="font-[600] text-2xl text-center">
-                {priceContent[0].title}
+                {priceContent[0]?.title}
               </h2>
               <h3 className="text-center text-[24px] font-semibold">
                 {" "}
-                ₹{price[active].title1}{" "}
+                ₹{price[active]?.title1}{" "}
                 {/* <span className="text-gray-500 text-[16px] font-light">
                   /month
                 </span> */}
@@ -124,14 +124,14 @@ export default function ChoosePlan({
                   <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                     <Image src={tick} alt="" />
                   </button>
-                  <span>{priceContent[0].content2}</span>
+                  <span>{priceContent[0]?.content2}</span>
                 </div>
 
                 <div className="mt-5">
                   <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2 ">
                     <Image src={tick} alt="" />
                   </button>
-                  <span>{priceContent[0].content3}</span>
+                  <span>{priceContent[0]?.content3}</span>
                 </div>
                 <div className="flex items-center justify-center pt-8 pb-3">
                   <button className="px-5 py-2 rounded-lg  text-white bg-[#6557FF]">
@@ -148,11 +148,11 @@ export default function ChoosePlan({
                 </button>
               </div>
               <h2 className="font-[600] text-2xl  text-center">
-                {priceContent[1].title}
+                {priceContent[1]?.title}
               </h2>
               <h3 className="text-center text-[24px] font-semibold">
                 {" "}
-                ₹{price[active].title2}{" "}
+                ₹{price[active]?.title2}{" "}
                 {/* <span className="text-gray-500 text-[16px] font-light">
                   /month
                 </span> */}
@@ -163,21 +163,21 @@ export default function ChoosePlan({
                   <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                     <Image src={tick} alt="" />
                   </button>
-                  <span>{priceContent[1].content1}</span>
+                  <span>{priceContent[1]?.content1}</span>
                 </div>
 
                 <div className="mt-5">
                   <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                     <Image src={tick} alt="" />
                   </button>
-                  <span>{priceContent[1].content2}</span>
+                  <span>{priceContent[1]?.content2}</span>
                 </div>
 
                 <div className="mt-5">
                   <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                     <Image src={tick} alt="" />
                   </button>
-                  <span>{priceContent[1].content3}</span>
+                  <span>{priceContent[1]?.content3}</span>
                 </div>
                 <div className="flex items-center justify-center pt-8">
                   <button className="px-5 py-2 rounded-lg  text-white bg-[#6557FF]">
@@ -189,7 +189,7 @@ export default function ChoosePlan({
 
             <div className="bg-[#E7E7FF] px-3 py-7 md:px-10 rounded-lg ">
               <h2 className="font-[600] text-2xl  text-center">
-                {priceContent[2].title}
+                {priceContent[2]?.title}
               </h2>
               <h3 className="text-center">Contact Us</h3>
               <hr className="border border-black mt-10" />
@@ -198,20 +198,20 @@ export default function ChoosePlan({
                   <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                     <Image src={tick} alt="" />
                   </button>
-                  <span>{priceContent[2].content1}</span>
+                  <span>{priceContent[2]?.content1}</span>
                 </div>
                 <div className="mt-5">
                   <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                     <Image src={tick} alt="" />
                   </button>
-                  <span>{priceContent[2].content2}</span>
+                  <span>{priceContent[2]?.content2}</span>
                 </div>
 
                 <div className="mt-5">
                   <button className="px-2 py-2 bg-[#363535] rounded-3xl mr-2">
                     <Image src={tick} alt="" />
                   </button>
-                  <span>{priceContent[2].content3}</span>
+                  <span>{priceContent[2]?.content3}</span>
                 </div>
                 <div className="flex items-center justify-center pt-8">
                   <button className="px-5 py-2 rounded-lg  text-white bg-[#6557FF]">

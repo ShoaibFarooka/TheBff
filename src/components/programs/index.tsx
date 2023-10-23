@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { 
+  // useEffect, 
+  useState 
+} from "react";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RxCrossCircled, RxCross2 } from "react-icons/rx";
 import Image from "next/image";
@@ -8,16 +11,16 @@ import StayHealthy from "@/components/programs/StayHealthy";
 import Header from "@/components/programs/Header";
 import ContactForm from "@/components/ContactForm";
 
-import { useAuth } from "@/hooks/auth";
+// import { useAuth } from "@/hooks/auth";
 
-import image1 from "@/assets/Cardio.png";
-import image2 from "@/assets/Strength.png";
-import image3 from "@/assets/Yoga.png";
-import image4 from "@/assets/No equipment.png";
-import image5 from "@/assets/Toning.png";
-import image6 from "@/assets/Walking.png";
+// import image1 from "@/assets/Cardio.png";
+// import image2 from "@/assets/Strength.png";
+// import image3 from "@/assets/Yoga.png";
+// import image4 from "@/assets/No equipment.png";
+// import image5 from "@/assets/Toning.png";
+// import image6 from "@/assets/Walking.png";
 import ChoosePlan from "@/components/programs/ChoosePlan";
-import Link from "next/link";
+// import Link from "next/link";
 
 // const comparison = [
 //   { title: "Live Interaction Classes", standard: "Yes", premium: "Yes" },
@@ -29,22 +32,22 @@ import Link from "next/link";
 
 const btnClassName = `shadow-xl shadow-red-800/10 mx-auto rounded px-2 py-1.5 border-none outline-none bg-white text-red-500 font-semibold focus:border`;
 
-const ViewPlan = ({
-  toggleOverlay,
-  authStatus,
-}: {
-  toggleOverlay: () => any;
-  authStatus: "loading" | "authenticated" | "unauthenticated";
-}) =>
-  authStatus === "authenticated" ? (
-    <button onClick={toggleOverlay} className={btnClassName}>
-      View Plans
-    </button>
-  ) : (
-    <Link href="/login?cb=/programs">
-      <button className={btnClassName}>Login to view Plans</button>
-    </Link>
-  );
+// const ViewPlan = ({
+//   toggleOverlay,
+//   authStatus,
+// }: {
+//   toggleOverlay: () => any;
+//   authStatus: "loading" | "authenticated" | "unauthenticated";
+// }) =>
+//   authStatus === "authenticated" ? (
+//     <button onClick={toggleOverlay} className={btnClassName}>
+//       View Plans
+//     </button>
+//   ) : (
+//     <Link href="/login?cb=/programs">
+//       <button className={btnClassName}>Login to view Plans</button>
+//     </Link>
+//   );
 
 export default function Programs({ pageData }: { pageData?: any }) {
   // const { user, status: authStatus, authenticate } = useAuth();
