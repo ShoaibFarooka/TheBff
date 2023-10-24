@@ -65,19 +65,26 @@ export default function Header() {
             : "absolute top-0 left-0 w-full h-screen bg-black flex flex-col justify-center items-center"
         }
       >
-        <li className="py-6 text-2xl">
-          <a href="#">Home</a>
-        </li>
-        <li className="py-6 text-2xl">
-          <a href="#">Programs</a>
-        </li>
-        <li className="py-6 text-2xl">
-          <a href="#">Pricing</a>
-        </li>
-
-        <li className="py-6 text-2xl">
-          <a href="#">Blogs</a>
-        </li>
+        <Link href="/">
+          <li className="py-6 text-2xl">
+            <a href="#">Home</a>
+          </li>
+        </Link>
+        <Link href="/programs">
+          <li className="py-6 text-2xl">
+            <a href="#">Programs</a>
+          </li>
+        </Link>
+        <Link href="/programs#pricing">
+          <li className="py-6 text-2xl">
+            <a href="#">Pricing</a>
+          </li>
+        </Link>
+        <Link href="/blog">
+          <li className="py-6 text-2xl">
+            <a href="#">Blogs</a>
+          </li>
+        </Link>
         {/* Disabled in alpha preview - 1 */}
         {/* <li>
           <button className="rounded-xl px-4 py-2 text-[#FED25B] border-2 border-[#FED25B] bg-[#FED25B] bg-opacity-20">

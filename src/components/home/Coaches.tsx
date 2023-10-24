@@ -125,6 +125,7 @@ const Coaches = ({ coaches }: { coaches: Coach[] }) => {
                 name={coach.name}
                 title={coach.title}
               />
+              {/* <p className="">Hello</p> */}
             </SwiperSlide>
           ))}
 

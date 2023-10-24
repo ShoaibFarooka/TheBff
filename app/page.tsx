@@ -21,8 +21,8 @@ import Classes from "@/components/home/Classes";
 
 export default async function Home() {
   const pageData = (await getPageData("home")) as any;
+  
   const classes = pageData?.classes;
-
   const coaches = pageData?.coches;
 
   return (
