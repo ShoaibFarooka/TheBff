@@ -46,6 +46,8 @@ export default function ChoosePlan({
     };
   }, [overlayVisible]);
 
+  if (!priceContent?.length) return null;
+
   return (
     <div className="absolute md:fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-30 backdrop-blur-md z-[99999999]">
       <div className="w-full h-full flex justify-center items-center z-50">
@@ -65,6 +67,7 @@ export default function ChoosePlan({
               Choose Plan
             </h2>
           </div>
+
           <div className="w-full   mx-auto mb-4 ">
             <p className="text-white text-center text-xs md:text-base">
               Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
@@ -226,3 +229,6 @@ export default function ChoosePlan({
     </div>
   );
 }
+
+// revalidate every 3 days= 172800 seconds
+export const revalidate = 172800;
