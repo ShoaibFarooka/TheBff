@@ -21,9 +21,9 @@ export const getPageData = async (pageName: string) => {
 
     try {
         await connectDB();
-
-        const pageData = await mongoose.connection.db.collection("pageData");
-        return await pageData.findOne({ pageName });
+        const collection = mongoose.connection.db.collection("pageData");
+        const pageData = collection.findOne({ pageName });
+        return pageData ?? null;
     } catch (error: any) {
         return null;
     }
