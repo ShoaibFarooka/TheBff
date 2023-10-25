@@ -7,7 +7,7 @@ export function isEmail(email: string): boolean {
 
 // A funciton to get query params from url in the form of object
 
-export function getQueryParams(url: string): any {
+export const getQueryParams = <T = Record<string, string>>(url: string): T => {
 
     const searchParams = new URL(url).searchParams;
     const params: any = {};
@@ -15,7 +15,7 @@ export function getQueryParams(url: string): any {
         params[key] = value;
     }
     
-    return params;
+    return params as T;
 
 }
 
