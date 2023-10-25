@@ -38,8 +38,6 @@ export const getPageData = async (pageName: string) => {
     try {
         await connectDB();
 
-        console.log(`isDbReady: ${mongoose.connection.readyState}`)
-
         const collection = mongoose.connection.db.collection("pageData");
         const pageData = await collection.findOne({ pageName });
 
