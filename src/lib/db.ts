@@ -1,12 +1,28 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 export const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(process.env.MONGO_URI!, {
-            useUnifiedTopology: true,
-            useNewUrlParser: true,
-        } as any);
-        console.log(`MongoDB connected: ${conn.connection.host}`);
+        // if mongoose is not connected then connect
+        if (mongoose.connection.readyState === 1) return;
+
+        return new Promise((resolve, reject) => {
+            mongoose.connect(process.env.MONGO_URI!, {
+                useUnifiedTopology: true,
+                useNewUrlParser: true,
+            } as any)
+
+            mongoose.connection.once("open", () => {
+                console.log("Connected to database");
+                resolve(true);
+            });
+
+            mongoose.connection.once("error", (error: any) => {
+                console.error("Error connecting to database", error);
+                reject(error);
+            });
+
+        })
+
     } catch (error: any) {
         console.error(`Error: ${error.message}`);
 
@@ -21,10 +37,19 @@ export const getPageData = async (pageName: string) => {
 
     try {
         await connectDB();
+
+        console.log(`isDbReady: ${mongoose.connection.readyState}`)
+
         const collection = mongoose.connection.db.collection("pageData");
-        const pageData = collection.findOne({ pageName });
+        const pageData = await collection.findOne({ pageName });
+
+        // if (!pageData) throw new Error('Data not found');
+
         return pageData ?? null;
+
     } catch (error: any) {
+        console.log(error)
+        // throw error;
         return null;
     }
 }
