@@ -46,8 +46,8 @@ const Coach = ({
         height={1000}
       />
 
-      {/* <p className="text-center"> {name} </p>
-      {title && <p className="text-center"> {title} </p>} */}
+      <p className="text-center"> {name} </p>
+      {/* {title && <p className="text-center"> {title} </p>} */}
     </div>
   );
 };
