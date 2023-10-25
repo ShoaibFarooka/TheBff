@@ -38,13 +38,13 @@ export default function ChoosePlan({
   // ]
   const [active, setActive] = useState(0);
 
-  useEffect(() => {
-    // disable scroll when overlay is open
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [overlayVisible]);
+  // useEffect(() => {
+  //   // disable scroll when overlay is open
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "unset";
+  //   };
+  // }, [overlayVisible]);
 
   if (!priceContent?.length) return null;
 
