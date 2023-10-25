@@ -1,5 +1,5 @@
-"use client"
-import React from 'react'
+"use client";
+import React from "react";
 import Image, { StaticImageData } from "next/image";
 import styles from "@/styles/Home.module.scss";
 
@@ -79,8 +79,7 @@ const Coaches = ({ coaches }: { coaches: Coach[] }) => {
         </p>
         <p className="text-[#F2BD4D] font-[600] text-center sm:mb-12 lg:max-w-[50%] mx-auto">
           Our certified fitness gurus will turn your workouts from Blah to
-          Ta-Da! Get personal training from the best online fitness coaches in
-          Delhi-NCR / Chandigarh.
+          Ta-Da! Get personal training from the best online fitness coaches.
         </p>
       </div>
 
@@ -138,4 +137,4 @@ const Coaches = ({ coaches }: { coaches: Coach[] }) => {
   );
 };
 
-export default Coaches
+export default Coaches;

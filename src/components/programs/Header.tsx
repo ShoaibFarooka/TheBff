@@ -1,37 +1,36 @@
-"use client"
-import React from 'react'
-import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
-import { EffectCoverflow, Pagination, Navigation,  } from 'swiper/modules'
-import Image from 'next/image'
-import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa'
+"use client";
+import React from "react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
+import Image from "next/image";
+import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 
 // Swiper CSS
-import 'swiper/css'
-import 'swiper/css/effect-coverflow'
-import 'swiper/css/pagination'
-import 'swiper/css/navigation'
-
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 // Assets
-import slide1 from "@/assets/Slide Item — 1.png"
-import slide2 from "@/assets/Slide Item — 2.png"
-import slide3 from "@/assets/Slide Item — 3.png"
-import slide4 from "@/assets/Slide Item — 4.png"
-import slide5 from "@/assets/Slide Item — 5.png"
+import slide1 from "@/assets/Slide Item — 1.png";
+import slide2 from "@/assets/Slide Item — 2.png";
+import slide3 from "@/assets/Slide Item — 3.png";
+import slide4 from "@/assets/Slide Item — 4.png";
+import slide5 from "@/assets/Slide Item — 5.png";
 
-
-const slides = [slide1, slide2, slide3, slide4, slide5]
-
+const slides = [slide1, slide2, slide3, slide4, slide5];
 
 const Header = ({ management }: { management?: any }) => {
- 
-  const ref = React.useRef<SwiperRef>(null)
+  const ref = React.useRef<SwiperRef>(null);
 
   return (
-    <div className="md:px-14 lg:px-28 flex gap-x-1 md:gap-x-5">
-
-      <div className="flex flex-col justify-center items-center">
-        <FaArrowCircleLeft size={30} onClick={() => ref.current?.swiper.slidePrev()} className="fill-white/30 hover:fill-purple-400 hover:text-white cursor-pointer" />
+    <div className="md:px-14 lg:px-28 flex gap-x-1 md:gap-x-5 swiper-custom">
+      <div className="flex flex-col justify-center items-center navigation-button ">
+        <FaArrowCircleLeft
+          size={30}
+          onClick={() => ref.current?.swiper.slidePrev()}
+          className="fill-white/30 hover:fill-purple-400 hover:text-white cursor-pointer"
+        />
       </div>
 
       <Swiper
@@ -46,61 +45,64 @@ const Header = ({ management }: { management?: any }) => {
           stretch: 0,
           depth: 300,
           modifier: 1,
-          slideShadows: true, 
+          slideShadows: true,
         }}
-        pagination={{el: '.swiper-pagination', clickable: true}}
+        pagination={{
+          el: ".swiper-pagination",
+          clickable: true,
+          // dynamicBullets: true,
+          // dynamicMainBullets: 1, // Number of main bullets (visible bullets)
+        }}
         navigation={{
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-          hideOnClick: true
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+          hideOnClick: true,
         }}
         breakpoints={{
           640: {
             coverflowEffect: {
               depth: 0,
-            }
+            },
           },
           768: {
             coverflowEffect: {
               depth: 100,
-            }
+            },
           },
           1024: {
             coverflowEffect: {
               depth: 200,
-            }
+            },
           },
         }}
-        className="swiper-container"
+        className="custom-swiper-container"
         ref={ref}
       >
-        {
-          management?.map((slide? :any, index? :any) => (
-            <SwiperSlide key={"slide-" + index} className="max-w-max"> 
-              <Image
-                src={slide}
-                alt={"Slide " + index + 1 }
-                className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[700px] duration-300"
-                height={500}
-                width={500}
-              />
-            </SwiperSlide>
-          ))
-        }
-        
-        <div className="slider-controller">
-          <div className="swiper-pagination">
-          </div>
-        </div>
-
+        {management?.map((slide?: any, index?: any) => (
+          <SwiperSlide key={"slide-" + index} className="max-w-max">
+            <Image
+              src={slide}
+              alt={"Slide " + index + 1}
+              className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[700px] duration-300"
+              height={500}
+              width={500}
+            />
+          </SwiperSlide>
+        ))}
       </Swiper>
-
-      <div className="flex flex-col justify-center items-center">
-        <FaArrowCircleRight size={30} onClick={() => ref.current?.swiper.slideNext()} className="fill-white/30 hover:fill-purple-400 hover:text-white cursor-pointer" />
+      <div className="slider-controller">
+        <div className="swiper-pagination"></div>
       </div>
 
+      <div className="flex flex-col justify-center items-center navigation-button">
+        <FaArrowCircleRight
+          size={30}
+          onClick={() => ref.current?.swiper.slideNext()}
+          className="fill-white/30 hover:fill-purple-400 hover:text-white cursor-pointer"
+        />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
