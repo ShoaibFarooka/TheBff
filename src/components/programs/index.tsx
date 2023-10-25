@@ -78,10 +78,10 @@ export default function Programs({ pageData }: { pageData?: any }) {
           Weight Management
         </h1>
 
-        <Header management={management} />
+        <Header management={management ?? []} />
       </div>
 
-      <StayHealthy stayHealthy={stayHealthy} />
+      <StayHealthy stayHealthy={stayHealthy ?? []} />
 
       {/* ============================== Unlimited Variety ======================= */}
       <div className="px-4 md:px-8 lg:px-12 mb-20 mt-20">
@@ -143,7 +143,7 @@ export default function Programs({ pageData }: { pageData?: any }) {
                     <h3 className="font-bold"> {item.title} </h3>
                   </div>
                   <div className="col-span-1 py-3 border border-gray-400/40">
-                    {item.standard == "No" ? (
+                    {item?.standard == "No" ? (
                       <RxCrossCircled
                         size={23}
                         className="text-3xl text-gray-500 mx-auto"
@@ -154,10 +154,10 @@ export default function Programs({ pageData }: { pageData?: any }) {
                         className="text-3xl text-blue-400 mx-auto"
                       />
                     )}
-                    <h3 className="text-center"> {item.standard} </h3>
+                    <h3 className="text-center"> {item?.standard} </h3>
                   </div>
                   <div className="col-span-1 py-3 border border-gray-400/40">
-                    {item.premium == "No" ? (
+                    {item?.premium == "No" ? (
                       <RxCrossCircled
                         size={23}
                         className="text-3xl text-gray-500 mx-auto"
@@ -168,7 +168,7 @@ export default function Programs({ pageData }: { pageData?: any }) {
                         className="text-3xl text-blue-400 mx-auto"
                       />
                     )}
-                    <h3 className="text-center"> {item.premium} </h3>
+                    <h3 className="text-center"> {item?.premium} </h3>
                   </div>
                 </>
               ))}
@@ -205,9 +205,9 @@ export default function Programs({ pageData }: { pageData?: any }) {
         {/* ==========OVERLAY============ */}
         {overlayVisible && (
           <ChoosePlan
-            priceContent={priceContent}
-            price={price}
-            overlayVisible={overlayVisible}
+            priceContent={priceContent ?? []}
+            price={price ?? []}
+            overlayVisible={overlayVisible ?? []}
             setOverlayVisible={setOverlayVisible}
           />
         )}
