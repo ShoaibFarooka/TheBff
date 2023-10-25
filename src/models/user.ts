@@ -3,7 +3,14 @@
 import { Schema, model, models, Document } from "mongoose";
 import { User, UserRole } from "@/types/user"
 
-const userSchema = new Schema<User>(
+// a regex to validate email
+const mailRegex = new RegExp(
+    "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+)
+
+type UserDoc = User & Document
+
+const userSchema = new Schema<UserDoc>(
     {
         name: {
             type: String,
@@ -19,7 +26,11 @@ const userSchema = new Schema<User>(
             minlength: 5,
             maxlength: 50,
             unique: true,
-            lowercase: true
+            lowercase: true,
+            validate: {
+                validator: (email: string) => mailRegex.test(email),
+                message: "Invalid email"
+            }
         },
         password: {
             type: String,
