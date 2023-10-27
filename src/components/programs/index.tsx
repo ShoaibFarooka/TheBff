@@ -63,7 +63,7 @@ export default function Programs({ pageData }: { pageData?: any }) {
 
   // const [isOpen, setIsOpen] = useState(true);
   const [overlayVisible, setOverlayVisible] = useState(false);
-  // const [active, setActive] = useState(0);
+  const [active, setActive] = useState(0);
   // const closePopup = () => setIsOpen(false);
   // const toggleOverlay = () => setOverlayVisible(!overlayVisible);
 
@@ -79,15 +79,15 @@ export default function Programs({ pageData }: { pageData?: any }) {
         </h1>
 
         <Header
-          // active={active}
-          // setActive={setActive}
+          active={active}
+          setActive={setActive}
           management={management ?? []}
         />
       </div>
 
       <StayHealthy
-        // active={active}
-        // setActive={setActive}
+        active={active}
+        setActive={setActive}
         stayHealthy={stayHealthy ?? []}
       />
 

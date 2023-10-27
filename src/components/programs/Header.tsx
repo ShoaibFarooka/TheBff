@@ -27,15 +27,15 @@ const slides = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
 
 const Header = ({
   management,
-}: // active,
-// setActive,
-{
+  active,
+  setActive,
+}: {
   management?: any;
-  // active?: any;
-  // setActive?: any;
+  active?: any;
+  setActive?: any;
 }) => {
   const ref = React.useRef<SwiperRef>(null);
-  const [active, setActive] = useState(0);
+  // const [active, setActive] = useState(0);
 
   return (
     <div className="md:px-14 lg:px-28 flex gap-x-1 md:gap-x-5 swiper-custom">
@@ -50,11 +50,13 @@ const Header = ({
       <Swiper
         modules={[EffectCoverflow, Pagination, Navigation]}
         effect="coverflow"
-        grabCursor={true}
+        // grabCursor={true}
         centeredSlides={true}
         slidesPerView="auto"
         loop={true}
-        onSlideChange={(e: SwiperClass) => setActive(e.activeIndex)}
+        onSlideChange={(e: SwiperClass) => {
+          setActive(e.realIndex);
+        }}
         coverflowEffect={{
           rotate: 0,
           stretch: 0,
@@ -99,17 +101,16 @@ const Header = ({
               src={slide.image}
               alt={"Slide " + index + 1}
               className="w-[200px] sm:w-[400px] rounded-lg md:w-[500px] lg:w-[700px] duration-300"
-              height={500}
+              height={1000}
               width={700}
             />
-            {index}
           </SwiperSlide>
         ))}
       </Swiper>
       <div className="slider-controller">
         <div className="swiper-pagination"></div>
       </div>
-      <div>{active}</div>
+      <div className="text-white">{active}</div>
 
       <div className="flex flex-col justify-center items-center navigation-button">
         <FaArrowCircleRight
