@@ -1,6 +1,7 @@
 "use client";
-import React from "react";
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import React, { useState } from "react";
+import { Swiper, SwiperRef, SwiperClass, SwiperSlide } from "swiper/react";
+
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 import Image from "next/image";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
@@ -12,16 +13,29 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 // Assets
-import slide1 from "@/assets/Slide Item — 1.png";
-import slide2 from "@/assets/Slide Item — 2.png";
-import slide3 from "@/assets/Slide Item — 3.png";
-import slide4 from "@/assets/Slide Item — 4.png";
-import slide5 from "@/assets/Slide Item — 5.png";
+import slide1 from "../../../public/images/stock/dance.jpeg";
+import slide2 from "../../../public/images/stock/gym.jpeg";
+import slide3 from "../../../public/images/stock/home-gym.jpeg";
 
-const slides = [slide1, slide2, slide3, slide4, slide5];
+import slide4 from "../../../public/images/stock/yoga.jpeg";
+import slide5 from "../../../public/images/stock/meditation.jpeg";
+import slide6 from "../../../public/images/stock/nutrition.jpeg";
+import slide7 from "../../../public/images/stock/in-home.jpeg";
+import { LucideActivitySquare } from "lucide-react";
 
-const Header = ({ management }: { management?: any }) => {
+const slides = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
+
+const Header = ({
+  management,
+}: // active,
+// setActive,
+{
+  management?: any;
+  // active?: any;
+  // setActive?: any;
+}) => {
   const ref = React.useRef<SwiperRef>(null);
+  const [active, setActive] = useState(0);
 
   return (
     <div className="md:px-14 lg:px-28 flex gap-x-1 md:gap-x-5 swiper-custom">
@@ -40,6 +54,7 @@ const Header = ({ management }: { management?: any }) => {
         centeredSlides={true}
         slidesPerView="auto"
         loop={true}
+        onSlideChange={(e: SwiperClass) => setActive(e.activeIndex)}
         coverflowEffect={{
           rotate: 0,
           stretch: 0,
@@ -81,18 +96,20 @@ const Header = ({ management }: { management?: any }) => {
         {management?.map((slide?: any, index?: any) => (
           <SwiperSlide key={"slide-" + index} className="max-w-max">
             <Image
-              src={slide}
+              src={slide.image}
               alt={"Slide " + index + 1}
-              className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[700px] duration-300"
+              className="w-[200px] sm:w-[400px] rounded-lg md:w-[500px] lg:w-[700px] duration-300"
               height={500}
-              width={500}
+              width={700}
             />
+            {index}
           </SwiperSlide>
         ))}
       </Swiper>
       <div className="slider-controller">
         <div className="swiper-pagination"></div>
       </div>
+      <div>{active}</div>
 
       <div className="flex flex-col justify-center items-center navigation-button">
         <FaArrowCircleRight
