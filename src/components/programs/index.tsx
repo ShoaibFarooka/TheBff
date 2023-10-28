@@ -1,8 +1,8 @@
 "use client";
 
-import React, { 
-  // useEffect, 
-  useState 
+import React, {
+  // useEffect,
+  useState,
 } from "react";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RxCrossCircled, RxCross2 } from "react-icons/rx";
@@ -63,7 +63,7 @@ export default function Programs({ pageData }: { pageData?: any }) {
 
   // const [isOpen, setIsOpen] = useState(true);
   const [overlayVisible, setOverlayVisible] = useState(false);
-
+  const [active, setActive] = useState(0);
   // const closePopup = () => setIsOpen(false);
   // const toggleOverlay = () => setOverlayVisible(!overlayVisible);
 
@@ -78,10 +78,18 @@ export default function Programs({ pageData }: { pageData?: any }) {
           Weight Management
         </h1>
 
-        <Header management={management ?? []} />
+        <Header
+          active={active}
+          setActive={setActive}
+          management={management ?? []}
+        />
       </div>
 
-      <StayHealthy stayHealthy={stayHealthy ?? []} />
+      <StayHealthy
+        active={active}
+        setActive={setActive}
+        stayHealthy={stayHealthy ?? []}
+      />
 
       {/* ============================== Unlimited Variety ======================= */}
       <div className="px-4 md:px-8 lg:px-12 mb-20 mt-20">
@@ -120,14 +128,14 @@ export default function Programs({ pageData }: { pageData?: any }) {
             Choose Your Plan
           </h1>
           <p className="text-blue-200 text-center">
-            best prices offered , choose the plan that suits you
+            Pick your plan for a healthy and fit new you!
           </p>
 
           <div className="w-full mt-10">
             <div className="w-full grid grid-cols-3 text-white/90 md:text-xl px-4 md:px-0">
               <div className="col-span-1 mb-10"> </div>
               <div className="col-span-1 mb-10 text-center">
-                <h3 className="text-white text-2xl md:text-3xl font-semibold">
+                <h3 className="text-white text-2xl md:text-3xl font-semibold tooltip relative inline-block">
                   Standard
                 </h3>
               </div>
@@ -140,7 +148,14 @@ export default function Programs({ pageData }: { pageData?: any }) {
               {comparison?.map((item?: any, index?: any) => (
                 <>
                   <div className="col-span-1 py-3" key={"comparison-" + index}>
-                    <h3 className="font-bold"> {item.title} </h3>
+                    <h3 className="tooltip relative inline-block font-bold my-2">
+                      {" "}
+                      {item.title}
+                      <span className="tooltip-text absolute bg-black text-white text-xs py-1 px-2 rounded-md opacity-0 bottom-full left-1/2 transform -translate-x-1/2 w-full transition duration-300 ease-in-out">
+                        {" "}
+                        {item.tooltip}
+                      </span>
+                    </h3>
                   </div>
                   <div className="col-span-1 py-3 border border-gray-400/40">
                     {item?.standard == "No" ? (

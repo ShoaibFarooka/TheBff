@@ -96,17 +96,28 @@ savePageData("Programs", {
     title: "program",
     management: [
         //'/images/image_name.png',
-        '/images/SlideItem1.png',
-        '/images/SlideItem2.png',
-        '/images/SlideItem3.png',
-        '/images/SlideItem4.png',
-        '/images/SlideItem5.png',
+        { image: '/images/stock/dance.jpeg', title: 'Fruits', subTitle: 'Fruits are necessary', description: 'Fruits are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.' },
+        { image: '/images/stock/gym.jpeg', title: 'Yoga', subTitle: 'Yoga is necessary', description: 'Yoga is a group of physical, mental, and spiritual practices or disciplines which originated in ancient India. Yoga is one of the six Āstika (orthodox) schools of Hindu philosophical traditions. There is a broad variety of yoga schools, practices, and goals in Hinduism, Buddhism, and Jainism.' },
+        { image: '/images/stock/home-gym.jpeg', title: 'Zumba', subTitle: 'Zumba is necessary', description: 'Zumba is an exercise fitness program created by Colombian dancer and choreographer Alberto "Beto" Pérez during the 1990s. Zumba is a trademark owned by Zumba Fitness, LLC. The Brazilian pop singer Claudia Leitte has become the international ambassador to Zumba Fitness.' },
+        { image: '/images/stock/yoga.jpeg', title: 'GYM', subTitle: 'Gym is necessary', description: 'A gymnasium, also known as a gym, is a covered location for athletics. The word is derived from the ancient Greek gymnasium. They are commonly found in athletic and fitness centers, and as activity and learning spaces in educational institutions. "Gym" is also slang for "fitness center", which is often an indoor facility.' },
+        { image: '/images/stock/meditation.jpeg', title: 'GYM', subTitle: 'Gym is necessary', description: 'A gymnasium, also known as a gym, is a covered location for athletics. The word is derived from the ancient Greek gymnasium. They are commonly found in athletic and fitness centers, and as activity and learning spaces in educational institutions. "Gym" is also slang for "fitness center", which is often an indoor facility.' },
+        { image: '/images/stock/nutrition.jpeg', title: 'GYM', subTitle: 'Gym is necessary', description: 'A gymnasium, also known as a gym, is a covered location for athletics. The word is derived from the ancient Greek gymnasium. They are commonly found in athletic and fitness centers, and as activity and learning spaces in educational institutions. "Gym" is also slang for "fitness center", which is often an indoor facility.' },
+        // { image: '/images/stock/in-home.jpeg', title: 'GYM', subTitle: 'Gym is necessary', description: 'A gymnasium, also known as a gym, is a covered location for athletics. The word is derived from the ancient Greek gymnasium. They are commonly found in athletic and fitness centers, and as activity and learning spaces in educational institutions. "Gym" is also slang for "fitness center", which is often an indoor facility.' },
     ],
     stayHealthy: [
-        { image: '/images/fruits.webp', title: 'Fruits', subTitle: 'Fruits are necessary', description: 'Fruits are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.' },
-        { image: '/images/stay2.png', title: 'Yoga', subTitle: 'Yoga is necessary', description: 'Yoga is a group of physical, mental, and spiritual practices or disciplines which originated in ancient India. Yoga is one of the six Āstika (orthodox) schools of Hindu philosophical traditions. There is a broad variety of yoga schools, practices, and goals in Hinduism, Buddhism, and Jainism.' },
-        { image: '/images/stay3.png', title: 'Zumba', subTitle: 'Zumba is necessary', description: 'Zumba is an exercise fitness program created by Colombian dancer and choreographer Alberto "Beto" Pérez during the 1990s. Zumba is a trademark owned by Zumba Fitness, LLC. The Brazilian pop singer Claudia Leitte has become the international ambassador to Zumba Fitness.' },
-        { image: '/images/stay4.png', title: 'GYM', subTitle: 'Gym is necessary', description: 'A gymnasium, also known as a gym, is a covered location for athletics. The word is derived from the ancient Greek gymnasium. They are commonly found in athletic and fitness centers, and as activity and learning spaces in educational institutions. "Gym" is also slang for "fitness center", which is often an indoor facility.' },
+        { mainTitle : 'Choose Your Dance Motivation',mainSubTitle : 'Find your reason to dance and crush those fitness goals with the best live onlinedance classes in the town', 
+        arr: [
+            {image: '/images/programs/dance-1.jpeg', title: 'Work Outs that Don’t Feel like Work', subTitle: 'Fitness Dance Workout', description: ' Enroll in live fitness dance classes to be in your best shape. Let our internationally certified trainers guide you through the perfect workout with our fun and energetic online live dance classes. Try Zumba or Bhangra, weight loss or body tone, aerobics, or stretching; there really is something for everyone here!' },
+            {image: '/images/programs/dance-2.jpeg', title: 'Personalized Dance Routines to Suit Your Needs.', subTitle: 'Versatile Dance Styles', description: ' : Why limit yourself to a stuffy studio when you can dance anywhere you want? Get your dance training from the comfort of your own home (or your favorite park, if thats your thing). Join our electrifying salsa, hip-hop, ballroom, jazz, Bollywood, freestyle, and countless other dance classes! Choose from our range of dance classes to find the right dance style that’s best for you.' },
+            {image: '/images/programs/dance-3.jpeg', title: 'Work Outs that Don’t Feel like Work', subTitle: 'Fitness Dance Workout', description: ' Enroll in live fitness dance classes to be in your best shape. Let our internationally certified trainers guide you through the perfect workout with our fun and energetic online live dance classes. Try Zumba or Bhangra, weight loss or body tone, aerobics, or stretching; there really is something for everyone here!' },
+        ]},
+        { mainTitle : 'Meet the Ultimate At-Gym Companion',mainSubTitle : 'Are you a fitness newbie or a seasoned pro? Either way, we have classes to help you reach your goals and unleash your inner athlete!', image: '/images/fruits.webp', title: 'Fruits', subTitle: 'Fruits are necessary', description: ' are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.' },
+        { mainTitle : 'Personalized Home Workouts',mainSubTitle : 'No Gym, No Problem: Get world-class training online in the comfort of your home.', image: '/images/fruits.webp', title: 'Fruits', subTitle: 'Fruits are necessary', description: 'Fruits are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.' },
+        { mainTitle : 'Online Yoga Classes',mainSubTitle : 'Yoga techniques that tap into the powers of meditation and wellness.', image: '/images/fruits.webp', title: 'Fruits', subTitle: 'Fruits are necessary', description: 'Fruits are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.' },
+        { mainTitle : 'Online Meditation Classes',mainSubTitle : 'Relax your mind and calm your emotions with a free guided meditation that you can practice anywhere, anytime.', image: '/images/fruits.webp', title: 'Fruits', subTitle: 'Fruits are necessary', description: 'Fruits are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.' },
+        { mainTitle : 'Customized Diet and Nutrition Plans',mainSubTitle : 'Let our expert dieticians and nutritionist help you design a diet that works out for you', image: '/images/fruits.webp', title: 'Fruits', subTitle: 'Fruits are necessary', description: 'Fruits are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.' },
+        // { mainTitle : 'Choose Your Dance Motivation',mainSubTitle : 'Find your reason to dance and crush those fitness goals with the best live onlinedance classes in the town', image: '/images/fruits.webp', title: 'Fruits', subTitle: 'Fruits are necessary', description: 'Fruits are the means by which angiosperms disseminate seeds. Edible fruits, in particular, have propagated with the movements of humans and animals in a symbiotic relationship as a means for seed dispersal and nutrition; in fact, humans and many animals have become dependent on fruits as a source of food.' },
+  
 
     ],
     unlimitedVariety : [
@@ -119,11 +130,11 @@ savePageData("Programs", {
 
     ],
     comparison : [
-        { title: "Live Interaction Classes", standard: "Yes", premium: "Yes" },
-        { title: "Frequency", standard: "18 Sessions", premium: "Unlimited" },
-        { title: "Diet Assitance", standard: "No", premium: "Yes" },
-        { title: "Pause Membership", standard: "No", premium: "Yes" },
-        { title: "No Cost EMI", standard: "No", premium: "Yes" },
+        { title: "Live Interaction Classes", tooltip : " Super cool way to build new friendships.",  standard: "Yes", premium: "Yes" },
+        { title: "Frequency",tooltip : " Get rolling! Schedule a session that works for you.",  standard: "18 Sessions", premium: "Unlimited" },
+        { title: "Diet Assitance",tooltip : "Find your holistic meal plan from experts.",  standard: "No", premium: "Yes" },
+        { title: "Pause Membership",tooltip : " Want a break for a month? Freeze your account.",  standard: "No", premium: "Yes" },
+        { title: "No Cost EMI",tooltip : "Easy installments to choose from. ",  standard: "No", premium: "Yes" },
       ],
     price : [
         {
@@ -172,38 +183,38 @@ savePageData("Programs", {
   
 // });
 
-savePageData("checkout", {
-    title: "Checkout",
-    images: [
-        '/images/Click Area.png',
-        '/images/Frame 3927.png',
-        '/images/Rectangle 2812.png',
-        '/images/Rectangle 2812 (1).png',
-        '/images/Discount Badge.png',
-        '/images/Ellipse 203.png',
+// savePageData("checkout", {
+//     title: "Checkout",
+//     images: [
+//         '/images/Click Area.png',
+//         '/images/Frame 3927.png',
+//         '/images/Rectangle 2812.png',
+//         '/images/Rectangle 2812 (1).png',
+//         '/images/Discount Badge.png',
+//         '/images/Ellipse 203.png',
       
-    ],
-    prices: 
-        { 
-            title: '1 Month Premium - Weight Management', 
-            price: '₹ 3499', 
-            offeredPrice: '₹ 6499', 
-            percentage : '-30%',
-            description: 'Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis mol'
-         },
+//     ],
+//     prices: 
+//         { 
+//             title: '1 Month Premium - Weight Management', 
+//             price: '₹ 3499', 
+//             offeredPrice: '₹ 6499', 
+//             percentage : '-30%',
+//             description: 'Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis mol'
+//          },
         
     
-    offers: 
-        { 
+//     offers: 
+//         { 
             
-            title: 'Offers', 
-            description: 'Only Today  | Additional  500 off applied.' ,
-            conditoins : 'T&C'
-        },
-    howItWorks : {
-        title : 'How it works',
-        description : ' Live workouts: Choose from the wide variety of online workouts and join in from anywhere'
-    }
+//             title: 'Offers', 
+//             description: 'Only Today  | Additional  500 off applied.' ,
+//             conditoins : 'T&C'
+//         },
+//     howItWorks : {
+//         title : 'How it works',
+//         description : ' Live workouts: Choose from the wide variety of online workouts and join in from anywhere'
+//     }
        
     
-});
+// });

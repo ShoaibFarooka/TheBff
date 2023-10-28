@@ -1,31 +1,40 @@
-"use client"
-import React from 'react'
-import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
-import { EffectCoverflow, Pagination, Navigation,  } from 'swiper/modules'
-import Image from 'next/image'
-import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa'
+"use client";
+import React, { useState } from "react";
+import { Swiper, SwiperRef, SwiperClass, SwiperSlide } from "swiper/react";
+
+import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
+import Image from "next/image";
+import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 
 // Swiper CSS
-import 'swiper/css'
-import 'swiper/css/effect-coverflow'
-import 'swiper/css/pagination'
-import 'swiper/css/navigation'
-
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 // Assets
-import slide1 from "@/assets/Slide Item — 1.png"
-import slide2 from "@/assets/Slide Item — 2.png"
-import slide3 from "@/assets/Slide Item — 3.png"
-import slide4 from "@/assets/Slide Item — 4.png"
-import slide5 from "@/assets/Slide Item — 5.png"
+// import slide1 from "../../../public/images/stock/dance.jpeg";
+// import slide2 from "../../../public/images/stock/gym.jpeg";
+// import slide3 from "../../../public/images/stock/home-gym.jpeg";
 
+// import slide4 from "../../../public/images/stock/yoga.jpeg";
+// import slide5 from "../../../public/images/stock/meditation.jpeg";
+// import slide6 from "../../../public/images/stock/nutrition.jpeg";
+// import slide7 from "../../../public/images/stock/in-home.jpeg";
 
-const slides = [slide1, slide2, slide3, slide4, slide5]
+// const slides = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
 
-
-const Header = ({ management }: { management?: any }) => {
- 
-  const ref = React.useRef<SwiperRef>(null)
+const Header = ({
+  management,
+  active,
+  setActive,
+}: {
+  management?: any;
+  active?: any;
+  setActive?: any;
+}) => {
+  const ref = React.useRef<SwiperRef>(null);
+  // const [active, setActive] = useState(0);
 
   return (
     <div className="md:px-14 lg:px-28 flex gap-x-1 md:gap-x-5">
@@ -40,10 +49,13 @@ const Header = ({ management }: { management?: any }) => {
       <Swiper
         modules={[EffectCoverflow, Pagination, Navigation]}
         effect="coverflow"
-        grabCursor={true}
+        // grabCursor={true}
         centeredSlides={true}
         slidesPerView="auto"
         loop={true}
+        onSlideChange={(e: SwiperClass) => {
+          setActive(e.realIndex);
+        }}
         coverflowEffect={{
           rotate: 0,
           stretch: 0,
@@ -56,9 +68,6 @@ const Header = ({ management }: { management?: any }) => {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
           hideOnClick: true,
-        }}
-        onSlideChange={(e) => {
-          console.log(e);
         }}
         breakpoints={{
           640: {
@@ -77,7 +86,7 @@ const Header = ({ management }: { management?: any }) => {
             },
           },
         }}
-        className="swiper-container"
+        className="custom-swiper-container"
         ref={ref}
       >
         {management?.map((slide?: any, index?: any) => (
@@ -106,6 +115,6 @@ const Header = ({ management }: { management?: any }) => {
       </div>
     </div>
   );
-}
+};
 
-export default Header
+export default Header;

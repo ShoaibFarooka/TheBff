@@ -39,11 +39,11 @@ import rectangle from "@/assets/Rectangle 1976.png";
 const ImageWithTitle = ({
   image,
   title,
-  active = false,
+  active1 = false,
 }: {
   image: StaticImageData | string;
   title: string;
-  active?: boolean;
+  active1?: boolean;
   // i: number
 }) => {
   return (
@@ -52,7 +52,7 @@ const ImageWithTitle = ({
         <Image
           className={
             "w-[100%] h-full shadow-xl hover:shadow-purple-400 rounded-xl mx-auto " +
-            (active && "shadow-purple-400/60")
+            (active1 && "shadow-purple-400/60")
           }
           src={image}
           alt={title ?? ""}
@@ -65,8 +65,16 @@ const ImageWithTitle = ({
   );
 };
 
-const StayHealthy = ({ stayHealthy }: { stayHealthy?: any }) => {
-  const [active, setActive] = React.useState(0);
+const StayHealthy = ({
+  stayHealthy,
+  active,
+  setActive,
+}: {
+  stayHealthy?: any;
+  active?: any;
+  setActive?: any;
+}) => {
+  // const [active, setActive] = React.useState(0);
   // const interval = React.useRef<any>(
   //   setInterval(() => {
   //     setActive((prev) => prev + 1);
@@ -87,58 +95,69 @@ const StayHealthy = ({ stayHealthy }: { stayHealthy?: any }) => {
       <div className="my-20">
         <div>
           <p className="text-center font-semibold text-[40px] lg:text-[72px] text-[#F2BD4D]">
-            How can you stay healthy?
+            {stayHealthy[active].mainTitle}
           </p>
 
           <p className="text-center text-white px-5">
-            Gorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-            turpis molestie, dictum est a, mattis tellus.
+            {stayHealthy[active].mainSubTitle}
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 mt-10 mb-5 mx-auto px-3 md:px-5 lg:px-14">
+        {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 mt-10 mb-5 mx-auto px-3 md:px-5 lg:px-14">
           <div onClick={() => handleClick(0)}>
             <ImageWithTitle
               image={group1}
               title="Fruits"
-              active={active == 0}
+              active1={active == 0}
             />
           </div>
           <div onClick={() => handleClick(1)}>
-            <ImageWithTitle image={group2} title="Yoga" active={active == 1} />
+            <ImageWithTitle image={group2} title="Yoga" active1={active == 1} />
           </div>
           <div onClick={() => handleClick(2)}>
-            <ImageWithTitle image={group3} title="Zumba" active={active == 2} />
+            <ImageWithTitle image={group3} title="Zumba" active1={active == 2} />
           </div>
           <div onClick={() => handleClick(3)}>
-            <ImageWithTitle image={group4} title="GYM" active={active == 3} />
+            <ImageWithTitle image={group4} title="GYM" active1={active == 3} />
           </div>
+        </div> */}
+        <div className="flex">
+          {stayHealthy[active].arr.map((slide?: any, index?: any) => (
+            <Image
+              key={index}
+              src={slide.image}
+              alt={"Slide " + 1}
+              className="w-[200px] sm:w-[300px] rounded-lg md:w-[500px] lg:w-[700px] duration-300"
+              height={300}
+              width={300}
+            />
+          ))}
         </div>
       </div>
 
       <div className="mb-20 mt-20 px-5">
         <div className="mb-7 md:mb-10">
           <h1 className="text-center font-semibold text-[40px] lg:text-[72px] text-[#F2BD4D]">
-            {stayHealthy[active].title}
+            {stayHealthy[active].arr[0].title}
           </h1>
         </div>
         <div className="flex px-5 flex-col md:flex-row justify-around lg:px-[80px] gap-y-10">
           <div className="w-full md:w-1/2">
             <Image
-              src={stayHealthy[active].image}
+              src={stayHealthy[active].arr[0].image}
               alt=""
               className="max-w-full md:max-w-[75%] transition-all duration-200 rounded-xl"
-              width={300}
-              height={300}
+              width={500}
+              height={500}
             />
           </div>
 
           <div className="w-full md:w-1/2 text-white px-5 lg:px-[50px]">
             <p className="text-center font-semibold text-[40px] mb-7 md:mb-10 text-[#AFCCF8] transition-all duration-200">
-              {stayHealthy[active].subTitle}
+              {stayHealthy[active].arr[0].subTitle}
             </p>
             <p className="text-[17px] text-center transition-all duration-200">
-              {stayHealthy[active].description}
+              {stayHealthy[active].arr[0].description}
             </p>
           </div>
         </div>

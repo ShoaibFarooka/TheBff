@@ -299,3 +299,29 @@ html {
   scrollbar-width: none;
   /* Firefox */
 }
+
+
+
+.navigation-button {
+  --swiper-navigation-size: 20px;
+  display: none ; 
+}
+
+
+@media (min-width: 768px) {
+  .navigation-button {
+    display:flex; 
+  }
+}
+ .swiper-custom .swiper-pagination {
+  bottom:
+-40px !important;
+}
+
+
+
+
+.tooltip:hover .tooltip-text {
+  opacity: 1;
+  bottom: 100%;
+}
