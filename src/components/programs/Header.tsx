@@ -90,14 +90,17 @@ const Header = ({
         ref={ref}
       >
         {management?.map((slide?: any, index?: any) => (
-          <SwiperSlide key={"slide-" + index} className="max-w-max">
+          <SwiperSlide key={"slide-" + index} className="max-w-max relative">
             <Image
               src={slide.image}
               alt={"Slide " + index + 1}
-              className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[700px] duration-300"
+              className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[700px] md:h-[400px] duration-300"
               height={500}
               width={500}
             />
+            <div className="w-full h-[20%] absolute bottom-0  bg-opacity-50 text-[8px] md:text-base bg-black p-4 text-white">
+              <p>{slide.content}</p>
+            </div>
           </SwiperSlide>
         ))}
 
