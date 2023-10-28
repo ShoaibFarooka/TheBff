@@ -122,17 +122,13 @@ const StayHealthy = ({
             <ImageWithTitle image={group4} title="GYM" active1={active == 3} />
           </div>
         </div> */}
-        <div
-          className="
-       grid grid-cols-1 md:grid-cols-3
-         px-10"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3   px-10 ">
           {stayHealthy[active].arr.map((slide?: any, index?: any) => (
             <Image
               key={index}
               src={slide.image}
               alt={"Slide " + 1}
-              className="w-[200px] sm:w-[300px] rounded-lg md:w-[300px] lg:w-[400px] duration-300 mx-10 my-10"
+              className="w-4/5 sm:w-[300px] rounded-lg md:w-[300px] lg:w-[400px] object-cover h-[250px] duration-300 mx-10 my-10"
               height={300}
               width={300}
               onClick={() => handleClick(index)}

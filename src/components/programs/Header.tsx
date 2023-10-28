@@ -92,7 +92,7 @@ const Header = ({
         {management?.map((slide?: any, index?: any) => (
           <SwiperSlide key={"slide-" + index} className="max-w-max">
             <Image
-              src={slide}
+              src={slide.image}
               alt={"Slide " + index + 1}
               className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[700px] duration-300"
               height={500}
