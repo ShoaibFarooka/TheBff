@@ -13,17 +13,16 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 // Assets
-import slide1 from "../../../public/images/stock/dance.jpeg";
-import slide2 from "../../../public/images/stock/gym.jpeg";
-import slide3 from "../../../public/images/stock/home-gym.jpeg";
+// import slide1 from "../../../public/images/stock/dance.jpeg";
+// import slide2 from "../../../public/images/stock/gym.jpeg";
+// import slide3 from "../../../public/images/stock/home-gym.jpeg";
 
-import slide4 from "../../../public/images/stock/yoga.jpeg";
-import slide5 from "../../../public/images/stock/meditation.jpeg";
-import slide6 from "../../../public/images/stock/nutrition.jpeg";
-import slide7 from "../../../public/images/stock/in-home.jpeg";
-import { LucideActivitySquare } from "lucide-react";
+// import slide4 from "../../../public/images/stock/yoga.jpeg";
+// import slide5 from "../../../public/images/stock/meditation.jpeg";
+// import slide6 from "../../../public/images/stock/nutrition.jpeg";
+// import slide7 from "../../../public/images/stock/in-home.jpeg";
 
-const slides = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
+// const slides = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
 
 const Header = ({
   management,
@@ -38,8 +37,8 @@ const Header = ({
   // const [active, setActive] = useState(0);
 
   return (
-    <div className="md:px-14 lg:px-28 flex gap-x-1 md:gap-x-5 swiper-custom">
-      <div className="flex flex-col justify-center items-center navigation-button ">
+    <div className="md:px-14 lg:px-28 flex gap-x-1 md:gap-x-5">
+      <div className="flex flex-col justify-center items-center">
         <FaArrowCircleLeft
           size={30}
           onClick={() => ref.current?.swiper.slidePrev()}
@@ -64,12 +63,7 @@ const Header = ({
           modifier: 1,
           slideShadows: true,
         }}
-        pagination={{
-          el: ".swiper-pagination",
-          clickable: true,
-          // dynamicBullets: true,
-          // dynamicMainBullets: 1, // Number of main bullets (visible bullets)
-        }}
+        pagination={{ el: ".swiper-pagination", clickable: true }}
         navigation={{
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
@@ -98,21 +92,21 @@ const Header = ({
         {management?.map((slide?: any, index?: any) => (
           <SwiperSlide key={"slide-" + index} className="max-w-max">
             <Image
-              src={slide.image}
+              src={slide}
               alt={"Slide " + index + 1}
-              className="w-[200px] sm:w-[400px] rounded-lg md:w-[500px] lg:w-[700px] duration-300"
-              height={1000}
-              width={700}
+              className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[700px] duration-300"
+              height={500}
+              width={500}
             />
           </SwiperSlide>
         ))}
-      </Swiper>
-      <div className="slider-controller">
-        <div className="swiper-pagination"></div>
-      </div>
-      <div className="text-white">{active}</div>
 
-      <div className="flex flex-col justify-center items-center navigation-button">
+        <div className="slider-controller">
+          <div className="swiper-pagination"></div>
+        </div>
+      </Swiper>
+
+      <div className="flex flex-col justify-center items-center">
         <FaArrowCircleRight
           size={30}
           onClick={() => ref.current?.swiper.slideNext()}
