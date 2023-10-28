@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image, { StaticImageData } from "next/image";
 
 import group1 from "@/assets/fruits.webp";
@@ -81,13 +81,14 @@ const StayHealthy = ({
   //   }, 5000)
   // );
 
-  const handleClick = (i: number) => {
-    setActive(i);
-    // clearInterval(interval.current);
-    // interval.current = setInterval(() => {
-    //   setActive((prev) => prev + 1);
-    // }, 5000);
-  };
+  // const handleClick = (i: number) => {
+  //   setActive(i);
+  // clearInterval(interval.current);
+  // interval.current = setInterval(() => {
+  //   setActive((prev) => prev + 1);
+  // }, 5000);
+  // };
+  const [click, handleClick] = useState(0);
 
   return (
     <>
@@ -121,15 +122,20 @@ const StayHealthy = ({
             <ImageWithTitle image={group4} title="GYM" active1={active == 3} />
           </div>
         </div> */}
-        <div className="flex">
+        <div
+          className="
+       grid grid-cols-1 md:grid-cols-3
+         px-10"
+        >
           {stayHealthy[active].arr.map((slide?: any, index?: any) => (
             <Image
               key={index}
               src={slide.image}
               alt={"Slide " + 1}
-              className="w-[200px] sm:w-[300px] rounded-lg md:w-[500px] lg:w-[700px] duration-300"
+              className="w-[200px] sm:w-[300px] rounded-lg md:w-[300px] lg:w-[400px] duration-300 mx-10 my-10"
               height={300}
               width={300}
+              onClick={() => handleClick(index)}
             />
           ))}
         </div>
@@ -138,13 +144,13 @@ const StayHealthy = ({
       <div className="mb-20 mt-20 px-5">
         <div className="mb-7 md:mb-10">
           <h1 className="text-center font-semibold text-[40px] lg:text-[72px] text-[#F2BD4D]">
-            {stayHealthy[active].arr[0].title}
+            {stayHealthy[active].arr[click].title}
           </h1>
         </div>
         <div className="flex px-5 flex-col md:flex-row justify-around lg:px-[80px] gap-y-10">
           <div className="w-full md:w-1/2">
             <Image
-              src={stayHealthy[active].arr[0].image}
+              src={stayHealthy[active].arr[click].image}
               alt=""
               className="max-w-full md:max-w-[75%] transition-all duration-200 rounded-xl"
               width={500}
@@ -154,10 +160,10 @@ const StayHealthy = ({
 
           <div className="w-full md:w-1/2 text-white px-5 lg:px-[50px]">
             <p className="text-center font-semibold text-[40px] mb-7 md:mb-10 text-[#AFCCF8] transition-all duration-200">
-              {stayHealthy[active].arr[0].subTitle}
+              {stayHealthy[active].arr[click].subTitle}
             </p>
             <p className="text-[17px] text-center transition-all duration-200">
-              {stayHealthy[active].arr[0].description}
+              {stayHealthy[active].arr[click].description}
             </p>
           </div>
         </div>
