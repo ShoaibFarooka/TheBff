@@ -1,10 +1,13 @@
-import Image from "next/image";
-import Instagram from "@/assets/instagram 1.png";
+// import Image from "next/image";
+// import Instagram from "@/assets/instagram 1.png";
 // import Twitter from "@/assets/Twitter (1).png";
-import Gmail from "@/assets/Gmail (1).png";
+// import Gmail from "@/assets/Gmail (1).png";
 // import LinkedIn from "@/assets/linkedin-svgrepo-com 1.png";
 import Logo from "./Logo";
 import Link from "next/link";
+// import { FaInstagram } from "react-icons/fa";
+import { BiLogoGmail } from "react-icons/bi";
+import { AiFillInstagram } from "react-icons/ai";
 
 const links = {
   email: "mailto:thebffupdates@gmail.com",
@@ -43,7 +46,9 @@ export default function Footer() {
               <h1 className="text-xl font-semibold">Website Links</h1>
               {Object.entries(links.websiteLinks).map(([key, value], index) => (
                 <Link href={value} key={"link-" + index}>
-                  <h2 className="text-sm font-[400] my-2 hover:text-blue-400">{key}</h2>
+                  <h2 className="text-sm font-[400] my-2 hover:text-blue-400">
+                    {key}
+                  </h2>
                 </Link>
               ))}
               {/* <div className="md:text-sm font-[400] my-2">Home</div>
@@ -72,18 +77,20 @@ export default function Footer() {
 
               <div className="flex mt-2 gap-2">
                 <a href={links.socials.instagram} target="_blank">
-                  <Image
+                  {/* <Image
                     className="mr-3 w-8 h-8 md:w-full md:h-full"
                     src={Instagram}
                     alt={""}
-                  />
+                  /> */}
+                  <AiFillInstagram className="text-4xl" />
                 </a>
                 <a href={links.email} target="_blank">
-                  <Image
+                  {/* <Image
                     className="mr-3 w-8 h-8 md:w-full md:h-full"
                     src={Gmail}
                     alt={""}
-                  />
+                  /> */}
+                  <BiLogoGmail className="text-4xl" />
                 </a>
                 {/* <Image
                   className="mr-3 w-8 h-8 md:w-full md:h-full"

@@ -79,9 +79,11 @@ export default function Classes({ classes }: { classes?: Class[] }) {
                 delay: 4000,
                 disableOnInteraction: false,
               }}
-              centerInsufficientSlides
-              centeredSlides
+              // centerInsufficientSlides
+              // centeredSlides
               onSlideChange={(e: SwiperClass) => setActive(e.activeIndex)}
+              // fill images in the slider
+
               breakpoints={{
                 320: {
                   direction: "horizontal",
@@ -93,6 +95,8 @@ export default function Classes({ classes }: { classes?: Class[] }) {
                 },
               }}
               className="max-h-[90vh]"
+              loop
+              // loopedSlides={3}
             >
               {classes?.map((c, index?: any) => (
                 <SwiperSlide key={index} className="w-full">
