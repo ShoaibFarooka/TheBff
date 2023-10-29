@@ -1,10 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     experimental: {
-        serverActions: true
+        // serverActions: true
     },
     images: {
-        domains: ['localhost', 'res.cloudinary.com', 'media.graphassets.com', 'loremflickr.com', 'picsum.photos']
+        // domains: ['localhost', 'res.cloudinary.com', 'media.graphassets.com', 'loremflickr.com', 'picsum.photos'],
+        remotePatterns: [{
+            hostname: '**'
+        }]
     },
     reactStrictMode: false,
     env: {

@@ -38,7 +38,7 @@ const Header = ({
 
   return (
     <div className="md:px-14 lg:px-28 flex gap-x-1 md:gap-x-5">
-      <div className="flex flex-col justify-center items-center">
+      <div className="hidden md:flex flex-col justify-center items-center">
         <FaArrowCircleLeft
           size={30}
           onClick={() => ref.current?.swiper.slidePrev()}
@@ -63,7 +63,7 @@ const Header = ({
           modifier: 1,
           slideShadows: true,
         }}
-        pagination={{ el: ".swiper-pagination", clickable: true }}
+        pagination={{ el: "#header-pagination", clickable: true }}
         navigation={{
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
@@ -90,26 +90,28 @@ const Header = ({
         ref={ref}
       >
         {management?.map((slide?: any, index?: any) => (
-          <SwiperSlide key={"slide-" + index} className="max-w-max relative">
-            <Image
-              src={slide.image}
-              alt={"Slide " + index + 1}
-              className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[700px] md:h-[400px] duration-300"
-              height={500}
-              width={500}
-            />
-            <div className="w-full h-[20%] absolute bottom-0  bg-opacity-50 text-[8px] md:text-base bg-black p-4 text-white">
-              <p>{slide.content}</p>
+          <SwiperSlide key={"slide-" + index} className="max-w-max">
+            <div className="relative">
+              <Image
+                src={slide.image}
+                alt={"Slide " + index + 1}
+                className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[600px] md:h-[350px] duration-300 rounded-xl"
+                height={500}
+                width={500}
+              />
+              <div className="w-full min-h-[20%] absolute bottom-0 bg-opacity-50 text-[8px] md:text-base bg-black p-4 text-white">
+                <p>{slide.content}</p>
+              </div>
             </div>
           </SwiperSlide>
         ))}
-
-        <div className="slider-controller">
-          <div className="swiper-pagination"></div>
-        </div>
+        <div id="header-pagination"></div>
       </Swiper>
 
-      <div className="flex flex-col justify-center items-center">
+      {/* <div className="slider-controller "> */}
+      {/* </div> */}
+
+      <div className="hidden md:flex flex-col justify-center items-center">
         <FaArrowCircleRight
           size={30}
           onClick={() => ref.current?.swiper.slideNext()}
