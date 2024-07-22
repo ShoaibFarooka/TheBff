@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
 import downArrow from "@/assets/Vector (4).png";
 import { isEmail } from "@/lib";
 import Image from "next/image";
+import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 
 export default function Partner() {
@@ -23,13 +23,6 @@ export default function Partner() {
       gymName = e.target.gymName.value,
       City = e.target.City.value,
       message = e.target.message.value;
-    console.log(name);
-    console.log(email);
-    console.log(phone);
-    console.log(InterestedIn);
-    console.log(gymName);
-    console.log(City);
-    console.log(message);
 
     if (!isEmail(email)) return toast.error("Invalid email address");
 

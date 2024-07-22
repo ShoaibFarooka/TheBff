@@ -3,8 +3,8 @@
 // import Twitter from "@/assets/Twitter (1).png";
 // import Gmail from "@/assets/Gmail (1).png";
 // import LinkedIn from "@/assets/linkedin-svgrepo-com 1.png";
-import Logo from "./Logo";
 import Link from "next/link";
+import Logo from "./Logo";
 // import { FaInstagram } from "react-icons/fa";
 import { BiLogoGmail } from "react-icons/bi";
 
@@ -44,8 +44,8 @@ export default function Footer() {
             <div className="text-left col-span-1 md:col-span-2">
               <h1 className="text-xl font-semibold mb-5">Website Links</h1>
 
-              {Object.entries(links.websiteLinks).map(([key, value], index) => (
-                <Link href={value} key={"link-" + index}>
+              {Object.entries(links.websiteLinks)?.map(([key, value], index) => (
+                <Link href={value} key={"footer-link-" + index}>
                   <h2 className="text-sm font-[400] my-2 hover:text-blue-400">
                     {key}
                   </h2>

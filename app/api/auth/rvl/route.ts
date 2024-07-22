@@ -1,7 +1,7 @@
-import { NextRequest } from "next/server";
 import { sendVerifcationLinks } from "@/lib/auth";
-import { connectDB } from "@/lib/db"
-import User from '@/models/user'
+import { connectDB } from "@/lib/db";
+import User from '@/models/User';
+import { NextRequest } from "next/server";
 
 export const POST = async (req: NextRequest) => {
 
@@ -24,7 +24,7 @@ export const POST = async (req: NextRequest) => {
 
 
         const res = await sendVerifcationLinks({ method, ...(method == 'e' ? {email} : {}), ...(method == 'w' ? {phone} : {}) } as any);
-        console.log(res)
+        // console.log(res)
 
         return new Response(JSON.stringify({ success: true, message: 'Verification link sent successfully!' }), { status: 200 })
 

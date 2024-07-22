@@ -1,5 +1,5 @@
+import { resetPassword, sendResetPasswordEmail } from "@/lib/auth";
 import { NextRequest } from "next/server";
-import { sendResetPasswordEmail, resetPassword } from "@/lib/auth";
 
 
 export const POST = async (req: NextRequest) => {
@@ -21,7 +21,7 @@ export const PUT = async (req: NextRequest) => {
     if (!newPass || !token) return new Response(JSON.stringify({ message: "New Password and Token are required" }), { status: 400 })
 
     const res = await resetPassword({ newPass, token });
-    console.log(res)
+    // console.log(res)
     if (!res.success) return new Response(JSON.stringify({ message: res.message }), { status: 400 })
 
     return new Response(JSON.stringify({ success: true, message: res.message ?? 'Password reset successfully!' }), { status: 200 })

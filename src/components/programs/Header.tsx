@@ -1,40 +1,115 @@
 "use client";
-import React, { useState } from "react";
-import { Swiper, SwiperRef, SwiperClass, SwiperSlide } from "swiper/react";
+import React, { useEffect } from "react";
+import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from "swiper/react";
 
-import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
+import { EffectCoverflow, Navigation, Pagination } from "swiper/modules";
 
 // Swiper CSS
+import { Program } from "@/types/program";
+import { useSearchParams } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-// Assets
-// import slide1 from "../../../public/images/stock/dance.jpeg";
-// import slide2 from "../../../public/images/stock/gym.jpeg";
-// import slide3 from "../../../public/images/stock/home-gym.jpeg";
 
-// import slide4 from "../../../public/images/stock/yoga.jpeg";
-// import slide5 from "../../../public/images/stock/meditation.jpeg";
-// import slide6 from "../../../public/images/stock/nutrition.jpeg";
-// import slide7 from "../../../public/images/stock/in-home.jpeg";
+import div1 from "@/assets/div (1).png";
+import div from "@/assets/div.png";
 
-// const slides = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
+const content: Class[] = [
+  {
+    id: "dance",
+    title: "Dance",
+    subTitle: "Online",
+    description: `Looking for a fun workout alternative? Try our online dance classes! You can get fit, learn different styles, or prepare for your wedding dance. It's really cool! Don't just take our word for it - come join us and see for yourself just how fun our classes are!`,
+    image: div1,
+  },
+  {
+    id: "at-gym",
+    title: "At-Gym",
+    subTitle: "Online",
+    description: `Sweat now, shine later. We offer it all - Strength training, HIIT, Functional Fitness, Crossfit, Bodybuilding, and customized workout plans. These high-energy, high-intensity online fitness classes will take your usual gym routine to the next level! Get ready to crush your goals with our expert guidance.`,
+    image: div,
+  },
+  {
+    id: "at-home",
+    title: "At-Home",
+    subTitle: "Online",
+    description: `Join our live interactive fitness workout classes to get fit without leaving your house. Choose from a variety of options including bodyweight training, resistance band training, HIIT, Pilates, and personalized workout plans tailored to your fitness goals.`,
+    image: div1,
+  },
+  {
+    id: "yoga",
+    title: "Yoga",
+    subTitle: "Online",
+    description: `Want to reduce stress and stay mindful while you exercise? Try our online live yoga classes that focus on the full mind-body connection. Whether you're a seasoned yogi or a newbie to the mat, our interactive yoga classes offer something for everyone. Choose your type as Hatha, Vinyasa, Ashtanga, or Power Yoga or simply let us help you find it!`,
+    image: div1,
+  },
+  {
+    id: "meditation",
+    title: "Meditation",
+    subTitle: "Online",
+    description: `Need a break from the daily grind? Our guided meditation classes offer a sanctuary of serenity and relaxation. Increase your focus and improve your overall well-being. Choose your starting point - beginner, intermediate, or advanced and Let BFF’s experts guide you to a healthier, more purposeful future`,
+    image: div1,
+  },
+  {
+    id: "nutrition",
+    title: "Nutrition",
+    subTitle: "Online",
+    description: `Need some help with lifestyle changes? Want to say goodbye to fad diets and quick fixes?  We know it’s a battle! But your health is our priority. We're here to help you with weight management, PCOS (PCOD) relief plan, psoriasis relief, thyroid relief, general nutrition guidance, and more.`,
+    image: div,
+  },
+  {
+    id: "in-home",
+    title: "In-Home",
+    subTitle: "Online",
+    description: `We guarantee the fitness results you’re looking for. Our unique in-home workout system is perfect if you have limited time and space. But that's not all – we prioritize convenience and affordability too! Time to prioritize your health and well-being without worrying about the cost of care. Ditch excuses with BFF’s In-Home workout sessions. `,
+    image: div1,
+  },
+];
+
+type Class = {
+  id: string;
+  title: string;
+  subTitle: string;
+  description: string;
+  image: string | StaticImageData;
+};
+
 
 const Header = ({
-  management,
-  active,
-  setActive,
+  programs,
+  setCurrentProgram,
 }: {
-  management?: any;
-  active?: any;
-  setActive?: any;
+    programs: Program[];
+    setCurrentProgram: React.Dispatch<React.SetStateAction<Program>>;
 }) => {
   const ref = React.useRef<SwiperRef>(null);
-  // const [active, setActive] = useState(0);
+  const searchParams = useSearchParams();
+
+  // On page load, check if there is a program in the url and set the current program
+  useEffect(() => {
+    if (!ref.current) return;
+
+    if (!programs || !programs.length) return;
+    const programId = searchParams.get("program");
+    if (!programId) return;
+
+    const program = programs.find((x) => x.id === programId);
+    if (!program) return;
+
+    const sliderIndex = ref.current?.swiper.slides.findIndex(
+      (x) => x.id === "header-slide-" + program.id
+    );
+
+    ref.current?.swiper.slideTo(sliderIndex ?? 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, ref]);
+
+  if (!programs?.length) return null;
 
   return (
     <div className="md:px-14 lg:px-28 flex gap-x-1 md:gap-x-5">
@@ -54,7 +129,7 @@ const Header = ({
         slidesPerView="auto"
         loop={true}
         onSlideChange={(e: SwiperClass) => {
-          setActive(e.realIndex);
+          setCurrentProgram(programs[e.realIndex]);
         }}
         coverflowEffect={{
           rotate: 0,
@@ -89,18 +164,25 @@ const Header = ({
         className="custom-swiper-container"
         ref={ref}
       >
-        {management?.map((slide?: any, index?: any) => (
-          <SwiperSlide key={"slide-" + index} className="max-w-max">
-            <div className="relative">
+        {programs?.map((slide, index?: any) => (
+          <SwiperSlide
+            key={"header-slide-" + index}
+            className="max-w-max relative"
+            id={"header-slide-" + slide.id}
+          >
+            <div className="">
               <Image
-                src={slide.image}
+                src={
+                  slide.image ??
+                  `https://source.unsplash.com/random/400x400,weight-management${index}`
+                }
                 alt={"Slide " + index + 1}
                 className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[600px] md:h-[350px] duration-300 rounded-xl"
                 height={500}
                 width={500}
               />
               <div className="w-full min-h-[20%] absolute bottom-0 bg-opacity-50 text-[8px] md:text-base bg-black p-4 text-white">
-                <p>{slide.content}</p>
+                <p>{slide.caption}</p>
               </div>
             </div>
           </SwiperSlide>
@@ -118,6 +200,7 @@ const Header = ({
           className="fill-white/30 hover:fill-purple-400 hover:text-white cursor-pointer"
         />
       </div>
+      <Toaster />
     </div>
   );
 };

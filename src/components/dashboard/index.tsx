@@ -1,116 +1,28 @@
 "use client";
 // import ProgressBar from '@/components/dashboard/ProgressBar'
-import React, { useState } from "react";
 
-import { BiDotsHorizontalRounded } from "react-icons/bi";
-import Image from "next/image";
 import CardsCarousel from "@/components/dashboard/CardsCarousel";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
 import BookSlot from "./BookSlot";
 
-import profilePhoto from "@/assets/Photo.png";
-import person from "@/assets/Person.png";
-import text from "@/assets/Text.png";
-import squaare from "@/assets/Square.png";
-import close from "@/assets/Close.png";
-import gift from "@/assets/Gift.png";
-
-// import
 
 export default function Dashboard({ userdata }: { userdata: any }) {
-  const [side, setSide] = useState(false);
-  const ref = React.useRef<HTMLElement>(null);
 
   // morning, afternoon, evening, night
   const time = new Date().getHours();
   const greeting =
     time < 12 ? "Good Morning" : time < 18 ? "Good Afternoon" : "Good Evening";
 
-  const handleSide = () => {
-    // replace animation classes
-    if (ref.current?.classList.contains("animate-slideInRight")) {
-      ref.current?.classList.replace(
-        "animate-slideInRight",
-        "animate-slideOutRight"
-      );
-      setTimeout(() => setSide(!side), 300);
-    } else {
-      ref.current?.classList.replace(
-        "animate-slideOutRight",
-        "animate-slideOutRight"
-      );
-      setSide(!side);
-    }
-  };
+  const profileText = userdata?.name
+    ?.split(" ")
+    ?.map((name: string) => name.charAt(0).toUpperCase())
+    .join("");
 
   return (
     <>
-      {side && (
-        <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-md"
-          style={{ zIndex: 10000 }}
-          onClick={handleSide}
-        >
-          <aside
-            ref={ref}
-            className={`bg-gradient-to-r from-[#001B61] to-[#00154A] rounded-3xl h-screen fixed top-0 right-0 transition-transform transform text-white flex flex-col items-center justify-around animate-slideInRight 
-            }`}
-          >
-            <div className="h-full flex flex-col justify-between py-8">
-              <div className="pl-5 pr-10">
-                <div className="flex items-center mb-10 justify-between ">
-                  <Image src={profilePhoto} className="w-12" alt=" " />
-                  <div className="ml-5">
-                    <h1>Ayush Sharma</h1>
-                    <p>Male 22</p>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex items-center mb-2">
-                    <Image src={person} alt="" />
-                    <p className="ml-5">My Profile</p>
-                  </div>
-                  <div className="flex items-center  mb-2">
-                    <Image src={text} alt="" />
-                    <p className="ml-5">Health Reports</p>
-                  </div>
-
-                  <div className="flex items-center  mb-2">
-                    <Image src={squaare} alt="" />
-                    <p className="ml-5">Queries</p>
-                  </div>
-                  <div className="flex items-center  mb-2">
-                    <Image src={close} alt="" />
-                    <p className="ml-5">Blogs</p>
-                  </div>
-                  <div className="flex items-center  mb-2">
-                    <Image src={gift} alt="" />
-                    <p className="ml-5">Rewards</p>
-                  </div>
-                </div>
-              </div>
-              <div className="h-[15%] flex items-end justify-center">
-                <button className="px-10 py-1.5 rounded-md bg-[#C56936] hover:-translate-y-0.5 hover:scale-105 transition-all duration-200">
-                  Logout
-                </button>
-              </div>
-            </div>
-          </aside>
-        </div>
-      )}
-
       <div
-        // onClick={side ? handleSide : undefined}
         className={`w-full h-full py-[80px] px-[40px] lg:py-[90px] lg:px-[100px]`}
       >
-        {/* <button className="w-[60px]" onClick={handleSide}> */}
-        <Image
-          src={profilePhoto}
-          onClick={handleSide}
-          className="w-8 md:w-12 ml-auto cursor-pointer"
-          alt=""
-        />
-        {/* </button> */}
-
         <div className="flex justify-center items-center">
           <h1 className="text-white font-[600] text-[32px] lg:text-[48px] mb-10">
             {greeting}, <span className="text-[#F2BD4D]">{userdata?.name}</span>
@@ -200,20 +112,31 @@ export default function Dashboard({ userdata }: { userdata: any }) {
           {/* =================PROFILE========================== */}
           <div className=" bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1 shadow-2xl shadow-[#4A2F70]/50">
             <div className="flex justify-between">
-              <Image src={profilePhoto} alt="" />
+              {/* <Image src={profilePhoto} alt="" /> */}
+              <div className="w-10 h-10 p-2 rounded-full bg-y/50 center select-none">
+                {profileText}
+              </div>
               <BiDotsHorizontalRounded color="white" />
             </div>
             <div className="my-5">
-              <p className="text-white">Ayush Sharma</p>
-              <p className="text-gray-400">Male 22</p>
+              <p className="text-white">{userdata?.name}</p>
+              <p className="text-gray-400">{userdata?.email}</p>
+              {/* <p className="text-gray-400">Male 22</p> */}
             </div>
             <div className="my-5">
+              <p className="text-white">Your Subscriptions</p>
+              <div className="mt-2">
+                
+              </div>
+            </div>
+
+            {/* <div className="my-5">
               <p className="text-white">Standard Plan</p>
               <p className="text-gray-400">Valid Untill : 23/06/2023</p>
-            </div>
-            <button className="bg-gradient-to-r from-[#EC77AB] to-[#7873F5] text-white px-4 py-3 rounded-lg border  border-[#E577B0] ">
+            </div> */}
+            {/* <button className="bg-gradient-to-r from-[#EC77AB] to-[#7873F5] text-white px-4 py-3 rounded-lg border  border-[#E577B0] ">
               Upgrade to Premium
-            </button>
+            </button> */}
           </div>
 
           {/* ===============Stats=================== */}

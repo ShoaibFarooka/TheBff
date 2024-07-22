@@ -1,7 +1,7 @@
 "use client";
-import { PopupButton, useCalendlyEventListener } from "react-calendly";
-import React from "react";
 import { useRouter } from "next/navigation";
+import React from "react";
+import { PopupButton, useCalendlyEventListener } from "react-calendly";
 
 const BookSlot = ({ url, user }: { url: string; user: any }) => {
   const [show, setShow] = React.useState(false);
@@ -26,7 +26,7 @@ const BookSlot = ({ url, user }: { url: string; user: any }) => {
 
   const handleSubmit = (e: any) => {
     // router.refresh()
-    console.log(e);
+    // console.log(e);
   };
 
   useCalendlyEventListener({

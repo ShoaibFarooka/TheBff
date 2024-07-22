@@ -1,7 +1,7 @@
 // methods to get posts by various filters from graphcms
 import { GraphQLClient } from 'graphql-request'
-import { Post, Author } from '../types/blog'
 import { cache } from 'react'
+import { Author, Post } from '../types/blog'
 const graphcms = new GraphQLClient(process.env.HYGRAPH_ENDPOINT! ?? 'https://ap-south-1.cdn.hygraph.com/content/cllt2ecg034pw01ue6nuw42kd/master')
 
 const getString = (value: string | undefined) => value ? `"${value}"` : undefined
@@ -123,7 +123,7 @@ const getPosts = cache(async (queries?: IGetPostQueries, options?: IGetPostOptio
         const data = await graphcms.request(query) as ReturnType
         return data
     } catch (error: any) {
-        console.log(error.message)
+        console.error(error.message)
         return {
             posts: [], postsConnection: { aggregate: { count: 0 } }
         } as { posts: Post[], postsConnection: { aggregate: { count: number } } }
@@ -149,7 +149,7 @@ const searchPosts = async (search: string, options?: IGetPostOptions): Promise<R
         const data = await graphcms.request(query) as ReturnType
         return data
     } catch (error: any) {
-        console.log(error.message)
+        console.error(error.message)
         return {
             posts: [], postsConnection: { aggregate: { count: 0 } }
         }
@@ -170,7 +170,7 @@ const getPost = async (slug: string): Promise<Post | null> => {
         const data = await graphcms.request(query) as { post: Post | null }
         return data.post
     } catch (error: any) {
-        console.log(error.message)
+        console.error(error.message)
         return null
     }
 }
@@ -193,11 +193,12 @@ const getAuthors = async () => {
         const data = await graphcms.request(query) as { authors: Author[] }
         return data.authors
     } catch (error: any) {
-        console.log(error.message)
+        console.error(error.message)
         return []
     }
 }
 
 // getPosts({  slug: '3' }).then(console.log)
 
-export { getPosts, getPost, getAuthors, searchPosts }
+export { getAuthors, getPost, getPosts, searchPosts }
+

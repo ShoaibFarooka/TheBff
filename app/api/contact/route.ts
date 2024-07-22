@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server"
+import { isEmail } from "@/lib"
 import { sendEmail } from "@/lib/email"
-import { getQueryParams, isEmail } from "@/lib"
+import { NextRequest, NextResponse } from "next/server"
 // import contactRequestTemplate from "@/lib/templates/contactRequest"
 import contactRequestTemplate from "@/lib/templates/contactRequest"
 
@@ -10,7 +10,7 @@ export const POST = async (req: NextRequest) => {
             
             const { email, name, message } = await req.json() as any
 
-            console.log(email, name, message)
+        // console.log(email, name, message)
     
             if (!email || !name || !message) {
                 return NextResponse.json({ error: "Missing fields" }, { status: 400 })

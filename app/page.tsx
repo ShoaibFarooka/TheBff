@@ -1,9 +1,10 @@
-import React from "react";
-import Image, { StaticImageData } from "next/image";
-import Head from "next/head";
 import ContactForm from "@/components/ContactForm";
 import Coaches from "@/components/home/Coaches";
 import { getPageData } from "@/lib/db";
+import Head from "next/head";
+import Image from "next/image";
+
+import "@/lib/stripe";
 
 // Import Assets
 import Component22 from "@/assets/Component 22.png";
@@ -17,11 +18,8 @@ import Component43 from "@/assets/Component 43.png";
 import Component44 from "@/assets/Component 44.png";
 import Classes from "@/components/home/Classes";
 
-
-
 export default async function Home() {
   const pageData = (await getPageData("home")) as any;
-  
   const classes = pageData?.classes;
   const coaches = pageData?.coches;
 

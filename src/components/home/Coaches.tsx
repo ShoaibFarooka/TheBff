@@ -1,17 +1,15 @@
 "use client";
-import React from "react";
 import Image, { StaticImageData } from "next/image";
-import styles from "@/styles/Home.module.scss";
 
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { Scrollbar, Mousewheel } from "swiper/modules";
+import { Mousewheel, Scrollbar } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Assets
-import coach1 from "@/assets/kindpng_218182.png";
 import coach2 from "@/assets/Frame 39.png";
 import coach3 from "@/assets/Frame 40.png";
+import coach1 from "@/assets/kindpng_218182.png";
 
-const coches = [
+const coaches1 = [
   { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
   { name: "Arman", title: "E-REPS", image: coach2 },
   { name: "Birjot", title: "E-REPS", image: coach3 },
@@ -116,7 +114,7 @@ const Coaches = ({ coaches }: { coaches: Coach[] }) => {
           }}
           className="pt-4 min-h-min"
         >
-          {coaches?.map((coach, index) => (
+          {coaches1?.map((coach, index) => (
             <SwiperSlide className="mb-5" key={`slide-${index + 1}`}>
               <Coach
                 key={"coach-" + index}

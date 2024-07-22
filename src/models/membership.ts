@@ -1,6 +1,7 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, Types, model, models } from 'mongoose';
 
 const membershipSchema = new Schema({
+    _id: { type: String, required: true },
     user: {
         type: String,
         required: true,

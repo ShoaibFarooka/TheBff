@@ -1,6 +1,6 @@
-import { NextRequest } from "next/server"
 import { authenticate } from "@/lib/auth"
-import { getUserData } from "@/lib/dbHelpers"
+import { getUserDataWithSubscription } from "@/lib/dbHelpers"
+import { NextRequest } from "next/server"
 
 export const GET = async (req: NextRequest) => {    
     const auth = await authenticate()
@@ -8,7 +8,7 @@ export const GET = async (req: NextRequest) => {
     if (!auth.success || !auth.user?.email) 
         return new Response(" ", { status: 404 })
 
-    const userData = await getUserData(auth.user.email)
+    const userData = await getUserDataWithSubscription(auth.user.email)
 
     userData?.forEach((user: any, i: number) => {
         // calculate expiry date using createdAt and plan validity

@@ -1,14 +1,14 @@
 "use server"
-import jwt, { JsonWebTokenError } from 'jsonwebtoken'
+import '@/lib/db'
+import { connectDB } from "@/lib/db"
+import User from '@/models/User'
+import { UserRole } from '@/types/user'
 import bcrypt from 'bcryptjs'
-import User from '@/models/user'
+import jwt, { JsonWebTokenError } from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 import nodemailer from 'nodemailer'
-import type { User as UserType } from '@/types/user'
-import '@/lib/db'
-import { UserRole } from '@/types/user'
-import { connectDB } from "@/lib/db"
 import { baseUrl } from './config'
+import { devLog, getURL } from './helpers'
 
 // methods to login, register, and authenticate users
 
@@ -289,7 +289,7 @@ export async function sendVerifcationLinks ( data : IParams ) {
 async function sendEmailVerificationLink (email: string) {
     try {
         const emailToken = jwt.sign( { email, verifyEmail: true }, secret, { expiresIn: '1h' } )
-        const url = `${process.env.BASE_URL ?? 'http://localhost:3000'}/verify-token?token=${emailToken}`
+        const url = `${getURL()}/verify-token?token=${emailToken}`
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
@@ -297,7 +297,9 @@ async function sendEmailVerificationLink (email: string) {
             html: `Please click this link to verify your email: <a href="${url}">${url}</a>`
         }
 
-        await transporter.sendMail(mailOptions)
+        //* Remove log
+        devLog(url);
+        await transporter.sendMail(mailOptions);
 
         return { success: true }
     } catch (error) {
