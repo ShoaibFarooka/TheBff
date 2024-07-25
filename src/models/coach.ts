@@ -3,20 +3,29 @@
 import mongoose, { Document, Schema } from "mongoose";
 import "./Program";
 
-export interface CoachType extends Document {
+export interface CoachType {
   name: string;
-  specialization: string;
+  email: string;
   profileImage: string;
+  calendarLink: string;
+  programIds: string[];
+  calendlyToken: string;
   // add more fields as needed
 }
 
-const coachSchema: Schema = new Schema(
+const coachSchema: Schema = new Schema<CoachType & Document>(
   {
     name: { type: String, required: true },
-    specialization: { type: String, required: true },
+    email: { type: String, required: true },
     profileImage: { type: String, required: true },
-    // programs: [{ type: Schema.Types.ObjectId, ref: "Program" }],
-    // add more fields as needed
+    calendarLink: { type: String, required: true },
+    calendlyToken: { type: String, required: true },
+    programIds: [
+      {
+        type: String,
+        ref: "Program",
+      },
+    ],
   },
   {
     versionKey: false,
@@ -40,7 +49,9 @@ coachSchema.virtual("programs", {
   },
 });
 
-const Coach = mongoose.models.Coach || mongoose.model<CoachType>("Coach", coachSchema);
+const Coach =
+  mongoose.models.Coach ||
+  mongoose.model<CoachType & Document>("Coach", coachSchema);
 
 // withDb(async () => {
 //   const d = await Coach.findOne({ name: 'John Doe' }).populate('programs', 'name -_id -coaches id')

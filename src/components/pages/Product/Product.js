@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { Modal, ModalBody, ModalHeader } from "reactstrap";
+import Footer from "../../common/Footer";
 import Header from "../../common/Header";
 import NewsletterSection from "../../common/NewsletterSection";
-import Footer from "../../common/Footer";
-import { Modal, ModalBody, ModalHeader } from "reactstrap";
 
 const Product = () => {
   const [modal, setModal] = useState(false);
@@ -588,7 +588,7 @@ const Product = () => {
                             <span>
                               <img src="./assets/img/check-grey.svg" />
                             </span>
-                            Rewards & Achievement's.
+                            Rewards & Achievement{"'"}s.
                           </p>
                           <button class="btn primary-btn" type="button">
                             Buy now
@@ -694,7 +694,7 @@ const Product = () => {
                             <span>
                               <img src="./assets/img/check-grey.svg" />
                             </span>
-                            Rewards & Achievement's.
+                            Rewards & Achievement{"'"}s.
                           </p>
                           <button class="btn primary-btn" type="button">
                             Buy now
@@ -800,7 +800,7 @@ const Product = () => {
                             <span>
                               <img src="./assets/img/check-grey.svg" />
                             </span>
-                            Rewards & Achievement's.
+                            Rewards & Achievement{"'"}s.
                           </p>
                           <button class="btn primary-btn" type="button">
                             Buy now

@@ -2,21 +2,48 @@
 // import ProgressBar from '@/components/dashboard/ProgressBar'
 
 import CardsCarousel from "@/components/dashboard/CardsCarousel";
+import { Plan, Subscription } from "@/types/subscription";
+import { Stats, User } from "@/types/user";
+import { useMemo } from "react";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import BookSlot from "./BookSlot";
+import Contact from "./Contact";
+import { useDashboardState } from "./state";
+import StatsGraph from "./StatsGraph";
+import UserStats from "./UserStats";
 
+type UserData = User & {
+  classes: any[];
+  stats: Stats;
+  subscriptions: Array<
+    Subscription & {
+      plan: Plan;
+    }
+  >;
+};
 
-export default function Dashboard({ userdata }: { userdata: any }) {
+export default function Dashboard() {
+  const { userData } = useDashboardState();
 
   // morning, afternoon, evening, night
-  const time = new Date().getHours();
-  const greeting =
-    time < 12 ? "Good Morning" : time < 18 ? "Good Afternoon" : "Good Evening";
+  const { greeting, profileText } = useMemo(() => {
+    if (!userData) return { greeting: "", profileText: "" };
 
-  const profileText = userdata?.name
-    ?.split(" ")
-    ?.map((name: string) => name.charAt(0).toUpperCase())
-    .join("");
+    const time = new Date().getHours();
+    const greeting =
+      time < 12
+        ? "Good Morning"
+        : time < 18
+        ? "Good Afternoon"
+        : "Good Evening";
+
+    const profileText = userData?.name
+      ?.split(" ")
+      ?.map((name: string) => name.charAt(0).toUpperCase())
+      .join("");
+
+    return { greeting, profileText };
+  }, [userData]);
 
   return (
     <>
@@ -25,61 +52,17 @@ export default function Dashboard({ userdata }: { userdata: any }) {
       >
         <div className="flex justify-center items-center">
           <h1 className="text-white font-[600] text-[32px] lg:text-[48px] mb-10">
-            {greeting}, <span className="text-[#F2BD4D]">{userdata?.name}</span>
+            {greeting}, <span className="text-[#F2BD4D]">{userData?.name}</span>
           </h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-          {/* =================STATS================= */}
 
-          <div className=" bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1 shadow-2xl shadow-[#4A2F70]/50">
-            <div className="text-white flex justify-between">
-              <h1 className="font-semibold text-[32px]">Stats</h1>
-              <p>...</p>
-            </div>
-            <p className="text-[#fff]">
-              Every large design company whether it’s a multi-national branding.
-            </p>
-            <div>
-              <div className="text-white flex justify-between">
-                <h1>Metric 1</h1>
-                <p>65,376</p>
-              </div>
-              <div className="mb-5 h-2 rounded-full bg-gray-200">
-                <div className="h-2 rounded-full bg-orange-500 w-[50%]"></div>
-              </div>
-            </div>
-            <div>
-              <div className="text-white flex justify-between">
-                <h1>Metric 2</h1>
-                <p>12,109</p>
-              </div>
-              <div className="mb-5 h-2 rounded-full bg-gray-200">
-                <div className="h-2 rounded-full bg-[#4339F2] w-[50%]"></div>
-              </div>
-            </div>
-            <div>
-              <div className="text-white flex justify-between">
-                <h1>Metric 3</h1>
-                <p>132,645</p>
-              </div>
-              <div className="mb-5 h-2 rounded-full bg-gray-200">
-                <div className="h-2 rounded-full bg-[#02A0FC] w-[50%]"></div>
-              </div>
-            </div>
-            <div>
-              <div className="text-white flex justify-between">
-                <h1>Metric 4</h1>
-                <p>100,426</p>
-              </div>
-              <div className="mb-5 h-2 rounded-full bg-gray-200">
-                <div className="h-2 rounded-full bg-[#FF3A29] w-[50%]"></div>
-              </div>
-            </div>
-          </div>
+          {/* =================STATS================= */}
+          <UserStats userStats={userData?.stats} />
 
           {/* ===================Scheduled Session================== */}
-          <div className=" bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl  py-5 px-3 lg:px-10 lg:col-span-2 shadow-2xl shadow-[#4A2F70]/50">
+          <div className="bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl py-5 px-3 lg:px-10 lg:col-span-2 shadow-2xl shadow-[#4A2F70]/50">
             {/* <h1 className="font-semibold text-[32px] text-center text-[#AFCCF8] mb-10">
               Scheduled Session
             </h1>
@@ -100,33 +83,43 @@ export default function Dashboard({ userdata }: { userdata: any }) {
             </div>
             */}
             <BookSlot
-              url="https://calendly.com/thebffupdates/coaching-class"
-              user={{
-                email: userdata?.email,
-                name: userdata?.name,
-                phone: userdata?.phone,
-              }}
+            // url="https://calendly.com/thebffupdates/coaching-class"
             />
           </div>
 
           {/* =================PROFILE========================== */}
-          <div className=" bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1 shadow-2xl shadow-[#4A2F70]/50">
-            <div className="flex justify-between">
+          <div className="bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-2 py-5 lg:col-span-1 shadow-2xl shadow-[#4A2F70]/50">
+            <div className="flex justify-between px-3">
               {/* <Image src={profilePhoto} alt="" /> */}
               <div className="w-10 h-10 p-2 rounded-full bg-y/50 center select-none">
                 {profileText}
               </div>
               <BiDotsHorizontalRounded color="white" />
             </div>
-            <div className="my-5">
-              <p className="text-white">{userdata?.name}</p>
-              <p className="text-gray-400">{userdata?.email}</p>
+
+            <div className="my-5 px-3">
+              <p className="text-white">{userData?.name}</p>
+              <p className="text-gray-400">{userData?.email}</p>
               {/* <p className="text-gray-400">Male 22</p> */}
             </div>
-            <div className="my-5">
-              <p className="text-white">Your Subscriptions</p>
+
+            <div className="my-5 px-2">
+              <p className="text-lg text-white bg-blue-50/25 rounded-md p-1">
+                Your Subscriptions
+              </p>
               <div className="mt-2">
-                
+                {userData?.subscriptions?.map((sub) => (
+                  <div
+                    key={sub.id}
+                    className="flex justify-between items-center"
+                  >
+                    {/* Hello */}
+                    <p className="text-gray-200">{sub.plan?.item?.name}</p>
+                    <p className="text-gray-400">
+                      {sub.plan?.item?.amount / 100}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -139,47 +132,14 @@ export default function Dashboard({ userdata }: { userdata: any }) {
             </button> */}
           </div>
 
-          {/* ===============Stats=================== */}
-          <div className=" bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1">
-            <div className="text-white flex justify-between">
-              <h1>Stats</h1>
-              <p>...</p>
-            </div>
-            <div className="flex justify-center items-center ">
-              <div className="w-full lg:w-[65%] h-[200px] mb-5  rounded-full bg-gray-200 border-[10px] border-orange-500 bg-gradient-to-r from-[#4A2F70] to-[#344363]  mx-[10%]  md:mx-[35%] xl:mx-[25%] px-10 py-10">
-                <div className="flex justify-center items-center w-full h-full rounded-full bg-orange-500 text-white ">
-                  <span className="md:rotate-90">47%</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center">
-                <div className="h-4 w-4 rounded-full bg-orange-500 mx-3 inline"></div>
-                <span className="text-white">Restless</span>
-                <div className="h-4 w-4 rounded-full bg-white inline mx-3"></div>
-                <span className="text-white">Awake</span>
-              </div>
-            </div>
-          </div>
+          {/* ===============Stats Graph=================== */}
+          <StatsGraph />
 
           {/* =======================Achievements ==================== */}
           <CardsCarousel />
 
           {/* ======================Contact Trainer============== */}
-          <div className=" bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1">
-            <h1 className="text-white text-[24px] mb-4">Contact Trainer</h1>
-
-            <textarea
-              className="my-10 p-5 rounded-lg w-full "
-              placeholder="Type your query here"
-            />
-            <div className="text-center">
-              <button className="bg-[#514ED8] text-white px-5 xl:px-[80px] py-3 rounded-lg">
-                Send query
-              </button>
-            </div>
-          </div>
+          <Contact />
         </div>
       </div>
     </>

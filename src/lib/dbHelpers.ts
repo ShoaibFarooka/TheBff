@@ -1,6 +1,14 @@
-import { default as Classes } from "@/models/Class";
+"use server";
+
+import {
+  Coach,
+  Session as SessionModel,
+  Subscription as SubscriptionModel,
+} from "@/models";
 import User from "@/models/User";
-import { User as UserType } from "@/types/user";
+import UserStats from "@/models/Userstats";
+import { Subscription } from "@/types/subscription";
+import { Stats, User as UserType } from "@/types/user";
 import mongoose from "mongoose";
 import { connectDB } from "./db";
 
@@ -9,297 +17,254 @@ import { connectDB } from "./db";
 // import '@/models/membership'
 
 export const getDataFromDb = async (filter: Record<string, any>) => {
-    try {
-        await connectDB();
+  try {
+    await connectDB();
 
-        const pageData = await mongoose.connection.db.collection("data");
-        return await pageData.findOne(filter);
-    } catch (error: any) {
-        return null;
-    }
-}
+    const pageData = await mongoose.connection.db.collection("data");
+    return await pageData.findOne(filter);
+  } catch (error: any) {
+    return null;
+  }
+};
 
-export const saveDataInDb = async (filter: Record<string, any>, data: Record<string, any>) => {
-    try {
-        await connectDB();
+export const saveDataInDb = async (
+  filter: Record<string, any>,
+  data: Record<string, any>
+) => {
+  try {
+    await connectDB();
 
-        const pageData = await mongoose.connection.db.collection("data");
-        await pageData.updateOne(filter, { $set: data }, { upsert: true });
-    } catch (error: any) {
-        return null
-    }
-}
-
+    const pageData = await mongoose.connection.db.collection("data");
+    await pageData.updateOne(filter, { $set: data }, { upsert: true });
+  } catch (error: any) {
+    return null;
+  }
+};
 
 export const getUserDataWithSubscription = async (email: string) => {
-    try {
-        await connectDB();
+  try {
+    await connectDB();
 
-        const data = await User.aggregate([
-            {
-                $match: { email }
-            },
-            {
-                $lookup: {
-                    from: "classes",
-                    localField: "email",
-                    foreignField: "user",
-                    as: "classes"
-                }
-            },
-            {
-                $lookup: {
-                    from: 'subscriptions',
-                    localField: 'email',
-                    foreignField: 'user_email',
-                    as: 'subscriptions'
-                }
-            },
-            {
-                $unwind: {
-                    path: "$subscriptions",
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup: {
-                    from: 'products',
-                    localField: 'subscriptions.product_id',
-                    foreignField: 'id',
-                    as: 'products'
-                }
-            },
-            {
-                $unwind: {
-                    path: "$products",
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            // add products to subscriptions
-            {
-                $group: {
-                    _id: { $toString: "$_id" },
-                    name: { $first: "$name" },
-                    email: { $first: "$email" },
-                    phone: { $first: "$phone" },
-                    emailVerified: { $first: "$emailVerified" },
-                    phoneVerified: { $first: "$phoneVerified" },
-                    role: { $first: "$role" },
-                    avatar_url: { $first: "$avatar_url" },
-                    billing_address: { $first: "$billing_address" },
-                    payment_method: { $first: "$payment_method" },
-                    stripeCustomerId: { $first: "$stripeCustomerId" },
-                    classes: { $push: "$classes" },
-                    subscriptions: { $push: "$subscriptions" },
-                    products: { $push: "$products" },
-                }
-            }
-            // {
-            //     // convert _id to string
-            //     $addFields: {
-            //         "products._id": { $toString: "$products._id" },
-            //         "subscriptions._id": { $toString: "$subscriptions._id" },
-            //         "classes._id": { $toString: "$classes._id" }
-            //     }
-            // }
-        ])
+    const data: UserType & {
+      subscriptions?: Subscription[];
+      classes?: any[];
+      stats: Stats;
+    } = {} as any;
 
-        // console.log('fetching', data)
-        // const d = await User.findOne({ email: 'siddiquiaffan201@gmail.com' }).populate('subscription');
-        // console.log(data[0], '=> d')
+    // console.log("getUserDataWithSubscription", email);
 
-        return data?.length ? data[0] : null;
-    } catch (error: any) {
-        return null
-    }
-}
+    const user = (await User.findOne({ email })
+      .populate("stats", "-_id")
+      .populate('sessions', undefined, undefined, {
+        startTime: { $gte: new Date() }
+      })
+      .select("razorpayCustomerId name email phone")
+      .lean()) as UserType;
 
+    // .populate("classes")
+    // .populate("subscriptions")
 
-/*
-User data
-{
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  phone: '1234567890',
-  _id: '61f3e3e3e3e3e3e3e3e3e3e3',
-  role: 3,
-  subscriptions: [
-    {
-      _id: '61f3e3e3e3e3e3e3e3e3e3e3',
-      id: 'prod_1234567890',
-      user_email: 'john.doe@exmaple.com',
-      user_id: '61f3e3e3e3e3e3e3e3e3e3e3',
-      product_id: 'prod_1234567890',
-      product: {
-        id: 'prod_1234567890',
-        name: 'Gold',
-        description: 'Gold plan',
-        price: 1000,
-        duration: 30,
-        currency: 'usd',
-        active: true,
-        created: 1642816000
-      }
-    },
-    {
-      _id: '61f3e3e3e3e3e3e3e3e3e3e3',
-      id: 'prod_1234567890',
-      user_email: 'john.doe@example.com',
-      user_id: '61f3e3e3e3e3e3e3e3e3e3e3',
-      product_id: 'prod_1234567890',
-      product: {
-        id: 'prod_1234567890',
-        name: 'Gold',
-        description: 'Gold plan',
-        price: 1000,
-        duration: 30,
-        currency: 'usd',
-        active: true,
-        created: 1642816000
-      }
-    }
-  ],
-  classes: [
-    {
-      _id: '61f3e3e3e3e3e3e3e3e3e3e3',
-      user: 'sgvdhbsdshdskhbdshbdksd',
-      coach: '61f3e3e3e3e3e3e3e3e3e3e3',
-      program: '61f3e3e3e3e3e3e3e3e3e3e3',
-      meetLink: 'https://meet.google.com/lookup/abc',
-      date: '2022-02-01T00:00:00.000Z',
-      slot: '61f3e3e3e3e3e3e3e3e3e3e3',
-      slotDetails: {
-        _id: '61f3e3e3e3e3e3e3e3e3e3e3',
-        startTime: '2022-02-01T00:00:00.000Z',
-        endTime: '2022-02-01T00:00:00.000Z',
-        coach: '61f3e3e3e3e3e3e3e3e3e3e3',
-        createdAt: 1642816000
-      }
-    }
-  ]
-}
-*/
+    if (!user) return null;
 
-import '@/models/Subscription';
+    // console.log(user);
+
+    Object.assign(data, user);
+
+    const subscriptions = await SubscriptionModel.find({
+      customer_id: user.razorpayCustomerId,
+    })
+      .populate("plan")
+      .select("id plan_id customer_id current_end current_start")
+      .lean();
+
+    data.subscriptions = subscriptions as any;
+
+    return data;
+  } catch (error: any) {
+    console.log(error);
+    return null;
+  }
+};
 
 // get user data from database in above format using aggregation
 export const getCompleteUserData = async (email: string) => {
-    try {
-        await connectDB();
-        const userData = await User.aggregate([
-            {
-                $match: { email }
+  try {
+    await connectDB();
+    const userData = await User.aggregate([
+      {
+        $match: { email },
+      },
+      {
+        $lookup: {
+          from: "subscriptions",
+          localField: "_id",
+          foreignField: "user_id",
+          as: "subscriptions",
+        },
+      },
+      {
+        $lookup: {
+          from: "classes",
+          localField: "_id",
+          foreignField: "user",
+          as: "classes",
+        },
+      },
+      {
+        $unwind: {
+          path: "$classes",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "slots",
+          localField: "classes.slot",
+          foreignField: "_id",
+          as: "classes.slotDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$classes.slotDetails",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          email: 1,
+          phone: 1,
+          role: 1,
+          subscriptions: 1,
+          classes: {
+            _id: 1,
+            user: 1,
+            coach: 1,
+            program: 1,
+            meetLink: 1,
+            date: 1,
+            slot: 1,
+            slotDetails: {
+              _id: 1,
+              startTime: 1,
+              endTime: 1,
+              coach: 1,
+              createdAt: 1,
             },
-            {
-                $lookup: {
-                    from: "subscriptions",
-                    localField: "_id",
-                    foreignField: "user_id",
-                    as: "subscriptions"
-                }
-            },
-            {
-                $lookup: {
-                    from: "classes",
-                    localField: "_id",
-                    foreignField: "user",
-                    as: "classes"
-                }
-            },
-            {
-                $unwind: {
-                    path: "$classes",
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup: {
-                    from: "slots",
-                    localField: "classes.slot",
-                    foreignField: "_id",
-                    as: "classes.slotDetails"
-                }
-            },
-            {
-                $unwind: {
-                    path: "$classes.slotDetails",
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $project: {
-                    _id: 1,
-                    name: 1,
-                    email: 1,
-                    phone: 1,
-                    role: 1,
-                    subscriptions: 1,
-                    classes: {
-                        _id: 1,
-                        user: 1,
-                        coach: 1,
-                        program: 1,
-                        meetLink: 1,
-                        date: 1,
-                        slot: 1,
-                        slotDetails: {
-                            _id: 1,
-                            startTime: 1,
-                            endTime: 1,
-                            coach: 1,
-                            createdAt: 1
-                        }
-                    }
-                }
-            }
-        ]);
+          },
+        },
+      },
+    ]);
 
-        return userData;
-    } catch (error: any) {
-        return null;
+    return userData;
+  } catch (error: any) {
+    return null;
+  }
+};
+
+
+export const addClass = async (
+  email: string,
+  classData: Record<string, string>
+) => {
+  // save class in database
+  try {
+    await connectDB();
+    const _id = classData._id;
+    delete classData._id;
+
+    if (_id) {
+      const data = await SessionModel.findOneAndUpdate(
+        { user: email, _id: new mongoose.Types.ObjectId(_id) },
+        { $set: classData },
+        { upsert: true, new: true }
+      );
+      return data;
     }
-}
 
-// getCompleteUserData('siddiquiaffan201@gmail.com').then(console.log)
-
-export const addClass = async (email: string, classData: Record<string, string>) => {
-    // save class in database
-    try {
-        await connectDB();
-        const _id = classData._id;
-        delete classData._id;
-
-        if (_id) {
-            const data = await Classes.findOneAndUpdate({ user: email, _id: new mongoose.Types.ObjectId(_id) }, { $set: classData }, { upsert: true, new: true });
-            return data;
-        }
-
-        const data = await Classes.create({ user: email, ...classData });
-        return data;
-    } catch (error: any) {
-        return null;
-    }
-}
+    const data = await SessionModel.create({ user: email, ...classData });
+    return data;
+  } catch (error: any) {
+    return null;
+  }
+};
 
 // ========================= save images (gallery) in database =========================
 const images = [
-    "/images/Cardio.png",
-    "/images/Strength.png",
-    "/images/Yoga.png",
-    "/images/No equipment.png",
-    "/images/Toning.png",
-    "/images/Walking.png"
+  "/images/Cardio.png",
+  "/images/Strength.png",
+  "/images/Yoga.png",
+  "/images/No equipment.png",
+  "/images/Toning.png",
+  "/images/Walking.png",
 ];
 
 // saveDataInDb({ key: "gallery", page: 'programs' }, { images });
 // ======================================================================================
 
-export const getUserData = async (email: string, options?: {
+export const getUserData = async (
+  email: string,
+  options?: {
     select?: string;
-}): Promise<UserType & Document | null> => {
-    const { select } = options || {};
+  }
+): Promise<(UserType & Document) | null> => {
+  const { select } = options || {};
 
-    const user = await User.findOne({ email }, select, { lean: true })
+  const user = await User.findOne({ email }, select, { lean: true });
 
-    return user as any;
-}
+  return user as any;
+};
+
+export const saveUserStats = async (
+  email: string,
+  data: Partial<
+    // make stats optional
+    Omit<Stats, "email">
+  >,
+  { upsert }: { upsert?: boolean } = { upsert: false }
+) => {
+  try {
+    await connectDB();
+
+    const stats = await UserStats.findOneAndUpdate(
+      { email },
+      { $set: data },
+      { upsert, new: true }
+    );
+
+    return { stats };
+  } catch (error: any) {
+    return { error: error.message ?? "Failed to save user data" };
+  }
+};
+
+export const getCoaches = async ({ programIds }: { programIds: string[] }) => {
+  try {
+    await connectDB();
+
+    // get coaches associated with the program
+    const coaches = await Coach.find(
+      {
+        // check if some of the programIds are present in the coach's programIds
+        programIds: { $in: programIds },
+      },
+      "-_id -calendlyToken"
+    )
+      .populate("programs", "name -_id -coaches id")
+      .lean();
+
+    console.log(programIds);
+
+    if (!coaches.length)
+      return {
+        error:
+          "No coaches found for your subscriptions. Please try again later.",
+      };
+
+    return coaches;
+  } catch (error: any) {
+    return { error: "Failed to fetch coaches" };
+  }
+};

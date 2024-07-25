@@ -14,7 +14,10 @@ function writePlans() {
     writeFileSync('fixtures/plans.json', JSON.stringify(plans, null, 4))
 }
 
-
+const razorpay = new Razorpay({
+    key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+    key_secret: process.env.RAZORPAY_KEY_SECRET!,
+})
 
 // type Plan = {
 //     id?: string
@@ -35,11 +38,11 @@ async function createPlansInRzp() {
 
     try {
         // check for env
-        if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET)
+        if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET)
             throw new Error('Razorpay keys not found')
 
         const razorpay = new Razorpay({
-            key_id: process.env.RAZORPAY_KEY_ID!,
+            key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
             key_secret: process.env.RAZORPAY_KEY_SECRET!,
         })
 
@@ -120,11 +123,11 @@ async function createPlansInRzp() {
 
 async function syncPlans() {
     // check for env
-    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET)
+    if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET)
         throw new Error('Razorpay keys not found')
 
     const razorpay = new Razorpay({
-        key_id: process.env.RAZORPAY_KEY_ID!,
+        key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
         key_secret: process.env.RAZORPAY_KEY_SECRET!,
     })
 
@@ -158,11 +161,11 @@ async function syncPlans() {
 const createNewPlan = async () => {
     try {
         // check for env
-        if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET)
+        if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET)
             throw new Error('Razorpay keys not found')
 
         const razorpay = new Razorpay({
-            key_id: process.env.RAZORPAY_KEY_ID!,
+            key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
             key_secret: process.env.RAZORPAY_KEY_SECRET!,
         })
 
@@ -227,11 +230,31 @@ const createNewPlan = async () => {
 
 }
 
+async function createCustomer() {
+    try {
+        const email = ''
+        const name = ''
+        const phone = ''
+    
+        const user = await razorpay.customers.create({
+            email,
+            name,
+            contact: phone,
+            fail_existing: 0
+        })
+    
+        console.log(user)
+    } catch (error) {
+        cl.error('Error:', error)
+    }
+}
+
 const args = process.argv.slice(2)
 
 const createPlans = args.includes('--create-plans')
 const sync = args.includes('--sync')
 const newPlan = args.includes('--new-plan')
+const createCustomerFlag = args.includes('--create-customer')
 
 createPlans && (() => {
     console.log('Creating plans in Razorpay')
@@ -243,3 +266,6 @@ sync && syncPlans()
 
 if (newPlan)
     createNewPlan()
+
+if (createCustomerFlag)
+    createCustomer()

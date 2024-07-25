@@ -1,16 +1,16 @@
 import type { Plan as PlanType } from '@/types/subscription';
-import type { ObjectId } from 'mongoose';
+// import type { ObjectId } from 'mongoose';
 import { Document, Schema, model, models } from 'mongoose';
 
 type ModelType = PlanType & Document;
 
 const planSchema = new Schema<ModelType>({
-    _id: {
-        type: String,
-        required: true,
-        auto: true,
-        get: (v: ObjectId) => v.toString()
-    },
+    // _id: {
+    //     type: String,
+    //     required: true,
+    //     auto: true,
+    //     get: (v: ObjectId) => v.toString()
+    // },
     id: {
         type: String,
         required: true,
@@ -66,7 +66,8 @@ const planSchema = new Schema<ModelType>({
         refPath: 'plan_id',
     }],
 }, {
-    timestamps: true
+    timestamps: true,
+    toObject: { virtuals: true },
 });
 
 const Plan = models.Plan || model<ModelType>('Plan', planSchema);

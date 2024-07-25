@@ -9,6 +9,7 @@ interface ProgramState {
     isLoading: boolean;
     subscriptions: { [key: string]: Subscription };
     setSubscription: (key: string, subscription: Subscription) => void;
+    // isSubscribing: boolean;
 }
 
 export const useProgram = create<ProgramState>((set, get) => ({
@@ -17,6 +18,7 @@ export const useProgram = create<ProgramState>((set, get) => ({
     isLoading: true,
     subscriptions: {},
     setSubscription: (key, subscription) => set({ subscriptions: { ...get().subscriptions, [key]: subscription } }),
+    // isSubscribing: false
 }));
 
 export const fetchSuscription = async () => {

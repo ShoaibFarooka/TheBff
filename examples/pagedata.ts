@@ -34,7 +34,8 @@ export const data: Program[] = [
                 description: `Wanna make your big day or your bestie's even more special with akiller dance performance? Let us help! Learn from the best wedding choreographers and rock the party with Bollywood, couple, sangeet, haldi, mehendi, reception, or group wedding performances! Time to slay the party with your dance moves!`,
                 image: '/images/programs/dance-3.jpeg',
             },
-        ]
+        ],
+        coaches: []
     },
     {
         id: 'gym',
@@ -81,7 +82,8 @@ export const data: Program[] = [
                 description: `Our fitness coach tracks your fitness as it happens so you can feel good about yourself and see results all day. Get the best workout tips and advice to develop an effective fitness strategy.`,
                 image: '/images/programs/atgym-5.jpeg',
             }
-        ]
+        ],
+        coaches: []
     },
     {
         id: 'home-gym',
@@ -128,7 +130,8 @@ export const data: Program[] = [
                 description: `The right diet and exercise plan can help you feel better about yourself. With our experts by your side, you can become a more confident and effective version of yourself. Get your doubts cleared on fitness, and diet, talk about your goals, or ask for a home workout plan. Our trainers and nutritionists believe in result-oriented guidance. All you need to do is, Ask!`,
                 image: '/images/programs/inhome-5.jpeg',
             },
-        ]
+        ],
+        coaches: []
     },
     {
         id: 'yoga',
@@ -175,7 +178,8 @@ export const data: Program[] = [
                 description: `Whether you are a beginner or advanced, our experts are here to help you learn the best yoga practices. We have a wide variety of classes in our playlists on an array of topics including cardio, strength, and core.`,
                 image: '/images/programs/yoga-5.jpeg',
             },
-        ]
+        ],
+        coaches: []
     },
     {
         id: 'meditation',
@@ -208,7 +212,8 @@ export const data: Program[] = [
                 description: `Join us for a premium experience that you’ll never forget. We will help you develop an enriching and rewarding meditation practice by guiding you through a variety of techniques so that you can focus your energies on becoming centered and achieving your goals.`,
                 image: '/images/programs/meditation-3.jpeg',
             },
-        ]
+        ],
+        coaches: []
     },
     // one for nutrition
     {
@@ -256,7 +261,8 @@ export const data: Program[] = [
                 description: `Nutrition and fitness should be enjoyable, but it can be hard to figure out how to put a plan together that works for you. Diet plans are a great way to reach your goals faster. These goals can be related to weight issues, chronic health conditions, or optimizing your nutrition. Get a budget-friendly way to a healthier lifestyle with our expert guidance.`,
                 image: '/images/programs/nutrition-5.jpeg',
             }
-        ]
+        ],
+        coaches: []
     }
 ];
 

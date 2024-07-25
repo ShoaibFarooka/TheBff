@@ -73,8 +73,8 @@ function Header(props?: any) {
 
   return (
     <nav
-      className="fixed top-0 left-0 bg-transparent backdrop-blur w-screen px-5 py-2"
-      style={{ zIndex: 999 }}
+      className="fixed top-0 left-0 bg-transparent backdrop-blur w-screen px-5 py-2 z-50"
+      style={{ zIndex: 99 }}
     >
       <div className="text-white flex justify-between items-center mx-auto md:max-w-5xl">
         <Logo />

@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import Programs from "@/components/programs";
 import connectDB from "@/lib/dbConnection";
 import { getDataFromDb } from "@/lib/dbHelpers";
@@ -74,5 +76,15 @@ export default async function Page() {
     );
   }
 
-  return <Programs {...data!} />;
+  return (
+    <Suspense
+      fallback={
+        <div className="center">
+          <div className="loader">Loading..</div>
+        </div>
+      }
+    >
+      <Programs {...data!} />
+    </Suspense>
+  );
 }

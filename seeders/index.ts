@@ -2,6 +2,7 @@ import { disconnectDB } from '@/lib/dbConnection';
 import { consola } from 'consola';
 import dotenv from 'dotenv';
 import { seedClasses } from './classes';
+import { seedCoaches } from './coaches';
 import { seedPrograms } from './programs';
 
 dotenv.config();
@@ -12,6 +13,7 @@ let seed: string[] = [];
 const seeders: Record<string, Function> = {
     classes: seedClasses,
     programs: seedPrograms,
+    coaches: seedCoaches
 }
 
 async function main() {
@@ -20,7 +22,7 @@ async function main() {
         if (!args.length) {
             seed = await consola.prompt('What do you want to seed?', {
                 type: 'multiselect',
-                options: ['classes', 'programs'],
+                options: ['classes', 'programs', 'coaches'],
             });
         } else {
             seed.push(args[0]);

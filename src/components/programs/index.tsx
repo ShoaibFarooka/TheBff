@@ -4,21 +4,17 @@ import ContactForm from "@/components/ContactForm";
 import ProgramFeatures from "@/components/programs/Features";
 import Header from "@/components/programs/Header";
 import Link from "next/link";
-import {
-  Fragment,
-  useMemo,
-  useState,
-} from "react";
+import { Fragment, useMemo, useState } from "react";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RxCrossCircled } from "react-icons/rx";
 
 import { useAuth, withAuth } from "@/hooks/auth";
-import { Price, Product } from "@/types/db";
 import { Program } from "@/types/program";
 import { Plan } from "@/types/subscription";
 import clsx from "clsx";
-import ChoosePlan from "./ChoosePlan";
+import toast from "react-hot-toast";
 import Gallery from "./Gallery";
+import ChoosePlan from "./plans/ChoosePlan";
 
 const comparison = [
   { title: "Live Interaction Classes", standard: "Yes", premium: "Yes" },
@@ -44,13 +40,7 @@ const ComparisonIcon = ({ t }: { t: "Yes" | "No" }) => {
     );
 };
 
-const ViewPlan = ({
-  toggleOverlay,
-}: // authStatus,
-  {
-    toggleOverlay: () => any;
-    // authStatus: "loading" | "authenticated" | "unauthenticated";
-  }) => {
+const ViewPlan = ({ toggleOverlay }: { toggleOverlay: () => any }) => {
   const authStatus = useAuth((s) => s.status);
 
   if (authStatus === "loading")
@@ -72,10 +62,6 @@ const ViewPlan = ({
   );
 };
 
-interface ProductWithPrices extends Product {
-  prices: Price[];
-}
-
 interface Props {
   images?: string[];
   programs: Program[];
@@ -96,7 +82,12 @@ function Programs({ programs, images, plans }: Props) {
   );
 
   const [overlayVisible, setOverlayVisible] = useState(false);
-  const toggleOverlay = () => setOverlayVisible(!overlayVisible);
+  const toggleOverlay = () => {
+    if (!relatedPlans.length) {
+      return toast.error("No plans available for the selected program");
+    }
+    setOverlayVisible(!overlayVisible);
+  };
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { Program as ProgramType } from '@/types/program';
 import { Document, Schema, model, models } from "mongoose";
-import './Coach';
+// import './Coach';
 
 import mongoose from 'mongoose';
 
@@ -35,17 +35,17 @@ const programSchema = new Schema<ProgramDoc>(
             ],
             required: true
         },
-        coaches: {
-            type: [
-                {
-                    type: mongoose.Types.ObjectId,
-                    ref: 'Coach',
-                    required: true,
-                }
-            ],
-            required: true,
-            default: []
-        },
+        // coaches: {
+        //     type: [
+        //         {
+        //             type: mongoose.Types.ObjectId,
+        //             ref: 'Coach',
+        //             required: true,
+        //         }
+        //     ],
+        //     required: true,
+        //     default: []
+        // },
     },
     {
         versionKey: false,
@@ -54,6 +54,16 @@ const programSchema = new Schema<ProgramDoc>(
         toObject: { virtuals: true }
     }
 );
+
+programSchema.virtual('coaches', {
+    ref: 'Coach',
+    localField: '_id',
+    foreignField: 'programs',
+    justOne: false,
+    match: {
+        programs: { $in: ['$_id'] }
+    }
+})
 
 const Program = models.Program || model<ProgramDoc>('Program', programSchema);
 

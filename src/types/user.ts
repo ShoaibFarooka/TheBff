@@ -1,50 +1,87 @@
-
 export enum UserRole {
-    ADMIN = 1,
-    COACH,
-    USER
+  ADMIN = 1,
+  COACH,
+  USER,
 }
 
 // ======================= USER =======================
 export interface User {
-    name: string;
-    email: string;
-    password: string;
-    phone: string;
-    emailVerified: boolean;
-    phoneVerified: boolean;
-    role: UserRole;
-    avatar_url?: string | null
-    billing_address: Record<string, any> | null
-    payment_method: Record<string, any> | null
-    stripeCustomerId: string
-    stats: Stats
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  emailVerified: boolean;
+  phoneVerified: boolean;
+  role: UserRole;
+  avatar_url?: string | null;
+  billing_address: Record<string, any> | null;
+  payment_method: Record<string, any> | null;
+  razorpayCustomerId: string;
+  stats: Stats;
 }
 export type UserUpdate = Partial<User>;
 export type UserInsert = UserUpdate;
 
 // ======================= STATS =======================
 export interface Stats {
-    weight: {
-        current: number | string;
-        goal: number | string;
-    },
-    bodyFat: {
-        current: number | string;
-        goal: number | string;
-    },
-    bodyMeasurements: {
-        neck: number | string;
-        chest: number | string;
-        waist: number | string;
-        hips: number | string;
-        thigh: number | string;
-        calf: number | string;
-        bicep: number | string;
-        forearm: number | string;
-    },
-    steps: {
-        current: number | string;
-        goal: number | string;
-    }
+  email: string;
+  weight: {
+    current: number;
+    goal: number;
+  };
+  bodyFat: {
+    current: number;
+    goal: number;
+  };
+  neck: {
+    current: number;
+    goal: number;
+  };
+  chest: {
+    current: number;
+    goal: number;
+  };
+  waist: {
+    current: number;
+    goal: number;
+  };
+  hips: {
+    current: number;
+    goal: number;
+  };
+  thigh: {
+    current: number;
+    goal: number;
+  };
+  calf: {
+    current: number;
+    goal: number;
+  };
+  bicep: {
+    current: number;
+    goal: number;
+  };
+  forearm: {
+    current: number;
+    goal: number;
+  };
+  steps: {
+    current: number;
+    goal: number;
+  };
 }
+
+
+export const statsKeys: Array<keyof Omit<Stats, "email">> = [
+  "weight",
+  "bodyFat",
+  "neck",
+  "chest",
+  "waist",
+  "hips",
+  "thigh",
+  "calf",
+  "bicep",
+  "forearm",
+  "steps",
+];

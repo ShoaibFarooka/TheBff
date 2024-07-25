@@ -4,8 +4,6 @@ import { getPageData } from "@/lib/db";
 import Head from "next/head";
 import Image from "next/image";
 
-import "@/lib/stripe";
-
 // Import Assets
 import Component22 from "@/assets/Component 22.png";
 import Component23 from "@/assets/Component 23.png";
@@ -17,6 +15,11 @@ import Component42 from "@/assets/Component 42.png";
 import Component43 from "@/assets/Component 43.png";
 import Component44 from "@/assets/Component 44.png";
 import Classes from "@/components/home/Classes";
+
+// export const metadata: Metadata = {
+//   // preload
+
+// }
 
 export default async function Home() {
   const pageData = (await getPageData("home")) as any;
@@ -136,7 +139,7 @@ export default async function Home() {
         </div>
 
         {/* ===================== {Overlay} ===================== */}
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 center z-50">
+        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 center z-30">
           <div className="w-full md:w-1/2  mx-auto">
             <h2 className="text-2xl md:text-4xl font-bold text-white text-center backdrop-blur bg-black bg-opacity-50">
               {" "}

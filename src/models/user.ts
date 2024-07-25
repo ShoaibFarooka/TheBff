@@ -2,17 +2,18 @@
 
 // import { withDb } from "@/lib/dbConnection";
 // import { devLog } from "@/lib/helpers";
-import { withDb } from "@/lib/dbConnection";
-import { devLog } from "@/lib/helpers";
 import { UserRole, User as UserType } from "@/types/user";
-import mongoose, { Document, Schema, model, models } from 'mongoose';
+import { Document, Schema, model, models } from 'mongoose';
+import "./Userstats";
 
 // a regex to validate email
 const mailRegex = new RegExp(
-    "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+    "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9a-]+.[a-zA-Z0-9-.]+$"
 )
 
-type UserDoc = Omit<UserType, 'billing_address' | 'payment_method'> & Document & { billing_address: Object, payment_method: Object, subscriptions: any[] }
+// type UserDoc = Omit<UserType, 'billing_address' | 'payment_method'> & Document & { billing_address: Object, payment_method: Object, razorpayCustomerId: string }
+
+type UserDoc = UserType & Document
 
 const userSchema = new Schema<UserDoc>(
     {
@@ -72,7 +73,7 @@ const userSchema = new Schema<UserDoc>(
             type: Object,
             required: false,
         },
-        stripeCustomerId: {
+        razorpayCustomerId: {
             type: String,
             required: false,
             unique: true,
@@ -81,54 +82,43 @@ const userSchema = new Schema<UserDoc>(
             type: Object,
             required: false,
         },
-        stats: {
-        // weight
-        }
+        // stats: {
+        // // weight
+        // },
     }, {
         timestamps: true,
-        // toObject: { virtuals: true },
+        toObject: { virtuals: true },
     }
 )
 
-
-userSchema.virtual('classes', {
-    ref: 'Class',
-    localField: '_id',
-    foreignField: 'user',
-    justOne: false,
-})
-
 userSchema.virtual('subscriptions', {
     ref: 'Subscription',
-    localField: 'stripeCustomerId',
-    foreignField: 'user_id',
+    localField: 'razorpayCustomerId',
+    foreignField: 'costumer_id',
     justOne: false,
-    options: {
-        $addFields: {
-            'productId': '$product_id',
-        }
-    }
+    // options: {
+    //     $addFields: {
+    //         'productId': '$product_id',
+    //     }
+    // }
 })
 
-// virtuals for products
-// userSchema.virtual('product', {
-//     ref: 'Product',
-//     justOne: true,
-//     localField: 'subscriptions.product_id',
-//     foreignField: 'id',
-// })
+// virtuals for stats
+userSchema.virtual('stats', {
+    ref: 'UserStats',
+    justOne: true,
+    localField: 'email',
+    foreignField: 'email',
+})
+
+userSchema.virtual('sessions', {
+    ref: 'Session',
+    localField: 'email',
+    foreignField: 'userEmail',
+    justOne: false,
+})
 
 const User = models.User || model<UserDoc>("User", userSchema)
 
-// withDb(async () => {
-//     mongoose.set('strictPopulate', false)
-//     User.findOne({ email: 'siddiquiaffan201@gmail.com' })
-//         .populate('subscriptions')
-//         .then((user) => {
-//             devLog('==================================================')
-//             console.log(user)
-//             devLog('============================', new Date().toLocaleTimeString())
-//         })
-// })
 
-export default User 
+export default User

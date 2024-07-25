@@ -9,7 +9,11 @@
         "period": "monthly",
         "interval": 1,
         "id": "plan_ObM2HZwDz7Bci7",
-        "features": [],
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }
@@ -24,6 +28,11 @@
         "period": "monthly",
         "interval": 3,
         "id": "plan_ObM7HacEDwDgpv",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }
@@ -38,6 +47,11 @@
         "period": "monthly",
         "interval": 6,
         "id": "plan_ObNEoIFvQZtZgC",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }
@@ -51,7 +65,12 @@
         },
         "period": "monthly",
         "interval": 1,
-        "id": "plan_ObBdgeayELhZlb",
+        "id": "plan_OblUqMQHo83Tth",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }
@@ -65,7 +84,12 @@
         },
         "period": "monthly",
         "interval": 3,
-        "id": "plan_ObBdhO9VpuRN6H",
+        "id": "plan_OblmmTFbDZJ5Gs",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }
@@ -80,6 +104,11 @@
         "period": "monthly",
         "interval": 6,
         "id": "plan_ObBdi4OvWIxq2Q",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }
@@ -94,6 +123,11 @@
         "period": "monthly",
         "interval": 1,
         "id": "plan_ObBdid60A4AERd",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }
@@ -108,6 +142,11 @@
         "period": "monthly",
         "interval": 3,
         "id": "plan_ObBdjJLrJx5Iwv",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }
@@ -122,6 +161,11 @@
         "period": "monthly",
         "interval": 6,
         "id": "plan_ObBdjxX3ZwhCV7",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }
@@ -136,6 +180,11 @@
         "interval": 1,
         "program": "gym",
         "id": "plan_ObCr0bqvChT0Ly",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }
@@ -150,6 +199,11 @@
         "interval": 3,
         "program": "gym",
         "id": "plan_ObCtmQadg4t2nG",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
         "$setOnInsert": {
             "__v": 0
         }

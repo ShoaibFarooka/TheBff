@@ -327,6 +327,3 @@ async function sendPhoneVerificationLink (phone: string) {
         return {success: false}
     }
 }
-// console.log(
-//     jwt.sign({ email: 'siddiquiaffan201@gmail.com' }, secret, { expiresIn: '1hr' })
-// )
