@@ -8,8 +8,8 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useCalendlyEventListener } from "react-calendly";
 import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
-import CalendlyModal from "./sessions/CalendlyModal";
-import { useDashboardState } from "./state";
+import { useDashboardState } from "../state";
+import CalendlyModal from "./CalendlyModal";
 
 const BookSlot = () => {
   const ref = useRef<HTMLDivElement>(null);

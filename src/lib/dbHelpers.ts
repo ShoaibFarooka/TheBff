@@ -53,10 +53,12 @@ export const getUserDataWithSubscription = async (email: string) => {
 
     // console.log("getUserDataWithSubscription", email);
 
+    const past40Min = new Date(new Date().getTime() - 40 * 60 * 1000);
+
     const user = (await User.findOne({ email })
       .populate("stats", "-_id")
-      .populate('sessions', undefined, undefined, {
-        startTime: { $gte: new Date() }
+      .populate("sessions", undefined, undefined, {
+        startTime: { $gte: past40Min },
       })
       .select("razorpayCustomerId name email phone")
       .lean()) as UserType;
@@ -163,7 +165,6 @@ export const getCompleteUserData = async (email: string) => {
     return null;
   }
 };
-
 
 export const addClass = async (
   email: string,
