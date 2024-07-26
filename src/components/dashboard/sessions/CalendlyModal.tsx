@@ -19,8 +19,6 @@ const CalendlyModal: React.FC<Props> = ({ coach, setIsLoading }) => {
   useCalendlyEventListener({
     async onEventScheduled(e) {
       // get the event details form calendly api and save it to the database along with user email and coach email
-      console.log(e);
-
       const tid = toast.loading("Saving event details...");
       setIsLoading(true);
       try {

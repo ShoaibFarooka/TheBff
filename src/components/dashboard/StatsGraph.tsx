@@ -1,5 +1,4 @@
 "use client";
-import { useDebug } from "@/lib/hooks";
 import { statsKeys } from "@/types/user";
 import { useMemo } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
@@ -15,8 +14,6 @@ const StatsGraph = () => {
   const avgGoalAchieved = useMemo(() => {
     if (!userStats) return 100;
 
-    console.log(userStats);
-
     const sum = statsKeys.reduce(
       (acc, curr) => {
         acc.current += userStats[curr].current;
@@ -26,14 +23,10 @@ const StatsGraph = () => {
       { current: 0, goal: 0 }
     );
 
-    console.log(sum);
-
     const percentage = (sum.current / sum.goal) * 100;
 
     return parseFloat(percentage.toFixed(2));
   }, [userStats]);
-
-  useDebug(avgGoalAchieved);
 
   return (
     <>

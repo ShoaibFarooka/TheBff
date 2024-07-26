@@ -68,8 +68,6 @@ export const getUserDataWithSubscription = async (email: string) => {
 
     if (!user) return null;
 
-    // console.log(user);
-
     Object.assign(data, user);
 
     const subscriptions = await SubscriptionModel.find({

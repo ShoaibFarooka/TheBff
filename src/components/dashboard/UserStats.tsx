@@ -44,7 +44,6 @@ const UserStats: React.FC<{
 
   const handleSliderChange = useDebounce(
     async (key: keyof Stats, value: number[]) => {
-      console.log(key, value);
       try {
         const statObj = {
           [key]: {

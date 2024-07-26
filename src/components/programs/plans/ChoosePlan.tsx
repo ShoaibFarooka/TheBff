@@ -105,17 +105,9 @@ export default function ChoosePlan({
 
   useEffect(() => {
     // disable scroll when overlay is open
-    if (overlayVisible) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-    // alert(`Overlay visable: ${overlayVisible}`)
+    if (overlayVisible) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
   }, [overlayVisible]);
-
-  const featured = {
-    product1: true,
-  };
 
   if (!plans || !plans.length)
     return (

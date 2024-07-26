@@ -45,6 +45,8 @@ const SubscriptionSchema = new Schema<SubscriptionDoc>(
     offer_id: { type: String, required: true },
     remaining_count: { type: Number, required: true },
 
+    programId: { type: String, required: true },
+
     // plan: { type: String, ref: "Plan", refPath: "id" },
   },
   {
@@ -61,6 +63,13 @@ SubscriptionSchema.virtual("plan", {
   justOne: true,
 });
 
+SubscriptionSchema.virtual("program", {
+  ref: "Program",
+  localField: "programId",
+  foreignField: "id",
+  justOne: true,
+})
+
 SubscriptionSchema.virtual("email", {
   ref: "User",
   localField: "user_email",
@@ -68,12 +77,6 @@ SubscriptionSchema.virtual("email", {
   justOne: true,
 });
 
-SubscriptionSchema.virtual("user", {
-  ref: "User",
-  localField: "user_id",
-  foreignField: "_id",
-  justOne: true,
-});
 
 // convert to plain object using post hook
 // const regex = /^find/;

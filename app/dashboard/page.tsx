@@ -27,8 +27,6 @@ export default async function Page() {
   const userdata = (await getUserDataWithSubscription(
     auth.user.email
   )) as UserData;
-
-  // console.log(userdata?.sessions)
   
   return (
     <DashboardStateProvider data={JSON.parse(JSON.stringify(userdata))}>

@@ -18,7 +18,6 @@ import { makeSubscriptionPayment } from "@/lib/subscription/client";
 import { createSubscription, verifyPayment } from "@/lib/subscription/utils";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
-import { useProgram } from "../state";
 
 // interface Interval {
 //   period: "daily" | "weekly" | "monthly" | "yearly";
@@ -40,7 +39,6 @@ const ProductCard = ({
   isLoading,
   startTransition,
 }: ProductCardProps) => {
-  const isProcessing = useProgram((s) => s.isLoading);
   const { user } = useAuth();
   const router = useRouter();
 
@@ -58,7 +56,7 @@ const ProductCard = ({
       const { error, subscriptionId } = await getServerData<
         ReturnType<typeof createSubscription>
       >(startTransition, async () => {
-        const fromCookie = cookie.get(`subscription-${plan.id}`);
+        // const fromCookie = cookie.get(`subscription-${plan.id}`);
         // if (fromCookie) return { subscriptionId: fromCookie };
 
         const res = await createSubscription({ planId: plan.id });
@@ -71,11 +69,7 @@ const ProductCard = ({
         });
 
       // save subscription id in cookie for 10 minutes
-      cookie.set(`subscription-${plan.id}`, subscriptionId, 60 * 10);
-
-      // toast(
-      //   `Subscription created successfully! \nSubscription ID: ${subscriptionId}`,
-      // )
+      // cookie.set(`subscription-${plan.id}`, subscriptionId, 60 * 10);
 
       toast.loading(
         `Processing payment for subscription ${subscriptionId}...`,

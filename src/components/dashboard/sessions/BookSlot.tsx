@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getCoaches } from "@/lib/dbHelpers";
 import { capitalizeFirstLetter, getServerData } from "@/lib/utils";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useCalendlyEventListener } from "react-calendly";
 import toast from "react-hot-toast";
@@ -83,7 +84,26 @@ const BookSlot = () => {
     };
   }, [isModalOpen]);
 
-  if (userData.sessions)
+  if (
+    !userData?.subscriptions?.length ||
+    !userData?.subscriptions.every((sub) => sub.status === "active")
+  ) {
+    return (
+      <div className="center flex-col h-full">
+        <p className="text-neutral-200 text-center">
+          You need to subscribe to a program to book a slot.
+        </p>
+
+        <div className="center mt-4">
+          <Link href="/programs">
+            <Button>Subscribe Now</Button>
+          </Link>
+          </div>
+      </div>
+    );
+  }
+
+  if (userData.sessions?.length > 0)
     return (
       <div className="">
         <h1 className="text-xl md:text-3xl font-bold text-center text-neutral-100">
@@ -116,8 +136,10 @@ const BookSlot = () => {
 
   return (
     <>
-      <div id="book" ref={ref} style={{ zIndex: 10000 }}></div>
-      <Button onClick={() => setIsModalOpen(true)}>Book a slot</Button>
+      {/* <div id="book" ref={ref} style={{ zIndex: 10000 }}></div> */}
+      <div className="center h-full">
+        <Button onClick={() => setIsModalOpen(true)}>Book a slot</Button>
+      </div>
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-md center z-50">
@@ -139,7 +161,7 @@ const BookSlot = () => {
 
             {!isPending && !coaches.length && (
               <div className="flex items-center justify-center">
-                <p className="text-gray-500">
+                <p className="text-neutral-200">
                   No coaches found for your subscriptions. Please try again
                   later.
                 </p>
@@ -157,15 +179,7 @@ const BookSlot = () => {
 
                 <div className="p-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 mt-4">
-                    {[
-                      ...coaches,
-                      ...coaches,
-                      ...coaches,
-                      ...coaches,
-                      ...coaches,
-                      ...coaches,
-                      ...coaches,
-                    ].map((coach, i) => (
+                    {coaches.map((coach, i) => (
                       <Card
                         key={`coach-${i}`}
                         className="col-span-1 mx-auto w-80 mt-10 py-6 px-8 bg-white shadow-lg rounded-lg dark:bg-zinc-800 mb-4"
@@ -173,9 +187,7 @@ const BookSlot = () => {
                         <div className="flex justify-center -mt-16">
                           <Avatar className="h-20 w-20 border-2 border-zinc-200 dark:border-zinc-800">
                             <AvatarImage
-                              src={`https://randomuser.me/api/portraits/women/${
-                                i + 1
-                              }.jpg`}
+                              src={coach.profileImage}
                             />
                             <AvatarFallback className="capitalize">
                               {coach.name.charAt(0)}

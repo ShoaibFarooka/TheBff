@@ -3,6 +3,7 @@ import { Plan as PlanModel, Subscription, User } from "@/models";
 import { authenticate } from "../auth";
 import connectDB from "../dbConnection";
 // import type { Plan as PlanType } from '@/types/subscription';
+import { Plan } from "@/types/subscription";
 import { razorpay } from "./";
 
 export async function getPlans({ program }: { program?: string } = {}) {
@@ -75,7 +76,10 @@ export async function createSubscription({ planId }: { planId: string }) {
     }
 
     // check if plan exists
-    const plan = await PlanModel.findOne({ id: planId }, "_id id").lean();
+    const plan = (await PlanModel.findOne(
+      { id: planId },
+      "_id id"
+    ).lean()) as Plan;
     if (!plan) {
       return { error: "Plan not found." };
     }
@@ -123,16 +127,17 @@ export const verifyPayment = async ({
 
     const payment = await razorpay.payments.fetch(paymentId);
 
-    // console.log('user:', user)
-    // console.log('subscription:', subscription)
-    // console.log('payment:', payment)
-
     // check if payment exists and is captured
     if (!payment || payment.status !== "captured")
       return { error: "Payment not found or not captured." };
 
     // match subscription id with payment subscription id, and email with user email
     if (user.email !== payment.email) return { error: "Invalid user email." };
+
+    const plan = (await PlanModel.findOne(
+      { id: subscription.plan_id },
+      "-_id program"
+    ).lean()) as Plan;
 
     // save customer id in the database
     await User.findOneAndUpdate(
@@ -143,7 +148,11 @@ export const verifyPayment = async ({
     // save subscription details in the database
     await Subscription.findOneAndUpdate(
       { id: subscription.id },
-      { ...subscription, customer_id: payment.customer_id },
+      {
+        ...subscription,
+        customer_id: payment.customer_id,
+        programId: plan.program,
+      },
       { upsert: true }
     );
 
@@ -161,9 +170,9 @@ export const getSubscriptions = async () => {
 
     await connectDB();
 
-    const user = await User.findOne({ email: auth.user.email }).lean() as any;
+    const user = (await User.findOne({ email: auth.user.email }).lean()) as any;
     if (!user) {
-      return {error: "User not found."};
+      return { error: "User not found." };
     }
 
     const subscriptions = await Subscription.find({
@@ -172,7 +181,7 @@ export const getSubscriptions = async () => {
       .populate("plan")
       .lean();
 
-    return {subscriptions};
+    return { subscriptions };
   } catch (error: any) {
     console.log(error);
     return { error: "Failed to get subscriptions." };

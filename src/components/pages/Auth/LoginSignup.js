@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const LoginSignup = () => {
   return (
@@ -13,7 +13,12 @@ const LoginSignup = () => {
                 {/* section LoginSignup video start here... */}
                 <video
                   id="program-bg"
-                  autoPlay loop muted playsInline data-wf-ignore="true" data-object-fit="cover"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  data-wf-ignore="true"
+                  data-object-fit="cover"
                   poster="./assets/img/program-bg.mp4"
                 >
                   <source src="./assets/img/program-bg.mp4" type="video/mp4" />
@@ -37,7 +42,11 @@ const LoginSignup = () => {
                 {/* Login/Signup tabs start here... */}
                 <div className="loginSignup_tabs">
                   {/* Tabs nav start here... */}
-                  <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                  <ul
+                    className="nav nav-pills mb-3"
+                    id="pills-tab"
+                    role="tablist"
+                  >
                     <li className="nav-item" role="presentation">
                       <button
                         className="nav-link active"
@@ -157,7 +166,10 @@ const LoginSignup = () => {
                           </p>
                           <form action="">
                             <div className="form-group mb-3">
-                              <label htmlFor="Emailaddress" className="form-label">
+                              <label
+                                htmlFor="Emailaddress"
+                                className="form-label"
+                              >
                                 Email Address
                               </label>
                               <input
@@ -215,8 +227,7 @@ const LoginSignup = () => {
       </main>
       {/* main container end here... */}
     </>
+  );
+};
 
-  )
-}
-
-export default LoginSignup
+export default LoginSignup;

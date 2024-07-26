@@ -5,11 +5,11 @@ import CardsCarousel from "@/components/dashboard/CardsCarousel";
 import { Plan, Subscription } from "@/types/subscription";
 import { Stats, User } from "@/types/user";
 import { useMemo } from "react";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
 import Contact from "./Contact";
 import BookSlot from "./sessions/BookSlot";
 import { useDashboardState } from "./state";
 import StatsGraph from "./StatsGraph";
+import Subscriptions from "./Subscriptions";
 import UserStats from "./UserStats";
 
 type UserData = User & {
@@ -94,7 +94,6 @@ export default function Dashboard() {
               <div className="w-10 h-10 p-2 rounded-full bg-y/50 center select-none">
                 {profileText}
               </div>
-              <BiDotsHorizontalRounded color="white" />
             </div>
 
             <div className="my-5 px-3">
@@ -103,25 +102,7 @@ export default function Dashboard() {
               {/* <p className="text-gray-400">Male 22</p> */}
             </div>
 
-            <div className="my-5 px-2">
-              <p className="text-lg text-white bg-blue-50/25 rounded-md p-1">
-                Your Subscriptions
-              </p>
-              <div className="mt-2">
-                {userData?.subscriptions?.map((sub) => (
-                  <div
-                    key={sub.id}
-                    className="flex justify-between items-center"
-                  >
-                    {/* Hello */}
-                    <p className="text-gray-200">{sub.plan?.item?.name}</p>
-                    <p className="text-gray-400">
-                      {sub.plan?.item?.amount / 100}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <Subscriptions />
 
             {/* <div className="my-5">
               <p className="text-white">Standard Plan</p>

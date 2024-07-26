@@ -42,6 +42,8 @@ export type Subscription = {
     source: 'api' | 'checkout'
     offer_id: string
     remaining_count: number
+
+    programId: string
 }
 
 export type PlanWithSubscriptions = Plan & {
