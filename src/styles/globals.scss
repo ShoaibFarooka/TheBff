@@ -138,30 +138,30 @@ html {
   scroll-behavior: smooth;
 }
 
-// .custom-scrollbar::-webkit-scrollbar {
+.custom-scrollbar::-webkit-scrollbar {
 
-//   width: 10px; /* Adjust the width as needed */
-// }
+  width: 10px; /* Adjust the width as needed */
+}
 
-// .custom-scrollbar::-webkit-scrollbar-track {
-//   background: #888;
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #888;
 
-//   width: 10px; /* Adjust the background color as needed */
-// }
+  width: 10px; /* Adjust the background color as needed */
+}
 
-// .custom-scrollbar::-webkit-scrollbar-thumb {
-//   background:  #F2BD4D; /* Adjust the thumb color as needed */
-//   border-radius: 4px;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background:  #F2BD4D; /* Adjust the thumb color as needed */
+  border-radius: 4px;
 
-//   /* Adjust the border-radius as needed */
-// }
+  /* Adjust the border-radius as needed */
+}
 
-// /* For Firefox */
-// .custom-scrollbar {
-//   scrollbar-width: 0;
-//   scrollbar-color: #888 #f1f1f1;
-//    /* Adjust the thumb and track colors as needed */
-// }
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: 0;
+  scrollbar-color: #888 #f1f1f1;
+   /* Adjust the thumb and track colors as needed */
+}
 // $animationSpeed: 5s;
 
 // .slide-track {
@@ -317,8 +317,6 @@ html {
   bottom:
 -40px !important;
 }
-
-
 
 .tooltip:hover .tooltip-text {
   opacity: 1;

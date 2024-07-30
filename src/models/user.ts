@@ -1,14 +1,19 @@
 // define mongoose schema for user model
 
-import { Schema, model, models, Document } from "mongoose";
-import { User, UserRole } from "@/types/user"
+// import { withDb } from "@/lib/dbConnection";
+// import { devLog } from "@/lib/helpers";
+import { UserRole, User as UserType } from "@/types/user";
+import { Document, Schema, model, models } from 'mongoose';
+import "./Userstats";
 
 // a regex to validate email
 const mailRegex = new RegExp(
-    "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+    "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9a-]+.[a-zA-Z0-9-.]+$"
 )
 
-type UserDoc = User & Document
+// type UserDoc = Omit<UserType, 'billing_address' | 'payment_method'> & Document & { billing_address: Object, payment_method: Object, razorpayCustomerId: string }
+
+type UserDoc = UserType & Document
 
 const userSchema = new Schema<UserDoc>(
     {
@@ -59,10 +64,61 @@ const userSchema = new Schema<UserDoc>(
             enum: UserRole,
             default: UserRole.USER,
             required: true
-        }
+        },
+        avatar_url: {
+            type: String,
+            required: false,
+        },
+        billing_address: {
+            type: Object,
+            required: false,
+        },
+        razorpayCustomerId: {
+            type: String,
+            required: false,
+            unique: true,
+        },
+        payment_method: {
+            type: Object,
+            required: false,
+        },
+        // stats: {
+        // // weight
+        // },
     }, {
-        timestamps: true
-    },
+        timestamps: true,
+        toObject: { virtuals: true },
+    }
 )
 
-export default models.User || model<User & Document>("User", userSchema)
+userSchema.virtual('subscriptions', {
+    ref: 'Subscription',
+    localField: 'razorpayCustomerId',
+    foreignField: 'costumer_id',
+    justOne: false,
+    // options: {
+    //     $addFields: {
+    //         'productId': '$product_id',
+    //     }
+    // }
+})
+
+// virtuals for stats
+userSchema.virtual('stats', {
+    ref: 'UserStats',
+    justOne: true,
+    localField: 'email',
+    foreignField: 'email',
+})
+
+userSchema.virtual('sessions', {
+    ref: 'Session',
+    localField: 'email',
+    foreignField: 'userEmail',
+    justOne: false,
+})
+
+const User = models.User || model<UserDoc>("User", userSchema)
+
+
+export default User

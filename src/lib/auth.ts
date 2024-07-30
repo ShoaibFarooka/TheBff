@@ -1,330 +1,417 @@
-"use server"
-import jwt, { JsonWebTokenError } from 'jsonwebtoken'
-import bcrypt from 'bcryptjs'
-import User from '@/models/user'
-import { cookies } from 'next/headers'
-import nodemailer from 'nodemailer'
-import type { User as UserType } from '@/types/user'
-import '@/lib/db'
-import { UserRole } from '@/types/user'
-import { connectDB } from "@/lib/db"
-import { baseUrl } from './config'
-
+"use server";
+import "@/lib/db";
+import { connectDB } from "@/lib/db";
+import User from "@/models/User";
+import { UserRole } from "@/types/user";
+import bcrypt from "bcryptjs";
+import jwt, { JsonWebTokenError } from "jsonwebtoken";
+import { cookies } from "next/headers";
+import nodemailer from "nodemailer";
+import { cache } from "react";
+import { baseUrl } from "./config";
+import { devLog, getURL } from "./helpers";
 // methods to login, register, and authenticate users
 
-const secret = process.env.JWT_SECRET! || 'secret'
+const secret = process.env.JWT_SECRET! || "secret";
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    // === add this === //
-    tls : { rejectUnauthorized: false }
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  // === add this === //
+  tls: { rejectUnauthorized: false },
 });
 
 // function to verify JWT token
 function verifyToken(token: string) {
-    try {
-        const decoded = jwt.verify(token, secret) as { [key: string]: string | number }
-        return decoded
-    } catch (error) {
-        return null
-    }
+  try {
+    const decoded = jwt.verify(token, secret) as {
+      [key: string]: string | number;
+    };
+    return decoded;
+  } catch (error) {
+    return null;
+  }
 }
 
-const getSuperUserRoleObject = (role: UserRole) => [UserRole.ADMIN, UserRole.COACH, UserRole.USER].includes(role) ? { role } : {}
+const getSuperUserRoleObject = (role: UserRole) =>
+  [UserRole.ADMIN, UserRole.COACH, UserRole.USER].includes(role)
+    ? { role }
+    : {};
 
 // authenticate
-export async function authenticate( role: UserRole | UserRole[] = UserRole.USER ) {
+export const authenticate = cache(
+  async (role: UserRole | UserRole[] = UserRole.USER) => {
     try {
-        const cookie = cookies()
-        const token = cookie.get('token')
-        if (!token) return { success: false, unAuthenticated: true, message: 'No token found' }
+      const cookie = cookies();
+      const token = cookie.get("token");
+      if (!token)
+        return {
+          success: false,
+          unAuthenticated: true,
+          message: "No token found",
+        };
 
-        const decoded = jwt.verify(token.value, secret) as any
-        if (!decoded) return { success: false, unAuthenticated: true, message: 'Invalid token' }
+      const decoded = jwt.verify(token.value, secret) as any;
+      if (!decoded)
+        return {
+          success: false,
+          unAuthenticated: true,
+          message: "Invalid token",
+        };
 
-        if(Array.isArray(role) && !role.includes(decoded.role)) return { success: false, message: 'Role mismatch' }
-        if(decoded.role !== role) return { success: false, message: 'Role mismatch' }
+      if (Array.isArray(role) && !role.includes(decoded.role))
+        return { success: false, message: "Role mismatch" };
+      if (decoded.role !== role)
+        return { success: false, message: "Role mismatch" };
 
-        return { success: true, user: decoded }
-
+      return { success: true, user: decoded };
     } catch (error: any) {
-        if(error instanceof JsonWebTokenError) return {success: false, message: 'Token expired'}
-        console.error(error)
-        return {success: false, unAuthenticated: true}
+      if (error instanceof JsonWebTokenError)
+        return { success: false, message: "Token expired" };
+      console.error(error);
+      return { success: false, unAuthenticated: true };
     }
-}
-
+  }
+);
 
 // login
-export async function login({email, password, role = UserRole.USER} : {email: string, password: string, role?: UserRole}) {
-    // const user = await db.users.findOne({ email })
-    try {
-        await connectDB()
-        const user = await User.findOne({ email })
-        if (!user) return { success: false, message: 'User not found' }
+export async function login({
+  email,
+  password,
+  role = UserRole.USER,
+}: {
+  email: string;
+  password: string;
+  role?: UserRole;
+}) {
+  // const user = await db.users.findOne({ email })
+  try {
+    await connectDB();
+    const user = await User.findOne({ email });
+    if (!user) return { success: false, message: "User not found" };
 
-        if(user.role !== role) return { success: false, message: 'Role mismatch' }
+    if (user.role !== role) return { success: false, message: "Role mismatch" };
 
-        const valid = await bcrypt.compare(password, user.password)
-        if (!valid) return { success: false, message: 'Incorrect password' }
-        
-        if (!user.emailVerified) return { success: false, emailVerified: false, message: 'Please verify your email to login. Check your email for verfication link.' }
-        // if (!user.phoneVerified) return { success: false, phoneVerified: false, message: 'Please verify your phone number to login. Check WhatsApp for verfication link.' }
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) return { success: false, message: "Incorrect password" };
 
-        const token = jwt.sign({ email: user.email, name: user.name, phone: user.phone, ...getSuperUserRoleObject(role) }, secret)
+    if (!user.emailVerified)
+      return {
+        success: false,
+        emailVerified: false,
+        message:
+          "Please verify your email to login. Check your email for verfication link.",
+      };
+    // if (!user.phoneVerified) return { success: false, phoneVerified: false, message: 'Please verify your phone number to login. Check WhatsApp for verfication link.' }
 
-        // set token in cookie for 30 days
-        const cookie = cookies()
-        cookie.set('token', token, { maxAge: 30 * 24 * 60 * 60 * 1000 })
-        
-        return { success: true }
-        // return { success: true, token, user }
-    } catch (error) {
-        console.error(error)
-        return {success: false}
-    }
+    const token = jwt.sign(
+      {
+        email: user.email,
+        name: user.name,
+        phone: user.phone,
+        ...getSuperUserRoleObject(role),
+      },
+      secret
+    );
+
+    // set token in cookie for 30 days
+    const cookie = cookies();
+    cookie.set("token", token, { maxAge: 30 * 24 * 60 * 60 * 1000 });
+
+    return { success: true };
+    // return { success: true, token, user }
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
 }
-
 
 // register
-export async function register(
-    { email, password, name, phone, callbackUrl ='/' } :
-    { email: string, password: string, name: string, phone?: string, callbackUrl?: string }
-) {
-    try {
-        // check if user already exists, if so return error, else create user, hash password, send verification email, and return success
-        await connectDB()
-        const exist = await User.findOne({ email })
-        if (exist) return { success: false, message: 'User already exists' }
-        
-        const hashedPassword = await bcrypt.hash(password, 10)
-        const user = new User({
-            email, password: hashedPassword, name, phone, role: UserRole.USER
-        })
-        await user.save()
+export async function register({
+  email,
+  password,
+  name,
+  phone,
+  callbackUrl = "/",
+}: {
+  email: string;
+  password: string;
+  name: string;
+  phone?: string;
+  callbackUrl?: string;
+}) {
+  try {
+    // check if user already exists, if so return error, else create user, hash password, send verification email, and return success
+    await connectDB();
+    const exist = await User.findOne({ email });
+    if (exist) return { success: false, message: "User already exists" };
 
-        // send verification email
-        await sendVerifcationLinks({ method: 'ew', email, phone: phone ?? '' })
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({
+      email,
+      password: hashedPassword,
+      name,
+      phone,
+      role: UserRole.USER,
+    });
+    await user.save();
 
-        return { success: true }
+    // send verification email
+    await sendVerifcationLinks({ method: "ew", email, phone: phone ?? "" });
 
-    } catch (error) {
-        console.error(error)
-        return {success: false}
-    }
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
 }
 
+export const addSuperUser = async ({
+  email,
+  password,
+  name,
+  phone,
+  role = UserRole.USER,
+}: {
+  email: string;
+  password: string;
+  name: string;
+  phone?: string;
+  callbackUrl?: string;
+  role: UserRole;
+}) => {
+  try {
+    const auth = await authenticate(UserRole.ADMIN);
+    if (!auth.success)
+      return { success: false, message: auth.message ?? "Not authorized" };
 
-export const addSuperUser = async (
-    { email, password, name, phone, role = UserRole.USER } :
-    { email: string, password: string, name: string, phone?: string, callbackUrl?: string, role: UserRole }
-) => {
-    try{
-        
-        const auth = await authenticate(UserRole.ADMIN)
-        if(!auth.success) return { success: false, message: auth.message ?? 'Not authorized' }
+    await connectDB();
+    const exist = await User.findOne({ email });
+    if (exist) return { success: false, message: "User already exists" };
 
-        await connectDB()
-        const exist = await User.findOne({ email })
-        if (exist) return { success: false, message: 'User already exists' }
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-        const hashedPassword = await bcrypt.hash(password, 10)
+    const user = new User({
+      email,
+      password: hashedPassword,
+      name,
+      phone,
+      role,
+      emailVerified: true,
+      phoneVerified: true,
+    });
+    await user.save();
 
-        const user = new User({
-            email, password: hashedPassword, name, phone, role, emailVerified: true, phoneVerified: true
-        })
-        await user.save()
-
-        // notify user of account creation
-        const mailOptions = {
-            to: user.email,
-            subject: `You've been added as ${role} in TheBff`,
-            html: `
+    // notify user of account creation
+    const mailOptions = {
+      to: user.email,
+      subject: `You've been added as ${role} in TheBff`,
+      html: `
                 <h1>Welcome to TheBff</h1>
                 <p>You've been added as ${role} in TheBff</p>
                 <p>Use the following credentials to login</p>
                 <p>Email: ${user.email}</p>
                 <p>Password: ${password}</p>
-                <p>Click <a href="${(process.env.BASE_URL ?? 'http://localhost:3000')}">here</a> to login</p>    
-            `
-        }
+                <p>Click <a href="${
+                  process.env.BASE_URL ?? "http://localhost:3000"
+                }">here</a> to login</p>    
+            `,
+    };
 
-        await transporter.sendMail(mailOptions)
+    await transporter.sendMail(mailOptions);
 
-        return { success: true }
-
-    } catch (error) {
-        console.error(error)
-        return { success: false }
-    }
-}
-
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
+};
 
 // verify email
 export async function verifyEmail(token: string) {
-    try {
-        const decoded = verifyToken(token)
-        if (!decoded || !decoded.email || !decoded.verifyEmail) return { success: false, message: 'Invalid token' }
-        
-        await connectDB()
-        const user = await User.findOne({ email: decoded.email })
-        if (!user) return { success: false, message: 'User not found' }
+  try {
+    const decoded = verifyToken(token);
+    if (!decoded || !decoded.email || !decoded.verifyEmail)
+      return { success: false, message: "Invalid token" };
 
-        user.emailVerified = true
-        await user.save()
+    await connectDB();
+    const user = await User.findOne({ email: decoded.email });
+    if (!user) return { success: false, message: "User not found" };
 
-        return { success: true, message: 'Email verified successfully' }
-    } catch (error: any) {
-        console.error(error)
-        return {success: false, message: error.message ?? 'Error verifying email'}
-    }
+    user.emailVerified = true;
+    await user.save();
+
+    return { success: true, message: "Email verified successfully" };
+  } catch (error: any) {
+    console.error(error);
+    return {
+      success: false,
+      message: error.message ?? "Error verifying email",
+    };
+  }
 }
 
 // verify phone
 export async function verifyPhone(token: string) {
-    try {
-        const decoded = verifyToken(token)
-        if (!decoded || !decoded.phone || !decoded.verifyPhone) return { success: false, message: 'Invalid token' }
-        
-        await connectDB()
-        const user = await User.findOne({ phone: decoded.phone })
-        if (!user) return { success: false, message: 'User not found' }
+  try {
+    const decoded = verifyToken(token);
+    if (!decoded || !decoded.phone || !decoded.verifyPhone)
+      return { success: false, message: "Invalid token" };
 
-        user.emailVerified = true
-        await user.save()
+    await connectDB();
+    const user = await User.findOne({ phone: decoded.phone });
+    if (!user) return { success: false, message: "User not found" };
 
-        return { success: true, message: 'Phone number verified sucessfully' }
-    } catch (error: any) {
-        console.error(error)
-        return {success: false, message: error.message ?? 'Error verifying email'}
-    }
+    user.emailVerified = true;
+    await user.save();
+
+    return { success: true, message: "Phone number verified sucessfully" };
+  } catch (error: any) {
+    console.error(error);
+    return {
+      success: false,
+      message: error.message ?? "Error verifying email",
+    };
+  }
 }
-
 
 // reset password
 // take email and send reset password email
-export async function resetPassword(
-    {newPass, token} :
-    {newPass: string, token: string}
-) {
-    try {
-        const decoded = verifyToken(token) as any
-        if(!decoded || decoded.resetPassword !== true) return { success: false, message: 'Invalid token' }
+export async function resetPassword({
+  newPass,
+  token,
+}: {
+  newPass: string;
+  token: string;
+}) {
+  try {
+    const decoded = verifyToken(token) as any;
+    if (!decoded || decoded.resetPassword !== true)
+      return { success: false, message: "Invalid token" };
 
-        const user = await User.findOne({ email: decoded.email })
-        if (!user) return { success: false, message: 'User not found' }
+    const user = await User.findOne({ email: decoded.email });
+    if (!user) return { success: false, message: "User not found" };
 
-        const hashedPassword = await bcrypt.hash(newPass, 10)
-        user.password = hashedPassword
-        await user.save()
+    const hashedPassword = await bcrypt.hash(newPass, 10);
+    user.password = hashedPassword;
+    await user.save();
 
-        return { success: true }
-
-    } catch (error) {
-        console.error(error)
-        return {success: false, message: 'Error resetting password'}
-    }
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Error resetting password" };
+  }
 }
-
 
 // send reset password email
 // take email and send reset password email
-export async function sendResetPasswordEmail( email: string ) {
-    try {
-        await connectDB()
-        const user = await User.findOne({ email })
+export async function sendResetPasswordEmail(email: string) {
+  try {
+    await connectDB();
+    const user = await User.findOne({ email });
 
-        if (!user) return { success: false, message: 'User not found' }
+    if (!user) return { success: false, message: "User not found" };
 
-        // create token for 10 minutes
-        const token = jwt.sign({ email, resetPassword: true }, secret, { expiresIn: '10m' })
+    // create token for 10 minutes
+    const token = jwt.sign({ email, resetPassword: true }, secret, {
+      expiresIn: "10m",
+    });
 
-        const url = `${baseUrl}/reset-password?token=${token}`
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Reset your password',
-            html: `Please click this link to reset your password: <a href="${url}">${url}</a>`
-        }
+    const url = `${baseUrl}/reset-password?token=${token}`;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Reset your password",
+      html: `Please click this link to reset your password: <a href="${url}">${url}</a>`,
+    };
 
-        await transporter.sendMail(mailOptions)
+    await transporter.sendMail(mailOptions);
 
-        return { success: true }
-    } catch (error) {
-        console.error(error)
-        return {success: false, message: 'Error sending reset password email'}
-    }
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Error sending reset password email" };
+  }
 }
 
+type IParams =
+  | { method: "e"; email: string }
+  | { method: "w"; phone: string }
+  | { method: "ew"; email: string; phone: string };
+export async function sendVerifcationLinks(data: IParams) {
+  try {
+    const { method } = data;
 
-type IParams = { method: 'e', email: string } | { method: 'w', phone: string } | { method: 'ew', email: string, phone: string }
-export async function sendVerifcationLinks ( data : IParams ) {
-    try {
-        const { method } = data
-        switch (method) {
-            case 'e': 
-                return await sendEmailVerificationLink(data.email)
-            case 'w':
-                return await sendPhoneVerificationLink(data.phone)
-            case 'ew':
-                return await Promise.all([
-                    sendEmailVerificationLink(data.email),
-                    sendPhoneVerificationLink(data.phone)
-                ])
-            default:
-                return {success: false, message: 'Invalid method' }
-        }
-    } catch (error) {
-        console.error(error)
-        return {success: false, message: 'Something went wrong'}
+    switch (method) {
+      case "e":
+        return await sendEmailVerificationLink(data.email);
+      case "w":
+        return await sendPhoneVerificationLink(data.phone);
+      case "ew":
+        return await Promise.all([
+          sendEmailVerificationLink(data.email),
+          sendPhoneVerificationLink(data.phone),
+        ]);
+      default:
+        return { success: false, message: "Invalid method" };
     }
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong" };
+  }
 }
 
-async function sendEmailVerificationLink (email: string) {
-    try {
-        const emailToken = jwt.sign( { email, verifyEmail: true }, secret, { expiresIn: '1h' } )
-        const url = `${process.env.BASE_URL ?? 'http://localhost:3000'}/verify-token?token=${emailToken}`
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Verify your email',
-            html: `Please click this link to verify your email: <a href="${url}">${url}</a>`
-        }
+async function sendEmailVerificationLink(email: string) {
+  try {
+    const emailToken = jwt.sign({ email, verifyEmail: true }, secret, {
+      expiresIn: "1h",
+    });
+    const url = `${getURL()}/verify-token?token=${emailToken}`;
 
-        await transporter.sendMail(mailOptions)
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: [email],
+      subject: "Verify your email",
+      html: `Please click this link to verify your email: <a href="${url}">${url}</a>`,
+    };
 
-        return { success: true }
-    } catch (error) {
-        console.error(error)
-        return {success: false}
-    }
+    //* Remove log
+    devLog(url);
+
+    await transporter.sendMail(mailOptions);
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error sending email verification link: ', error);
+    return { success: false };
+  }
 }
 
-async function sendPhoneVerificationLink (phone: string) {
-    try {
-        const phoneToken = jwt.sign( { phone, verifyPhone: true }, secret, { expiresIn: '1h' } )
-        const url = `${process.env.BASE_URL ?? 'http://localhost:3000'}/verify-token?token=${phoneToken}`
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: 'email',
-            subject: 'Verify your phone',
-            html: `Please click this link to verify your phone: <a href="${url}">${url}</a>`
-        }
+async function sendPhoneVerificationLink(phone: string) {
+  try {
+    const phoneToken = jwt.sign({ phone, verifyPhone: true }, secret, {
+      expiresIn: "1h",
+    });
+    const url = `${
+      process.env.BASE_URL ?? "http://localhost:3000"
+    }/verify-token?token=${phoneToken}`;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: "email",
+      subject: "Verify your phone",
+      html: `Please click this link to verify your phone: <a href="${url}">${url}</a>`,
+    };
 
-        await transporter.sendMail(mailOptions)
+    await transporter.sendMail(mailOptions);
 
-        return { success: true }
-    } catch (error) {
-        console.error(error)
-        return {success: false}
-    }
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
 }
-// console.log(
-//     jwt.sign({ email: 'siddiquiaffan201@gmail.com' }, secret, { expiresIn: '1hr' })
-// )

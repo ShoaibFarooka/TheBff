@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server"
-import { connectDB } from "@/lib/db"
-import Subscriber from "@/models/newsletter"
 import { getQueryParams, isEmail } from "@/lib"
+import { connectDB } from "@/lib/db"
 import { sendEmail } from "@/lib/email"
-import jwt from 'jsonwebtoken'
 import newsletterConfirmationTemplate from "@/lib/templates/newsletterConfirmation"
+import Subscriber from "@/models/Newsletter"
+import jwt from 'jsonwebtoken'
+import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async (req: NextRequest) => {
     try {

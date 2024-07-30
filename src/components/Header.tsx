@@ -1,97 +1,148 @@
 "use client";
-import { useState } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { useAuth } from "@/hooks/auth";
 import Link from "next/link";
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
 import Logo from "./Logo";
+// import Profile from "./user/Profile";
 // import profilePhoto from "@/assets/Photo.png";
 // import Dashboard from "../../app/(admin_only)/admin/page";
 // import logo from '@/assets/logo.png'
 
-export default function Header() {
-  const [nav, setNav] = useState(false);
-  // const [side , setSide] = useState(false)
-  const handleClick = () => setNav(!nav);
+import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
+
+const Profile = dynamic(() => import("./user/Profile"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-8 h-8 rounded-full bg-gray-500/50 animate-pulse"></div>
+  ),
+});
+
+const pagesWithAuth = ["/profile", "/dashboard", "/programs"];
+
+const AuthProfile = ({
+  authBtn = true,
+  profileBtn = true,
+}: {
+  authBtn?: boolean;
+  profileBtn?: boolean;
+}) => {
+  const pathname = usePathname();
+  const authStatus = useAuth((s) => s.status);
+  const user = useAuth((s) => s.user);
 
   return (
-    <div
-      className="fixed top-0 left-0 bg-transparent backdrop-blur text-white w-screen flex justify-between items-center p-5 px-[10%] md:px-[20%]"
-      style={{ zIndex: 999 }}
-    >
-      <Logo />
-
-      {/* menu */}
-      <ul className="hidden md:flex font-semibold max-w-max ml-auto space-x-4 mr-4">
-        <Link href="/">
-          <li className="hover:bg-yellow-400/60 px-4 py-1.5 rounded mx-0">
-            Home
-          </li>
-        </Link>
-        <Link href="/programs">
-          <li className="hover:bg-yellow-400/60 px-4 py-1.5 rounded mx-0">
-            Programs
-          </li>
-        </Link>
-        <Link href="/programs#pricing">
-          <li className="hover:bg-yellow-400/60 px-4 py-1.5 rounded mx-0">
-            Pricing
-          </li>
-        </Link>
-
-        <Link href="/blog">
-          <li className="hover:bg-yellow-400/60 px-4 py-1.5 rounded mx-0">
-            Blogs
-          </li>
-        </Link>
-      </ul>
-
-      {/* Disabled in alpha preview - 1 */}
-      {/* <Link href="/login">
-        <button className="hidden md:flex rounded-xl px-4 py-2 text-[#FED25B] border-2 border-[#FED25B] bg-[#FED25B] bg-opacity-20 hover:text-black hover:bg-opacity-100">
-          Login/Signup
-        </button>
-      </Link> */}
-
-      {/* Hamburger */}
-      <div onClick={handleClick} className="md:hidden z-10">
-        {!nav ? <FaBars /> : <FaTimes />}
-      </div>
-
-      {/* Mobile menu */}
-      <ul
-        className={
-          !nav
-            ? "hidden"
-            : "absolute top-0 left-0 w-full h-screen bg-black flex flex-col justify-center items-center"
-        }
-      >
-        <Link href="/">
-          <li className="py-6 text-2xl">
-            <a href="#">Home</a>
-          </li>
-        </Link>
-        <Link href="/programs">
-          <li className="py-6 text-2xl">
-            <a href="#">Programs</a>
-          </li>
-        </Link>
-        <Link href="/programs#pricing">
-          <li className="py-6 text-2xl">
-            <a href="#">Pricing</a>
-          </li>
-        </Link>
-        <Link href="/blog">
-          <li className="py-6 text-2xl">
-            <a href="#">Blogs</a>
-          </li>
-        </Link>
-        {/* Disabled in alpha preview - 1 */}
-        {/* <li>
-          <button className="rounded-xl px-4 py-2 text-[#FED25B] border-2 border-[#FED25B] bg-[#FED25B] bg-opacity-20">
-            Login/Signup
+    <>
+      {profileBtn &&
+        authStatus === "authenticated" &&
+        pagesWithAuth.includes(pathname) && <Profile userdata={user} />}
+      {authBtn &&
+        pagesWithAuth.includes(pathname) &&
+        authStatus !== "loading" &&
+        authStatus === "unauthenticated" && (
+          <Link href="/login">
+            <button className="hidden md:flex rounded px-2 py-1 text-y border-2 border-transparent bg-y/10 hover:shadow-y/10 shadow-xl hover:bg-y/20 hover:border-[#FED25B]">
+              Login / Signup
+            </button>
+          </Link>
+        )}
+      {authBtn && !pagesWithAuth.includes(pathname) && (
+        <Link href="/login">
+          <button className="hidden md:flex rounded px-2 py-1 text-y border-2 border-transparent bg-y/10 hover:shadow-y/10 shadow-xl hover:bg-y/25 hover:border-[#FED25B] hover:scale-[1.05]">
+            Login / Signup
           </button>
-        </li> */}
-      </ul>
-    </div>
+        </Link>
+      )}
+    </>
+  );
+};
+
+function Header(props?: any) {
+  const [nav, setNav] = useState(false);
+  const handleClick = () => setNav(!nav);
+
+  const pathname = usePathname();
+  const authenticate = useAuth((s) => s.authenticate);
+
+  useEffect(() => {
+    if (pagesWithAuth.includes(pathname) && authenticate) {
+      authenticate();
+    }
+  }, [pathname, authenticate]);
+
+  return (
+    <nav
+      className="fixed top-0 left-0 bg-transparent backdrop-blur w-screen px-5 py-2 z-50"
+      style={{ zIndex: 99 }}
+    >
+      <div className="text-white flex justify-between items-center mx-auto md:max-w-5xl">
+        <Logo />
+
+        {/* menu */}
+        <ul className="hidden md:flex font-semibold max-w-max ml-auto space-x-4 mr-4">
+          <Link href="/">
+            <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
+              Home
+            </li>
+          </Link>
+          <Link href="/programs">
+            <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
+              Programs
+            </li>
+          </Link>
+          <Link href="/programs#pricing">
+            <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
+              Pricing
+            </li>
+          </Link>
+          <Link href="/blog">
+            <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
+              Blogs
+            </li>
+          </Link>
+
+          <li>
+            {/* Disabled in alpha preview - 1 */}
+            <AuthProfile />
+          </li>
+        </ul>
+
+        {/* Hamburger */}
+        <div onClick={handleClick} className="md:hidden z-10 center space-x-4">
+          {/* {authStatus === "authenticated" ? <Profile userdata={{}} /> : null} */}
+          <AuthProfile authBtn={false} />
+          {!nav ? <FaBars /> : <FaTimes />}
+        </div>
+
+        {/* Mobile menu */}
+        <ul
+          className={
+            !nav
+              ? "hidden"
+              : "absolute top-0 left-0 w-full h-screen bg-black flex flex-col justify-center items-center"
+          }
+        >
+          <Link href="/" className="py-6 text-2xl">
+            Home
+          </Link>
+          <Link href="/programs" className="py-6 text-2xl">
+            Programs
+          </Link>
+          <Link href="/programs#pricing" className="py-6 text-2xl">
+            Pricing
+          </Link>
+          <Link href="/blog" className="py-6 text-2xl">
+            Blogs
+          </Link>
+          {/* Disabled in alpha preview - 1 */}
+          <li>
+            <AuthProfile profileBtn={false} />
+          </li>
+        </ul>
+      </div>
+    </nav>
   );
 }
+
+export default Header;

@@ -1,0 +1,211 @@
+[
+    {
+        "program": "dance",
+        "item": {
+            "name": "Dance Standard 1 Month",
+            "amount": 250000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 1,
+        "id": "plan_ObM2HZwDz7Bci7",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    },
+    {
+        "program": "dance",
+        "item": {
+            "name": "Dance Standard 3 Months",
+            "amount": 450000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 3,
+        "id": "plan_ObM7HacEDwDgpv",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    },
+    {
+        "program": "dance",
+        "item": {
+            "name": "Dance Standard 6 Months",
+            "amount": 550000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 6,
+        "id": "plan_ObNEoIFvQZtZgC",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    },
+    {
+        "program": "dance",
+        "item": {
+            "name": "Dance Premium 1 Month",
+            "amount": 350000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 1,
+        "id": "plan_OblUqMQHo83Tth",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    },
+    {
+        "program": "dance",
+        "item": {
+            "name": "Dance Premium 3 Months",
+            "amount": 550000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 3,
+        "id": "plan_OblmmTFbDZJ5Gs",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    },
+    {
+        "program": "dance",
+        "item": {
+            "name": "Dance Premium 6 Months",
+            "amount": 650000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 6,
+        "id": "plan_OdAmD8EFIEkvkZ",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    },
+    {
+        "program": "gym",
+        "item": {
+            "name": "Gym Standard 1 Month",
+            "amount": 350000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 1,
+        "id": "plan_ObBdid60A4AERd",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    },
+    {
+        "program": "gym",
+        "item": {
+            "name": "Gym Standard 3 Months",
+            "amount": 550000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 3,
+        "id": "plan_ObBdjJLrJx5Iwv",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    },
+    {
+        "program": "gym",
+        "item": {
+            "name": "Gym Standard 6 Months",
+            "amount": 650000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 6,
+        "id": "plan_ObBdjxX3ZwhCV7",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    },
+    {
+        "item": {
+            "name": "Gym Premium 1 Month",
+            "amount": 350000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 1,
+        "program": "gym",
+        "id": "plan_ObCr0bqvChT0Ly",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    },
+    {
+        "item": {
+            "name": "Gym Premium 3 Months",
+            "amount": 550000,
+            "currency": "INR"
+        },
+        "period": "monthly",
+        "interval": 3,
+        "program": "gym",
+        "id": "plan_ObCtmQadg4t2nG",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "$setOnInsert": {
+            "__v": 0
+        }
+    }
+]

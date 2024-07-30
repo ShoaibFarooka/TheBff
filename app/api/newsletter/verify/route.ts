@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server"
+import { getQueryParams } from "@/lib"
 import { connectDB } from "@/lib/db"
-import Subscriber from "@/models/newsletter"
-import { getQueryParams, isEmail } from "@/lib"
+import Subscriber from "@/models/Newsletter"
+import { NextRequest, NextResponse } from "next/server"
 // import { sendEmail } from "@/lib/email"
 import jwt from 'jsonwebtoken'
 

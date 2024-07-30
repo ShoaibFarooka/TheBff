@@ -1,6 +1,7 @@
 import { Schema, model, models } from 'mongoose';
 
-const subscriberSchema = new Schema({
+const newsLetterSchema = new Schema({
+    _id: { type: String, required: true },
     email: {
         type: String,
         required: true,
@@ -15,6 +16,6 @@ const subscriberSchema = new Schema({
     timestamps: true
 });
 
-const Subscriber = models.Subscriber || model('Subscriber', subscriberSchema);
+const NewsLetter = models.NewsLetter || model('NewsLetter', newsLetterSchema);
 
-export default Subscriber;
+export default NewsLetter;
