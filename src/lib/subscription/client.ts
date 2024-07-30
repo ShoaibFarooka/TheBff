@@ -14,7 +14,6 @@ export const makeSubscriptionPayment = async (
     }
 ) => {
     try {
-        // alert( 'razorpay key: ' +  process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID)
         if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
             alert("Razorpay key not found")
             return

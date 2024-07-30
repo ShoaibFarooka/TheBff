@@ -85,8 +85,8 @@ const BookSlot = () => {
   }, [isModalOpen]);
 
   if (
-    !userData?.subscriptions?.length ||
-    !userData?.subscriptions.every((sub) => sub.status === "active")
+    !userData?.subscriptions?.length 
+    // || !userData?.subscriptions.every((sub) => ["cancelled", "expired"].includes(sub.status))
   ) {
     return (
       <div className="center flex-col h-full">
@@ -136,7 +136,9 @@ const BookSlot = () => {
 
   return (
     <>
-      {/* <div id="book" ref={ref} style={{ zIndex: 10000 }}></div> */}
+      {/* This is necessary for calendly modal */}
+      <div id="book" ref={ref} style={{ zIndex: 10000 }}></div>
+
       <div className="center h-full">
         <Button onClick={() => setIsModalOpen(true)}>Book a slot</Button>
       </div>

@@ -7,8 +7,8 @@ const Subscriptions = () => {
   const { userData } = useDashboardState();
 
   if (
-    !userData?.subscriptions?.length ||
-    !userData?.subscriptions.every((sub) => sub.status === "active")
+    !userData?.subscriptions?.length 
+    // || !userData?.subscriptions.every((sub) => ["cancelled", "expired"].includes(sub.status))
   )
     return (
       <div className="my-5 px-2 text-neutral-100">

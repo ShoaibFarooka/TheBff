@@ -4,6 +4,7 @@ import { authenticate } from "../auth";
 import connectDB from "../dbConnection";
 // import type { Plan as PlanType } from '@/types/subscription';
 import { Plan } from "@/types/subscription";
+import { devLog } from "../helpers";
 import { razorpay } from "./";
 
 export async function getPlans({ program }: { program?: string } = {}) {
@@ -120,13 +121,14 @@ export const verifyPayment = async ({
     if (!user) return { error: "Please login to continue." };
 
     const subscription = await razorpay.subscriptions.fetch(subscriptionId);
+    devLog(subscription);
 
     // check if subscription exists and is active
     if (!subscription || subscription.status == "cancelled")
       return { error: "Subscription not found or inactive." };
 
     const payment = await razorpay.payments.fetch(paymentId);
-
+    devLog(payment);
     // check if payment exists and is captured
     if (!payment || payment.status !== "captured")
       return { error: "Payment not found or not captured." };

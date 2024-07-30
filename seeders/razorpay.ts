@@ -9,9 +9,9 @@ import { readFileSync, writeFileSync } from "fs"
 dotenv.config()
 
 
-const plans = JSON.parse(readFileSync('fixtures/plans.json', 'utf-8')) as unknown as Plan[]
+const plans = JSON.parse(readFileSync('seeders/data/plans.json', 'utf-8')) as unknown as Plan[]
 function writePlans() {
-    writeFileSync('fixtures/plans.json', JSON.stringify(plans, null, 4))
+    writeFileSync('seeders/data/plans.json', JSON.stringify(plans, null, 4))
 }
 
 const razorpay = new Razorpay({
@@ -108,7 +108,7 @@ async function createPlansInRzp() {
         }
 
         // write updated plans to file
-        writeFileSync('fixtures/plans.json', JSON.stringify(updated, null, 4))
+        writeFileSync('seeders/data/plans.json', JSON.stringify(updated, null, 4))
     }
     catch (error) {
         console.log('❌ Error:', error)
