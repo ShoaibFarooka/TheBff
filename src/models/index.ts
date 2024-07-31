@@ -5,7 +5,7 @@ export { default as Program } from "./Program";
 export { default as Session } from "./Session";
 export { default as Subscription } from "./Subscription";
 export { default as User } from "./user";
-export { default as UserStats } from "./userStats";
+export { default as UserStats } from "./Userstats";
 
 // export { default as Customer } from "./Customer";
 // export { default as Price } from "./Price";
