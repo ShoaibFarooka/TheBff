@@ -3,6 +3,7 @@ import { Document, Schema, model, models } from "mongoose";
 
 type StatsDoc = Stats & Document;
 
+// Schema for User Stats
 const UserStatsSchema = new Schema<StatsDoc>(
   {
     _id: { type: String, required: true },
