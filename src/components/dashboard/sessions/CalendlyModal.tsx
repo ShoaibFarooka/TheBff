@@ -2,7 +2,7 @@
 import { useAuth } from "@/hooks/auth";
 import { saveEventInDB } from "@/lib/calendly/utils";
 import { getServerData } from "@/lib/utils";
-import { CoachType } from "@/models/Coach";
+import { CoachType } from "@/models/coach";
 import { useTransition } from "react";
 import { PopupButton, useCalendlyEventListener } from "react-calendly";
 import toast from "react-hot-toast";

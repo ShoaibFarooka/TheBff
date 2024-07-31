@@ -4,7 +4,6 @@
 // import { devLog } from "@/lib/helpers";
 import { UserRole, User as UserType } from "@/types/user";
 import { Document, Schema, model, models } from 'mongoose';
-import "./Userstats";
 
 // a regex to validate email
 const mailRegex = new RegExp(

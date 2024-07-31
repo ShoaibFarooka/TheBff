@@ -1,5 +1,5 @@
 "use client";
-import { CoachType } from "@/models/Coach";
+import { CoachType } from "@/models/coach";
 import { Session } from "@/types/session";
 import { Plan, Subscription } from "@/types/subscription";
 import { Stats, User } from "@/types/user";

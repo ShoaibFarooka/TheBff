@@ -4,9 +4,10 @@ import {
   Coach,
   Session as SessionModel,
   Subscription as SubscriptionModel,
+  User,
+  UserStats,
 } from "@/models";
-import User from "@/models/User";
-import UserStats from "@/models/Userstats";
+// import UserStats from "@/models/Userstats";
 import { Subscription } from "@/types/subscription";
 import { Stats, User as UserType } from "@/types/user";
 import mongoose from "mongoose";

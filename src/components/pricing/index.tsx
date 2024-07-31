@@ -1,6 +1,6 @@
 "use client";
 import { postData } from "@/lib/helpers";
-import user from "@/models/User";
+import { User as user } from "@/models";
 import { Price, ProductWithPrices, Subscription } from "@/types/db";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

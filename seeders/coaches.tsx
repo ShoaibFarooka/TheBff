@@ -1,5 +1,5 @@
 import connectDB from "@/lib/dbConnection";
-import Coach, { CoachType } from "@/models/Coach";
+import Coach, { CoachType } from "@/models/coach";
 import consola from "consola";
 
 const coaches: CoachType[] = [

@@ -1,7 +1,7 @@
 "use server";
 
 import { Coach, Session } from "@/models";
-import { CoachType } from "@/models/Coach";
+import { CoachType } from "@/models/coach";
 import { authenticate } from "../auth";
 import connectDB from "../dbConnection";
 

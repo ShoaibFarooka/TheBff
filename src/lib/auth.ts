@@ -1,7 +1,7 @@
 "use server";
 import "@/lib/db";
 import { connectDB } from "@/lib/db";
-import User from "@/models/User";
+import { User } from "@/models";
 import { UserRole } from "@/types/user";
 import bcrypt from "bcryptjs";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";

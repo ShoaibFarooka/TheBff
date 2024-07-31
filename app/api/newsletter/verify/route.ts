@@ -1,6 +1,6 @@
 import { getQueryParams } from "@/lib"
 import { connectDB } from "@/lib/db"
-import Subscriber from "@/models/Newsletter"
+import { NewsSubscriber } from "@/models"
 import { NextRequest, NextResponse } from "next/server"
 // import { sendEmail } from "@/lib/email"
 import jwt from 'jsonwebtoken'
@@ -19,7 +19,7 @@ export const GET = async (req: NextRequest) => {
         const email = (valid as any).email
 
         await connectDB()
-        const subscriber = await Subscriber.findOne({ email })
+        const subscriber = await NewsSubscriber.findOne({ email })
 
         if (!subscriber) return NextResponse.json({ success: false, message: "Subscriber not found" })
 
