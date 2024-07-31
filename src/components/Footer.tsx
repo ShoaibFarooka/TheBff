@@ -3,12 +3,11 @@
 // import Twitter from "@/assets/Twitter (1).png";
 // import Gmail from "@/assets/Gmail (1).png";
 // import LinkedIn from "@/assets/linkedin-svgrepo-com 1.png";
-import Link from "next/link";
-import Logo from "./Logo";
-// import { FaInstagram } from "react-icons/fa";
-import { BiLogoGmail } from "react-icons/bi";
 
+import Link from "next/link";
+import { BiLogoGmail } from "react-icons/bi";
 import { FaInstagram } from "react-icons/fa";
+import Logo from "./Logo";
 
 const links = {
   email: "mailto:thebffupdates@gmail.com",
