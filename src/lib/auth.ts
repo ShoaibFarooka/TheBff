@@ -131,6 +131,13 @@ export async function login({
   }
 }
 
+// logout
+export async function logout() {
+  const cookie = cookies();
+  cookie.set("token", "", { maxAge: 0 });
+  return { success: true };
+}
+
 // register
 export async function register({
   email,
@@ -387,7 +394,7 @@ async function sendEmailVerificationLink(email: string) {
 
     return { success: true };
   } catch (error) {
-    console.error('Error sending email verification link: ', error);
+    console.error("Error sending email verification link: ", error);
     return { success: false };
   }
 }

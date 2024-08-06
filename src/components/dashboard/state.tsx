@@ -32,7 +32,7 @@ export const useDashboardState = () => {
     setUserData((prev: UserData) => ({ ...prev, ...data }));
   };
 
-  return { userData, setUserData: setPartialUserData, coaches, setCoaches };
+  return { userData: userData ?? {}, setUserData: setPartialUserData, coaches, setCoaches };
 };
 
 export const DashboardStateProvider = ({

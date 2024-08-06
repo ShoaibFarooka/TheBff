@@ -27,7 +27,11 @@ export default async function Page() {
   const userdata = (await getUserDataWithSubscription(
     auth.user.email
   )) as UserData;
-  
+
+  if (!userdata) {
+    return redirect("/login?cb=/dashboard&force-login");
+  }
+
   return (
     <DashboardStateProvider data={JSON.parse(JSON.stringify(userdata))}>
       <Dashboard />

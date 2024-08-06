@@ -56,7 +56,7 @@ export const getUserDataWithSubscription = async (email: string) => {
 
     const past40Min = new Date(new Date().getTime() - 40 * 60 * 1000);
 
-    const user = (await User.findOne({ email })
+    const user = (await User.findOne({ email }, '-_id')
       .populate("stats", "-_id")
       .populate("sessions", undefined, undefined, {
         startTime: { $gte: past40Min },
@@ -75,7 +75,7 @@ export const getUserDataWithSubscription = async (email: string) => {
       customer_id: user.razorpayCustomerId,
     })
       .populate("plan")
-      .select("id plan_id customer_id current_end current_start")
+      .select("id plan_id customer_id current_end current_start status")
       .lean();
 
     data.subscriptions = subscriptions as any;
@@ -255,7 +255,7 @@ export const getCoaches = async ({ programIds }: { programIds: string[] }) => {
       .populate("programs", "name -_id -coaches id")
       .lean();
 
-    console.log(programIds);
+    // console.log(programIds);
 
     if (!coaches.length)
       return {

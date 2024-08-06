@@ -115,13 +115,19 @@ const Auth = ({ signup = false }: IAuth) => {
 
   useEffect(() => {
     if (!signup) {
+
+      if (searchParams.has("force-login")) {
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        return
+      }
+
       // if token is present in cookie, redirect to /dashboard
       const token = document.cookie
         .split(";")
         .find((c) => c.trim().startsWith("token="));
       if (token) router.push("/dashboard");
     }
-  }, [signup]);
+  }, [signup, router, searchParams]);
 
   return (
     <main className="mt-[5.5rem] min-h-[70vh] px-5 md:px-14 lg:px-40">

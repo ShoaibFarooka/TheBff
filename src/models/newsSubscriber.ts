@@ -16,6 +16,6 @@ const newsSubscriberSchema = new Schema({
     timestamps: true
 });
 
-const NewsSubscriber = models.NewsLetter || model('NewsSubscriber', newsSubscriberSchema);
+const NewsSubscriber = models.NewsSubscriber || model('NewsSubscriber', newsSubscriberSchema);
 
 export default NewsSubscriber;

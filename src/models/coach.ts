@@ -1,7 +1,7 @@
 // coach.model.ts
 
 import mongoose, { Document, Schema } from "mongoose";
-import "./Program";
+// import "./Program";
 
 export interface CoachType {
   name: string;

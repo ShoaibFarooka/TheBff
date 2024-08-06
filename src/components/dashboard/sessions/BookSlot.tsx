@@ -5,11 +5,11 @@ import { Card } from "@/components/ui/card";
 import { getCoaches } from "@/lib/dbHelpers";
 import { capitalizeFirstLetter, getServerData } from "@/lib/utils";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useCalendlyEventListener } from "react-calendly";
 import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
-import { useDashboardState } from "../state";
+import { useDashboardState, UserData } from "../state";
 import CalendlyModal from "./CalendlyModal";
 
 const BookSlot = () => {
@@ -17,13 +17,19 @@ const BookSlot = () => {
   const [isPending, startTransition] = useTransition();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { userData } = useDashboardState();
 
   const {
     coaches,
     setCoaches,
-    userData: { subscriptions },
+    userData = {} as UserData,
   } = useDashboardState();
+
+  const subscriptions = useMemo(() => {
+    if (!userData?.subscriptions) return [];
+    return userData.subscriptions?.filter(
+      (sub) => !["cancelled", "expired"].includes(sub.status)
+    );
+  }, [userData?.subscriptions])
 
   // fetch coaches
   const fetchCoaches = useCallback(async () => {
@@ -85,8 +91,7 @@ const BookSlot = () => {
   }, [isModalOpen]);
 
   if (
-    !userData?.subscriptions?.length 
-    // || !userData?.subscriptions.every((sub) => ["cancelled", "expired"].includes(sub.status))
+    !subscriptions?.length
   ) {
     return (
       <div className="center flex-col h-full">
@@ -98,7 +103,7 @@ const BookSlot = () => {
           <Link href="/programs">
             <Button>Subscribe Now</Button>
           </Link>
-          </div>
+        </div>
       </div>
     );
   }

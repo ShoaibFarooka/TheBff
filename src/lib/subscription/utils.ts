@@ -70,17 +70,18 @@ export async function getRazorpayCustomer(options?: {
 export async function createSubscription({ planId }: { planId: string }) {
   try {
     await connectDB();
-    const { user } = await authenticate();
+    const { user: authUser } = await authenticate();
 
-    if (!user) {
+    if (!authUser) {
       return { error: "Please login to continue." };
     }
 
     // check if plan exists
     const plan = (await PlanModel.findOne(
       { id: planId },
-      "_id id"
-    ).lean()) as Plan;
+      "_id id program"
+    ).lean()) as Pick<Plan, "id" | "program">;
+
     if (!plan) {
       return { error: "Plan not found." };
     }
@@ -96,6 +97,15 @@ export async function createSubscription({ planId }: { planId: string }) {
 
     if (!subscription || !subscription.id) {
       return { error: "Subscription creation failed." };
+    }
+
+    const customer = await getRazorpayCustomer({
+      email: authUser.email,
+      phone: authUser.phone,
+    });
+
+    if (!customer) {
+      return { error: "Failed to create customer." };
     }
 
     return { subscriptionId: subscription.id };
@@ -120,15 +130,18 @@ export const verifyPayment = async ({
 
     if (!user) return { error: "Please login to continue." };
 
-    const subscription = await razorpay.subscriptions.fetch(subscriptionId);
+    const [subscription, payment] = await Promise.all([
+      await razorpay.subscriptions.fetch(subscriptionId),
+      await razorpay.payments.fetch(paymentId),
+    ]);
     devLog(subscription);
 
     // check if subscription exists and is active
     if (!subscription || subscription.status == "cancelled")
       return { error: "Subscription not found or inactive." };
 
-    const payment = await razorpay.payments.fetch(paymentId);
     devLog(payment);
+
     // check if payment exists and is captured
     if (!payment || payment.status !== "captured")
       return { error: "Payment not found or not captured." };

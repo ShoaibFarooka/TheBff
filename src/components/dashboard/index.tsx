@@ -34,8 +34,8 @@ export default function Dashboard() {
       time < 12
         ? "Good Morning"
         : time < 18
-        ? "Good Afternoon"
-        : "Good Evening";
+          ? "Good Afternoon"
+          : "Good Evening";
 
     const profileText = userData?.name
       ?.split(" ")
@@ -63,28 +63,7 @@ export default function Dashboard() {
 
           {/* ===================Scheduled Session================== */}
           <div className="bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl py-5 px-3 lg:px-10 lg:col-span-2 shadow-2xl shadow-[#4A2F70]/50">
-            {/* <h1 className="font-semibold text-[32px] text-center text-[#AFCCF8] mb-10">
-              Scheduled Session
-            </h1>
-            <div className="flex justify-center">
-              <div className="text-white flex justify-between rounded-lg px-4  py-4 border border-white my-4 w-full lg:w-4/5 items-center">
-                <p className="text-xs lg:text-base"> 10:00 AM</p>
-                <p className="text-xs lg:text-base">23rd April 2023</p>
-                <button className="bg-[#E59F0B] px-5 py-2 text-white rounded-lg">
-                  Reschedule
-                </button>
-              </div>
-            </div>
-
-            <div className="flex justify-center my-5">
-              <button className="bg-[#514ED8] text-white px-[70px] py-3 rounded-lg">
-                Join Meeting
-              </button>
-            </div>
-            */}
-            <BookSlot
-            // url="https://calendly.com/thebffupdates/coaching-class"
-            />
+            <BookSlot />
           </div>
 
           {/* =================PROFILE========================== */}

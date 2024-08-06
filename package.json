@@ -8,7 +8,8 @@
     "start": "next start -p 3000",
     "lint": "next lint",
     "seed": "tsx ./seeders/index.ts",
-    "seed:plans": "tsx ./seeders/razorpay.ts"
+    "seed:plans": "tsx ./seeders/razorpay.ts",
+    "tunnel": "lt -p 3000 -s afrzp --print-requests"
   },
   "dependencies": {
     "@graphcms/rich-text-react-renderer": "^0.6.1",
@@ -28,6 +29,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "consola": "^3.2.3",
+    "dayjs": "^1.11.12",
     "encoding": "^0.1.13",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
