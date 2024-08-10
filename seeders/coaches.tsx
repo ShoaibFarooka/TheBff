@@ -2,14 +2,26 @@ import connectDB from "@/lib/dbConnection";
 import Coach, { CoachType } from "@/models/coach";
 import consola from "consola";
 
+/**
+ * Add/Update/Delete Coaches in the list and run the seeders
+ * 
+ * For each coach, you can add the following details:
+ * - name: Name of the coach
+ * - email: Email of the coach
+ * - profileImage: Profile image of the coach
+ * - calendarLink: Register on calendly.com and create a new event. Copy the link and paste it here.
+ * - programIds: List of program ids the coach is associated with
+ * - calendlyToken: Calendly token for the coach. You can get this by inspecting the network tab in the browser when you open the calendly link.
+ */
+
 const coaches: CoachType[] = [
     {
         name: "Coach 1",
         email: 'coach1@thebff.com',
         profileImage: "https://via.placeholder.com/150",
-        calendarLink: "https://calendar.google.com",
+        calendarLink: "https://calendly.com/thebffupdates/coaching-class",
         programIds: ["dance", "gym"],
-        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIxOTEzNDA1LCJqdGkiOiI5ZjdmZjJiNi1kZmUxLTQ5ZmYtODBhNy0zMzNkZjVlNGEyMGIiLCJ1c2VyX3V1aWQiOiJBQUFFUU9RUUpOU0lZUVJZIn0.WkcW3UekREfpnpcq7DepYmhUNYeBJ2-jSZ-11oTpeSA3Nc6VSx5I5Ot7qq38Vk1hCkCpZBC6XDUWTAP0ZVyOBQ'
+        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIzMjI1MjU2LCJqdGkiOiI0ZmRiNzk4My1mYmIwLTRiOTItOTk3MC0zZTMyMDgyZGY5YWEiLCJ1c2VyX3V1aWQiOiI4MzEyZTAwNC0zZTY5LTQ1NTAtYTNjZi1iOThjZjZmODY4YWEifQ.cD03tgWyHLU73_QBpUJGhkoZ3wMksNKEYePz59mnlArZIX-H1_RP97w2VdXkp0r928xw00blKxdVW0t8tkFLpA'
     },
     {
         name: "Coach 2",
@@ -17,7 +29,7 @@ const coaches: CoachType[] = [
         profileImage: "https://via.placeholder.com/150",
         calendarLink: "https://calendar.google.com",
         programIds: ["gym"],
-        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIxOTEzNDA1LCJqdGkiOiI5ZjdmZjJiNi1kZmUxLTQ5ZmYtODBhNy0zMzNkZjVlNGEyMGIiLCJ1c2VyX3V1aWQiOiJBQUFFUU9RUUpOU0lZUVJZIn0.WkcW3UekREfpnpcq7DepYmhUNYeBJ2-jSZ-11oTpeSA3Nc6VSx5I5Ot7qq38Vk1hCkCpZBC6XDUWTAP0ZVyOBQ'
+        calendlyToken: 'mytoken'
     }
 ]
 

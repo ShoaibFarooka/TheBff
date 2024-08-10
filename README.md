@@ -1,34 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# TheBFF
 
-## Getting Started
+<!--
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+ -->
+
+## Environment Variables
+
+```
+MONGO_URI - MongoDB URI
+REVALIDATE_TOKEN - Revalidate Token (Used fir revalidating the data in the cache)
+
+HYGRAPH_ENDPOINT - Hygraph Endpoint (Used for fetching the data from Hygraph)
+
+RAZORPAY_WEBHOOK_SECRET - Razorpay Webhook Secret
+RAZORPAY_KEY_ID - Razorpay Key ID
+RAZORPAY_KEY_SECRET - Razorpay Key Secret
+
+EMAIL_USER - Email User
+EMAIL_PASS - Email Password
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<br />
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Data Management
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Plans
 
-## Learn More
+- Add/Update/Delete Plans in the list in the seeders/data/plans.json file
+- Run `pnpm seed:plans` to seed the plans
 
-To learn more about Next.js, take a look at the following resources:
+### Classes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Add/Update/Delete Classes in the list in the seeders/classes.tsx file
+- Each class should have a list of programIds which are the ids of the <a href="#programs">programs</a> that the class is associated with.
+- Run `pnpm seed` or `pnpm seed classes` to seed the classes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Coaches
 
-## Deploy on Vercel
+<blockquote>
+Register on calendly.com and create a new event for each coach. Copy the link of the event and genrate an access token from the link below:<br />
+<a href="https://calendly.com/integrations/api_webhooks">https://calendly.com/integrations/api_webhooks</a>
+</blockquote>
+<br />
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Add/Update/Delete Coaches in the list in the seeders/coaches.tsx file
+- Run `pnpm seed` or `pnpm seed coaches` to seed the coaches
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Programs
+
+- Add/Update/Delete Programs in the list in the seeders/programs.tsx file
+- Run `pnpm seed` or `pnpm seed programs` to seed the programs

@@ -16,7 +16,7 @@ const classes: Program[] = [
         title: "Personalized Online Dance Classes to Get You Moving",
         subTitle: "Dance",
         description: "Looking for a fun workout alternative? Try our online dance classes! You can get fit, learn different styles, or prepare for your wedding dance. It's really cool! Don't just take our word for it - come join us and see for yourself just how fun our classes are!",
-        image: "/images/stock/dance.jpeg",
+        image: "/images/stock/dance.jpeg", // inside the public folder
     },
     {
         id: "gym",
@@ -81,3 +81,4 @@ async function seedClasses() {
 
 
 export { classes, seedClasses };
+

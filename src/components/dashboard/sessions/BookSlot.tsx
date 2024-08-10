@@ -144,7 +144,10 @@ const BookSlot = () => {
       {/* This is necessary for calendly modal */}
       <div id="book" ref={ref} style={{ zIndex: 10000 }}></div>
 
-      <div className="center h-full">
+      <div className="center flex-col gap-4 h-full">
+        <h2 className="text-xl md:text-3xl font-bold text-center text-neutral-100">
+          Book a slot to continue!
+        </h2>
         <Button onClick={() => setIsModalOpen(true)}>Book a slot</Button>
       </div>
 

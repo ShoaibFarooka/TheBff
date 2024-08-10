@@ -48,9 +48,11 @@ export async function getRazorpayCustomer(options?: {
       email,
       name,
       contact: phone,
-      fail_existing: create ? 0 : 1,
+      fail_existing: 0,
     });
 
+    // console.log(customer);
+    
     if (!customer || !customer.id) {
       throw new Error("Failed to create Razorpay user.");
     }
@@ -62,6 +64,7 @@ export async function getRazorpayCustomer(options?: {
 
     return customer;
   } catch (error) {
+    console.log(error);
     throw new Error("Failed to get Razorpay user.");
   }
 }
@@ -102,6 +105,7 @@ export async function createSubscription({ planId }: { planId: string }) {
     const customer = await getRazorpayCustomer({
       email: authUser.email,
       phone: authUser.phone,
+      create: true,
     });
 
     if (!customer) {
