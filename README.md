@@ -1,9 +1,14 @@
 # TheBFF
 
-<!--
+## Setup
+- Install nodejs on your system <a href="https://nodejs.org">https://nodejs.org/en</a>
+- Install pnpm <a href="https://pnpm.io/installation">https://pnpm.io/installation</a>
+- Clone the repo <a href="https://github.com/cyncept/thebff">https://github.com/cyncept/thebff</a>
+- Navigate to the directory and run `pnpm install` to install the dependencies.
+- Create a `.env` file in the root directory and add the environment variables.
+- Run `pnpm dev` to start the server in development mode.
+- Run `pnpm build` to build the project. And `pnpm start` to start the server in production mode.
 
-
- -->
 
 ## Environment Variables
 
