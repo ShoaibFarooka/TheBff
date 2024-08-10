@@ -30,6 +30,8 @@
     "clsx": "^2.0.0",
     "consola": "^3.2.3",
     "dayjs": "^1.11.12",
+    "embla-carousel-autoplay": "^8.1.8",
+    "embla-carousel-react": "^8.1.8",
     "encoding": "^0.1.13",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",

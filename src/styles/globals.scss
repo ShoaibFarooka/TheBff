@@ -228,13 +228,13 @@ html {
 }
 
 
-.swiper-scrollbar-drag {
-  background-color: #F2BD4D !important;
-  opacity: 1;
-  transition: opacity 0.2s ease-in-out;
-  min-height: 5px;
-  margin-bottom: 10px;
-}
+// .swiper-scrollbar-drag {
+//   background-color: #F2BD4D !important;
+//   opacity: 1;
+//   transition: opacity 0.2s ease-in-out;
+//   min-height: 5px;
+//   margin-bottom: 10px;
+// }
 
 .animate-slideInRight {
   // animate on both, while opening and closing
@@ -250,6 +250,11 @@ html {
 .animate-slideOutRight {
   // animate on both, while opening and closing
   animation: slideOutRight 0.3s both;
+}
+
+.animate-vibrate {
+  animation: vibrate 2s infinite;
+  // animation-delay: 3s;
 }
 
 @keyframes slideInRight {
@@ -288,6 +293,39 @@ html {
   }
 }
 
+@keyframes vibrate {
+  0% {
+    transform: translateX(0);
+  }
+
+  5% {
+    transform: translateX(15px);
+    scale: 1.1;
+  }
+
+  10% {
+    transform: translateX(-15px);
+    scale: 1;
+  }
+
+  15% {
+    transform: translateX(15px);
+    scale: 1.1;
+  }
+
+  20% {
+    transform: translateX(-15px);
+    scale: 1.05;
+  }
+
+  25% {
+    transform: translateX(0);
+    scale: 1;
+  }
+
+  
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -302,10 +340,10 @@ html {
 
 
 
-.navigation-button {
-  --swiper-navigation-size: 20px;
-  display: none ; 
-}
+// .navigation-button {
+//   --swiper-navigation-size: 20px;
+//   display: none ; 
+// }
 
 
 @media (min-width: 768px) {
@@ -313,10 +351,10 @@ html {
     display:flex; 
   }
 }
- .swiper-custom .swiper-pagination {
-  bottom:
--40px !important;
-}
+//  .swiper-custom .swiper-pagination {
+//   bottom:
+// -40px !important;
+// }
 
 .tooltip:hover .tooltip-text {
   opacity: 1;

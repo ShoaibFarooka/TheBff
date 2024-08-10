@@ -23,7 +23,10 @@ const Verify = async ({ searchParams }: { searchParams: SearchParams }) => {
 
   const res = await verifyEmail(searchParams.token);
 
-  if (res.success) return redirect(`${getURL()}/login`);
+  if (res.success) {
+    redirect(`${getURL()}login`);
+  }
+
   // <div className="min-h-[70vh] center flex-col mt-24 text-white">
   //     <RxCheck size={70} className="text-green-500 fill-green-500 mb-4" />
   //     <h2 className="text-3xl center">

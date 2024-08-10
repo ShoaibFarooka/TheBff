@@ -1,20 +1,20 @@
 "use client";
-import React from "react";
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation, Autoplay } from "swiper/modules";
-import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
+import type { Post } from "@/types/blog";
 import Image from "next/image";
 import Link from "next/link";
-import type { Post } from "@/types/blog";
 
-// Swiper CSS
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+import carouselAutoplay from 'embla-carousel-autoplay';
+
 
 const FeaturedBlogs = ({ posts }: { posts: Post[] }) => {
-  const ref = React.useRef<SwiperRef>(null);
 
   return (
     posts?.length && (
@@ -23,37 +23,28 @@ const FeaturedBlogs = ({ posts }: { posts: Post[] }) => {
           Featured Posts
         </h2>
 
-        <div className="flex gap-x-1 md:gap-x-5">
-          <div className="hidden md:flex flex-col justify-center items-center">
-            <FaArrowCircleLeft
-              size={30}
-              onClick={() => ref.current?.swiper.slidePrev()}
-              className="fill-white/30 hover:fill-purple-400 hover:text-white cursor-pointer"
-            />
-          </div>
-
-          <Swiper
-            ref={ref}
-            loop
-            pagination={{
-              el: ".swiper-pagination",
-              clickable: true,
+        <div className="mx-auto">
+          <Carousel
+            opts={{
+              loop: true,
             }}
-            autoplay={{
-              delay: 3000,
-              pauseOnMouseEnter: true,
-            }}
-            navigation={false}
-            modules={[Navigation, Pagination, Autoplay]}
-            // className="mySwiper"
+            placeholder="Loading..."
+            plugins={[
+              carouselAutoplay({
+                delay: 3000
+              })
+            ]}
+            className="max-w-5xl mx-auto"
           >
-            {posts?.length > 0 &&
-              posts.map((post, index: number) => (
-                <SwiperSlide key={"slide-" + index} className="bg-transparent">
+            <CarouselNext className="bg-neutral-50 text-neutral-700 hover:opacity-90" />
+            <CarouselPrevious className="bg-neutral-50 text-neutral-700 hover:opacity-90" />
+
+            <CarouselContent>
+              {posts.map((post, index) => (
+                <CarouselItem key={"featured-post" + (index + 1)}>
                   <Link href={`/blog/${post.slug}`}>
                     <div
                       className="mb-10 min-h-full flex flex-col flex-1 md:flex-row px-5 py-4 rounded-md bg-gray-100 text-black"
-                      key={"featured-post" + (index + 1)}
                     >
                       <div className=" w-full md:w-5/12 md:my-auto">
                         <Image
@@ -61,7 +52,7 @@ const FeaturedBlogs = ({ posts }: { posts: Post[] }) => {
                           alt={post?.title}
                           width={1000}
                           height={1000}
-                          className="rounded-md w-[100rem]"
+                          className="rounded-md w-[100rem] h-64 md:h-80"
                         />
                       </div>
                       <div className="w-full md:w-7/12 px-5 md:my-auto">
@@ -88,19 +79,10 @@ const FeaturedBlogs = ({ posts }: { posts: Post[] }) => {
                       </div>
                     </div>
                   </Link>
-                </SwiperSlide>
+                </CarouselItem>
               ))}
-
-            <div className="swiper-pagination"></div>
-          </Swiper>
-
-          <div className="hidden md:flex flex-col justify-center items-center">
-            <FaArrowCircleRight
-              size={30}
-              onClick={() => ref.current?.swiper.slideNext()}
-              className="fill-white/30 hover:fill-purple-400 hover:text-white cursor-pointer"
-            />
-          </div>
+            </CarouselContent>
+          </Carousel>
         </div>
 
         {/* <div className="flex flex-col justify-center items-center">

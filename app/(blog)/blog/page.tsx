@@ -1,7 +1,6 @@
-import React from "react";
-import { getPosts } from "@/lib/hypgraph";
 import FeaturedBlogs from "@/components/blog/FeaturedBlogs";
 import LatestBlogs from "@/components/blog/LatestBlogs";
+import { getPosts } from "@/lib/hypgraph";
 
 const Blogs = async () => {
   const data = await getPosts(undefined, {

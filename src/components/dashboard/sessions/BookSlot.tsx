@@ -148,7 +148,7 @@ const BookSlot = () => {
         <h2 className="text-xl md:text-3xl font-bold text-center text-neutral-100">
           Book a slot to continue!
         </h2>
-        <Button onClick={() => setIsModalOpen(true)}>Book a slot</Button>
+        <Button onClick={() => setIsModalOpen(true)} className="animate-vibrate hover:animate-none">Book a slot</Button>
       </div>
 
       {isModalOpen && (

@@ -378,7 +378,7 @@ async function sendEmailVerificationLink(email: string) {
     const emailToken = jwt.sign({ email, verifyEmail: true }, secret, {
       expiresIn: "1h",
     });
-    const url = `${getURL()}/verify-token?token=${emailToken}`;
+    const url = `${getURL()}verify-token?token=${emailToken}`;
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
