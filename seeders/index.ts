@@ -1,10 +1,12 @@
+#!/usr/bin/env -S pnpm tsx
+
 import { disconnectDB } from '@/lib/dbConnection';
 import { consola } from 'consola';
-import dotenv from 'dotenv';
 import { seedClasses } from './classes';
 import { seedCoaches } from './coaches';
 import { seedPrograms } from './programs';
 
+import dotenv from 'dotenv';
 dotenv.config();
 
 const args = process.argv.slice(2);

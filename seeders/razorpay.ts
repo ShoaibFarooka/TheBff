@@ -1,11 +1,14 @@
+#!/usr/bin/env -S pnpm tsx
+
 import { Plan as PlanModel } from "@/models";
 import Razorpay from "razorpay";
 // import connectDB from "@/lib/dbConnection"
 import connectDB, { disconnectDB } from "@/lib/dbConnection";
 import { Plan } from "@/types/subscription";
 import { consola as cl } from "consola";
-import dotenv from "dotenv";
 import { readFileSync, writeFileSync } from "fs";
+
+import dotenv from "dotenv";
 dotenv.config();
 
 const plans = JSON.parse(

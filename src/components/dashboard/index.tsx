@@ -53,7 +53,7 @@ export default function Dashboard() {
         <div className="flex justify-center items-center">
           <h1 className="text-white font-[600] text-[32px] lg:text-[48px] mb-10">
             {greeting}, <span className="text-[#F2BD4D]">{userData?.name}</span>
-          </h1>
+           </h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
