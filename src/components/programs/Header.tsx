@@ -183,7 +183,7 @@ const Header = ({
               />
               <div className="absolute w-full bottom-0 bg-black/30 px-4 py-2 text-white rounded-b-xl space-y-1">
                 <h2 className="text-3xl font-semibold">{program.name}</h2>
-                <p>{program.caption}</p>
+                <p>{program.description}</p>
               </div>
             </div>
           </SwiperSlide>

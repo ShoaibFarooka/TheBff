@@ -160,7 +160,7 @@ const ProgramFeatures = ({ program }: Props) => {
       <div className="mb-20 mt-20 px-5">
         <div className="mb-7 md:mb-10 max-w-4xl mx-auto">
           <h1 className="text-center font-semibold text-3xl lg:text-4xl md:mb-20 text-[#F2BD4D] leading-tight">
-            {program.features[selected].title}
+            {program.features[selected].heading}
           </h1>
         </div>
 
@@ -168,7 +168,7 @@ const ProgramFeatures = ({ program }: Props) => {
           <div className="w-full md:w-1/2 h-full bg-green-100/0 lg:pr-[3rem]">
             <Image
               src={program.features[selected].image ?? ""}
-              alt={program.features[selected].name ?? ""}
+              alt={program.features[selected].title ?? ""}
               className="max-w-full md:max-w-[75%] max-h-[60vh] object-cover transition-all duration-200 rounded-xl my-auto ml-auto"
               width={500}
               height={500}
@@ -178,7 +178,7 @@ const ProgramFeatures = ({ program }: Props) => {
           <div className="w-full md:w-1/2 text-white lg:px-[3rem] my-auto bg-blue-100/0">
             <div className="rounded-3xl bg-gradient-to-r from-[#4A2F70] to-[#344363] px-[25px] py-5 lg:px-[55px] xl:py-10">
               <p className="text-center font-semibold text-2xl lg:text-3xl mb-7 md:mb-10 text-[#AFCCF8] transition-all duration-200">
-                {program.features[selected].name}
+                {program.features[selected].subheading}
               </p>
               <p className="text-[17px] text-center transition-all duration-200">
                 {program.features[selected].description}

@@ -19,14 +19,14 @@ const classes: Program[] = [
         image: "/images/stock/dance.jpeg", // inside the public folder
     },
     {
-        id: "gym",
+        id: "at-gym-workouts",
         title: "Upgrade Your Gym Game with An Extra Dose Of Power",
         subTitle: "At-Gym",
         description: "Sweat now, shine later. We offer it all - Strength training, HIIT, Functional Fitness, Crossfit, Bodybuilding, and customized workout plans. These high-energy, high-intensity online fitness classes will take your usual gym routine to the next level! Get ready to crush your goals with our expert guidance.",
         image: "/images/stock/gym.jpeg",
     },
     {
-        id: "home-fitness",
+        id: "at-home-workout",
         title: "No Time for Gym? Join Our Live Online Fitness Workouts",
         subTitle: "At-Home",
         description: "Join our live interactive fitness workout classes to get fit without leaving your house. Choose from a variety of options including bodyweight training, resistance band training, HIIT, Pilates, and personalized workout plans tailored to your fitness goals.",
@@ -54,12 +54,19 @@ const classes: Program[] = [
         image: "/images/stock/nutrition.jpeg",
     },
     {
-        id: "in-home",
+        id: "in-home-training",
         title: "Introducing India’s 1st In-Home Workout with Complete Home Gym Setup",
         subTitle: "In-Home",
         description: "We guarantee the fitness results you’re looking for. Our unique in-home workout system is perfect if you have limited time and space. But that's not all – we prioritize convenience and affordability too! Time to prioritize your health and well-being without worrying about the cost of care. Ditch excuses with BFF’s In-Home workout sessions.",
         image: "/images/stock/in-home.jpeg",
     },
+    {
+        id: "sound-healing",
+        title: "Heal Your Mind, Body & Soul with Sound Healing Therapy",
+        subTitle: "Sound Healing",
+        description: "Experience the power of sound healing therapy. Our sound healing classes are designed to help you relax, reduce stress, and improve your overall well-being. Our expert instructors will guide you through a transformative journey to help you find inner peace and balance.",
+        image: "/images/stock/sound-healing.jpeg",
+    }
 ];
 
 

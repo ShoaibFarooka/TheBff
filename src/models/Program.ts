@@ -16,10 +16,8 @@ const programSchema = new Schema<ProgramDoc>(
         },
         id: { type: String, required: true },
         name: { type: String, required: true },
-        title: { type: String, required: true },
         description: { type: String, required: true },
         image: { type: String, required: true },
-        caption: { type: String, required: false },
         featureTitle: { type: String, required: true },
         featureDescription: { type: String, required: true },
         features: {
@@ -27,8 +25,9 @@ const programSchema = new Schema<ProgramDoc>(
                 {
                     id: { type: String, required: true },
                     previewImage: { type: String, required: false },
-                    name: { type: String, required: true },
                     title: { type: String, required: true },
+                    heading: { type: String, required: true },
+                    subheading: { type: String, required: true },
                     description: { type: String, required: true },
                     image: { type: String, required: true },
                 }

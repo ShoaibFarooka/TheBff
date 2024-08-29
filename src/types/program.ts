@@ -8,21 +8,21 @@ export type Programs = {
 export type Program = {
     id: string;
     name: string;
-    title: string;
     description: string;
     image: string;
-    caption?: string;
+    // caption?: string;
     featureTitle: string;
     featureDescription: string;
     features: Feature[];
     coaches: Coach[];
 };
 
-type Feature = {
+export type Feature = {
     id: string | number;
     previewImage?: string;
-    name: string;
     title: string;
+    heading: string;
+    subheading: string;
     description: string;
     image: string;
 };
