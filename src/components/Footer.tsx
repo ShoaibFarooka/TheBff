@@ -16,7 +16,7 @@ const links = {
   },
   websiteLinks: {
     Home: "/",
-    About: "/about",
+    // About: "/about",
     Programs: "/programs",
     Pricing: "/programs#pricing",
     Blogs: "/blog",
