@@ -12,7 +12,7 @@ const programSchema = new Schema<ProgramDoc>(
             type: mongoose.Types.ObjectId,
             required: true,
             auto: true,
-            get: (v: any) => v.toString()
+            get: (v: any) => v != null ? v.toString() : v,
         },
         id: { type: String, required: true },
         name: { type: String, required: true },
@@ -50,7 +50,7 @@ const programSchema = new Schema<ProgramDoc>(
     {
         versionKey: false,
         timestamps: true,
-        toJSON: { virtuals: true },
+        toJSON: { virtuals: true, getters: true },
         toObject: { virtuals: true }
     }
 );

@@ -63,21 +63,21 @@ const ViewPlan = ({ toggleOverlay }: { toggleOverlay: () => any }) => {
 };
 
 interface Props {
-  images?: string[];
+  images?: { title: string, url: string }[];
   programs: Program[];
   // products: ProductWithPrices[];
   plans: Plan[];
 }
 
 function Programs({ programs, images, plans }: Props) {
-  const { status: authStatus } = useAuth();
+  // const { status: authStatus } = useAuth();
 
   const [currentProgram, setCurrentProgram] = useState<Program>(
     programs?.[0] ?? []
   );
 
   const relatedPlans = useMemo(
-    () => plans?.filter((x) => x.program === currentProgram?.id),
+    () => plans?.filter((x) => x.programId === currentProgram?.id),
     [currentProgram, plans]
   );
 

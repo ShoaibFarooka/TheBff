@@ -1,5 +1,6 @@
 import _mongoose, { connect } from "mongoose";
 import { devLog } from "./helpers";
+import { logger } from "./logger";
 
 declare global {
     var mongoose: {
@@ -9,7 +10,7 @@ declare global {
 }
 
 // const MONGODB_URI = 'mongodb+srv://thebffupdates:WPSEAjusIQ2SzDn0@thebff.1c8cbx3.mongodb.net/thebff';
-const MONGODB_URI = process.env.MONGO_URI 
+const MONGODB_URI = process.env.MONGO_URI
 // ?? (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV ? 'mongodb://127.0.0.1:27017/thebff' : '');
 
 if (!MONGODB_URI || MONGODB_URI.length === 0) {
@@ -28,7 +29,8 @@ if (!cached) {
 }
 
 async function connectDB() {
-    console.log(MONGODB_URI)
+    logger.log(MONGODB_URI)
+
     if (cached.conn) {
         // devLog("🚀 Using cached connection")
         devLog.error("🚀 Using cached connection")

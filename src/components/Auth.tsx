@@ -47,10 +47,33 @@ const InputGroup = ({
   ) : null;
 };
 
-const Auth = ({ signup = false }: IAuth) => {
+export const AuthForm = ({ signup = false, onSuccess = () => { }, onFailure = () => { } }: IAuth & {
+  onSuccess?: () => void;
+  onFailure?: () => void;
+}) => {
   const [loading, setLoading] = React.useState(false);
+
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (!signup) {
+
+      if (searchParams.has("force-login")) {
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        return
+      }
+
+      // if token is present in cookie, redirect to /dashboard
+      const token = document.cookie
+        .split(";")
+        .find((c) => c.trim().startsWith("token="));
+      if (token) {
+        onSuccess()
+        router.push("/dashboard");
+      }
+    }
+  }, [signup, router, searchParams, onSuccess]);
 
   //  a function to handle form submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -87,25 +110,30 @@ const Auth = ({ signup = false }: IAuth) => {
         const data = await res.json();
         toast.success(
           data.message ??
-            (signup
-              ? "You have been signed up successfully. Redirecting..."
-              : "You have been logged in successfully.")
+          (signup
+            ? "You have been signed up successfully. Redirecting..."
+            : "You have been logged in successfully.")
         );
+        onSuccess();
         if (signup) router.push("/onboarding");
         else router.push(searchParams.get("cb") ?? "/dashboard");
       } else {
         const data = await res.json();
         const { emailVerified, phoneVerified } = data;
+
         if (emailVerified == false || phoneVerified == false) {
           const params = new URLSearchParams();
           if (emailVerified == false) params.append("email", email);
           if (phoneVerified == false) params.append("phone", phone);
           router.push(`/verify?${params.toString()}`);
         }
+
         toast.error(data.message ?? "Something went wrong.");
+        onFailure();
       }
     } catch (err: any) {
       toast.error(err.message);
+      onFailure();
     } finally {
       setLoading(false);
     }
@@ -113,21 +141,73 @@ const Auth = ({ signup = false }: IAuth) => {
     // toast.success('You have been logged in successfully.')
   };
 
-  useEffect(() => {
-    if (!signup) {
 
-      if (searchParams.has("force-login")) {
-        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-        return
-      }
+  return (
+    <div className="h-full center flex-col text-white max-h-full overflow-auto">
+      <div className="max-w-max my-3 mx-auto bg-white rounded-full flex p-1">
+        <Link href="/login">
+          <button
+            className={`px-8 py-2 rounded-full ${signup
+              ? "bg-transparent text-black"
+              : "bg-blue-500 text-white"
+              }`}
+          >
+            Login
+          </button>
+        </Link>
+        <Link href="/signup">
+          <button
+            className={`px-8 py-2 rounded-full ${signup
+              ? " bg-blue-500 text-white"
+              : "bg-transparent text-black"
+              }`}
+          >
+            Sign Up
+          </button>
+        </Link>
+      </div>
 
-      // if token is present in cookie, redirect to /dashboard
-      const token = document.cookie
-        .split(";")
-        .find((c) => c.trim().startsWith("token="));
-      if (token) router.push("/dashboard");
-    }
-  }, [signup, router, searchParams]);
+      <p className="text-lg px-5 py-2">
+        Lorem Ipsum is simply dummy text of the printing and typesetting
+        industry.
+      </p>
+
+      <form className="mt-2 w-full px-4 md:px-20" onSubmit={handleSubmit}>
+        <InputGroup label="Name" name="username" hidden={!signup} />
+        <InputGroup
+          label="WhatsApp Number"
+          name="phone"
+          hidden={!signup}
+          extras={{ minLength: 10, maxLength: 10 }}
+        />
+        <InputGroup label="Email" name="email" type="email" />
+        <InputGroup
+          label="Password"
+          name="password"
+          type="password"
+          extras={{ minLength: 8, maxlength: 12 }}
+        />
+        {!signup && <ResetPassword />}
+
+        <div className="mt-5 max-w-max mx-auto">
+          <button
+            type="submit"
+            disabled={loading}
+            className="mx-auto px-6 py-2 rounded-full bg-blue-500 center gap-2 disabled:opacity-80 disabled:cursor-not-allowed"
+          >
+            <span> {signup ? "Sign Up" : "Login"} </span>
+            {loading && (
+              <span className="border-t-transparent border-solid animate-spin rounded-full border-white border-2 h-5 w-5"></span>
+            )}
+          </button>
+        </div>
+      </form>
+    </div>
+
+  )
+}
+
+const Auth = ({ signup = false }: IAuth) => {
 
   return (
     <main className="mt-[5.5rem] min-h-[70vh] px-5 md:px-14 lg:px-40">
@@ -155,68 +235,8 @@ const Auth = ({ signup = false }: IAuth) => {
         </div>
 
         {/* ================= { RHS } ================= */}
-        <div className="col-span-1 h-full center flex-col text-white max-h-full overflow-auto">
-          <p className="text-lg"> Welcome to BFF! </p>
-          <div className="max-w-max my-3 mx-auto bg-white rounded-full flex p-1">
-            <Link href="/login">
-              <button
-                className={`px-8 py-2 rounded-full ${
-                  signup
-                    ? "bg-transparent text-black"
-                    : "bg-blue-500 text-white"
-                }`}
-              >
-                Login
-              </button>
-            </Link>
-            <Link href="/signup">
-              <button
-                className={`px-8 py-2 rounded-full ${
-                  signup
-                    ? " bg-blue-500 text-white"
-                    : "bg-transparent text-black"
-                }`}
-              >
-                Sign Up
-              </button>
-            </Link>
-          </div>
-
-          <p className="text-lg px-5 py-2">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-
-          <form className="mt-2 w-full px-4 md:px-20" onSubmit={handleSubmit}>
-            <InputGroup label="Name" name="username" hidden={!signup} />
-            <InputGroup
-              label="WhatsApp Number"
-              name="phone"
-              hidden={!signup}
-              extras={{ minLength: 10, maxLength: 10 }}
-            />
-            <InputGroup label="Email" name="email" type="email" />
-            <InputGroup
-              label="Password"
-              name="password"
-              type="password"
-              extras={{ minLength: 8, maxlength: 12 }}
-            />
-            {!signup && <ResetPassword />}
-
-            <div className="mt-5 max-w-max mx-auto">
-              <button
-                type="submit"
-                disabled={loading}
-                className="mx-auto px-6 py-2 rounded-full bg-blue-500 center gap-2 disabled:opacity-80 disabled:cursor-not-allowed"
-              >
-                <span> {signup ? "Sign Up" : "Login"} </span>
-                {loading && (
-                  <span className="border-t-transparent border-solid animate-spin rounded-full border-white border-2 h-5 w-5"></span>
-                )}
-              </button>
-            </div>
-          </form>
+        <div className="col-span-1">
+          <AuthForm signup={signup} />
         </div>
       </div>
 

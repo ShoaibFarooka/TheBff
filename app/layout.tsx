@@ -27,16 +27,24 @@ export default function RootLayout({
 
       <body
         className={
-          "inter.className bg-gradient-to-r to-background from-gray-900"
+          "inter.className bg-gradient-to-r to-background from-gray-900 min-h-screen flex flex-col justify-between"
         }
       >
         {/* main. */}
-        <Header />
-        {children}
-        <ContactButtonPopup />
-        <Footer />
+        <div>
+          <Header />
+        </div>
 
-        <NextTopLoader color="#F2BD4D" />
+        <main>
+          {children}
+          <ContactButtonPopup />
+          <NextTopLoader color="#F2BD4D" />
+        </main>
+
+        <div>
+          <Footer />
+        </div>
+
       </body>
     </html>
   );

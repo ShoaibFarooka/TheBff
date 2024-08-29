@@ -10,7 +10,7 @@ export type Plan = {
     interval: number
     description?: string
     image?: string
-    program: string
+    programId: string
     features: string[]
     subscriptions: string[]
 }

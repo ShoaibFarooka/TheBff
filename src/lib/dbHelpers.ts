@@ -42,6 +42,18 @@ export const saveDataInDb = async (
   }
 };
 
+// delete data
+export const deleteDataFromDb = async (filter: Record<string, any>) => {
+  try {
+    await connectDB();
+
+    const pageData = await mongoose.connection.db.collection("data");
+    await pageData.deleteOne(filter);
+  } catch (error: any) {
+    return null;
+  }
+}
+
 export const getUserDataWithSubscription = async (email: string) => {
   try {
     await connectDB();

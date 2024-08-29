@@ -46,7 +46,7 @@ export default async function Home() {
           Your browser does not support the video tag.
         </video>
 
-        <div className="absolute inset-0 flex justify-center items-center w-full h-full z-50 bg-black bg-opacity-50">
+        <div className="absolute inset-0 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
           <div className="w-full">
             <div className="text-white text-center text-[24px] md:text-[40px] font-bold mb-2">
               Bored with your gym routine,

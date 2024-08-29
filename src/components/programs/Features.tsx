@@ -1,15 +1,16 @@
 "use client";
 import Image, { StaticImageData } from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from "swiper/react";
 
 import { cn } from "@/lib/utils";
 import { Program } from "@/types/program";
+import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Navigation, Pagination } from "swiper/modules";
+import { Mousewheel, Pagination } from "swiper/modules";
 
 const ImageWithTitle = ({
   image,
@@ -46,6 +47,7 @@ interface Props {
 const ProgramFeatures = ({ program }: Props) => {
   // const [click, handleClick] = useState(0);
   // const searchParams = useSearchParams();
+  const ref = useRef<SwiperRef>(null);
   const [selected, setSelected] = useState(0);
 
   useEffect(() => {
@@ -68,73 +70,120 @@ const ProgramFeatures = ({ program }: Props) => {
           </p>
         </div>
 
-        {/* use swiper slider instead of grid */}
-        <div className="max-w-max mx-auto md:px-10">
-          <Swiper
-            modules={[Pagination, Navigation]}
-            slidesPerView={3}
-            loopedSlides={0}
-            className="mx-auto px-3"
-            spaceBetween={5}
-            effect="slide"
-            loop={true}
-            onSlideChange={(e: SwiperClass) => setSelected(e.realIndex)}
-            pagination={{ el: "#pagination", clickable: true }}
-          >
-            {program.features.map((feature?: any, index?: any) => (
-              <SwiperSlide
-                key={`${program.id}-feature-${index}`}
-                className={cn("max-w-max relative mx-4 grow !py-0")}
-              >
-                <Image
-                  key={`slide-img-${index}`}
-                  src={feature.image}
-                  alt={"Slide " + 1}
-                  className={cn(
-                    "w-full max-w-full h-28 md:h-48 lg:h-56 cursor-pointer rounded-lg object-cover shadow duration-300 my-10",
-                    selected === index ? "shadow-xl shadow-yellow-100/30" : ""
-                  )}
-                  height={300}
-                  width={300}
-                  onClick={() => setSelected(index)}
-                />
-              </SwiperSlide>
-            ))}
+        <div className="grid grid-cols-12 gap-x-1 md:gap-x-5 max-w-5xl mx-auto px-5">
 
-            <div className="flex justify-center items-center">
-              <div
-                id="pagination"
-                className="mx-auto space-x-2 max-w-max bg-white/20 px-4 !py-1 rounded-full"
-              />
-            </div>
-          </Swiper>
+          <div className="col-span-1 flex flex-col justify-center items-center">
+            <FaArrowCircleLeft
+              size={30}
+              onClick={() => ref.current?.swiper.slidePrev()}
+              className="fill-white/30 hover:fill-purple-400 hover:text-white cursor-pointer"
+            />
+          </div>
+
+          {/* use swiper slider instead of grid */}
+          <div className="col-span-10">
+            <Swiper
+              slidesPerView={3}
+              spaceBetween={30}
+              pagination={{
+                clickable: true,
+                el: "#pagination",
+              }}
+              modules={[Mousewheel, Pagination]}
+              direction="horizontal"
+              className="mySwiper"
+              onSlideChange={(e: SwiperClass) => setSelected(e.realIndex)}
+              mousewheel={{ forceToAxis: true }}
+              breakpoints={{
+                320: {
+                  spaceBetween: 0,
+                  slidesPerView: 1
+                },
+                1080: {
+                  spaceBetween: 30,
+                  slidesPerView: 3,
+                },
+              }}
+              ref={ref}
+            >
+              {program.features.map((feature?: any, index?: any) => (
+                <SwiperSlide
+                  key={`${program.id}-feature-${index}`}
+                  className=""
+                >
+                  <div className="max-w-max max-h-max relative mx-auto">
+                    <Image
+                      key={`slide-img-${index}`}
+                      src={feature.image}
+                      alt={"Slide " + 1}
+                      className={cn(
+                        "w-[13rem] h-[16rem] mx-auto cursor-pointer rounded-lg object-cover shadow duration-300 my-10",
+                        selected === index ? "shadow-xl shadow-[#B5BCFF] scale-105" : ""
+                      )}
+                      height={392}
+                      width={332}
+                      onClick={() => setSelected(index)}
+                    />
+
+                    <div className="absolute bg-[#B5BCFF] top-full -translate-y-1/2 left-1/2 -translate-x-1/2 w-[81%] rounded-md">
+                      <p className="text-center p-1.5 font-semibold">
+                        {feature.title}
+                      </p>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+
+              <div className="flex justify-center items-center">
+                <div
+                  id="pagination"
+                  className="mx-auto space-x-2 max-w-max bg-white/20 px-4 !py-1 rounded-full"
+                />
+                <div className="prev"></div>
+                <div className="next"></div>
+              </div>
+            </Swiper>
+          </div>
+
+          <div className="col-span-1 flex flex-col justify-center items-center">
+            <FaArrowCircleRight
+              size={30}
+              onClick={() => ref.current?.swiper.slideNext()}
+              className="fill-white/30 hover:fill-purple-400 hover:text-white cursor-pointer"
+            />
+          </div>
+
         </div>
+
       </div>
 
       <div className="mb-20 mt-20 px-5">
         <div className="mb-7 md:mb-10 max-w-4xl mx-auto">
-          <h1 className="text-center font-semibold text-3xl lg:text-4xl mb-20 text-[#F2BD4D] leading-tight">
+          <h1 className="text-center font-semibold text-3xl lg:text-4xl md:mb-20 text-[#F2BD4D] leading-tight">
             {program.features[selected].title}
           </h1>
         </div>
-        <div className="flex px-5 flex-col md:flex-row justify-around lg:px-[80px] gap-y-10 h-full">
-          <div className="w-full md:w-1/2 h-full">
+
+        <div className="flex px-5 flex-col md:flex-row justify-around lg:px-[80px] gap-y-10 h-full bg-red-100/0">
+          <div className="w-full md:w-1/2 h-full bg-green-100/0 lg:pr-[3rem]">
             <Image
               src={program.features[selected].image ?? ""}
-              alt=""
-              className="max-w-full md:max-w-[75%] transition-all duration-200 rounded-xl my-auto"
+              alt={program.features[selected].name ?? ""}
+              className="max-w-full md:max-w-[75%] max-h-[60vh] object-cover transition-all duration-200 rounded-xl my-auto ml-auto"
               width={500}
               height={500}
             />
           </div>
 
-          <div className="w-full md:w-1/2 text-white px-5 lg:px-[50px]">
-            <p className="text-center font-semibold text-2xl lg:text-3xl mb-7 md:mb-10 text-[#AFCCF8] transition-all duration-200">
-              {program.features[selected].name}
-            </p>
-            <p className="text-[17px] text-center transition-all duration-200">
-              {program.features[selected].description}
-            </p>
+          <div className="w-full md:w-1/2 text-white lg:px-[3rem] my-auto bg-blue-100/0">
+            <div className="rounded-3xl bg-gradient-to-r from-[#4A2F70] to-[#344363] px-[25px] py-5 lg:px-[55px] xl:py-10">
+              <p className="text-center font-semibold text-2xl lg:text-3xl mb-7 md:mb-10 text-[#AFCCF8] transition-all duration-200">
+                {program.features[selected].name}
+              </p>
+              <p className="text-[17px] text-center transition-all duration-200">
+                {program.features[selected].description}
+              </p>
+            </div>
           </div>
         </div>
       </div>

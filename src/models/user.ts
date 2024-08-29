@@ -75,7 +75,6 @@ const userSchema = new Schema<UserDoc>(
         razorpayCustomerId: {
             type: String,
             required: false,
-            unique: true,
         },
         payment_method: {
             type: Object,

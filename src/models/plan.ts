@@ -5,12 +5,12 @@ import { Document, Schema, model, models } from 'mongoose';
 type ModelType = PlanType & Document;
 
 const planSchema = new Schema<ModelType>({
-    // _id: {
-    //     type: String,
-    //     required: true,
-    //     auto: true,
-    //     get: (v: ObjectId) => v.toString()
-    // },
+    _id: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        auto: true,
+        get: (v: any) => v != null ? v.toString() : v,
+    },
     id: {
         type: String,
         required: true,
@@ -48,7 +48,7 @@ const planSchema = new Schema<ModelType>({
         type: String,
         required: false,
     },
-    program: {
+    programId: {
         type: String,
         required: true,
     },
@@ -68,7 +68,18 @@ const planSchema = new Schema<ModelType>({
 }, {
     timestamps: true,
     toObject: { virtuals: true },
+    toJSON: { getters: true }
 });
+
+planSchema.virtual('program', {
+    ref: 'Program',
+    localField: 'programId',
+    foreignField: 'id',
+    justOne: true,
+    match: {
+        id: '$programId',
+    },
+})
 
 const Plan = models.Plan || model<ModelType>('Plan', planSchema);
 

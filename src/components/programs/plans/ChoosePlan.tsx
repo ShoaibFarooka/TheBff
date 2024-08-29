@@ -1,7 +1,7 @@
 "use client";
 // import cross from "@/assets/Cross.png";
 import Spinner from "@/components/ui/Spinner";
-import { getSubscriptions } from "@/lib/subscription/utils";
+import { getSubscriptions } from "@/lib/subscription/server";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { Program } from "@/types/program";
 import { Plan } from "@/types/subscription";
@@ -49,7 +49,6 @@ export default function ChoosePlan({
   const billingIntervals = useMemo(() => {
     let intervals = [] as Interval[];
     // let intervals = new Map<string, Interval>();
-
     if (!plans) return intervals;
 
     // get all intervals and period from plans and store it once in the state
@@ -80,7 +79,7 @@ export default function ChoosePlan({
   };
 
   const subscription = useProgram(
-    (state) => state.subscriptions[plans?.[0]?.program]
+    (state) => state.subscriptions[plans?.[0]?.programId]
   );
   const setSubscription = useProgram((state) => state.setSubscription);
 
@@ -94,7 +93,7 @@ export default function ChoosePlan({
 
           console.log(res.subscriptions, "subs");
           for (const sub of res.subscriptions!) {
-            setSubscription(sub.plan.program, sub as any);
+            setSubscription(sub.plan.programId, sub as any);
           }
         })
         .catch((err: any) => {
@@ -103,11 +102,11 @@ export default function ChoosePlan({
     });
   }, [plans, subscription]);
 
-  useEffect(() => {
-    // disable scroll when overlay is open
-    if (overlayVisible) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "auto";
-  }, [overlayVisible]);
+  // useEffect(() => {
+  //   // disable scroll when overlay is open
+  //   if (overlayVisible) document.body.style.overflow = "hidden";
+  //   else document.body.style.overflow = "auto";
+  // }, [overlayVisible]);
 
   if (!plans || !plans.length)
     return (
@@ -128,7 +127,7 @@ export default function ChoosePlan({
 
   return (
     // <Dialog open={overlayVisible} onOpenChange={onClose}>
-    <div className="fixed inset-0 z-40 bg-black/20 backdrop-blur w-screen h-screen flex items-center justify-center">
+    <div className="fixed inset-0 bg-black/20 backdrop-blur w-screen h-screen flex items-center justify-center z-40">
       <div
         className="!min-w-min fixed border-none !overflow-auto !min-h-min"
         // onInteractOutside={e => e.preventDefault()}
@@ -184,7 +183,7 @@ export default function ChoosePlan({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 justify-center md:items-center py-6 px-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 justify-center md:items-center py-6 px-5 max-w-5xl mx-auto">
             {plans &&
               plans.length > 0 &&
               plans

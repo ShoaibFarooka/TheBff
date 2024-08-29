@@ -32,7 +32,7 @@ const razorpay = new Razorpay({
 //     }
 //     period: 'daily' | 'weekly' | 'monthly' | 'yearly'
 //     interval: number
-//     program: string,
+//     programId: string,
 //     description?: string
 
 // }
@@ -204,12 +204,12 @@ const createNewPlan = async () => {
         placeholder: "1",
       })
     );
-    const program = await cl.prompt("Enter program id", {
+    const programId = await cl.prompt("Enter program id", {
       type: "text",
       placeholder: "program-id",
     });
 
-    if (!planName || !amount || !currency || !period || !interval || !program)
+    if (!planName || !amount || !currency || !period || !interval || !programId)
       throw new Error("Invalid inputs");
 
     const plan = {
@@ -220,7 +220,7 @@ const createNewPlan = async () => {
       },
       period: period as "daily" | "weekly" | "monthly" | "yearly",
       interval,
-      program: undefined as any,
+      programId: undefined as any,
     } as Plan;
 
     cl.info("Connecting to db...");

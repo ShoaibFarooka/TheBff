@@ -1,5 +1,16 @@
+import mongoose from "mongoose";
+
+// Convert _id to string
+mongoose.Schema.ObjectId.get(v => v != null ? v.toString() : v);
+
+// Also convert nested _id to string
+mongoose.Schema.Types.ObjectId.get(v => v != null ? v.toString() : v);
+
+
+
 export { default as Coach } from "./coach";
 export { default as NewsSubscriber } from "./newsSubscriber";
+export { default as Offer } from "./offer";
 export { default as Plan } from "./plan";
 export { default as Program } from "./Program";
 export { default as Session } from "./Session";

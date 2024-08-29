@@ -8,7 +8,7 @@ import program from "@/models/Program";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
-import { getPlans } from "@/lib/subscription/utils";
+import { getPlans } from "@/lib/subscription/server";
 import type { Program } from "@/types/program";
 
 // ========================= get programs page data =========================
@@ -17,7 +17,7 @@ const getProgramsPageData = cache(async () => {
     await connectDB();
 
     const [gallery, plans, programs] = await Promise.all([
-      getDataFromDb({ key: "gallery" }),
+      getDataFromDb({ key: "gallery" }) as any,
       getPlans(),
       program.find({}).lean() as Promise<Program[]>,
     ]);

@@ -57,8 +57,8 @@ export async function POST(req: Request) {
 
     const plan = (await PlanModel.findOne(
       { id: subscription.plan_id },
-      "-_id program"
-    ).lean()) as Pick<Plan, "program">;
+      "-_id programId"
+    ).lean()) as Pick<Plan, "programId">;
     
     // process simultaneously
     await Promise.all([
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
       // save the subscription
       await Subscription.findOneAndUpdate(
         { id: subscription.id },
-        { ...subscription, programId: plan.program },
+        { ...subscription, programId: plan.programId },
         {
           upsert: true,
         }

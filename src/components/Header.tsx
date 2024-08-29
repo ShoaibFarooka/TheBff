@@ -2,8 +2,6 @@
 import { useAuth } from "@/hooks/auth";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
-import Logo from "./Logo";
 // import Profile from "./user/Profile";
 // import profilePhoto from "@/assets/Photo.png";
 // import Dashboard from "../../app/(admin_only)/admin/page";
@@ -11,6 +9,8 @@ import Logo from "./Logo";
 
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
+import { FaBars, FaTimes } from "react-icons/fa";
+import Logo from "./Logo";
 
 const Profile = dynamic(() => import("./user/Profile"), {
   ssr: false,
@@ -19,7 +19,12 @@ const Profile = dynamic(() => import("./user/Profile"), {
   ),
 });
 
-const pagesWithAuth = ["/profile", "/dashboard", "/programs"];
+const LoginPopup = dynamic(() => import("./LoginPopup"), {
+  ssr: false,
+  loading: () => <div className="w-8 h-8 rounded-full bg-gray-500/50"></div>,
+});
+
+const pagesWithAuth = ["/", "/profile", "/dashboard", "/programs", "/checkout"];
 
 const AuthProfile = ({
   authBtn = true,
@@ -61,20 +66,37 @@ const AuthProfile = ({
 function Header(props?: any) {
   const [nav, setNav] = useState(false);
   const handleClick = () => setNav(!nav);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const pathname = usePathname();
   const authenticate = useAuth((s) => s.authenticate);
 
+  function openPopup() {
+    if (pathname === '/') {
+      // check if showLoginPopup cookie is set to false
+      const showLoginPopup = Boolean(eval(document.cookie.split(';').find(c => c.trim().startsWith('showLoginPopup='))?.split('=')[1] ?? 'true'));
+      if (!showLoginPopup) return;
+
+      setTimeout(() => setIsPopupOpen(true), 1 * 1000); // Delay popup for 10 second
+    }
+  }
+
   useEffect(() => {
     if (pagesWithAuth.includes(pathname) && authenticate) {
-      authenticate();
+      authenticate({
+        callback: (user) => {
+          if (!user)
+            openPopup();
+        }
+      });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, authenticate]);
 
   return (
     <nav
-      className="fixed top-0 left-0 bg-transparent backdrop-blur w-screen px-5 py-2 z-50"
-      style={{ zIndex: 99 }}
+      className="fixed top-0 left-0 bg-transparent backdrop-blur w-screen px-5 py-2 z-20"
     >
       <div className="text-white flex justify-between items-center mx-auto md:max-w-5xl">
         <Logo />
@@ -141,6 +163,10 @@ function Header(props?: any) {
           </li>
         </ul>
       </div>
+
+      {
+        isPopupOpen && <LoginPopup open={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
+      }
     </nav>
   );
 }

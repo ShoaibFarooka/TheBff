@@ -1,6 +1,10 @@
 "use client";
 
 import {
+  Avatar,
+  AvatarFallback
+} from "@/components/ui/avatar";
+import {
   Sheet,
   SheetContent,
   SheetFooter,
@@ -12,9 +16,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { FaUser } from "react-icons/fa";
-import { FiGift } from "react-icons/fi";
 import { IoReaderOutline } from "react-icons/io5";
-import { TbReportAnalytics } from "react-icons/tb";
+
 
 interface ProfileProps {
   userdata: any;
@@ -28,7 +31,7 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
     // delete token from cookie
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
 
-    router.push("/"); // redirect to home page
+    window.location.href = "/"; // hard refresh to clear cache
   };
 
   const profileText = userdata?.name
@@ -44,13 +47,12 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
         </div>
       </SheetTrigger>
 
-      <SheetContent className="!z-[9999] text-white bg-black/40 backdrop-blur flex flex-col">
+      <SheetContent className="z-50 text-white bg-gradient-to-br border-transparent from-[#001B61] to-[#00154A] rounded-[2rem] shadow-xl shadow-white/40 backdrop-blur flex flex-col">
         <SheetHeader>
           <div className="flex items-center mb-5">
-            {/* <Image src={profilePhoto} className="w-12" alt=" " /> */}
-            <div className="w-10 h-10 p-2 rounded-full bg-y/50 center select-none">
-              {profileText}
-            </div>
+            <Avatar className="bg-black">
+              <AvatarFallback className="bg-y/80">{profileText}</AvatarFallback>
+            </Avatar>
             <div className="ml-5">
               <h1>{userdata?.name}</h1>
               <p className="text-zinc-300 text-sm">{userdata?.email}</p>
@@ -66,10 +68,10 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
             </div>
           </Link>
 
-          <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
+          {/* <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
             <TbReportAnalytics size={30} />
             <p className="ml-5">Health Reports</p>
-          </div>
+          </div> */}
 
           {/* <div className="flex items-center mb-2 px-1 hover:bg-gray-400/20 rounded">
                   <Image src={squaare} alt="" className="w-10 h-10 py-1" />
@@ -83,10 +85,10 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
             </div>
           </Link>
 
-          <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
+          {/* <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
             <FiGift size={30} />
             <p className="ml-5">Rewards</p>
-          </div>
+          </div> */}
         </div>
 
         <SheetFooter className="w-full">

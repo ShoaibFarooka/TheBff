@@ -4,7 +4,6 @@ import Image, { StaticImageData } from "next/image";
 import { useState } from "react";
 // import div from "@/assets/div.png";
 // import div1 from "@/assets/div (1).png";
-import { Autoplay, Mousewheel, Navigation } from "swiper/modules";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 
 // Swiper CSS
@@ -16,6 +15,8 @@ import "swiper/css/pagination";
 
 import div1 from "@/assets/div (1).png";
 import div from "@/assets/div.png";
+import { cn } from "@/lib/utils";
+import { Autoplay, Mousewheel } from "swiper/modules";
 
 const content: Class[] = [
   {
@@ -91,17 +92,24 @@ export default function Classes({ classes = content }: { classes?: Class[] }) {
     <div>
       <div className="h pb-28 flex justify-around flex-col lg:flex-row px-[20px] lg:px-[100px] lg:pt-[50px] ">
         <div className="w-full lg:w-1/2 lg:flex items-center justify-center my-8 lg:my-0">
-          <div className="bg-green- ">
+          <div className="">
             <Swiper
-              modules={[Navigation, Autoplay, Mousewheel]}
               slidesPerView={3}
-              mousewheel={{ forceToAxis: true }}
-              keyboard={{ enabled: true, onlyInViewport: false }}
+              spaceBetween={30}
+              centeredSlides={true}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Autoplay, Mousewheel]}
+              direction="vertical"
+              className="mySwiper md:h-[80vh]"
               autoplay={{
-                delay: 4000,
+                delay: 4 * 1000,
                 disableOnInteraction: false,
               }}
               onSlideChange={(e: SwiperClass) => setActive(e.realIndex)}
+              mousewheel={{ forceToAxis: true }}
+              loop
               breakpoints={{
                 320: {
                   direction: "horizontal",
@@ -109,19 +117,20 @@ export default function Classes({ classes = content }: { classes?: Class[] }) {
                 },
                 1080: {
                   direction: "vertical",
-                  spaceBetween: 15,
+                  spaceBetween: 30,
                 },
               }}
-              className="max-h-[90vh]"
-              loop
             >
               {classes?.map((c, index?: any) => (
-                <SwiperSlide key={index} className="w-full">
+                <SwiperSlide key={index} className="max-h-max">
                   <Image
                     key={index}
-                    className={`w-full lg:w-8/12 lg:mx-auto h-full lg:h-auto hover:shadow-white/60 hover:shadow-lg hover:scale-110 duration-300 rounded-md ${
-                      index === active && "shadow-lg shadow-white/40 scale-110"
-                    }`}
+                    // className={` ${index === active && "shadow-lg shadow-white/40 scale-110"
+                    // }`}
+                    className={cn(
+                      'w-72 !h-36 hover:shadow-white/20 hover:shadow hover:scale-110 duration-300 rounded-md',
+                      index === active ? 'shadow-lg shadow-white/40 scale-110' : ''
+                    )}
                     src={c.image!}
                     alt={c.title!}
                     onClick={() => setActive(index)}

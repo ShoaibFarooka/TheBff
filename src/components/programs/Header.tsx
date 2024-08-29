@@ -84,8 +84,8 @@ const Header = ({
   programs,
   setCurrentProgram,
 }: {
-    programs: Program[];
-    setCurrentProgram: React.Dispatch<React.SetStateAction<Program>>;
+  programs: Program[];
+  setCurrentProgram: React.Dispatch<React.SetStateAction<Program>>;
 }) => {
   const ref = React.useRef<SwiperRef>(null);
   const searchParams = useSearchParams();
@@ -164,34 +164,32 @@ const Header = ({
         className="custom-swiper-container"
         ref={ref}
       >
-        {programs?.map((slide, index?: any) => (
+        {programs?.map((program, index?: any) => (
           <SwiperSlide
             key={"header-slide-" + index}
             className="max-w-max relative"
-            id={"header-slide-" + slide.id}
+            id={"header-slide-" + program.id}
           >
-            <div className="">
+            <div className="relative max-h-max rounded-xl">
               <Image
                 src={
-                  slide.image ??
+                  program.image ??
                   `https://source.unsplash.com/random/400x400,weight-management${index}`
                 }
-                alt={"Slide " + index + 1}
+                alt={program.name}
                 className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[600px] md:h-[350px] duration-300 rounded-xl"
                 height={500}
                 width={500}
               />
-              <div className="w-full min-h-[20%] absolute bottom-0 bg-opacity-50 text-[8px] md:text-base bg-black p-4 text-white">
-                <p>{slide.caption}</p>
+              <div className="absolute w-full bottom-0 bg-black/30 px-4 py-2 text-white rounded-b-xl space-y-1">
+                <h2 className="text-3xl font-semibold">{program.name}</h2>
+                <p>{program.caption}</p>
               </div>
             </div>
           </SwiperSlide>
         ))}
         <div id="header-pagination"></div>
       </Swiper>
-
-      {/* <div className="slider-controller "> */}
-      {/* </div> */}
 
       <div className="hidden md:flex flex-col justify-center items-center">
         <FaArrowCircleRight

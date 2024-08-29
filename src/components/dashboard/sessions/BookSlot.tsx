@@ -41,7 +41,7 @@ const BookSlot = () => {
 
     try {
       const res = await getServerData(startTransition, async () =>
-        getCoaches({ programIds: subscriptions.map((s) => s.plan.program) })
+        getCoaches({ programIds: subscriptions.map((s) => s.plan.programId) })
       );
 
       if (res.error) {

@@ -1,6 +1,15 @@
+"use client"
 // import axios from 'axios'
 import { useEffect } from "react";
 import { create } from "zustand";
+
+type AuthenticateParams = {
+  callback?: (
+    user: null | any,
+    token: string,
+    status: "authenticated" | "unauthenticated"
+  ) => void;
+}
 
 interface AuthState {
   user: any;
@@ -8,14 +17,14 @@ interface AuthState {
   isLoading: boolean;
   status: "loading" | "authenticated" | "unauthenticated";
   logout: () => void;
-  authenticate: () => any;
+  authenticate: (otps?: AuthenticateParams) => any;
 }
 
 // a hook to manage authentication state, fetch session from api and set it in the store
 export const useAuth = create<AuthState>((set, get) => {
-  const authenticate = async () => {
+  const authenticate = async (params?: AuthenticateParams) => {
     // if authenticated, return
-    if (get().status === "authenticated") return;
+    if (get().status === "authenticated") return params?.callback?.(get().user, get().token, "authenticated");
 
     try {
       const res = await fetch("/api/auth/me", {
@@ -29,12 +38,15 @@ export const useAuth = create<AuthState>((set, get) => {
       if (res.status === 200) {
         const d = await res.json();
         set({ user: d, isLoading: false, status: "authenticated" });
+        params?.callback?.(d, d.token, "authenticated");
       } else {
         set({ user: null as any, status: "unauthenticated", isLoading: false });
+        params?.callback?.(null, "", "unauthenticated");
       }
     } catch (error) {
       console.error(error);
       set({ user: null as any, status: "unauthenticated", isLoading: false });
+      params?.callback?.(null, "", "unauthenticated");
     }
   };
 
@@ -63,7 +75,9 @@ export const useAuth = create<AuthState>((set, get) => {
 // a high order component, in which there will be useEffect hook which will run authenticate function on mount
 // and will set the authentication state in the store
 
-export const withAuth = (Component: React.FC<any>, forceAuth?: boolean) => {
+export const withAuth = 
+  <T extends Record<any, any>>(Component: React.FC<T>, forceAuth?: boolean): React.FC<T> =>
+ {
   return function AuthComponent(props: any) {
     const { status, authenticate } = useAuth();
 
