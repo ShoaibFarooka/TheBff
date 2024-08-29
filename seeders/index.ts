@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S pnpm tsx --env-file=.env
 
 import { disconnectDB } from '@/lib/dbConnection';
 import { consola } from 'consola';
