@@ -152,7 +152,7 @@ const BookSlot = () => {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/20 backdrop-blur-md center z-50">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-md center z-20">
           <div className="relative py-5 rounded-md bg-gradient-to-r to-[#4A2F70] from-[#344363] md:min-w-[80vw] overflow-auto md:max-h-[85vh] z-50">
             <div className="absolute right-4 top-4">
               <button
