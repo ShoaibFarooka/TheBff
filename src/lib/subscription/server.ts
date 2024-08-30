@@ -142,7 +142,11 @@ export async function createSubscription({ planId }: { planId: string }) {
     const subscription = await razorpay.subscriptions.create({
       plan_id: planId,
       total_count: 1,
-
+      notes: {
+        email: authUser.email,
+        phone: authUser.phone,
+        programId: plan.programId,
+      },
       // expire in 10 minutes
       expire_by: Math.floor(Date.now() / 1000) + 600,
     });
