@@ -56,4 +56,3 @@ Register on calendly.com and create a new event for each coach. Copy the link of
 - Run `pnpm seed` or `pnpm seed programs` to seed the programs
 
 
-
