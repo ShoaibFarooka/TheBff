@@ -9,7 +9,7 @@ export class Logger {
     devOnly: boolean;
     isDev = true;
 
-    constructor(devOnly: boolean) {
+    constructor(devOnly: boolean = false) {
         this.devOnly = devOnly;
         this.isDev = process.env.NODE_ENV === "development";
     }
