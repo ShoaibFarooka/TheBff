@@ -48,7 +48,7 @@ export default function Dashboard() {
   return (
     <>
       <div
-        className={`w-full h-full py-[80px] px-[40px] lg:py-[90px] lg:px-[100px]`}
+        className='w-full h-full py-28 lg:py-[90px] px-5 md:px-20'
       >
         <div className="flex justify-center items-center">
           <h1 className="text-white font-[600] text-[32px] lg:text-[48px] mb-10">
@@ -70,7 +70,7 @@ export default function Dashboard() {
           <div className="bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-2 py-5 lg:col-span-1 shadow-2xl shadow-[#4A2F70]/50">
             <div className="flex justify-between px-3">
               {/* <Image src={profilePhoto} alt="" /> */}
-              <div className="w-10 h-10 p-2 rounded-full bg-y/50 center select-none">
+              <div className="w-10 h-10 p-2 rounded-full bg-y/50 center select-none text-white font-bold">
                 {profileText}
               </div>
             </div>
