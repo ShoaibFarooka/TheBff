@@ -35,10 +35,8 @@ export async function POST(req: Request) {
       logger.log("❌ Invalid webhook signature.");
       return new Response("Invalid signature", { status: 400 });
     }
-
     logger.log("🔔 Webhook received:", body.event);
 
-    // disable for now
     if (!body.event?.startsWith("subscription.")) {
       productionLogger.log(`🔔❌ Irrelevant event: ${body.event}`);
       return new Response("Irrelevant event", { status: 200 });
