@@ -6,6 +6,7 @@ import connectDB from "../dbConnection";
 import { Program } from "@/types/program";
 import { Plan } from "@/types/subscription";
 import { unstable_cache as nextCache } from "next/cache";
+import { Customers } from "razorpay/dist/types/customers";
 import { razorpay } from ".";
 import { devLog } from "../helpers";
 import { logger } from "../logger";
@@ -85,12 +86,14 @@ export async function getRazorpayCustomer(options?: {
       return { id: user.razorpayCustomerId };
     }
 
-    let customer = await razorpay.customers.create({
+    // @ts-ignore - await is fine here
+    let customer = (await razorpay.customers.create({
       email,
       name,
       contact: phone,
-      fail_existing: 0,
-    });
+      // @ts-ignore - 0 is not working as expected
+      fail_existing: "0",
+    })) as unknown as Customers.RazorpayCustomer;
 
     logger.log(customer);
 
@@ -104,9 +107,13 @@ export async function getRazorpayCustomer(options?: {
     );
 
     return customer;
-  } catch (error) {
-    console.log(error);
-    throw new Error("Failed to get Razorpay user.");
+  } catch (error: any) {
+    if (error?.statusCode == 400 && error.error.description == 'Customer already exists for the merchant') {
+
+    } else {
+      console.log(error);
+      throw new Error("Failed to get Razorpay user.");
+    }
   }
 }
 
