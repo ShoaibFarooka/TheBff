@@ -77,12 +77,12 @@ async function CheckoutPage({ searchParams: { plan: planId } }: PageProps) {
     email: auth.user.email
   });
 
+  const parsedData: typeof data = JSON.parse(JSON.stringify(data));
+
   if (data.error)
     return <ErrorMessage message={data.error} />
-  // console.dir({ plan });
-  // console.dir({ image: plan.program.image })
 
-  return <Checkout plan={data.plan!} offers={data.offers!} suggestedPlans={(data.suggestedPlans?.plans ?? []) as any} />;
+  return <Checkout plan={parsedData.plan!} offers={parsedData.offers!} suggestedPlans={(parsedData.suggestedPlans?.plans ?? []) as any} />;
 }
 
 

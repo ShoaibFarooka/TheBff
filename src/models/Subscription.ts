@@ -2,7 +2,7 @@ import { SubscriptionStatus } from "@/types/db";
 import { Subscription as SubscriptionType } from "@/types/subscription";
 import { Document, model, models, Schema, Types } from 'mongoose';
 
-// use "Date | number" for date fields
+const setDate = (v: Date | number) => !v ? null : (v instanceof Date ? v : new Date(v * 1000));
 
 type SubscriptionDoc = SubscriptionType & {
   plan: string;
@@ -24,23 +24,23 @@ const SubscriptionSchema = new Schema<SubscriptionDoc>(
       enum: Object.values(SubscriptionStatus),
       required: true,
     },
-    current_start: { type: Date, required: true },
-    current_end: { type: Date, required: true },
-    ended_at: { type: Date, required: false },
+    current_start: { type: Date, required: true, set: setDate, },
+    current_end: { type: Date, required: true, set: setDate, },
+    ended_at: { type: Date, required: false, set: setDate, },
     quantity: { type: Number, required: true },
     notes: { type: Schema.Types.Mixed, required: true },
-    charge_at: { type: Date, required: true },
-    start_at: { type: Date, required: true },
-    end_at: { type: Date, required: true },
+    charge_at: { type: Date, required: true, set: setDate, },
+    start_at: { type: Date, required: true, set: setDate, },
+    end_at: { type: Date, required: true, set: setDate, },
     auth_attempts: { type: Number, required: false },
     total_count: { type: Number, required: true },
     paid_count: { type: Number, required: true },
     customer_notify: { type: Boolean, required: true },
-    created_at: { type: Date, required: true },
-    expire_by: { type: Date, required: true },
+    created_at: { type: Date, required: true, set: setDate, },
+    expire_by: { type: Date, required: true, set: setDate, },
     short_url: { type: String, required: false },
     has_scheduled_changes: { type: Boolean, required: true },
-    change_scheduled_at: { type: Date, required: false },
+    change_scheduled_at: { type: Date, required: false, set: setDate, },
     source: { type: String, enum: ["api", "checkout"], required: true },
     offer_id: { type: String, required: true },
     remaining_count: { type: Number, required: true },

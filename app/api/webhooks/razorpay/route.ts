@@ -36,10 +36,12 @@ export async function POST(req: Request) {
       return new Response("Invalid signature", { status: 400 });
     }
 
-    if (!relevantEvents.has(body.event)) {
-      productionLogger.log(`🔔❌ Irrelevant event: ${body.event}`);
-      return new Response("Irrelevant event", { status: 200 });
-    }
+    logger.log("🔔 Webhook received:", body.event);
+    // disable for now
+    // if (!relevantEvents.has(body.event)) {
+    //   productionLogger.log(`🔔❌ Irrelevant event: ${body.event}`);
+    //   return new Response("Irrelevant event", { status: 200 });
+    // }
 
     const subscription = body.payload.subscription.entity as Subscriptions.RazorpaySubscription;
     const meta = subscription.notes as {
