@@ -9,9 +9,7 @@ declare global {
     };
 }
 
-// const MONGODB_URI = 'mongodb+srv://thebffupdates:WPSEAjusIQ2SzDn0@thebff.1c8cbx3.mongodb.net/thebff';
 const MONGODB_URI = process.env.MONGO_URI
-// ?? (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV ? 'mongodb://127.0.0.1:27017/thebff' : '');
 
 if (!MONGODB_URI || MONGODB_URI.length === 0) {
     throw new Error("Please add your MongoDB URI to .env.local");
@@ -29,15 +27,16 @@ if (!cached) {
 }
 
 async function connectDB() {
-    logger.log(MONGODB_URI)
-
+    
     if (cached.conn) {
         // devLog("🚀 Using cached connection")
         devLog.error("🚀 Using cached connection")
         return cached.conn;
     }
-
+    
     if (!cached.promise) {
+        logger.log(MONGODB_URI)
+    
         const opts = {
             bufferCommands: false,
         };
