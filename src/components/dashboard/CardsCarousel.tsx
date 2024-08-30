@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
 import Image from "next/image";
+import React from "react";
+import { Mousewheel, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { Scrollbar, Mousewheel } from "swiper/modules";
 
 import Achihievement from "@/assets/Artwork.png";
 import tick from "@/assets/Not Started.png";
@@ -21,9 +21,9 @@ const CardsCarousel = () => {
         <div className="text-white ">
           <Swiper
             modules={[Scrollbar, Mousewheel]}
-            slidesPerView={2}
+            slidesPerView={3}
             // centeredSlides
-            spaceBetween={2}
+            spaceBetween={20}
             draggable={true}
             simulateTouch={true}
             scrollbar={{
@@ -42,7 +42,7 @@ const CardsCarousel = () => {
                 slidesPerView: 1,
               },
               900: {
-                slidesPerView: 2,
+                slidesPerView: 3,
               },
             }}
             className="pt-4 min-h-min"
@@ -51,7 +51,7 @@ const CardsCarousel = () => {
               .fill(0)
               .map((_, i) => (
                 <SwiperSlide className="mb-5" key={`slide-${i + 1}`}>
-                  <div className="rounded-2xl shadow-[#9747FF]/10 shadow-lg px-4 py-4 w-full lg:w-[167px]">
+                  <div className="rounded-2xl shadow-[#9747FF]/10 shadow-lg px-4 py-4 w-full lg:w-[167px] bg-white/5 mx-auto">
                     <Image src={Achihievement} alt="" className="mb-5" />
                     <p className="mb-5">A Topic Name That Is Two Lines</p>
                     <div className="flex justify-between items-center">
