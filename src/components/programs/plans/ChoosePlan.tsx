@@ -91,7 +91,6 @@ export default function ChoosePlan({
         .then((res) => {
           if (res.error) return toast.error(res.error);
 
-          console.log(res.subscriptions, "subs");
           for (const sub of res.subscriptions!) {
             setSubscription(sub.plan.programId, sub as any);
           }
@@ -100,13 +99,8 @@ export default function ChoosePlan({
           console.log(err);
         });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plans, subscription]);
-
-  // useEffect(() => {
-  //   // disable scroll when overlay is open
-  //   if (overlayVisible) document.body.style.overflow = "hidden";
-  //   else document.body.style.overflow = "auto";
-  // }, [overlayVisible]);
 
   if (!plans || !plans.length)
     return (
@@ -130,7 +124,7 @@ export default function ChoosePlan({
     <div className="fixed inset-0 bg-black/20 backdrop-blur w-screen h-screen flex items-center justify-center z-40">
       <div
         className="!min-w-min fixed border-none !overflow-auto !min-h-min"
-        // onInteractOutside={e => e.preventDefault()}
+      // onInteractOutside={e => e.preventDefault()}
       >
         <div className="!min-w-[90vw] !min-h-min px-5 md:px-10 overflow-auto py-3 bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-[24px]">
           <div className="w-full mb-4">
@@ -197,8 +191,6 @@ export default function ChoosePlan({
                     plan={plan}
                     // billingInterval={billingInterval}
                     key={`product-${index}`}
-                    isLoading={isLoading}
-                    startTransition={startSubscriptionTransition}
                     subscription={subscription}
                   />
                 ))}
@@ -220,9 +212,6 @@ export default function ChoosePlan({
                   ],
                 } as any
               }
-              // billingInterval={billingInterval}
-              isLoading={isLoading}
-              startTransition={startSubscriptionTransition}
             />
           </div>
         </div>
