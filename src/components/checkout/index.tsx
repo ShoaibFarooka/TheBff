@@ -125,7 +125,7 @@ function Checkout({ plan, offers, suggestedPlans }: CheckoutProps) {
         <div className='pt-16 md:mt-30'>
             <Script src="https://checkout.razorpay.com/v1/checkout.js" />
 
-            <div className='relative grid grid-cols-2'>
+            <div className='relative grid grid-cols-2 mb-10 md:mb-0'>
                 <div className="col-span-1 pl-5 my-auto">
                     <Link href='/programs'>
                         <button className='bg-gray-800 rounded-full p-3'>
@@ -155,7 +155,7 @@ function Checkout({ plan, offers, suggestedPlans }: CheckoutProps) {
                     {/* ===================== {RHS} ===================== */}
                     <div className='w-full md:w-1/2'>
                         <div>
-                            <h1 className='text-white text-[2.5rem]'>{plan.item.name}</h1>
+                            <h1 className='text-neutral-100 text-3xl md:text-4xl font-semibold'>{plan.item.name}</h1>
                             <div className='flex items-center my-3'>
                                 <h2 className='text-white text-[32px] font-bold'>{price}</h2>
                                 {/* <h2 className='ml-5 text-[#ABABAB] text-[32px] font-bold line-through'>{prices.offeredPrice}</h2> */}

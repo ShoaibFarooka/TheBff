@@ -13,7 +13,11 @@ const Offers = ({ offers }: OffersProps) => {
 
     return (
         <div>
-            <h1 className='text-white text-[2rem] my-2 font-semibold'>Offers</h1>
+            <h1 className='text-white text-[2rem] font-semibold'>Offers</h1>
+            {/* Offers will be automatically be applied on checkout */}
+            <p className='text-neutral-300 text-sm mb-5'>
+                Offers will be automatically applied on checkout
+            </p>
 
             <Accordion type="single" collapsible className='rounded-xl'>
                 {offers.map(offer => (
@@ -25,7 +29,7 @@ const Offers = ({ offers }: OffersProps) => {
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-1 md:gap-2">
                                 <div className="flex gap-4 items-center max-w-max">
                                     <DiscountIcon />
-                                    <p className='text-white font-semibold'>
+                                    <p className='text-neutral-200 font-semibold'>
                                         <span className="text-[#F2BD4D]">{offer.offerName} </span>
                                         | {offer.displayText}</p>
                                 </div>
@@ -38,7 +42,7 @@ const Offers = ({ offers }: OffersProps) => {
                             </div>
 
                             <AccordionContent className="py-2 whitespace-pre-line">
-                                <p className='text-white'>{offer.terms}</p>
+                                <p className='text-neutral-200'>{offer.terms}</p>
                             </AccordionContent>
                         </div>
                     </AccordionItem>

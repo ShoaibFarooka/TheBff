@@ -177,13 +177,14 @@ const Header = ({
                   `https://source.unsplash.com/random/400x400,weight-management${index}`
                 }
                 alt={program.name}
-                className="w-[200px] sm:w-[400px] md:w-[500px] lg:w-[600px] md:h-[350px] duration-300 rounded-xl"
+                // 200px / 16 = 12.5rem, 600px / 16 = 37.5rem, 500px / 16 = 31.25rem, 350px / 16 = 21.875rem
+                className="w-[18rem] sm:w-[24rem] md:w-[31rem] lg:w-[37rem] h-[12rem] sm:h-[20rem] md:h-[22rem] duration-300 rounded-xl"
                 height={500}
                 width={500}
               />
               <div className="absolute w-full bottom-0 bg-black/30 px-4 py-2 text-white rounded-b-xl space-y-1">
-                <h2 className="text-3xl font-semibold">{program.name}</h2>
-                <p>{program.description}</p>
+                <h2 className="text-xl md:text-3xl font-semibold">{program.name}</h2>
+                <p className="line-clamp-2">{program.description}</p>
               </div>
             </div>
           </SwiperSlide>
