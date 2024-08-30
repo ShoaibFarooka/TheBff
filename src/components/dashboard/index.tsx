@@ -75,7 +75,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="my-5 px-3">
+            <div className="my-3 px-3">
               <p className="text-white">{userData?.name}</p>
               <p className="text-gray-400">{userData?.email}</p>
               {/* <p className="text-gray-400">Male 22</p> */}

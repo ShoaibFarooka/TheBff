@@ -37,9 +37,11 @@ const Subscriptions = () => {
 
   return (
     <div className="my-5 px-2">
-      <p className="text-lg text-white bg-blue-50/25 rounded-md p-1">
+      <h2 className="text-xl text-y font-semibold">
         Your Subscriptions
-      </p>
+      </h2>
+      <hr className="bg-neutral-500 border-neutral-500" />
+
       <div className="mt-2">
         {userData?.subscriptions?.map((sub) => (
           <div key={sub.id} className="flex justify-between items-center">
