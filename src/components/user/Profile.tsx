@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sheet";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 
 import { FaUser } from "react-icons/fa";
 import { IoReaderOutline } from "react-icons/io5";
