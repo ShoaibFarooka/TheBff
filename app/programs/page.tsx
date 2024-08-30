@@ -2,12 +2,12 @@ import { Suspense } from "react";
 
 import Programs from "@/components/programs";
 import connectDB from "@/lib/dbConnection";
-import { getDataFromDb } from "@/lib/dbHelpers";
 import program from "@/models/Program";
 
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
+import { getCachedData } from "@/lib/data";
 import { getPlans } from "@/lib/subscription/server";
 import type { Program } from "@/types/program";
 
@@ -17,7 +17,7 @@ const getProgramsPageData = cache(async () => {
     await connectDB();
 
     const [gallery, plans, programs] = await Promise.all([
-      getDataFromDb({ key: "gallery" }) as any,
+      getCachedData('gallery') as any,
       getPlans(),
       program.find({}).lean() as Promise<Program[]>,
     ]);
