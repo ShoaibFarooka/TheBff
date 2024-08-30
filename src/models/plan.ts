@@ -14,6 +14,8 @@ const planSchema = new Schema<ModelType>({
     id: {
         type: String,
         required: true,
+        unique: true,
+        index: true,
     },
     item: {
         name: {
