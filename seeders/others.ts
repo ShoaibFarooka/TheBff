@@ -54,6 +54,10 @@ export const seedProgramsGallery = async () => {
         }
 
         await saveDataInDb({ key: "gallery" }, { images: gallery });
+
+        // revalidate gallery images
+        await revalidateTags(["gallery"]);
+        
         console.log("Gallery images seeded successfully.")
     } catch (error) {
         console.log("Error seeding gallery images:", error)
@@ -66,7 +70,7 @@ export const seedProgramsGallery = async () => {
 // ======================= Suggested Plans =======================
 const suggestedPlans: { title: string, planId: string }[] = [
     {
-        title: "Dance 1 month Premium",
+        title: "Dance Premium 1 month",
         planId: "plan_OpxCKsBEnjkkxF"
     }
 ]
