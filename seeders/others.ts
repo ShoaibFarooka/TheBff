@@ -64,7 +64,12 @@ export const seedProgramsGallery = async () => {
 
 
 // ======================= Suggested Plans =======================
-const suggestedPlans: { title: string, planId: string }[] = []
+const suggestedPlans: { title: string, planId: string }[] = [
+    {
+        title: "Dance 1 month Premium",
+        planId: "plan_OpxCKsBEnjkkxF"
+    }
+]
 
 export const seedSuggestedPlans = async () => {
     try {

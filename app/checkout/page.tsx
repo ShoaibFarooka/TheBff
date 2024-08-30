@@ -47,7 +47,7 @@ const getData = async ({ planId, email }: GetDataParams) => {
     // const offers = await getOffers();
     const [offers, suggestedPlans] = await Promise.all([
       getOffers(),
-      getSuggestedPlans() as unknown as { title: string, planId: string }[]
+      getSuggestedPlans() as unknown as { plans: { title: string, planId: string }[] }
     ]);
 
     return {
@@ -82,7 +82,7 @@ async function CheckoutPage({ searchParams: { plan: planId } }: PageProps) {
   // console.dir({ plan });
   // console.dir({ image: plan.program.image })
 
-  return <Checkout plan={data.plan!} offers={data.offers!} suggestedPlans={data.suggestedPlans! as any} />;
+  return <Checkout plan={data.plan!} offers={data.offers!} suggestedPlans={(data.suggestedPlans?.plans ?? []) as any} />;
 }
 
 

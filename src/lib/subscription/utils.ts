@@ -2,7 +2,7 @@ import { Offer as OfferModel } from "@/models";
 // import type { Plan as PlanType } from '@/types/subscription';
 import { Offer } from "@/types/offer";
 import { unstable_cache as nextCache } from "next/cache";
-import { getPageData } from "../db";
+import { getDataFromDb } from "../dbHelpers";
 import { logger } from "../logger";
 
 
@@ -43,9 +43,11 @@ export const getOffer = (id: string) => nextCache(() => getUncachedOffer(id), ['
 
 export const getUncachedSuggestedPlans = async () => {
   try {
-    const plans = await getPageData('suggestedPlans');
-
-    return plans;
+    const plans = await getDataFromDb({ key: "suggestedPlans" });
+    
+    return JSON.parse(
+      JSON.stringify(plans ?? {})
+    ) as typeof plans
   } catch (error) {
     logger.log(error);
     return null
