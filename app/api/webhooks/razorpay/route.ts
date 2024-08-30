@@ -1,9 +1,10 @@
 // import type {  } from 'razorpay'
-import { devLog } from "@/lib/helpers";
-import { razorpay } from "@/lib/subscription";
-import { Plan as PlanModel, Subscription, User } from "@/models";
-import { Plan } from "@/types/subscription";
+import { Logger, logger } from "@/lib/logger";
+import { Subscription, User } from "@/models";
 import Razorpay from "razorpay";
+import { Subscriptions } from "razorpay/dist/types/subscriptions";
+
+const productionLogger = new Logger()
 
 // razorpay webhook
 const relevantEvents = new Set([
@@ -30,80 +31,56 @@ export async function POST(req: Request) {
       secret || ""
     );
 
-    // console woth a right tick mark
-    devLog(`✅ Webhook signature is valid: ${isValid}`);
-
     if (!isValid) {
-      devLog("❌ Invalid webhook signature.");
+      logger.log("❌ Invalid webhook signature.");
       return new Response("Invalid signature", { status: 400 });
     }
 
     if (!relevantEvents.has(body.event)) {
-      devLog(`🔔❌ Irrelevant event: ${body.event}`);
+      productionLogger.log(`🔔❌ Irrelevant event: ${body.event}`);
       return new Response("Irrelevant event", { status: 200 });
     }
 
-    devLog(`🔔 Webhook received: ${body.event}`);
+    const subscription = body.payload.subscription.entity as Subscriptions.RazorpaySubscription;
+    const meta = subscription.notes as {
+      email: string,
+      phone: string,
+      programId: string
+    };
 
-    const subscription = body.payload.subscription.entity;
+    // const customerId = subscription.customer_id;
+    // const customer = await razorpay.customers.fetch(customerId);
+    // if (!customer) {
+    //   devLog(`❌ Customer not found: ${customerId}`);
+    //   return new Response(`Customer not found: ${customerId}`, { status: 404 });
+    // }
 
-    const customerId = subscription.customer_id;
+    // const plan = (await PlanModel.findOne(
+    //   { id: subscription.plan_id },
+    //   "-_id programId"
+    // ).lean()) as Pick<Plan, "programId">;
 
-    const customer = await razorpay.customers.fetch(customerId);
-    if (!customer) {
-      devLog(`❌ Customer not found: ${customerId}`);
-      return new Response(`Customer not found: ${customerId}`, { status: 404 });
-    }
-
-    const plan = (await PlanModel.findOne(
-      { id: subscription.plan_id },
-      "-_id programId"
-    ).lean()) as Pick<Plan, "programId">;
-    
     // process simultaneously
     await Promise.all([
       // update the customer
-      await User.findOneAndUpdate(
-        { email: customer.email },
-        { razorpayCustomerId: customer.id }
+      User.findOneAndUpdate(
+        { email: meta.email },
+        { razorpayCustomerId: subscription.customer_id }
       ),
 
       // save the subscription
-      await Subscription.findOneAndUpdate(
+      Subscription.findOneAndUpdate(
         { id: subscription.id },
-        { ...subscription, programId: plan.programId },
+        { ...subscription, programId: meta.programId },
         {
           upsert: true,
         }
       ),
     ]);
 
-    // // handle the event
-    // switch (body.event) {
-    //     case 'subscription.charged':
-    //         // handle subscription charged event
-    //         break;
-    //     case 'subscription.activated':
-    //         // handle subscription activated event
-    //         await Subscription.findOneAndUpdate(
-    //             { id: subscription.id },
-    //             subscription
-    //         )
-    //         break;
-    //     case 'subscription.pending':
-    //         // handle subscription pending event
-    //         break;
-    //     case 'subscription.halted':
-    //         // handle subscription halted event
-    //         break;
-    //     default:
-    //         console.log(`🔔❌ Unhandled event: ${body.event}`)
-    //         return new Response('Unhandled event', { status: 200 })
-    // }
-
     return new Response("Webhook received", { status: 200 });
   } catch (err: any) {
-    console.error(`❌ Webhook Error:`, err);
+    productionLogger.error(`❌ Webhook Error:`, err);
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 }
@@ -119,3 +96,27 @@ export async function POST(req: Request) {
 
 //   // return new Response(JSON.stringify(res), { status: 200 })
 // };
+
+
+// // handle the event
+// switch (body.event) {
+//     case 'subscription.charged':
+//         // handle subscription charged event
+//         break;
+//     case 'subscription.activated':
+//         // handle subscription activated event
+//         await Subscription.findOneAndUpdate(
+//             { id: subscription.id },
+//             subscription
+//         )
+//         break;
+//     case 'subscription.pending':
+//         // handle subscription pending event
+//         break;
+//     case 'subscription.halted':
+//         // handle subscription halted event
+//         break;
+//     default:
+//         console.log(`🔔❌ Unhandled event: ${body.event}`)
+//         return new Response('Unhandled event', { status: 200 })
+// }
