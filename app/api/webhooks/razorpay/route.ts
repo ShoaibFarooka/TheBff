@@ -48,28 +48,16 @@ export async function POST(req: Request) {
       programId: string
     };
 
-    // const customerId = subscription.customer_id;
-    // const customer = await razorpay.customers.fetch(customerId);
-    // if (!customer) {
-    //   devLog(`❌ Customer not found: ${customerId}`);
-    //   return new Response(`Customer not found: ${customerId}`, { status: 404 });
-    // }
-
-    // const plan = (await PlanModel.findOne(
-    //   { id: subscription.plan_id },
-    //   "-_id programId"
-    // ).lean()) as Pick<Plan, "programId">;
-
     // process simultaneously
     await Promise.all([
       // update the customer
-      User.findOneAndUpdate(
+      User.updateOne(
         { email: meta.email },
         { razorpayCustomerId: subscription.customer_id }
       ),
 
       // save the subscription
-      Subscription.findOneAndUpdate(
+      Subscription.updateOne(
         { id: subscription.id },
         { ...subscription, programId: meta.programId },
         {
@@ -84,6 +72,10 @@ export async function POST(req: Request) {
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 }
+
+// Page configs
+export const dynamic = 'force-dynamic'
+export const maxDuration = 60; // 1 minute
 
 // export const GET = async () => {
 //   // create a new plan
