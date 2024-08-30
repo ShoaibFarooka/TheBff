@@ -37,11 +37,12 @@ export async function POST(req: Request) {
     }
 
     logger.log("🔔 Webhook received:", body.event);
+
     // disable for now
-    // if (!relevantEvents.has(body.event)) {
-    //   productionLogger.log(`🔔❌ Irrelevant event: ${body.event}`);
-    //   return new Response("Irrelevant event", { status: 200 });
-    // }
+    if (!body.event?.startsWith("subscription.")) {
+      productionLogger.log(`🔔❌ Irrelevant event: ${body.event}`);
+      return new Response("Irrelevant event", { status: 200 });
+    }
 
     const subscription = body.payload.subscription.entity as Subscriptions.RazorpaySubscription;
     const meta = subscription.notes as {
