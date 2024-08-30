@@ -4,7 +4,6 @@ import { saveUserStats } from "@/lib/dbHelpers";
 import { capitalizeFirstLetter, getServerData } from "@/lib/utils";
 import { Stats, statsKeys } from "@/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -42,8 +41,6 @@ const StatsForm: React.FC<{
     userData: { stats },
     setUserData,
   } = useDashboardState();
-
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
