@@ -12,7 +12,9 @@ export const getUncachedOffers = async () => {
     // wait 50 sec
     // await new Promise((resolve) => setTimeout(resolve, 10 * 1000));
 
-    const offers = await OfferModel.find({}).lean() as Offer[];
+    const offers = await OfferModel.find({
+      expiryDate: { $gte: new Date() } // get offers that have not expired
+    }).lean() as Offer[];
     return offers
   } catch (error) {
     logger.log(error);
@@ -44,7 +46,7 @@ export const getOffer = (id: string) => nextCache(() => getUncachedOffer(id), ['
 export const getUncachedSuggestedPlans = async () => {
   try {
     const plans = await getDataFromDb({ key: "suggestedPlans" });
-    
+
     return JSON.parse(
       JSON.stringify(plans ?? {})
     ) as typeof plans
