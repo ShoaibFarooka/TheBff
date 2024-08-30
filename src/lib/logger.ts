@@ -5,7 +5,7 @@ import consola from "consola";
 
 type Tuple = [any, ...any[]];
 
-class Logger {
+export class Logger {
     devOnly: boolean;
     isDev = true;
 
