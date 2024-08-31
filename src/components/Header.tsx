@@ -19,11 +19,6 @@ const Profile = dynamic(() => import("./user/Profile"), {
   ),
 });
 
-const LoginPopup = dynamic(() => import("./LoginPopup"), {
-  ssr: false,
-  loading: () => <div className="w-8 h-8 rounded-full bg-gray-500/50"></div>,
-});
-
 const pagesWithAuth = ["/", "/profile", "/dashboard", "/programs", "/checkout"];
 
 const AuthProfile = ({
@@ -66,29 +61,13 @@ const AuthProfile = ({
 function Header(props?: any) {
   const [nav, setNav] = useState(false);
   const handleClick = () => setNav(!nav);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const pathname = usePathname();
   const authenticate = useAuth((s) => s.authenticate);
 
-  function openPopup() {
-    if (pathname === '/') {
-      // check if showLoginPopup cookie is set to false
-      const showLoginPopup = Boolean(eval(document.cookie.split(';').find(c => c.trim().startsWith('showLoginPopup='))?.split('=')[1] ?? 'true'));
-      if (!showLoginPopup) return;
-
-      setTimeout(() => setIsPopupOpen(true), 1 * 1000); // Delay popup for 10 second
-    }
-  }
-
   useEffect(() => {
     if (pagesWithAuth.includes(pathname) && authenticate) {
-      authenticate({
-        callback: (user) => {
-          if (!user)
-            openPopup();
-        }
-      });
+      authenticate();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -163,10 +142,6 @@ function Header(props?: any) {
           </li>
         </ul>
       </div>
-
-      {
-        isPopupOpen && <LoginPopup open={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
-      }
     </nav>
   );
 }
