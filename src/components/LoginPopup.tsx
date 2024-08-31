@@ -48,7 +48,7 @@ const LoginPopup = ({ open, onClose }: LoginPopupProps) => {
 
     return (
         <>
-            <Dialog open={isOpen} onOpenChange={(isOpen) => onClose(isOpen)}>
+            <Dialog open={isOpen} onOpenChange={(isOpen) => onClose?.(isOpen)}>
                 <DialogContent className="min-w-min max-w-3xl rounded-3xl bg-gradient-to-r from-[#4A2F70] to-[#344363] px-[25px] py-5 lg:px-[55px] xl:py-10">
                     <DialogHeader>
                         <DialogTitle className="text-neutral-100 text-4xl text-center">
@@ -61,7 +61,7 @@ const LoginPopup = ({ open, onClose }: LoginPopupProps) => {
 
                     <div className="mx-auto w-full md:w-3/4 mt-10">
                         <AuthForm
-                            onSuccess={() => onClose(false)}
+                            onSuccess={() => onClose?.(false)}
                         />
                     </div>
 
