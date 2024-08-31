@@ -29,7 +29,7 @@ const LoginPopup = ({ open, onClose }: LoginPopupProps) => {
     const close = () => {
         // setCookie to not show again
         document.cookie = `showLoginPopup=false; expires=${new Date(Date.now() + 24 * 60 * 60 * 1000).toUTCString()}; path=/`;
-        onClose(false);
+        onClose?.(false);
     }
 
     useEffect(() => {
