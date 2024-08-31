@@ -1,7 +1,6 @@
 import ContactForm from "@/components/ContactForm";
 import Coaches from "@/components/home/Coaches";
 import { getPageData } from "@/lib/db";
-import Head from "next/head";
 import Image from "next/image";
 
 // Import Assets
@@ -15,11 +14,21 @@ import Component42 from "@/assets/Component 42.png";
 import Component43 from "@/assets/Component 43.png";
 import Component44 from "@/assets/Component 44.png";
 import Classes from "@/components/home/Classes";
+import LoginPopup from "@/components/LoginPopup";
+import { Metadata } from "next";
 
-// export const metadata: Metadata = {
-//   // preload
-
-// }
+// preload "/fitness.mp4",
+export const metadata: Metadata = {
+  icons: {
+    other: [
+      {
+        rel: "preload",
+        url: "/fitness.mp4",
+        type: "video/mp4",
+      }
+    ]
+  }
+}
 
 export default async function Home() {
   const pageData = (await getPageData("home")) as any;
@@ -28,9 +37,9 @@ export default async function Home() {
 
   return (
     <>
-      <Head>
+      {/* <Head>
         <link rel="preload" href="/fitness.mp4" as="video" />
-      </Head>
+      </Head> */}
 
       <div id="home" className="relative min-h-[90vh] bg-opacity-20">
         {/* <div className="w-full bg-[#00000090]"></div> */}
@@ -156,6 +165,8 @@ export default async function Home() {
       {/* ===================== {Contact Form} ===================== */}
 
       <ContactForm />
+
+      <LoginPopup />
     </>
   );
 }
