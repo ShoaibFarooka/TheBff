@@ -72,3 +72,4 @@ Register on calendly.com and create a new event for each coach. Copy the link of
 
 - Add/Update/Delete Programs in the list in the seeders/programs.tsx file
 - Run `pnpm seed` or `pnpm seed programs` to seed the programs
+
