@@ -64,8 +64,6 @@ export const getUserDataWithSubscription = async (email: string) => {
       stats: Stats;
     } = {} as any;
 
-    // console.log("getUserDataWithSubscription", email);
-
     const past40Min = new Date(new Date().getTime() - 40 * 60 * 1000);
 
     const user = (await User.findOne({ email }, '-_id')
@@ -83,14 +81,16 @@ export const getUserDataWithSubscription = async (email: string) => {
 
     Object.assign(data, user);
 
-    const subscriptions = await SubscriptionModel.find({
-      customer_id: user.razorpayCustomerId,
-    })
-      .populate("plan")
-      .select("id plan_id customer_id current_end current_start status")
-      .lean();
+    if (user.razorpayCustomerId) {
+      const subscriptions = await SubscriptionModel.find({
+        customer_id: user.razorpayCustomerId,
+      })
+        .populate("plan")
+        .select("id plan_id customer_id current_end current_start status")
+        .lean();
 
-    data.subscriptions = subscriptions as any;
+      data.subscriptions = subscriptions as any;
+    }
 
     return data;
   } catch (error: any) {
