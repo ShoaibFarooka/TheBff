@@ -3,12 +3,12 @@
         "programId": "dance",
         "item": {
             "name": "Dance Standard 1 Month",
-            "amount": 250000,
+            "amount": 285000,
             "currency": "INR"
         },
         "period": "monthly",
         "interval": 1,
-        "id": "plan_OisaNgCvkj4LtO",
+        "id": "plan_Orx1ojv29doTri",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -27,7 +27,7 @@
         },
         "period": "monthly",
         "interval": 3,
-        "id": "plan_Opx9EkjN8Ut2W3",
+        "id": "plan_Orwz1VZf4VBlp1",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -46,7 +46,7 @@
         },
         "period": "monthly",
         "interval": 6,
-        "id": "plan_Opx9FNJq9EyRLd",
+        "id": "plan_Orx190bdkBezG3",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -65,7 +65,7 @@
         },
         "period": "monthly",
         "interval": 1,
-        "id": "plan_OpxCKsBEnjkkxF",
+        "id": "plan_Orx1pmrkWwWpY6",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -84,7 +84,7 @@
         },
         "period": "monthly",
         "interval": 3,
-        "id": "plan_OpxCLriklxKyXN",
+        "id": "plan_Orwt9NwbVkiTPK",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -103,7 +103,7 @@
         },
         "period": "monthly",
         "interval": 6,
-        "id": "plan_OqcYLYI5JqGvyx",
+        "id": "plan_OrwtA6PCXYl6wM",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -122,7 +122,7 @@
         },
         "period": "monthly",
         "interval": 1,
-        "id": "plan_OqcYMHiy8PSvjd",
+        "id": "plan_OrwtAniKfdXquz",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -141,7 +141,7 @@
         },
         "period": "monthly",
         "interval": 3,
-        "id": "plan_OqcZ8L7BvedNZi",
+        "id": "plan_OrwwqsTSbO40lj",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -160,7 +160,7 @@
         },
         "period": "monthly",
         "interval": 6,
-        "id": "plan_OqcZ9T6pcbdK4X",
+        "id": "plan_OrwwrYA61cCE9t",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -179,7 +179,7 @@
         "period": "monthly",
         "interval": 1,
         "programId": "gym",
-        "id": "plan_OqvNU3R9BYsh9N",
+        "id": "plan_OrwwsEAwYhV0fp",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -198,7 +198,7 @@
         "period": "monthly",
         "interval": 3,
         "programId": "gym",
-        "id": "plan_OqvNUor4WPJlUm",
+        "id": "plan_OrwwsxuLCyPKVP",
         "features": [
             "Feature 1",
             "Feature 2",
