@@ -138,23 +138,6 @@ export async function createSubscription({ planId }: { planId: string }) {
       return { error: "Plan not found." };
     }
 
-    // create subscription
-    const subscription = await razorpay.subscriptions.create({
-      plan_id: planId,
-      total_count: 1,
-      notes: {
-        email: authUser.email,
-        phone: authUser.phone,
-        programId: plan.programId,
-      },
-      // expire in 10 minutes
-      expire_by: Math.floor(Date.now() / 1000) + 600,
-    });
-
-    if (!subscription || !subscription.id) {
-      return { error: "Subscription creation failed." };
-    }
-
     const customer = await getRazorpayCustomer({
       email: authUser.email,
       phone: authUser.phone,
@@ -163,6 +146,24 @@ export async function createSubscription({ planId }: { planId: string }) {
 
     if (!customer) {
       return { error: "Failed to create customer." };
+    }
+    
+    // create subscription
+    const subscription = await razorpay.subscriptions.create({
+      plan_id: planId,
+      total_count: 1,
+      notes: {
+        email: authUser.email,
+        phone: authUser.phone,
+        programId: plan.programId,
+        customer_id: customer.id,
+      },
+      // expire in 10 minutes
+      expire_by: Math.floor(Date.now() / 1000) + 600,
+    });
+
+    if (!subscription || !subscription.id) {
+      return { error: "Subscription creation failed." };
     }
 
     return { subscriptionId: subscription.id };
