@@ -38,7 +38,7 @@
         "id": "at-gym-workouts",
         "name": "At-Gym Workouts",
         "description": "No more excuses for not having an expert trainer at your gym. Get online training from industry-accredited and certiﬁed trainers!",
-        "image": "https://via.placeholder.com/600x400",
+        "image": "/images/stock/gym.jpeg",
         "featureTitle": "Meet the Ultimate At-Gym Companion",
         "featureDescription": "Are you a ﬁtness newbie or a seasoned pro? Either way, we have classes to help you reach your goals and unleash your inner athlete!",
         "features": [
@@ -89,7 +89,7 @@
         "id": "at-home-workout",
         "name": "At-Home Workout",
         "description": "No time to workout? BFF's home program keeps you ﬁt without sacriﬁcing your schedule.",
-        "image": "https://via.placeholder.com/600x400",
+        "image": "/images/stock/home-gym.jpeg",
         "featureTitle": "Personalized Home Workouts",
         "featureDescription": "No Gym, No Problem: Get world-class training online in the comfort of your home.",
         "features": [
@@ -140,8 +140,8 @@
         "id": "yoga",
         "name": "Yoga",
         "description": "Want a holistic workout experience? Enroll in our online yoga sessions designed around your schedule!",
-        "image": "https://via.placeholder.com/600x400",
-        "featureTitle": "Online Yoga Classes",
+        "image": "/images/stock/yoga.jpeg",
+        "featureTitle": "Yoga Classes",
         "featureDescription": "Yoga techniques that tap into the powers of meditation and wellness.",
         "features": [
             {
@@ -191,7 +191,7 @@
         "id": "meditation",
         "name": "Meditation",
         "description": "Become your better self with our all-rounder live and interactive meditation classes!",
-        "image": "https://via.placeholder.com/600x400",
+        "image": "/images/stock/meditation.jpeg",
         "featureTitle": "Online Meditation Classes",
         "featureDescription": "Relax your mind and calm your emotions with a free guided meditation that you can practice anywhere, anytime.",
         "features": [
@@ -226,7 +226,7 @@
         "id": "nutrition",
         "name": "Nutrition",
         "description": "Your body has a unique nutrition proﬁle, just like your ﬁngerprint. We’ll help you ﬁnd the perfect meal plan for your unique body.",
-        "image": "https://via.placeholder.com/600x400",
+        "image": "/images/stock/nutrition.jpeg",
         "featureTitle": "Customized Diet and Nutrition Plans",
         "featureDescription": "Let our expert dieticians and nutritionist help you design a diet that works out for you.",
         "features": [
@@ -277,7 +277,7 @@
         "id": "in-home-training",
         "name": "In-Home Training",
         "description": "Achieve your fitness goals without ever leaving your home. Our personalized in-home training sessions are designed to fit seamlessly into your lifestyle, bringing professional fitness coaching directly to your door.",
-        "image": "https://via.placeholder.com/600x400",
+        "image": "/images/stock/in-home.jpeg",
         "featureTitle": "Choose Your Training Focus",
         "featureDescription": "Find the perfect workout that aligns with your fitness goals with the best in-home training sessions available.",
         "features": [
@@ -312,7 +312,7 @@
         "id": "sound-healing",
         "name": "Sound Healing",
         "description": "Immerse yourself in the restorative vibrations of sound. Our personalized sound healing sessions are crafted to harmonize your mind, body, and spirit, offering deep relaxation and healing from within.",
-        "image": "https://via.placeholder.com/600x400",
+        "image": "/images/stock/sound-healing.jpeg",
         "featureTitle": "Choose Your Healing Experience",
         "featureDescription": "Find the perfect sound healing session that resonates with your needs and restores balance in your life.",
         "features": [

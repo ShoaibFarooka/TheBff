@@ -2,13 +2,12 @@
     {
         "programId": "dance",
         "item": {
-            "name": "Dance Standard 1 Month",
-            "amount": 250000,
+            "name": "Dance Standard",
+            "amount": 1234567,
             "currency": "INR"
         },
         "period": "monthly",
         "interval": 1,
-        "id": "plan_OisaNgCvkj4LtO",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -16,18 +15,18 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        }
+        },
+        "id": "plan_Os5mmBLd5Ufeck"
     },
     {
         "programId": "dance",
         "item": {
-            "name": "Dance Standard 3 Months",
+            "name": "Dance Standard",
             "amount": 450000,
             "currency": "INR"
         },
         "period": "monthly",
         "interval": 3,
-        "id": "plan_Opx9EkjN8Ut2W3",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -35,18 +34,18 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        }
+        },
+        "id": "plan_Os5mml4XOJgrrm"
     },
     {
         "programId": "dance",
         "item": {
-            "name": "Dance Standard 6 Months",
+            "name": "Dance Standard",
             "amount": 550000,
             "currency": "INR"
         },
         "period": "monthly",
         "interval": 6,
-        "id": "plan_Opx9FNJq9EyRLd",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -54,18 +53,18 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        }
+        },
+        "id": "plan_Os5mnOoKeyQmDW"
     },
     {
         "programId": "dance",
         "item": {
-            "name": "Dance Premium 1 Month",
+            "name": "Dance Premium",
             "amount": 350000,
             "currency": "INR"
         },
         "period": "monthly",
         "interval": 1,
-        "id": "plan_OpxCKsBEnjkkxF",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -73,18 +72,18 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        }
+        },
+        "id": "plan_Os5mo2U5DTRGcV"
     },
     {
         "programId": "dance",
         "item": {
-            "name": "Dance Premium 3 Months",
+            "name": "Dance Premium",
             "amount": 550000,
             "currency": "INR"
         },
         "period": "monthly",
         "interval": 3,
-        "id": "plan_OpxCLriklxKyXN",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -92,18 +91,18 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        }
+        },
+        "id": "plan_Os5moj3wevsxcg"
     },
     {
         "programId": "dance",
         "item": {
-            "name": "Dance Premium 6 Months",
+            "name": "Dance Premium",
             "amount": 650000,
             "currency": "INR"
         },
         "period": "monthly",
         "interval": 6,
-        "id": "plan_OqcYLYI5JqGvyx",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -111,7 +110,8 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        }
+        },
+        "id": "plan_Os5mpPjNre2Vp5"
     },
     {
         "programId": "gym",
@@ -122,7 +122,7 @@
         },
         "period": "monthly",
         "interval": 1,
-        "id": "plan_OqcYMHiy8PSvjd",
+        "id": "plan_Os5mq7lkbfDqrR",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -141,7 +141,7 @@
         },
         "period": "monthly",
         "interval": 3,
-        "id": "plan_OqcZ8L7BvedNZi",
+        "id": "plan_Os5mqoYbHNElDC",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -160,7 +160,7 @@
         },
         "period": "monthly",
         "interval": 6,
-        "id": "plan_OqcZ9T6pcbdK4X",
+        "id": "plan_Os5mrR4off5ySi",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -179,7 +179,7 @@
         "period": "monthly",
         "interval": 1,
         "programId": "gym",
-        "id": "plan_OqvNU3R9BYsh9N",
+        "id": "plan_Os5ms6owzFUTY6",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -198,7 +198,7 @@
         "period": "monthly",
         "interval": 3,
         "programId": "gym",
-        "id": "plan_OqvNUor4WPJlUm",
+        "id": "plan_Os5mt1g5Ie4C6T",
         "features": [
             "Feature 1",
             "Feature 2",

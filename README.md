@@ -32,6 +32,7 @@ EMAIL_PASS - Email Password
 
 - Add/Update/Delete Plans in the list in the seeders/data/plans.json file
 - Run `pnpm seed:plans` to seed the plans
+- amount is in paisa
 
 ## Classes
 
