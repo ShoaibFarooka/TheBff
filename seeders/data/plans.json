@@ -2,12 +2,13 @@
     {
         "programId": "dance",
         "item": {
-            "name": "Dance Standard",
-            "amount": 1234567,
+            "name": "Dance Standard 1 Month",
+            "amount": 285000,
             "currency": "INR"
         },
         "period": "monthly",
         "interval": 1,
+        "id": "plan_Orx1ojv29doTri",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -15,8 +16,7 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        },
-        "id": "plan_Os5mmBLd5Ufeck"
+        }
     },
     {
         "programId": "dance",
@@ -27,6 +27,7 @@
         },
         "period": "monthly",
         "interval": 3,
+        "id": "plan_Orwz1VZf4VBlp1",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -34,8 +35,7 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        },
-        "id": "plan_Os5mml4XOJgrrm"
+        }
     },
     {
         "programId": "dance",
@@ -46,6 +46,7 @@
         },
         "period": "monthly",
         "interval": 6,
+        "id": "plan_Orx190bdkBezG3",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -53,8 +54,7 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        },
-        "id": "plan_Os5mnOoKeyQmDW"
+        }
     },
     {
         "programId": "dance",
@@ -65,6 +65,7 @@
         },
         "period": "monthly",
         "interval": 1,
+        "id": "plan_Orx1pmrkWwWpY6",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -72,8 +73,7 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        },
-        "id": "plan_Os5mo2U5DTRGcV"
+        }
     },
     {
         "programId": "dance",
@@ -84,6 +84,7 @@
         },
         "period": "monthly",
         "interval": 3,
+        "id": "plan_Orwt9NwbVkiTPK",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -91,8 +92,7 @@
         ],
         "$setOnInsert": {
             "__v": 0
-        },
-        "id": "plan_Os5moj3wevsxcg"
+        }
     },
     {
         "programId": "dance",
@@ -122,7 +122,7 @@
         },
         "period": "monthly",
         "interval": 1,
-        "id": "plan_Os5mq7lkbfDqrR",
+        "id": "plan_OrwtAniKfdXquz",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -141,7 +141,7 @@
         },
         "period": "monthly",
         "interval": 3,
-        "id": "plan_Os5mqoYbHNElDC",
+        "id": "plan_OrwwqsTSbO40lj",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -160,7 +160,7 @@
         },
         "period": "monthly",
         "interval": 6,
-        "id": "plan_Os5mrR4off5ySi",
+        "id": "plan_OrwwrYA61cCE9t",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -179,7 +179,7 @@
         "period": "monthly",
         "interval": 1,
         "programId": "gym",
-        "id": "plan_Os5ms6owzFUTY6",
+        "id": "plan_OrwwsEAwYhV0fp",
         "features": [
             "Feature 1",
             "Feature 2",
@@ -198,7 +198,7 @@
         "period": "monthly",
         "interval": 3,
         "programId": "gym",
-        "id": "plan_Os5mt1g5Ie4C6T",
+        "id": "plan_OrwwsxuLCyPKVP",
         "features": [
             "Feature 1",
             "Feature 2",

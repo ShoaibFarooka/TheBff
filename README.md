@@ -1,4 +1,5 @@
 # Setup
+
 - Install nodejs on your system <a href="https://nodejs.org">https://nodejs.org/en</a>
 - Install pnpm <a href="https://pnpm.io/installation">https://pnpm.io/installation</a>
 - Clone the repo <a href="https://github.com/cyncept/thebff">https://github.com/cyncept/thebff</a>
@@ -6,7 +7,6 @@
 - Create a `.env` file in the root directory and add the environment variables.
 - Run `pnpm dev` to start the server in development mode.
 - Run `pnpm build` to build the project. And `pnpm start` to start the server in production mode.
-
 
 # Environment Variables
 
@@ -31,6 +31,24 @@ EMAIL_PASS - Email Password
 ## Plans
 
 - Add/Update/Delete Plans in the list in the seeders/data/plans.json file
+- The amount should be in the smallest currency (paisa) unit. For example, 1000 for ₹10.00
+- When updating prices in plans.json, make sure to remove the "id" field from the plan object, and set it to `""`
+
+```json
+// @example
+{
+  "programId": "dance",
+  "item": {
+    "name": "Dance Standard 1 Month",
+    "amount": 265000,
+    "currency": "INR"
+  },
+  "period": "monthly",
+  "interval": 1,
+  "id": "", // this should be empty string when creating a new plan or updating the price
+  "features": ["Feature 1", "Feature 2", "Feature 3"]
+}
+```
 - Run `pnpm seed:plans` to seed the plans
 - amount is in paisa
 

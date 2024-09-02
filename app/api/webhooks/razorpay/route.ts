@@ -46,21 +46,25 @@ export async function POST(req: Request) {
     const meta = subscription.notes as {
       email: string,
       phone: string,
-      programId: string
+      programId: string,
+      customer_id: string,
     };
+
+    const customer_id = subscription.customer_id || meta.customer_id;
+
 
     // process simultaneously
     await Promise.all([
       // update the customer
       User.updateOne(
         { email: meta.email },
-        { razorpayCustomerId: subscription.customer_id }
+        { razorpayCustomerId: customer_id }
       ),
 
       // save the subscription
       Subscription.updateOne(
         { id: subscription.id },
-        { ...subscription, programId: meta.programId },
+        { ...subscription, programId: meta.programId, customer_id },
         {
           upsert: true,
         }

@@ -9,7 +9,7 @@
     "lint": "next lint",
     "seed": "tsx --env-file=.env ./seeders/index.ts",
     "seed:plans": "tsx --env-file=.env ./seeders/razorpay.ts",
-    "tunnel": "lt -p 3000 -s afrzp --print-requests"
+    "tunnel": "untun tunnel http://localhost:3000"
   },
   "dependencies": {
     "@graphcms/rich-text-react-renderer": "^0.6.1",
