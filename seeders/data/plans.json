@@ -1,174 +1,67 @@
 [
     {
-        "programId": "dance",
-        "item": {
-            "name": "Dance Standard 1 Month",
-            "amount": 285000,
-            "currency": "INR"
-        },
-        "period": "monthly",
-        "interval": 1,
-        "id": "plan_Orx1ojv29doTri",
-        "features": [
-            "Feature 1",
-            "Feature 2",
-            "Feature 3"
-        ],
-        "$setOnInsert": {
-            "__v": 0
-        }
-    },
-    {
-        "programId": "dance",
-        "item": {
-            "name": "Dance Standard 3 Months",
-            "amount": 450000,
-            "currency": "INR"
-        },
-        "period": "monthly",
-        "interval": 3,
-        "id": "plan_Orwz1VZf4VBlp1",
-        "features": [
-            "Feature 1",
-            "Feature 2",
-            "Feature 3"
-        ],
-        "$setOnInsert": {
-            "__v": 0
-        }
-    },
-    {
-        "programId": "dance",
-        "item": {
-            "name": "Dance Standard 6 Months",
-            "amount": 550000,
-            "currency": "INR"
-        },
-        "period": "monthly",
-        "interval": 6,
-        "id": "plan_Orx190bdkBezG3",
-        "features": [
-            "Feature 1",
-            "Feature 2",
-            "Feature 3"
-        ],
-        "$setOnInsert": {
-            "__v": 0
-        }
-    },
-    {
-        "programId": "dance",
-        "item": {
-            "name": "Dance Premium 1 Month",
-            "amount": 350000,
-            "currency": "INR"
-        },
-        "period": "monthly",
-        "interval": 1,
-        "id": "plan_Orx1pmrkWwWpY6",
-        "features": [
-            "Feature 1",
-            "Feature 2",
-            "Feature 3"
-        ],
-        "$setOnInsert": {
-            "__v": 0
-        }
-    },
-    {
-        "programId": "dance",
-        "item": {
-            "name": "Dance Premium 3 Months",
-            "amount": 550000,
-            "currency": "INR"
-        },
-        "period": "monthly",
-        "interval": 3,
-        "id": "plan_Orwt9NwbVkiTPK",
-        "features": [
-            "Feature 1",
-            "Feature 2",
-            "Feature 3"
-        ],
-        "$setOnInsert": {
-            "__v": 0
-        }
-    },
-    {
-        "programId": "dance",
-        "item": {
-            "name": "Dance Premium 6 Months",
-            "amount": 650000,
-            "currency": "INR"
-        },
-        "period": "monthly",
-        "interval": 6,
-        "id": "plan_OrwtA6PCXYl6wM",
-        "features": [
-            "Feature 1",
-            "Feature 2",
-            "Feature 3"
-        ],
-        "$setOnInsert": {
-            "__v": 0
-        }
-    },
-    {
-        "programId": "gym",
         "item": {
             "name": "Gym Standard 1 Month",
             "amount": 350000,
             "currency": "INR"
         },
-        "period": "monthly",
-        "interval": 1,
-        "id": "plan_OrwtAniKfdXquz",
+        "_id": "66d4879eb98bc17cf73b3dce",
+        "id": "plan_OseOi6g7Wx0H7q",
+        "__v": 0,
+        "createdAt": "2024-09-01T15:26:18.253Z",
         "features": [
             "Feature 1",
             "Feature 2",
             "Feature 3"
         ],
-        "$setOnInsert": {
-            "__v": 0
-        }
+        "interval": 1,
+        "period": "monthly",
+        "programId": "at-gym-workouts.strength-training",
+        "subscriptions": [],
+        "updatedAt": "2024-09-01T15:26:18.253Z",
+        "active": true
     },
     {
-        "programId": "gym",
         "item": {
             "name": "Gym Standard 3 Months",
             "amount": 550000,
             "currency": "INR"
         },
-        "period": "monthly",
-        "interval": 3,
-        "id": "plan_OrwwqsTSbO40lj",
+        "_id": "66d4879eb98bc17cf73b3e15",
+        "id": "plan_OseOipsa2rvVXS",
+        "__v": 0,
+        "createdAt": "2024-09-01T15:26:18.287Z",
         "features": [
             "Feature 1",
             "Feature 2",
             "Feature 3"
         ],
-        "$setOnInsert": {
-            "__v": 0
-        }
+        "interval": 3,
+        "period": "monthly",
+        "programId": "at-gym-workouts.strength-training",
+        "subscriptions": [],
+        "updatedAt": "2024-09-01T15:26:18.287Z"
     },
     {
-        "programId": "gym",
         "item": {
             "name": "Gym Standard 6 Months",
             "amount": 650000,
             "currency": "INR"
         },
-        "period": "monthly",
-        "interval": 6,
-        "id": "plan_OrwwrYA61cCE9t",
+        "_id": "66d4879eb98bc17cf73b3e2b",
+        "id": "plan_OseOjXfsRbcB6p",
+        "__v": 0,
+        "createdAt": "2024-09-01T15:26:18.498Z",
         "features": [
             "Feature 1",
             "Feature 2",
             "Feature 3"
         ],
-        "$setOnInsert": {
-            "__v": 0
-        }
+        "interval": 6,
+        "period": "monthly",
+        "programId": "at-gym-workouts.strength-training",
+        "subscriptions": [],
+        "updatedAt": "2024-09-01T15:26:18.498Z"
     },
     {
         "item": {
@@ -176,18 +69,20 @@
             "amount": 350000,
             "currency": "INR"
         },
-        "period": "monthly",
-        "interval": 1,
-        "programId": "gym",
-        "id": "plan_OrwwsEAwYhV0fp",
+        "_id": "66d4879eb98bc17cf73b3e36",
+        "id": "plan_OseOkBMsEOwdNs",
+        "__v": 0,
+        "createdAt": "2024-09-01T15:26:18.528Z",
         "features": [
             "Feature 1",
             "Feature 2",
             "Feature 3"
         ],
-        "$setOnInsert": {
-            "__v": 0
-        }
+        "interval": 1,
+        "period": "monthly",
+        "programId": "at-gym-workouts.strength-training",
+        "subscriptions": [],
+        "updatedAt": "2024-09-01T15:26:18.528Z"
     },
     {
         "item": {
@@ -195,17 +90,146 @@
             "amount": 550000,
             "currency": "INR"
         },
-        "period": "monthly",
-        "interval": 3,
-        "programId": "gym",
-        "id": "plan_OrwwsxuLCyPKVP",
+        "_id": "66d4879eb98bc17cf73b3e48",
+        "id": "plan_OseOky2BgD3Sz9",
+        "__v": 0,
+        "createdAt": "2024-09-01T15:26:18.568Z",
         "features": [
             "Feature 1",
             "Feature 2",
             "Feature 3"
         ],
-        "$setOnInsert": {
-            "__v": 0
-        }
+        "interval": 3,
+        "period": "monthly",
+        "programId": "at-gym-workouts.strength-training",
+        "subscriptions": [],
+        "updatedAt": "2024-09-01T15:26:18.568Z"
+    },
+    {
+        "item": {
+            "name": "Dance Standard",
+            "amount": 1234567,
+            "currency": "INR"
+        },
+        "_id": "66d50015b98bc17cf7a07ce6",
+        "id": "plan_OseOlmsAFHyMrK",
+        "__v": 0,
+        "createdAt": "2024-09-02T00:00:20.370Z",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "interval": 1,
+        "period": "monthly",
+        "programId": "dance",
+        "subscriptions": [],
+        "updatedAt": "2024-09-02T00:00:20.370Z"
+    },
+    {
+        "item": {
+            "name": "Dance Standard",
+            "amount": 450000,
+            "currency": "INR"
+        },
+        "_id": "66d50016b98bc17cf7a07d5b",
+        "id": "plan_OsfPLgm9LeUyQr",
+        "__v": 0,
+        "createdAt": "2024-09-02T00:00:20.884Z",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "interval": 3,
+        "period": "monthly",
+        "programId": "dance",
+        "subscriptions": [],
+        "updatedAt": "2024-09-02T00:00:20.884Z"
+    },
+    {
+        "item": {
+            "name": "Dance Standard",
+            "amount": 550000,
+            "currency": "INR"
+        },
+        "_id": "66d50016b98bc17cf7a07df9",
+        "id": "plan_OsfPMYI3BZfeN5",
+        "__v": 0,
+        "createdAt": "2024-09-02T00:00:21.511Z",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "interval": 6,
+        "period": "monthly",
+        "programId": "dance",
+        "subscriptions": [],
+        "updatedAt": "2024-09-02T00:00:21.511Z"
+    },
+    {
+        "item": {
+            "name": "Dance Premium",
+            "amount": 350000,
+            "currency": "INR"
+        },
+        "_id": "66d50017b98bc17cf7a07eca",
+        "id": "plan_OsfPNRrfKDQsxs",
+        "__v": 0,
+        "createdAt": "2024-09-02T00:00:22.077Z",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "interval": 1,
+        "period": "monthly",
+        "programId": "dance",
+        "subscriptions": [],
+        "updatedAt": "2024-09-02T00:00:22.077Z"
+    },
+    {
+        "item": {
+            "name": "Dance Premium",
+            "amount": 550000,
+            "currency": "INR"
+        },
+        "_id": "66d50017b98bc17cf7a07f7a",
+        "id": "plan_OsfPOM8TpDQjCV",
+        "__v": 0,
+        "createdAt": "2024-09-02T00:00:22.702Z",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "interval": 3,
+        "period": "monthly",
+        "programId": "dance",
+        "subscriptions": [],
+        "updatedAt": "2024-09-02T00:00:22.702Z"
+    },
+    {
+        "item": {
+            "name": "Dance Premium",
+            "amount": 650000,
+            "currency": "INR"
+        },
+        "_id": "66d50018b98bc17cf7a0801c",
+        "id": "plan_OsfPPDJRmPpABK",
+        "active": true,
+        "__v": 0,
+        "createdAt": "2024-09-02T00:00:23.418Z",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ],
+        "interval": 6,
+        "period": "monthly",
+        "programId": "dance",
+        "subscriptions": [],
+        "updatedAt": "2024-09-02T00:00:23.418Z"
     }
 ]
