@@ -4,12 +4,13 @@ import ContactForm from "@/components/ContactForm";
 import ProgramFeatures from "@/components/programs/Features";
 import Header from "@/components/programs/Header";
 import Link from "next/link";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RxCrossCircled } from "react-icons/rx";
 
 import { useAuth, withAuth } from "@/hooks/auth";
-import { Program } from "@/types/program";
+import { useDebug } from "@/lib/hooks";
+import { Feature, Program } from "@/types/program";
 import { Plan } from "@/types/subscription";
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -75,10 +76,24 @@ function Programs({ programs, images, plans }: Props) {
   const [currentProgram, setCurrentProgram] = useState<Program>(
     programs?.[0] ?? []
   );
+  const [currentFeature, setCurrentFeature] = useState<Feature>(
+    programs?.[0]?.features?.[0] ?? {}
+  )
+
+  useEffect(() => {
+    setCurrentFeature(() => currentProgram?.features?.[0] ?? {})
+  }, [currentProgram, setCurrentFeature]);
 
   const relatedPlans = useMemo(
-    () => plans?.filter((x) => x.programId === currentProgram?.id),
-    [currentProgram, plans]
+    () => plans?.filter((plan) => {
+      const [programId, subId] = plan.programId.split(".");
+      console.log({
+        programId,
+        subId,
+      })
+      return programId === currentProgram?.id && subId === currentFeature?.id;
+    }),
+    [currentProgram, currentFeature, plans]
   );
 
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -88,6 +103,8 @@ function Programs({ programs, images, plans }: Props) {
     }
     setOverlayVisible(!overlayVisible);
   };
+
+  useDebug(relatedPlans)
 
   return (
     <>
@@ -102,7 +119,12 @@ function Programs({ programs, images, plans }: Props) {
         />
       </div>
 
-      {currentProgram && <ProgramFeatures program={currentProgram} />}
+      {
+        currentProgram && <ProgramFeatures
+          program={currentProgram}
+          setCurrentFeature={setCurrentFeature}
+        />
+      }
 
       {/* ============================== Image Gallery ======================= */}
       {images && images.length && <Gallery images={images ?? []} />}
