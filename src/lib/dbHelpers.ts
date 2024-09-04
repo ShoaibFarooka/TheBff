@@ -74,23 +74,22 @@ export const getUserDataWithSubscription = async (email: string) => {
       .select("razorpayCustomerId name email phone")
       .lean()) as UserType;
 
-    // .populate("classes")
-    // .populate("subscriptions")
-
     if (!user) return null;
 
     Object.assign(data, user);
 
-    if (user.razorpayCustomerId) {
-      const subscriptions = await SubscriptionModel.find({
-        customer_id: user.razorpayCustomerId,
-      })
-        .populate("plan")
-        .select("id plan_id customer_id current_end current_start status")
-        .lean();
+    if (!user.razorpayCustomerId)
+      return data
 
-      data.subscriptions = subscriptions as any;
-    }
+    const subscriptions = await SubscriptionModel.find({
+      customer_id: user.razorpayCustomerId,
+    })
+      .populate("plan")
+      .select("id plan_id customer_id current_end current_start status")
+      .lean();
+
+    data.subscriptions = subscriptions as any;
+
 
     return data;
   } catch (error: any) {
@@ -266,8 +265,6 @@ export const getCoaches = async ({ programIds }: { programIds: string[] }) => {
     )
       .populate("programs", "name -_id -coaches id")
       .lean();
-
-    // console.log(programIds);
 
     if (!coaches.length)
       return {
