@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from "swiper/react";
 
 import { cn } from "@/lib/utils";
-import { Program } from "@/types/program";
+import { Feature, Program } from "@/types/program";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -42,9 +42,10 @@ const ImageWithTitle = ({
 
 interface Props {
   program: Program;
+  setCurrentFeature: React.Dispatch<React.SetStateAction<Feature>>;
 }
 
-const ProgramFeatures = ({ program }: Props) => {
+const ProgramFeatures = ({ program, setCurrentFeature }: Props) => {
   // const [click, handleClick] = useState(0);
   // const searchParams = useSearchParams();
   const ref = useRef<SwiperRef>(null);
@@ -92,7 +93,10 @@ const ProgramFeatures = ({ program }: Props) => {
               modules={[Mousewheel, Pagination]}
               direction="horizontal"
               className="mySwiper"
-              onSlideChange={(e: SwiperClass) => setSelected(e.realIndex)}
+              onSlideChange={(e: SwiperClass) => {
+                setSelected(e.realIndex)
+                setCurrentFeature(program.features[e.realIndex])
+              }}
               mousewheel={{ forceToAxis: true }}
               breakpoints={{
                 320: {
