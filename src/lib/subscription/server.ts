@@ -14,7 +14,10 @@ export async function getUncachedPlans({ program }: { program?: string } = {}) {
   try {
     await connectDB();
 
-    const plans = await PlanModel.find(program ? { program } : {}).lean();
+    const query = { active: true } as Record<string, any>;
+    if (program) query['program'] = program;
+
+    const plans = await PlanModel.find(query).lean();
 
     // console.log(plans)
 
