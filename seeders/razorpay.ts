@@ -1,7 +1,6 @@
 #!/usr/bin/env -S pnpm tsx --env-file=.env
 
 import { Plan as PlanModel } from "@/models";
-import Razorpay from "razorpay";
 // import connectDB from "@/lib/dbConnection"
 import connectDB, { disconnectDB } from "@/lib/dbConnection";
 import { Plan } from "@/types/subscription";
@@ -9,34 +8,28 @@ import { consola } from 'consola';
 import { readFileSync, writeFileSync } from "fs";
 
 import dotenv from "dotenv";
+import Razorpay from "razorpay";
 import { revalidateTags } from "./utils";
 dotenv.config();
 
-const plans = JSON.parse(
+let plans = JSON.parse(
   readFileSync("seeders/data/plans.json", "utf-8")
 ) as unknown as Plan[];
-function writePlans() {
-  writeFileSync("seeders/data/plans.json", JSON.stringify(plans, null, 4));
+
+const readPlansFromFile = () => {
+  plans = JSON.parse(
+    readFileSync("seeders/data/plans.json", "utf-8")
+  ) as unknown as Plan[];
 }
 
-const razorpay = new Razorpay({
-  key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+const sortPlans = () => {
+  // sort by programId, then by package (standard, premium, etc)
+  plans.sort((a, b) => a.programId.localeCompare(b.programId));
+}
 
-// type Plan = {
-//     id?: string
-//     item: {
-//         name: string
-//         amount: number
-//         currency: string
-//     }
-//     period: 'daily' | 'weekly' | 'monthly' | 'yearly'
-//     interval: number
-//     programId: string,
-//     description?: string
-
-// }
+const writePlansToFile = () => {
+  writeFileSync("seeders/data/plans.json", JSON.stringify(plans, null, 4));
+}
 
 async function setup() {
   if (
@@ -54,81 +47,21 @@ async function setup() {
   return razorpay;
 }
 
-async function createPlansInRzp() {
+async function savePlansInDB() {
   try {
-    // check for env
-    const razorpay = await setup();
-
-    const confirm = await consola.prompt("This will delete all plans in database and create new ones. Continue?", {
-      type: "confirm",
-      default: true
-    })
-    if (!confirm) return
-
-    // delete all plans in db
-    await PlanModel.deleteMany({
-      // id: { $exists: false },
-    });
-
-    const updated = [...plans] as Plan[];
-
-    const allPlans = await razorpay.plans.all();
-
-    console.log(
-      "All plans:",
-      allPlans.items.map((p) => p.item.name)
-    );
-
-    // for await (const plan, index of plans) {
-    for (let index = 0; index < plans.length; index++) {
-      // check if plan already exists
-      // match with plan name, amount, period and interval
-
-      const plan = plans[index];
-
-      console.log("Checking:", plan.item.name);
-
-      // search for exisiting plan, add id in it if doesn't exist
-      const existingPlan = allPlans.items.find((p) => {
-        return (
-          p.id == plan.id &&
-          p.item.amount === plan.item.amount &&
-          p.period === plan.period &&
-          p.interval === plan.interval
+    await connectDB();
+    // save plans in database
+    for await (const plan of plans) {
+      try {
+        await PlanModel.updateOne(
+          { id: plan.id }, // find by id
+          plan, // update the plan
+          { upsert: true } // create if not found
         );
-      });
-
-      if (existingPlan) {
-        console.log(`✅ Plan Matched: ${existingPlan.item.name}`);
-        plan.id = existingPlan.id;
-      } else {
-        // create new plan
-        const res = await razorpay.plans.create({
-          item: plan.item,
-          period: plan.period,
-          interval: plan.interval,
-          notes: {
-            description: plan.description ?? plan.item.name,
-            image: plan.image ?? "",
-          },
-        });
-
-        if (res.id) {
-          console.log(`✅ Plan created: ${res.id}`);
-          plan.id = res.id;
-        } else {
-          console.error("❌ Plan creation failed");
-        }
+      } catch (err) {
+        consola.error(`Error creating plan: ${plan.item.name}`, err);
       }
-      updated[index] = plan;
-
-      // update plan in db according to their ids
-      if (plan.id)
-        await PlanModel.updateOne({ id: plan.id }, plan, { upsert: true });
     }
-
-    // write updated plans to file
-    writeFileSync("seeders/data/plans.json", JSON.stringify(updated, null, 4));
 
     await revalidateTags(["plans"]);
   } catch (error) {
@@ -139,60 +72,27 @@ async function createPlansInRzp() {
   }
 }
 
-async function syncPlans() {
-  // check for env
-  if (
-    !process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
-    !process.env.RAZORPAY_KEY_SECRET
-  )
-    throw new Error("Razorpay keys not found");
+async function loadPlansFromDB() {
+  // Load plans from db and write to file
+  try {
+    await connectDB();
 
-  const razorpay = new Razorpay({
-    key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-    key_secret: process.env.RAZORPAY_KEY_SECRET!,
-  });
+    const allPlans = await PlanModel.find({});
 
-  const allPlans = await razorpay.plans.all();
-
-  const u = allPlans.items.map((p) => {
-    const plan: InstanceType<typeof PlanModel> = {
-      // id: p.id,
-      id: p.id,
-      item: {
-        name: p.item.name,
-        amount: p.item.amount as number,
-        currency: p.item.currency,
-      },
-      period: p.period,
-      interval: p.interval,
-      description: p.notes?.["description"] ?? p.notes?.["Description"] ?? "",
-      image: p.notes?.["image"] ?? p.notes?.["Image"] ?? "",
-    };
-
-    return plan;
-  });
-
-  await PlanModel.deleteMany({});
-
-  // update plans in db according to their ids
-  await PlanModel.insertMany(u);
-
-  await revalidateTags(["plans"]);
+    consola.info("Plans found:", allPlans.length);
+    writeFileSync("seeders/data/plans.json", JSON.stringify(allPlans, null, 4));
+  }
+  catch (error) {
+    console.log("❌ Error:", error);
+  } finally {
+    disconnectDB();
+  }
 }
 
 const createNewPlan = async () => {
   try {
     // check for env
-    if (
-      !process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
-      !process.env.RAZORPAY_KEY_SECRET
-    )
-      throw new Error("Razorpay keys not found");
-
-    const razorpay = new Razorpay({
-      key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-      key_secret: process.env.RAZORPAY_KEY_SECRET!,
-    });
+    const razorpay = await setup();
 
     const planName = await consola.prompt("Enter plan name", { type: "text" });
     const amount = parseInt(
@@ -201,7 +101,7 @@ const createNewPlan = async () => {
         placeholder: "10000 for 100",
       })
     );
-    const currency = await consola.prompt("Enter currency", {
+    const currency = await consola.prompt("Enter currency (default: INR)", {
       type: "text",
       default: "INR",
       placeholder: "INR",
@@ -210,9 +110,9 @@ const createNewPlan = async () => {
       type: "text",
       default: "monthly",
       placeholder: "daily | weekly | monthly | yearly",
-    });
+    }) as "daily" | "weekly" | "monthly" | "yearly";
     const interval = parseInt(
-      await consola.prompt("Enter interval", {
+      await consola.prompt("Enter interval (default: 1)", {
         type: "text",
         default: "1",
         placeholder: "1",
@@ -220,7 +120,7 @@ const createNewPlan = async () => {
     );
     const programId = await consola.prompt("Enter program id", {
       type: "text",
-      placeholder: "program-id",
+      placeholder: "eg. dance.fitness",
     });
 
     if (!planName || !amount || !currency || !period || !interval || !programId)
@@ -232,7 +132,7 @@ const createNewPlan = async () => {
         amount,
         currency,
       },
-      period: period as "daily" | "weekly" | "monthly" | "yearly",
+      period: period,
       interval,
       programId: undefined as any,
     } as Plan;
@@ -243,26 +143,50 @@ const createNewPlan = async () => {
     consola.start("Creating plan...");
     consola.box(planName);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // const res = await razorpay.plans.create({ ...plan })
+    const res = await razorpay.plans.create({ ...plan })
 
-    // if (res.id) {
-    //     consola.success(`Plan created: ${res.id}`)
-    //     plan.id = res.id
-    // } else {
-    //     consola.error('Plan creation failed')
-    // }
+    if (!res.id) {
+      consola.error('Plan creation failed')
+      process.exit(1)
+    }
 
-    // plan.program = program
+    consola.success(`Plan created: ${res.id}`)
+    plan.id = res.id
 
-    // // update plan in db according to their ids
-    // if (plan.id)
-    //     await PlanModel.updateOne({ id: plan.id }, plan, { upsert: true })
+    plan.programId = programId
 
-    // // add id to plans
-    // plans.push(plan)
-    // writePlans()
+    consola.info("Saving plan to db...");
+    // update plan in db according to their ids
+    if (plan.id)
+      await PlanModel.updateOne({ id: plan.id }, plan, { upsert: true })
+
+    const confirmSave = await consola.prompt("Would you like to save this plan in database and plans.json?", {
+      type: "confirm",
+      default: true,
+    });
+
+    if (!confirmSave) {
+      return plan;
+    }
+
+    // Load data from db to plans.json
+    const confirmLoad = await consola.prompt("Before saving, would you like to load plans from database to plans.json?", {
+      type: "confirm",
+      default: false,
+    });
+
+    if (confirmLoad) {
+      await loadPlansFromDB();
+      readPlansFromFile();
+    }
+
+    plans.push(plan);
+    sortPlans();
+    writePlansToFile();
+
+    await revalidateTags(["plans"])
 
     return plan;
   } catch (error) {
@@ -274,94 +198,39 @@ const createNewPlan = async () => {
   }
 };
 
-async function createCustomer() {
-  try {
-    const email = "";
-    const name = "";
-    const phone = "";
+let actions: string[] = process.argv.slice(2);
 
-    const user = await razorpay.customers.create({
-      email,
-      name,
-      contact: phone,
-      fail_existing: 0,
-    });
-
-    console.log(user);
-  } catch (error) {
-    consola.error("Error:", error);
+const seeders = [
+  {
+    label: "Save plans to Database",
+    value: "save-plans",
+    hint: "Save plans from ./data/plans.json to database",
+    fn: savePlansInDB,
+  },
+  {
+    label: "Load plans from Database",
+    value: "load-plans",
+    hint: "Load plans from Database to plans.json",
+    fn: loadPlansFromDB,
   }
-}
-
-const args = process.argv.slice(2);
-
-const createPlans = args.includes("--create-plans");
-const sync = args.includes("--sync");
-const newPlan = args.includes("--new-plan");
-const createCustomerFlag = args.includes("--create-customer");
+]
 
 async function main() {
-  if (!createPlans && !sync && !newPlan && !createCustomerFlag) {
-    const actions = await consola.prompt("Choose an action", {
+  if (actions.length === 0) {
+    actions = await consola.prompt("Choose an action", {
       type: "multiselect",
-      options: [
-        {
-          label: "Sync Plans",
-          value: "sync-plans",
-          hint: "Sync plans from ./data/plans.json",
-        },
-        {
-          label: "Create new plan",
-          value: "create-new-plan",
-          hint: "Create a new plan",
-        },
-        {
-          label: "Create customer",
-          value: "create-customer",
-          hint: "Create a new customer"
-        }
-      ],
+      options: seeders.map(({ label, value, hint }) => ({ label, value, hint })),
     }) as unknown as string[]; // Because of a bug in consola types
+  }
 
-    if (actions.includes("sync-plans")) {
-      console.log("Creating plans in Razorpay");
-      await createPlansInRzp();
-    }
-
-    // if (actions.includes('Sync plans')) {
-    //     syncPlans()
-    // }
-
-    if (actions.includes("create-new-plan")) {
-      console.log("Creating new plan");
-      await createNewPlan();
-    }
-
-    if (actions.includes("create-customer")) {
-      console.log("Creating customer");
-      await createCustomer();
+  for await (const action of actions) {
+    const seeder = seeders.find(s => s.value === action);
+    if (seeder) {
+      await seeder.fn();
     }
   }
 
-  if (createPlans) {
-    console.log("Creating plans in Razorpay");
-    createPlansInRzp();
-  }
-
-  if (sync) {
-    console.log("Syncing plans from Razorpay");
-    syncPlans();
-  }
-
-  if (newPlan) {
-    console.log("Creating new plan");
-    createNewPlan();
-  }
-
-  if (createCustomerFlag) {
-    console.log("Creating customer");
-    createCustomer();
-  }
+  consola.success("Done");
 }
 
 main();
