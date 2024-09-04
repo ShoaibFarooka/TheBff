@@ -8,7 +8,6 @@ import { Plan } from "@/types/subscription";
 import { unstable_cache as nextCache } from "next/cache";
 import { Customers } from "razorpay/dist/types/customers";
 import { razorpay } from ".";
-import { devLog } from "../helpers";
 import { logger } from "../logger";
 
 export async function getUncachedPlans({ program }: { program?: string } = {}) {
@@ -147,7 +146,7 @@ export async function createSubscription({ planId }: { planId: string }) {
     if (!customer) {
       return { error: "Failed to create customer." };
     }
-    
+
     // create subscription
     const subscription = await razorpay.subscriptions.create({
       plan_id: planId,
@@ -184,47 +183,43 @@ export const verifyPayment = async ({
 }) => {
   try {
     await connectDB();
-    const { user } = await authenticate();
+    const auth = await authenticate();
 
-    if (!user) return { error: "Please login to continue." };
+    if (!auth.user) return { error: "Please login to continue." };
 
     const [subscription, payment] = await Promise.all([
-      await razorpay.subscriptions.fetch(subscriptionId),
-      await razorpay.payments.fetch(paymentId),
+      razorpay.subscriptions.fetch(subscriptionId),
+      razorpay.payments.fetch(paymentId),
     ]);
-    devLog(subscription);
+    logger.log(subscription);
 
     // check if subscription exists and is active
     if (!subscription || subscription.status == "cancelled")
       return { error: "Subscription not found or inactive." };
-
-    devLog(payment);
 
     // check if payment exists and is captured
     if (!payment || payment.status !== "captured")
       return { error: "Payment not found or not captured." };
 
     // match subscription id with payment subscription id, and email with user email
-    if (user.email !== payment.email) return { error: "Invalid user email." };
+    if (auth.user.email !== payment.email) return { error: "Invalid user email." };
 
-    const plan = (await PlanModel.findOne(
-      { id: subscription.plan_id },
-      "-_id program"
-    ).lean()) as Plan;
+    const meta = subscription.notes as {
+      email: string;
+      phone: string;
+      programId: string;
+      customer_id: string;
+    };
 
-    // save customer id in the database
-    await User.findOneAndUpdate(
-      { email: user.email },
-      { razorpayCustomerId: payment.customer_id }
-    );
+    logger.log(payment);
 
     // save subscription details in the database
     await Subscription.findOneAndUpdate(
       { id: subscription.id },
       {
         ...subscription,
-        customer_id: payment.customer_id,
-        programId: plan.programId,
+        customer_id: meta?.customer_id || payment.customer_id,
+        programId: meta?.programId,
       },
       { upsert: true }
     );
