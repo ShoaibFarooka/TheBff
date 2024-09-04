@@ -10,6 +10,7 @@ import nodemailer from "nodemailer";
 import { cache } from "react";
 import { baseUrl } from "./config";
 import { devLog, getURL } from "./helpers";
+import emailVerificationTemplate from "./templates/emailVerification";
 // methods to login, register, and authenticate users
 
 const secret = process.env.JWT_SECRET! || "secret";
@@ -384,7 +385,7 @@ async function sendEmailVerificationLink(email: string) {
       from: process.env.EMAIL_USER,
       to: [email],
       subject: "Verify your email",
-      html: `Please click this link to verify your email: <a href="${url}">${url}</a>`,
+      html: emailVerificationTemplate(url),
     };
 
     //* Remove log
@@ -414,7 +415,7 @@ async function sendPhoneVerificationLink(phone: string) {
       html: `Please click this link to verify your phone: <a href="${url}">${url}</a>`,
     };
 
-    await transporter.sendMail(mailOptions);
+    // await transporter.sendMail(mailOptions);
 
     return { success: true };
   } catch (error) {
