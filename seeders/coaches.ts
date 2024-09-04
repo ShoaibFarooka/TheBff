@@ -10,7 +10,7 @@ import consola from "consola";
  * - email: Email of the coach
  * - profileImage: Profile image of the coach
  * - calendarLink: Register on calendly.com and create a new event. Copy the link and paste it here.
- * - programIds: List of program ids the coach is associated with
+ * - programIds: Program ids along with subids separated by . (dot)
  * - calendlyToken: Calendly token for the coach. You can get this by inspecting the network tab in the browser when you open the calendly link.
  */
 
@@ -20,7 +20,7 @@ const coaches: CoachType[] = [
         email: 'coach1@thebff.com',
         profileImage: "https://via.placeholder.com/150",
         calendarLink: "https://calendly.com/thebffupdates/coaching-class",
-        programIds: ["dance", "gym"],
+        programIds: ["dance.fitness", "at-gym-workout.strength-training"],
         calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIzMjI1MjU2LCJqdGkiOiI0ZmRiNzk4My1mYmIwLTRiOTItOTk3MC0zZTMyMDgyZGY5YWEiLCJ1c2VyX3V1aWQiOiI4MzEyZTAwNC0zZTY5LTQ1NTAtYTNjZi1iOThjZjZmODY4YWEifQ.cD03tgWyHLU73_QBpUJGhkoZ3wMksNKEYePz59mnlArZIX-H1_RP97w2VdXkp0r928xw00blKxdVW0t8tkFLpA'
     },
     {
@@ -28,7 +28,7 @@ const coaches: CoachType[] = [
         email: 'coach2@thebff.com',
         profileImage: "https://via.placeholder.com/150",
         calendarLink: "https://calendar.google.com",
-        programIds: ["gym"],
+        programIds: ["at-gym-workout.strength-training"],
         calendlyToken: 'mytoken'
     }
 ]
