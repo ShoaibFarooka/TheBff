@@ -60,7 +60,10 @@ const planSchema = new Schema<ModelType>({
             required: true,
         }
     ],
-
+    active: {
+        type: Boolean,
+        default: true,
+    },
     // reference to the subscriptions model for the plan
     subscriptions: [{
         type: String,

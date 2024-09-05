@@ -43,7 +43,7 @@
         "featureDescription": "Are you a ﬁtness newbie or a seasoned pro? Either way, we have classes to help you reach your goals and unleash your inner athlete!",
         "features": [
             {
-                "id": 1,
+                "id": "strength-training",
                 "title": "Strength Training",
                 "heading": "Flex Those Muscles with BFF’s Inclusive Resistance Training Programs",
                 "subheading": "Online Strength Training Classes",
@@ -51,7 +51,7 @@
                 "image": "https://via.placeholder.com/200x300"
             },
             {
-                "id": 2,
+                "id": "hiit",
                 "title": "HIIT",
                 "heading": "Get ﬁt, Stay lit: The Intensive Path to a Stronger You! ",
                 "subheading": "HIIT Training and Exercises",
@@ -59,7 +59,7 @@
                 "image": "https://via.placeholder.com/200x300"
             },
             {
-                "id": 3,
+                "id": "functional-training",
                 "title": "Functional Training",
                 "heading": "Strong Inside and Out: Build Resilience for a Better Tomorrow",
                 "subheading": "Functional Strength Training",
@@ -67,7 +67,7 @@
                 "image": "https://via.placeholder.com/200x300"
             },
             {
-                "id": 4,
+                "id": "crossfit",
                 "title": "Crossfit",
                 "heading": "No more gym hour restrictions or lack of motivation - reach your ﬁtness goals like never before!",
                 "subheading": "CrossFit Training",
@@ -75,7 +75,7 @@
                 "image": "https://via.placeholder.com/200x300"
             },
             {
-                "id": 5,
+                "id": "workout-plan",
                 "title": "Workout Plan",
                 "heading": "Guidance like None Other: Healthy Lifestyle is No Longer a Struggle",
                 "subheading": "Sort Your Daily Workout Routine",

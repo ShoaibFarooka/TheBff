@@ -81,39 +81,3 @@ export async function POST(req: Request) {
 // Page configs
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60; // 1 minute
-
-// export const GET = async () => {
-//   // create a new plan
-//   const razorpay = new Razorpay({
-//     key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "",
-//     key_secret: process.env.RAZORPAY_KEY_SECRET || "",
-//   });
-
-//   // const res = await razorpay.plans.create({ ...plan })
-
-//   // return new Response(JSON.stringify(res), { status: 200 })
-// };
-
-
-// // handle the event
-// switch (body.event) {
-//     case 'subscription.charged':
-//         // handle subscription charged event
-//         break;
-//     case 'subscription.activated':
-//         // handle subscription activated event
-//         await Subscription.findOneAndUpdate(
-//             { id: subscription.id },
-//             subscription
-//         )
-//         break;
-//     case 'subscription.pending':
-//         // handle subscription pending event
-//         break;
-//     case 'subscription.halted':
-//         // handle subscription halted event
-//         break;
-//     default:
-//         console.log(`🔔❌ Unhandled event: ${body.event}`)
-//         return new Response('Unhandled event', { status: 200 })
-// }

@@ -8,6 +8,12 @@ export interface CoachType {
   email: string;
   profileImage: string;
   calendarLink: string;
+  /**
+   * Program ids along with subids separated by . (dot)
+   * @example ```json
+   * ["dance.fitness", "dance.dance-styles"] // where dance is the program id and fitness is the subid ()
+   * ``` 
+   */
   programIds: string[];
   calendlyToken: string;
   // add more fields as needed

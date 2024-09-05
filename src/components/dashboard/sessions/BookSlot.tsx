@@ -64,7 +64,7 @@ const BookSlot = () => {
     } else {
       setIsModalOpen(true);
     }
-  }, [coaches, isModalOpen]);
+  }, [coaches, isModalOpen, fetchCoaches]);
 
   const handleSubmit = (e: any) => {
     // router.refresh()

@@ -10,7 +10,14 @@ export type Plan = {
     interval: number
     description?: string
     image?: string
+    /** 
+     * Program id along with subid separated by . (dot)
+     * @example ```json
+     * "dance.fitness" // where dance is the program id and fitness is the subid
+     * ```
+     */ 
     programId: string
+    active: boolean
     features: string[]
     subscriptions: string[]
 }
