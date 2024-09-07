@@ -5,23 +5,21 @@ import { Mousewheel, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Assets
-import coach2 from "@/assets/Frame 39.png";
-import coach3 from "@/assets/Frame 40.png";
-import coach1 from "@/assets/kindpng_218182.png";
+import coach_arpandeep_singh from "@/assets/coach_arpandeep_singh.png";
+import coach_diksha_parihar from "@/assets/coach_diksha_parihar.png";
+import coach_dinesh_maru from "@/assets/coach_dinesh_maru.png";
+import coach_gurpreet_singh from "@/assets/coach_gurpreet_singh.png";
+import coach_harpreet_singh from "@/assets/coach_harpreet_singh.png";
+import coach_prachi_dabas from "@/assets/coach_prachi_dabas.png";
+
 
 const coaches1 = [
-  { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-  { name: "Arman", title: "E-REPS", image: coach2 },
-  { name: "Birjot", title: "E-REPS", image: coach3 },
-  { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-  { name: "Arman", title: "E-REPS", image: coach2 },
-  { name: "Birjot", title: "E-REPS", image: coach3 },
-  { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-  { name: "Arman", title: "E-REPS", image: coach2 },
-  { name: "Birjot", title: "E-REPS", image: coach3 },
-  { name: "Gurpreet Singh", title: "E-REPS", image: coach1 },
-  { name: "Arman", title: "E-REPS", image: coach2 },
-  { name: "Birjot", title: "E-REPS", image: coach3 },
+  { name: "Gurpreet Singh", title: "Personal Trainer", image: coach_gurpreet_singh },
+  { name: "Diksha Parihar", title: "Dietician", image: coach_diksha_parihar },
+  { name: "Harpreet Singh", title: "Personal Trainer", image: coach_harpreet_singh },
+  { name: "Dinesh Maru", title: "Dance", image: coach_dinesh_maru },
+  { name: "Arpandeep Singh", title: "Personal Trainer", image: coach_arpandeep_singh },
+  { name: "Prachi Dabas", title: "Yoga", image: coach_prachi_dabas }
 ];
 
 // ===================== {Coach} =====================
