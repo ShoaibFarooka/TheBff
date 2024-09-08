@@ -80,8 +80,8 @@ function PlanDetails({ plan, suggestedPlans }: CheckoutProps) {
                     <div className='w-full md:w-1/2'>
                         <Image
                             className='w-full max-h-80 rounded shadow-xl shadow-y/10'
-                            src={plan.program?.image ?? 'https://via.placeholder.com/300'}
-                            alt={plan.program?.name}
+                            src={plan.image ?? 'https://via.placeholder.com/300'}
+                            alt={plan.name}
                             width={300}
                             height={300}
                         />
