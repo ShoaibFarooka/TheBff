@@ -7,6 +7,7 @@ import { Feature, Program } from "@/types/program";
 import { Plan } from "@/types/subscription";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import ProductCard from "./ProductCard";
 
@@ -31,7 +32,7 @@ interface Props {
 }
 
 export default function ChoosePlan({
-  plans,
+  // plans,
   overlayVisible,
   setOverlayVisible,
   program,
@@ -41,6 +42,27 @@ export default function ChoosePlan({
     period: "monthly",
     interval: 1,
   });
+
+  const onClose = () => {
+    setOverlayVisible(false);
+
+    // make sure scroll is enabled
+    document.body.style.overflow = "auto";
+  };
+
+  const { data: plans, isLoading: isPlanLoading } = api.plan.get.useQuery({
+    programId: `${program.id}.${feature?.id}`
+  }, {
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    onSettled(data) {
+      if (!data) {
+        toast.error("No plans found for the selected program");
+        onClose()
+      }
+
+    }
+  })
 
   // dynamically get billing interval based on product
   const billingIntervals = useMemo(() => {
@@ -68,12 +90,6 @@ export default function ChoosePlan({
     return intervals;
   }, [plans]);
 
-  const onClose = () => {
-    setOverlayVisible(false);
-
-    // make sure scroll is enabled
-    document.body.style.overflow = "auto";
-  };
 
   // fetching all subscriptions at once to avoid multiple requests as one might not have too many subscriptions
   const {
@@ -91,14 +107,13 @@ export default function ChoosePlan({
     return sub;
   }, [subscriptions, program.id]);
 
-  if (!plans || !plans.length)
-    return (
-      <div>
-        <h1>No plans found</h1>
-      </div>
-    );
+  if (!isPlanLoading && (!plans || !plans.length)) {
+    onClose();
+    toast.error("No plans found for the selected program");
+    return <></>
+  }
 
-  if (isPending)
+  if (isPending || isPlanLoading)
     return (
       <div className="fixed top-0 left-0 w-screen center h-screen bg-black bg-opacity-30 backdrop-blur-md z-30">
         <Spinner size={45} />

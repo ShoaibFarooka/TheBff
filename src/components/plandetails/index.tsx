@@ -59,7 +59,7 @@ function PlanDetails({ plan, suggestedPlans }: CheckoutProps) {
     });
 
     return (
-        <div className=''>
+        <div className='pt-16 md:pt-24'>
             <Script src="https://checkout.razorpay.com/v1/checkout.js" />
 
             <div className='relative grid grid-cols-2 mb-10 md:mb-0'>
