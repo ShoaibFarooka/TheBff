@@ -50,6 +50,7 @@ EMAIL_PASS - Email Password
 }
 ```
 - Run `pnpm seed:plans` to seed the plans
+- amount is in paisa
 
 ## Classes
 
