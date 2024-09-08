@@ -70,6 +70,12 @@ export const addItem = async (ctx: ProtectedTRPCContext, item: AddItemInput):
         }
       }
 
+      if (!planDetails.amount) {
+        return {
+          error: "Can not add this plan to cart"
+        }
+      }
+
       // If the item does not exist, add it to the cart
       cart.items.push({
         plan: item.planId,
