@@ -77,6 +77,7 @@ function Programs({ programs, images, plans }: Props) {
   const [currentProgram, setCurrentProgram] = useState<Program>(
     programs?.[0] ?? []
   );
+
   const [currentFeature, setCurrentFeature] = useState<Feature>(
     () => {
       return programs?.[0]?.features?.[0] ?? {}
