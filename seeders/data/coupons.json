@@ -1,18 +1,12 @@
 [
-    {
-        "code": "OFFER1",
-        "description": "Get 10% off on all products",
-        "type": "percentage",
-        "discount": 10,
-        "active": true,
-        "expiryDate": "2022-12-31"
-    },
-    {
-        "code": "OFFER2",
-        "description": "Get $10 off on all products",
-        "type": "flat",
-        "discount": 10,
-        "active": true,
-        "expiryDate": "2022-12-31"
-    }
+  {
+    "_id": "66dd56dc7f51456415b1fa85",
+    "code": "TEST",
+    "description": "Test coupon",
+    "discount": 10,
+    "type": "percentage",
+    "active": true,
+    "expiryDate": "2025-12-31T00:00:00.000Z",
+    "id": "66dd56dc7f51456415b1fa85"
+  }
 ]
