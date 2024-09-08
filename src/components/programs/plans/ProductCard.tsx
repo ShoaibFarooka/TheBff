@@ -24,7 +24,7 @@ const ProductCard = ({
         className={clsx(
           "px-3 md:px-10 rounded-2xl text-zinc-800 shadow-xl w-full md:w-1/3 h-full flex flex-col",
           // if product name includes premium, bg-[#FFCC61]
-          plan.premium ?
+          plan.premium || plan.category?.toLocaleLowerCase() == 'premium' ?
             "bg-[#FFCC61] text-zinc-800 space-y-4 py-10" :
             "py-5 bg-[#E7E7FF]"
         )}
