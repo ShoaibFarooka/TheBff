@@ -4,8 +4,8 @@ export type Plan = {
     _id: string | ObjectId;
     name: string;
     description: string;
-    amount: number;
-    currency: string;
+    amount?: number;
+    currency?: string;
     period: 'daily' | 'weekly' | 'monthly' | 'yearly';
     interval: number;
     image?: string;
