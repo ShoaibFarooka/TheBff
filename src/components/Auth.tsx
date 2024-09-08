@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import React, { useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import { Button } from "./ui/button";
 
 const ResetPassword = dynamic(() => import("@/components/ResetPasswordModal"), {
   ssr: false,
@@ -74,10 +75,15 @@ export const AuthForm = withAuth<AuthFormParams>(
     }, [signup, router, searchParams, onSuccess]);
 
     useEffect(() => {
-      if (user) router.push("/dashboard");
+      if (user)
+        toast(<div>
+          <p>You{"'"}re already logged in as <b>{user.name}</b>.</p>
+          <Button className="mt-2" variant={'outline'} onClick={() => router.push("/dashboard")}>Go to Dashboard</Button>
+        </div>)
+      // router.push("/dashboard");
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);
+    }, []);
 
     //  a function to handle form submit
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -188,7 +194,7 @@ export const AuthForm = withAuth<AuthFormParams>(
             label="Password"
             name="password"
             type="password"
-            extras={{ minLength: 8, maxlength: 12 }}
+            extras={{ minLength: 8, maxLength: 12 }}
           />
           {!signup && <ResetPassword />}
 

@@ -1,44 +1,55 @@
-import { Offer as OfferModel } from "@/models";
+import { Coupon as CouponModel } from "@/models";
 // import type { Plan as PlanType } from '@/types/subscription';
-import { Offer } from "@/types/offer";
+import { Coupon } from "@/types/coupon";
 import { unstable_cache as nextCache } from "next/cache";
 import { getDataFromDb } from "../dbHelpers";
 import { logger } from "../logger";
 
 
-// a function to get offers
-export const getUncachedOffers = async () => {
+// a function to get Coupon
+export const getUncachedCoupons = async () => {
   try {
-    // wait 50 sec
-    // await new Promise((resolve) => setTimeout(resolve, 10 * 1000));
-
-    const offers = await OfferModel.find({
+    const coupons = await CouponModel.find({
       expiryDate: { $gte: new Date() } // get offers that have not expired
-    }).lean() as Offer[];
-    return offers
+    }).lean() as Coupon[];
+
+    return coupons
   } catch (error) {
     logger.log(error);
     return null
   }
 }
 
-export const getOffers = nextCache(getUncachedOffers, ['offers'], {
-  tags: ['offers'],
+export const getCoupons = nextCache(getUncachedCoupons, ['coupons'], {
+  tags: ['coupons'],
   revalidate: process.env.NODE_ENV === 'development' ? 5 : 3 * 60 * 60,
 });
 
-export const getUncachedOffer = async (id: string) => {
+export const getUncachedCoupon = async (
+  code: string,
+  options: { includeExpired?: boolean } = { includeExpired: false }
+) => {
   try {
-    const offer = await OfferModel.findOne({ id }).lean() as Offer;
-    return offer
+    const coupon = await CouponModel
+      .findOne({
+        code,
+        // if includeExpired is false, get only offers that have not expired
+        expiryDate: options.includeExpired ? { $gte: new Date() } : { $lte: new Date() }
+      })
+      .lean() as Coupon;
+
+    return coupon
   } catch (error) {
     logger.log(error);
     return null
   }
 }
 
-export const getOffer = (id: string) => nextCache(() => getUncachedOffer(id), ['offer', id], {
-  tags: ['offer', id],
+export const getCoupon = (
+  code: string,
+  options: { includeExpired?: boolean } = { includeExpired: false }
+) => nextCache(() => getUncachedCoupon(code, options), ['coupon', code], {
+  tags: ['coupon', code],
   revalidate: process.env.NODE_ENV === 'development' ? 5 : 3 * 60 * 60,
 })();
 

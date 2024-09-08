@@ -18,6 +18,13 @@ export interface User {
   payment_method: Record<string, any> | null;
   razorpayCustomerId: string;
   stats: Stats;
+  address: {
+    house: string;
+    area: string;
+    pincode: string | number;
+    city: string;
+    state: string;
+  }
 }
 export type UserUpdate = Partial<User>;
 export type UserInsert = UserUpdate;

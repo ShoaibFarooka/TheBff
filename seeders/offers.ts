@@ -1,6 +1,6 @@
 import connectDB from "@/lib/dbConnection";
 import { Offer as OfferModel } from '@/models';
-import { Offer } from "@/types/offer";
+import { Offer } from "@/types/coupon";
 import consola from "consola";
 
 /*

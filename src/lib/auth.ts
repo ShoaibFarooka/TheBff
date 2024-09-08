@@ -2,7 +2,7 @@
 import "@/lib/db";
 import { connectDB } from "@/lib/db";
 import { User } from "@/models";
-import { UserRole } from "@/types/user";
+import { UserRole, User as UserType } from "@/types/user";
 import bcrypt from "bcryptjs";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { cookies } from "next/headers";
@@ -10,6 +10,7 @@ import nodemailer from "nodemailer";
 import { cache } from "react";
 import { baseUrl } from "./config";
 import { devLog, getURL } from "./helpers";
+import { logger } from "./logger";
 import emailVerificationTemplate from "./templates/emailVerification";
 // methods to login, register, and authenticate users
 
@@ -44,9 +45,23 @@ const getSuperUserRoleObject = (role: UserRole) =>
     ? { role }
     : {};
 
+export type Auth = {
+  success: boolean;
+  user?: {
+    _id: string;
+    email: string;
+    name: string;
+    phone: string;
+    role: UserRole;
+  };
+  unAuthenticated?: boolean;
+  message?: string;
+};
+
 // authenticate
 export const authenticate = cache(
-  async (role: UserRole | UserRole[] = UserRole.USER) => {
+  async (role: UserRole | UserRole[] = UserRole.USER)
+    : Promise<Auth> => {
     try {
       const cookie = cookies();
       const token = cookie.get("token");
@@ -112,6 +127,7 @@ export async function login({
 
     const token = jwt.sign(
       {
+        _id: user._id,
         email: user.email,
         name: user.name,
         phone: user.phone,
@@ -122,7 +138,8 @@ export async function login({
 
     // set token in cookie for 30 days
     const cookie = cookies();
-    cookie.set("token", token, { maxAge: 30 * 24 * 60 * 60 * 1000 });
+    logger.log("Setting cookie", token);
+    cookie.set("token", token, { maxAge: 30 * 24 * 60 * 60 * 1000 }); // 30 days
 
     return { success: true };
     // return { success: true, token, user }
@@ -145,6 +162,7 @@ export async function register({
   password,
   name,
   phone,
+  address,
   callbackUrl = "/",
 }: {
   email: string;
@@ -152,6 +170,7 @@ export async function register({
   name: string;
   phone?: string;
   callbackUrl?: string;
+  address: UserType['address']
 }) {
   try {
     // check if user already exists, if so return error, else create user, hash password, send verification email, and return success
@@ -166,6 +185,7 @@ export async function register({
       name,
       phone,
       role: UserRole.USER,
+      address
     });
     await user.save();
 
@@ -225,9 +245,8 @@ export const addSuperUser = async ({
                 <p>Use the following credentials to login</p>
                 <p>Email: ${user.email}</p>
                 <p>Password: ${password}</p>
-                <p>Click <a href="${
-                  process.env.BASE_URL ?? "http://localhost:3000"
-                }">here</a> to login</p>    
+                <p>Click <a href="${process.env.BASE_URL ?? "http://localhost:3000"
+        }">here</a> to login</p>    
             `,
     };
 
@@ -379,7 +398,7 @@ async function sendEmailVerificationLink(email: string) {
     const emailToken = jwt.sign({ email, verifyEmail: true }, secret, {
       expiresIn: "1h",
     });
-    const url = `${getURL()}verify-token?token=${emailToken}`;
+    const url = `${getURL()}/verify-token?token=${emailToken}`;
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -405,9 +424,8 @@ async function sendPhoneVerificationLink(phone: string) {
     const phoneToken = jwt.sign({ phone, verifyPhone: true }, secret, {
       expiresIn: "1h",
     });
-    const url = `${
-      process.env.BASE_URL ?? "http://localhost:3000"
-    }/verify-token?token=${phoneToken}`;
+    const url = `${process.env.BASE_URL ?? "http://localhost:3000"
+      }/verify-token?token=${phoneToken}`;
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: "email",

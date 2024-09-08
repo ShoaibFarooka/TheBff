@@ -23,7 +23,7 @@ const relevantEvents = new Set([
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    const secret = process.env.RAZORPAY_SECRET;
 
     const isValid = Razorpay.validateWebhookSignature(
       JSON.stringify(body),

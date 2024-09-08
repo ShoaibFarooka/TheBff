@@ -13,8 +13,8 @@ import Component38 from "@/assets/Component 38.png";
 import Component42 from "@/assets/Component 42.png";
 import Component43 from "@/assets/Component 43.png";
 import Component44 from "@/assets/Component 44.png";
+import LoginPopup from "@/components/auth/LoginPopup";
 import Classes from "@/components/home/Classes";
-import LoginPopup from "@/components/LoginPopup";
 import { Metadata } from "next";
 
 // preload "/fitness.mp4",

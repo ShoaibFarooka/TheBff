@@ -1,15 +1,14 @@
-import Checkout from "@/components/checkout";
+import PlanDetails from "@/components/plandetails";
 import { authenticate } from "@/lib/auth";
 import { getUserDataWithSubscription } from "@/lib/dbHelpers";
 import { logger } from "@/lib/logger";
 import { getPlan } from "@/lib/subscription/server";
-import { getOffers, getSuggestedPlans } from "@/lib/subscription/utils";
+import { getSuggestedPlans } from "@/lib/subscription/utils";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 type PageProps = {
-  searchParams: {
-    plan: string;
+  params: {
+    id: string;
     [key: string]: string;
   }
 }
@@ -29,30 +28,25 @@ const getData = async ({ planId, email }: GetDataParams) => {
     // check if user already has a subscription to this plan
 
     const subscription = await getUserDataWithSubscription(email);
-    const matchedSubscription = subscription?.subscriptions?.find(x => x.plan_id === planId);
+    const matchedSubscription = subscription?.subscriptions?.find(x => x.planId === planId);
 
     if (
       matchedSubscription &&
       (
         matchedSubscription.status !== "active" ||
-        matchedSubscription.current_end > new Date() // check if current_end is greater than current time
+        matchedSubscription.endDate > new Date() // check if current_end is greater than current time
       )
     )
       throw new Error(`Great news! You already have a subscription to this plan.`)
 
     const plan = await getPlan(planId);
-    if (!plan || !plan.item)
+    if (!plan)
       throw new Error("Plan not found");
 
-    // const offers = await getOffers();
-    const [offers, suggestedPlans] = await Promise.all([
-      getOffers(),
-      getSuggestedPlans() as unknown as { plans: { title: string, planId: string }[] }
-    ]);
+    const suggestedPlans = await getSuggestedPlans() as unknown as { plans: { title: string, planId: string }[] }
 
     return {
       plan,
-      offers,
       suggestedPlans
     };
   } catch (error: any) {
@@ -61,20 +55,18 @@ const getData = async ({ planId, email }: GetDataParams) => {
   }
 }
 
-
-async function CheckoutPage({ searchParams: { plan: planId } }: PageProps) {
+async function CheckoutPage({ params: { id: planId } }: PageProps) {
 
   const auth = await authenticate();
-  if (!auth.success || auth.unAuthenticated)
-    return redirect("/login?cb=/dashboard");
 
-  if (!planId || !planId.startsWith('plan_'))
+  // || !planId.startsWith('plan_')
+  if (!planId)
     return <ErrorMessage message="Invalid plan id " />
 
   // const pageData = (await getPageData("checkout")) as any;
   const data = await getData({
     planId,
-    email: auth.user.email
+    email: auth.user!.email
   });
 
   const parsedData: typeof data = JSON.parse(JSON.stringify(data));
@@ -82,7 +74,7 @@ async function CheckoutPage({ searchParams: { plan: planId } }: PageProps) {
   if (data.error)
     return <ErrorMessage message={data.error} />
 
-  return <Checkout plan={parsedData.plan!} offers={parsedData.offers!} suggestedPlans={(parsedData.suggestedPlans?.plans ?? []) as any} />;
+  return <PlanDetails plan={parsedData.plan!} suggestedPlans={(parsedData.suggestedPlans?.plans ?? []) as any} />;
 }
 
 

@@ -37,6 +37,7 @@ export const useAuth = create<AuthState>((set, get) => {
 
       if (res.status === 200) {
         const d = await res.json();
+
         set({ user: d, isLoading: false, status: "authenticated" });
         params?.callback?.(d, d.token, "authenticated");
       } else {
@@ -75,20 +76,19 @@ export const useAuth = create<AuthState>((set, get) => {
 // a high order component, in which there will be useEffect hook which will run authenticate function on mount
 // and will set the authentication state in the store
 
-export const withAuth = 
-  <T extends Record<any, any>>(Component: React.FC<T>, forceAuth?: boolean): React.FC<T> =>
- {
-  return function AuthComponent(props: any) {
-    const { status, authenticate } = useAuth();
+export const withAuth =
+  <T extends Record<any, any>>(Component: React.FC<T>, forceAuth?: boolean): React.FC<T> => {
+    return function AuthComponent(props: any) {
+      const { status, authenticate } = useAuth();
 
-    useEffect(() => {
-      if (forceAuth || props?.auth) {
-        if (status !== "authenticated") authenticate();
-      }
+      useEffect(() => {
+        if (forceAuth || props?.auth) {
+          if (status !== "authenticated") authenticate();
+        }
 
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [authenticate]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [authenticate]);
 
-    return <Component {...props} />;
+      return <Component {...props} />;
+    };
   };
-};

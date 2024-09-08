@@ -24,7 +24,7 @@ const Verify = async ({ searchParams }: { searchParams: SearchParams }) => {
   const res = await verifyEmail(searchParams.token);
 
   if (res.success) {
-    redirect(`${getURL()}login`);
+    redirect(`${getURL()}/login`);
   }
 
   // <div className="min-h-[70vh] center flex-col mt-24 text-white">

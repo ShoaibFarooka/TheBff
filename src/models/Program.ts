@@ -5,8 +5,9 @@ import { Document, Schema, model, models } from "mongoose";
 import mongoose from 'mongoose';
 
 type ProgramDoc = ProgramType & Document;
+type ProgramModel = mongoose.Model<ProgramDoc>;
 
-const programSchema = new Schema<ProgramDoc>(
+const programSchema = new Schema<ProgramDoc, ProgramModel>(
     {
         _id: {
             type: mongoose.Types.ObjectId,
@@ -34,17 +35,6 @@ const programSchema = new Schema<ProgramDoc>(
             ],
             required: true
         },
-        // coaches: {
-        //     type: [
-        //         {
-        //             type: mongoose.Types.ObjectId,
-        //             ref: 'Coach',
-        //             required: true,
-        //         }
-        //     ],
-        //     required: true,
-        //     default: []
-        // },
     },
     {
         versionKey: false,
@@ -64,7 +54,7 @@ programSchema.virtual('coaches', {
     }
 })
 
-const Program = models.Program || model<ProgramDoc>('Program', programSchema);
+const Program: ProgramModel = models.Program || model<ProgramDoc, ProgramModel>('Program', programSchema);
 
 // withDb(() => Program.findOne({ id: 'dance' }).populate('coaches', 'name').then((program) => {
 //     console.log(program)

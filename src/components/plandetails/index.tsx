@@ -1,128 +1,65 @@
 "use client"
 import { Button } from '@/components/ui/button';
 import { useAuth, withAuth } from '@/hooks/auth';
-import { cookie } from '@/lib/dom';
-import { logger } from '@/lib/logger';
-import { makeSubscriptionPayment } from '@/lib/subscription/client';
-import { createSubscription, verifyPayment } from '@/lib/subscription/server';
-import { cn, getServerData } from '@/lib/utils';
-import { Offer } from '@/types/offer';
+import { getDurationText } from '@/lib';
+import { cn } from '@/lib/utils';
+import { api } from '@/trpc/react';
 import { Program } from '@/types/program';
 import { Plan } from '@/types/subscription';
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
-import { useRouter } from 'nextjs-toploader/app';
-import { useTransition } from 'react';
 import toast from 'react-hot-toast';
 import { FaArrowLeft, FaCircleCheck } from "react-icons/fa6";
-import Offers from './Offers';
-
-// import frame from '@/assets/Frame 3927.png'
-// import frame1 from "@/assets/Rectangle 2812.png"
-// import frame2 from "@/assets/Rectangle 2812 (1).png"
-// import discount from '@/assets/Discount Badge.png'
-// import ellipse from '@/assets/Ellipse 203.png'
-// import { getPageData } from "@/lib/db";
 
 type CheckoutProps = {
     plan: Plan & { program: Program },
-    offers: Offer[]
     suggestedPlans: {
         title: string
         planId: string
     }[]
 }
 
-function Checkout({ plan, offers, suggestedPlans }: CheckoutProps) {
+function PlanDetails({ plan, suggestedPlans }: CheckoutProps) {
 
-    const price = (plan.item.amount ? plan.item.amount / 100 : "").toLocaleString("en-IN", {
+    const price = (plan.amount ? plan.amount / 100 : "").toLocaleString("en-IN", {
         style: "currency",
-        currency: plan.item.currency
+        currency: plan.currency
     });
 
-    const router = useRouter();
     const { user } = useAuth();
-    const [isPending, startTransition] = useTransition();
 
-    const handleSubscribe = async () => {
-        const tid = toast.loading("Processing...");
+    const mutation = api.cart.addItem.useMutation({
+        onSettled(data) {
+            toast.dismiss('add-to-cart');
+            if (data && 'error' in data) {
+                toast.error(
+                    <div>
+                        {data.error ?? 'Failed to add to cart'}
+                        <Link href="/cart" prefetch={false}>
+                            <Button variant='link' className="text-blue-500">Go to cart</Button>
+                        </Link>
+                    </div>,
+                    { id: 'add-to-cart', duration: 2000 }
+                );
+            } else {
+                toast.success(
+                    <div className="flex items-center gap-2">
+                        <p>Added to cart</p>
 
-        try {
-            logger.log(user)
-            const { error, subscriptionId } = await getServerData<
-                ReturnType<typeof createSubscription>
-            >(startTransition, async () => {
-                // const fromCookie = cookie.get(`subscription-${plan.id}`);
-                // if (fromCookie) return { subscriptionId: fromCookie };
+                        <Link href="/cart" prefetch={false}>
+                            <Button variant='link' className="text-blue-500">View Cart</Button>
+                        </Link>
+                    </div>,
+                    { id: 'add-to-cart', duration: 5000 }
+                );
 
-                const res = await createSubscription({ planId: plan.id });
-                // logger.log(res)
-                return res;
-            });
-
-            if (error || !subscriptionId)
-                return toast.error(`Failed to create subscription: \n${error}`, {
-                    id: tid,
-                });
-
-            // save subscription id in cookie for 10 minutes
-            // cookie.set(`subscription-${plan.id}`, subscriptionId, 60 * 10);
-
-            toast.loading(
-                `Processing payment for subscription ${subscriptionId}...`,
-                { id: tid }
-            );
-
-            // verifyPayment, returns either error or subscription & payment details
-            await makeSubscriptionPayment(subscriptionId, {
-                user,
-                onSuccess: async (response: any) => {
-                    const res = await getServerData<ReturnType<typeof verifyPayment>>(
-                        startTransition,
-                        async () =>
-                            verifyPayment({
-                                paymentId: response.razorpay_payment_id,
-                                subscriptionId,
-                            })
-                    );
-
-                    if (res.error) {
-                        toast.error(`Failed to verify payment: \n${res.error}`, {
-                            id: tid,
-                        });
-                        return;
-                    }
-
-                    toast.success(
-                        `You have successfully subscribed to ${plan.item.name}. Redirecting to your dashboard...`,
-                        { id: tid }
-                    );
-
-                    // delete cookie
-                    cookie.delete(`subscription-${plan.id}`);
-
-                    // sleep for 2 seconds
-                    await new Promise((resolve) => setTimeout(resolve, 2000));
-                    router.push("/dashboard");
-                },
-
-                onError: async (response: any) => {
-                    logger.log(response);
-                    toast.error(
-                        `Payment failed: \n${response.error}. \nPlease try again or contact us for support.`,
-                        { id: tid }
-                    );
-                },
-            });
-        } catch (err: any) {
-            console.log(err);
-            toast.error(err.message ?? "Something went wrong.", { id: tid });
-        }
-    };
+            }
+        },
+    });
 
     return (
-        <div className='pt-16 md:mt-30'>
+        <div className=''>
             <Script src="https://checkout.razorpay.com/v1/checkout.js" />
 
             <div className='relative grid grid-cols-2 mb-10 md:mb-0'>
@@ -155,14 +92,22 @@ function Checkout({ plan, offers, suggestedPlans }: CheckoutProps) {
                     {/* ===================== {RHS} ===================== */}
                     <div className='w-full md:w-1/2'>
                         <div>
-                            <h1 className='text-neutral-100 text-3xl md:text-4xl font-semibold'>{plan.item.name}</h1>
+                            <h1 className='text-neutral-100 text-3xl md:text-4xl font-semibold'>{plan.name}</h1>
+                            {/* Duration */}
+                            <p className='text-neutral-400 font-semibold text-lg'>
+                                {getDurationText(plan.period, plan.interval)}
+                            </p>
+
                             <div className='flex items-center my-3'>
                                 <h2 className='text-white text-[32px] font-bold'>{price}</h2>
+
                                 {/* <h2 className='ml-5 text-[#ABABAB] text-[32px] font-bold line-through'>{prices.offeredPrice}</h2> */}
                                 {/* <button className="text-white bg-[#6557FF] px-1 rounded-md ml-5">
                                     {prices.percentage}
                                 </button> */}
                             </div>
+
+
 
                             {/* <p className='text-white'>
                                 {prices.description}
@@ -194,23 +139,16 @@ function Checkout({ plan, offers, suggestedPlans }: CheckoutProps) {
                                 ) :
                                     <Button
                                         className='text-white bg-[#6557FF] my-5 hover:bg-[#6557FF]/80'
-                                        onClick={handleSubscribe}
-                                        disabled={isPending}
+                                        // onClick={handleSubscribe}
+                                        // disabled={isPending}
+                                        onClick={() => mutation.mutate({ planId: plan._id as string })}
+                                        disabled={mutation.isLoading}
                                     >
-                                        {
-                                            isPending ? "Processing..." : "Proceed to pay"
-                                        }
+                                        {mutation.isLoading ? "Adding..." : "Add to cart"}
                                     </Button>
                             }
 
                         </div>
-
-                        {/* Offers */}
-                        {
-                            // if plan amount matches the minimum amount of offer
-                        }
-                        <Offers offers={offers} />
-
 
                         <div className='mt-10'>
                             <h1 className='text-white font-semibold text-[2rem]'>How it works</h1>
@@ -258,7 +196,7 @@ function SuggestedPlans({ className, plans }: { className?: string, plans: Check
                 plans?.length > 0 ? plans.map((plan, i) => (
                     <div key={i} className='flex flex-row justify-between px-3 py-4 rounded-xl items-center  bg-gradient-to-r from-[#4A2F70] to-[#344363]'>
                         <p className='text-[10px] md:text-base text-white'>{plan.title}</p>
-                        <Link href={`/checkout?plan=${plan.planId}`}>
+                        <Link href={`/checkout?plan=${plan.planId}`} prefetch={false}>
                             <button className='text-white bg-[#6557FF] px-5 md:px-10 py-2 rounded-xl'>View</button>
                         </Link>
                     </div>
@@ -268,4 +206,4 @@ function SuggestedPlans({ className, plans }: { className?: string, plans: Check
     )
 }
 
-export default withAuth<CheckoutProps>(Checkout, true);
+export default withAuth<CheckoutProps>(PlanDetails, true);

@@ -9,13 +9,17 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RxCrossCircled } from "react-icons/rx";
 
 import { useAuth, withAuth } from "@/hooks/auth";
-import { useDebug } from "@/lib/hooks";
 import { Feature, Program } from "@/types/program";
 import { Plan } from "@/types/subscription";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 import Gallery from "./Gallery";
-import ChoosePlan from "./plans/ChoosePlan";
+
+const ChoosePlan = dynamic(() => import("./plans/ChoosePlan"), {
+  ssr: false,
+  loading: () => <></>
+});
 
 const comparison = [
   { title: "Live Interaction Classes", standard: "Yes", premium: "Yes" },
@@ -66,35 +70,42 @@ const ViewPlan = ({ toggleOverlay }: { toggleOverlay: () => any }) => {
 interface Props {
   images?: { title: string, url: string }[];
   programs: Program[];
-  // products: ProductWithPrices[];
   plans: Plan[];
 }
 
 function Programs({ programs, images, plans }: Props) {
-  // const { status: authStatus } = useAuth();
-
   const [currentProgram, setCurrentProgram] = useState<Program>(
     programs?.[0] ?? []
   );
   const [currentFeature, setCurrentFeature] = useState<Feature>(
-    programs?.[0]?.features?.[0] ?? {}
+    () => {
+      return programs?.[0]?.features?.[0] ?? {}
+    }
   )
 
   useEffect(() => {
     setCurrentFeature(() => currentProgram?.features?.[0] ?? {})
-  }, [currentProgram, setCurrentFeature]);
+  }, [currentProgram]);
+
 
   const relatedPlans = useMemo(
     () => plans?.filter((plan) => {
       const [programId, subId] = plan.programId.split(".");
-      console.log({
-        programId,
-        subId,
-      })
       return programId === currentProgram?.id && subId === currentFeature?.id;
     }),
     [currentProgram, currentFeature, plans]
   );
+
+  // useDebug("===================\nplans", plans)
+  // useDebug("currentProgram", currentProgram)
+  // useDebug("currentFeature", currentFeature)
+
+  // useDebug({
+  //   currentProgram: currentProgram.id,
+  //   currentFeature: currentFeature.id,
+  //   combined: `${currentProgram.id}.${currentFeature.id}`,
+  // })
+  // useDebug('relatedPlans:', relatedPlans)
 
   const [overlayVisible, setOverlayVisible] = useState(false);
   const toggleOverlay = () => {
@@ -103,8 +114,6 @@ function Programs({ programs, images, plans }: Props) {
     }
     setOverlayVisible(!overlayVisible);
   };
-
-  useDebug(relatedPlans)
 
   return (
     <>
@@ -206,6 +215,7 @@ function Programs({ programs, images, plans }: Props) {
             overlayVisible={overlayVisible ?? []}
             setOverlayVisible={setOverlayVisible}
             program={currentProgram ?? {}}
+            feature={currentFeature ?? {}}
           />
         )}
       </div>

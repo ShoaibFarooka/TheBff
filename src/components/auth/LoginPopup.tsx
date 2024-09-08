@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/auth";
 import { useEffect, useState } from "react";
-import { AuthForm } from "./Auth";
+import { LoginForm } from "./Login";
 
 type LoginPopupProps = {
     open?: boolean;
@@ -60,7 +60,7 @@ const LoginPopup = ({ open, onClose }: LoginPopupProps) => {
                     </DialogHeader>
 
                     <div className="mx-auto w-full md:w-3/4 mt-10">
-                        <AuthForm
+                        <LoginForm
                             onSuccess={() => onClose?.(false)}
                         />
                     </div>

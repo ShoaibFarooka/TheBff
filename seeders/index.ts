@@ -4,7 +4,8 @@ import { disconnectDB } from '@/lib/dbConnection';
 import { consola } from 'consola';
 import { seedClasses } from './classes';
 import { seedCoaches } from './coaches';
-import { seedPrograms } from './programs';
+import seedPlans from './plans';
+import seedPrograms from './programs';
 
 import dotenv from 'dotenv';
 import { seedOffers } from './offers';
@@ -14,45 +15,58 @@ dotenv.config();
 const args = process.argv.slice(2);
 let seed: string[] = [];
 
-const seeders: Record<string, Function> = {
+const seederss: Record<string, Function> = {
     classes: seedClasses,
     programs: seedPrograms,
     coaches: seedCoaches,
     galleryImages: seedProgramsGallery,
     offers: seedOffers,
-    suggestedPlans: seedSuggestedPlans
+    suggestedPlans: seedSuggestedPlans,
+    plans: seedPlans
 }
 
-const selectOptions = [
+const seeders = [
     {
         label: 'Classes',
         value: 'classes',
-        hint: 'Seed classes data'
+        hint: 'Seed classes data',
+        fn: seedClasses
     },
     {
         label: 'Programs',
         value: 'programs',
-        hint: 'Seed programs data'
+        hint: 'Seed programs data',
+        fn: seedPrograms
+    },
+    {
+        label: 'Plans',
+        value: 'plans',
+        hint: 'Seed plans data',
+        fn: seedPlans
     },
     {
         label: 'Coaches',
         value: 'coaches',
-        hint: 'Seed coaches data'
+        hint: 'Seed coaches data',
+        fn: seedCoaches
     },
     {
         label: 'Gallery Images',
         value: 'galleryImages',
-        hint: `Seed programs' page gallery images`
+        hint: `Seed programs' page gallery images`,
+        fn: seedProgramsGallery
     },
     {
         label: 'Offers',
         value: 'offers',
-        hint: 'Seed offers data'
+        hint: 'Seed offers data',
+        fn: seedOffers
     },
     {
         label: 'Suggested Plans',
         value: 'suggestedPlans',
-        hint: 'Seed suggested plans data (for the checkout page)'
+        hint: 'Seed suggested plans data (for the checkout page)',
+        fn: seedSuggestedPlans
     }
 ]
 
@@ -60,7 +74,7 @@ async function main() {
 
     // log help message
     if (args.includes('--help')) {
-        console.log(`=> Available seeders <= \n${Object.values(selectOptions).map((option) => `${option.value}: ${option.hint}`).join('\n')}`)
+        console.log(`=> Available seeders <= \n${Object.values(seeders).map((option) => `${option.value}: ${option.hint}`).join('\n')}`)
         return
     }
 
@@ -72,19 +86,19 @@ async function main() {
             // @ts-expect-error
             seed = await consola.prompt('What do you want to seed?', {
                 type: 'multiselect',
-                options: selectOptions
+                options: seeders.map(({ label, value, hint }) => ({ label, value, hint })),
             });
         } else {
             seed.push(args[0]);
         }
 
-        for await (let s of seed) {
-            if (seeders[s]) {
-                consola.log(`Seeding ${s}...`);
-                await seeders[s]();
-                consola.success(`${s} seed completed.\n`);
+        for await (const s of seed) {
+            const selectedAction = seeders.find(({ value }) => value === s);
+            if (selectedAction) {
+                await selectedAction.fn();
             }
         }
+
     } finally {
         disconnectDB();
     }

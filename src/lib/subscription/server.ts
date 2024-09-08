@@ -14,12 +14,11 @@ export async function getUncachedPlans({ program }: { program?: string } = {}) {
   try {
     await connectDB();
 
-    const query = { active: true } as Record<string, any>;
+    const query = {} as Record<string, any>;
     if (program) query['program'] = program;
 
     const plans = await PlanModel.find(query).lean();
-
-    // console.log(plans)
+    // console.log('plans', plans)
 
     return plans;
   } catch (error) {
@@ -43,9 +42,7 @@ export async function getUncachedPlan(id: string, options: PlanOptions = { inclu
   try {
     await connectDB();
 
-    const plan = (await PlanModel.findOne({
-      id,
-    })
+    const plan = (await PlanModel.findById(id)
       // .lean()) as Plan & { program: Program };
       .populate(options.includeProgram ? 'program' : '').lean()) as Plan & { program: Program };
 
@@ -61,9 +58,6 @@ export const getPlan = (id: string, options?: PlanOptions) => nextCache(() => ge
   tags: ['plan', id],
   revalidate: process.env.NODE_ENV === 'development' ? 5 : 3 * 60 * 60,
 })();
-
-
-
 
 
 export async function getRazorpayCustomer(options?: {
@@ -104,7 +98,7 @@ export async function getRazorpayCustomer(options?: {
     }
 
     await User.findOneAndUpdate(
-      { email: user.email },
+      { email: user!.email },
       { razorpayCustomerId: customer.id }
     );
 
@@ -131,9 +125,9 @@ export async function createSubscription({ planId }: { planId: string }) {
 
     // check if plan exists
     const plan = (await PlanModel.findOne(
-      { id: planId },
-      "_id id programId"
-    ).lean()) as Pick<Plan, "id" | "programId">;
+      { _id: planId },
+      "_id programId"
+    ).lean()) as Pick<Plan, "programId">;
     // console.log(plan)
 
     if (!plan) {

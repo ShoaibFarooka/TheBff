@@ -25,7 +25,7 @@ export default async function Page() {
     return redirect("/login?cb=/dashboard");
 
   const userdata = (await getUserDataWithSubscription(
-    auth.user.email
+    auth.user!.email
   )) as UserData;
 
   if (!userdata) {

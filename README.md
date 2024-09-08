@@ -16,7 +16,7 @@ REVALIDATE_TOKEN - Revalidate Token (Used fir revalidating the data in the cache
 
 HYGRAPH_ENDPOINT - Hygraph Endpoint (Used for fetching the data from Hygraph)
 
-RAZORPAY_WEBHOOK_SECRET - Razorpay Webhook Secret
+RAZORPAY_SECRET - Razorpay Webhook Secret
 RAZORPAY_KEY_ID - Razorpay Key ID
 RAZORPAY_KEY_SECRET - Razorpay Key Secret
 
