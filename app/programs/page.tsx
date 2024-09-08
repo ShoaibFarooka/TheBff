@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import Programs from "@/components/programs";
 import connectDB from "@/lib/dbConnection";
-import program from "@/models/program";
+import { Program as ProgramModel } from "@/models";
 
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
@@ -19,7 +19,7 @@ const getProgramsPageData = cache(async () => {
     const [gallery, plans, programs] = await Promise.all([
       getCachedData('gallery') as any,
       getPlans(),
-      program.find({}).lean() as Promise<Program[]>,
+      ProgramModel.find({}).lean() as Promise<Program[]>,
     ]);
 
     // const productsData: ProductWithPrices[] = products.map(
