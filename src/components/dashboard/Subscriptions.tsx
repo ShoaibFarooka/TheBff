@@ -44,12 +44,12 @@ const Subscriptions = () => {
 
       <div className="mt-2">
         {userData?.subscriptions?.map((sub) => (
-          <div key={sub.id} className="flex justify-between items-center">
+          <div key={sub._id as string} className="flex justify-between items-center">
             {/* Hello */}
-            <p className="text-gray-200">{sub.plan?.item?.name}</p>
+            <p className="text-gray-200">{sub.plan?.name}</p>
             {/* <p className="text-gray-400">{sub.plan?.item?.amount / 100}</p> */}
             <p className="text-gray-400 text-sm">
-              {sub.current_end ? dayjs(sub.current_end).format('DD/MM/YYYY') : "No expiry"}
+              {sub.endDate ? dayjs(sub.endDate).format('DD/MM/YYYY') : "No expiry"}
             </p>
           </div>
         ))}

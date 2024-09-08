@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import Programs from "@/components/programs";
 import connectDB from "@/lib/dbConnection";
-import program from "@/models/Program";
+import program from "@/models/program";
 
 import { revalidatePath } from "next/cache";
 import { cache } from "react";

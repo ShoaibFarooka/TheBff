@@ -1,53 +1,43 @@
-import { SubscriptionStatus } from "@/types/db";
-import { Subscription as SubscriptionType } from "@/types/subscription";
-import { Document, model, models, Schema, Types } from 'mongoose';
+// import { SubscriptionStatus } from "@/types";
+import { SubscriptionStatus, Subscription as SubscriptionType } from "@/types/subscription";
+import { Document, Model, model, models, Schema } from 'mongoose';
 
 const setDate = (v: Date | number) => !v ? null : (v instanceof Date ? v : new Date(v * 1000));
 
 type SubscriptionDoc = SubscriptionType & {
   plan: string;
 } & Document;
+type SubscriptionModel = Model<SubscriptionDoc>;
 
-const SubscriptionSchema = new Schema<SubscriptionDoc>(
+const SubscriptionSchema = new Schema<SubscriptionDoc, SubscriptionModel>(
   {
     _id: {
-      type: String,
-      auto: true,
+      type: Schema.Types.ObjectId,
       required: true,
-      get: (v: Types.ObjectId) => v.toString(),
+      auto: true,
+      get: (v: any) => v != null ? v?.toString() : v,
     },
-    id: { type: String, required: true },
-    plan_id: { type: String, required: true },
-    customer_id: { type: String, required: true },
+    userId: { 
+      type: Schema.Types.ObjectId, 
+      required: true,
+      // set: (v: string) => typeof v == 'string' ? new Schema.Types.ObjectId(v) : v,
+    },
+    planId: {
+      type: Schema.Types.ObjectId, 
+      required: true,
+      // set: (v: string) => typeof v == 'string' ? new Schema.Types.ObjectId(v) : v,
+    },
+    programId: { type: String, required: true },
     status: {
       type: String,
-      enum: Object.values(SubscriptionStatus),
       required: true,
+      enum: Object.values(SubscriptionStatus),
     },
-    current_start: { type: Date, required: true, set: setDate, },
-    current_end: { type: Date, required: true, set: setDate, },
-    ended_at: { type: Date, required: false, set: setDate, },
-    quantity: { type: Number, required: true },
-    notes: { type: Schema.Types.Mixed, required: true },
-    charge_at: { type: Date, required: true, set: setDate, },
-    start_at: { type: Date, required: true, set: setDate, },
-    end_at: { type: Date, required: true, set: setDate, },
-    auth_attempts: { type: Number, required: false },
-    total_count: { type: Number, required: true },
-    paid_count: { type: Number, required: true },
-    customer_notify: { type: Boolean, required: true },
-    created_at: { type: Date, required: true, set: setDate, },
-    expire_by: { type: Date, required: true, set: setDate, },
-    short_url: { type: String, required: false },
-    has_scheduled_changes: { type: Boolean, required: true },
-    change_scheduled_at: { type: Date, required: false, set: setDate, },
-    source: { type: String, enum: ["api", "checkout"], required: true },
-    offer_id: { type: String, required: true },
-    remaining_count: { type: Number, required: true },
-
-    programId: { type: String, required: true },
-
-    // plan: { type: String, ref: "Plan", refPath: "id" },
+    startDate: { type: Date, required: true, set: setDate },
+    endDate: { type: Date, required: true, set: setDate },
+    cancelledAt: { type: Date, required: false, set: setDate },
+    cancelledReason: { type: String, required: false },
+    cancelledBy: { type: String, required: false },
   },
   {
     // versionKey: false,
@@ -58,22 +48,22 @@ const SubscriptionSchema = new Schema<SubscriptionDoc>(
 
 SubscriptionSchema.virtual("plan", {
   ref: "Plan",
-  localField: "plan_id",
-  foreignField: "id",
+  localField: "planId",
+  foreignField: "_id",
   justOne: true,
 });
 
 SubscriptionSchema.virtual("program", {
   ref: "Program",
   localField: "programId",
-  foreignField: "id",
+  foreignField: "features.id",
   justOne: true,
 })
 
-SubscriptionSchema.virtual("email", {
+SubscriptionSchema.virtual("user", {
   ref: "User",
-  localField: "user_email",
-  foreignField: "email",
+  localField: "userId",
+  foreignField: "_id",
   justOne: true,
 });
 
@@ -95,8 +85,8 @@ SubscriptionSchema.virtual("email", {
 
 // SubscriptionSchema.set("toObject", { virtuals: true });
 
-const Subscription =
+const Subscription: SubscriptionModel =
   models.Subscription ||
-  model<SubscriptionDoc>("Subscription", SubscriptionSchema);
+  model<SubscriptionDoc, SubscriptionModel>("Subscription", SubscriptionSchema);
 
 export default Subscription;

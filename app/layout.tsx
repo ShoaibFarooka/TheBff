@@ -1,10 +1,14 @@
-import Header from "@/components/Header";
-import "@/styles/globals.scss";
-import type { Metadata } from "next";
-// const inter = Inter({ subsets: ['latin'] })
 import ContactButtonPopup from "@/components/ContactButtonPopup";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import "@/styles/globals.scss";
+import { TRPCReactProvider } from "@/trpc/react";
+import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
+
+
+// const inter = Inter({ subsets: ['latin'] })
+
 // Create metadata base
 export const metadata: Metadata = {
   title: "Be Fitness Frenzy",
@@ -26,24 +30,24 @@ export default function RootLayout({
       </head>
 
       <body
-        className={
-          "inter.className bg-gradient-to-r to-background from-gray-900 min-h-screen flex flex-col justify-between"
-        }
+        className="inter.className bg-gradient-to-r to-background from-gray-900 min-h-screen flex flex-col justify-between text-primary-foreground"
       >
-        {/* main. */}
-        <div>
-          <Header />
-        </div>
+        <TRPCReactProvider>
+          {/* main. */}
+          <div>
+            <Header />
+          </div>
 
-        <main>
-          {children}
-          <ContactButtonPopup />
-          <NextTopLoader color="#F2BD4D" />
-        </main>
+          <main className="">
+            {children}
+            <ContactButtonPopup />
+            <NextTopLoader color="#F2BD4D" />
+          </main>
 
-        <div>
-          <Footer />
-        </div>
+          <div>
+            <Footer />
+          </div>
+        </TRPCReactProvider>
 
       </body>
     </html>

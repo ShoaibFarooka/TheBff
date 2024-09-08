@@ -19,7 +19,7 @@ const Profile = dynamic(() => import("./user/Profile"), {
   ),
 });
 
-const pagesWithAuth = ["/", "/profile", "/dashboard", "/programs", "/checkout"];
+const pagesWithAuth = ["/", "/profile", "/dashboard", "/programs", "/checkout", "/cart"];
 
 const AuthProfile = ({
   authBtn = true,
@@ -36,9 +36,15 @@ const AuthProfile = ({
     <>
       {profileBtn &&
         authStatus === "authenticated" &&
-        pagesWithAuth.includes(pathname) && <Profile userdata={user} />}
-      {authBtn &&
-        pagesWithAuth.includes(pathname) &&
+        <div className="flex gap-2">
+          <Profile userdata={user} />
+        </div>
+        // pagesWithAuth.includes(pathname) && (
+        // )
+      }
+      {
+        // authBtn &&
+        // pagesWithAuth.includes(pathname) &&
         authStatus !== "loading" &&
         authStatus === "unauthenticated" && (
           <Link href="/login">
@@ -47,13 +53,13 @@ const AuthProfile = ({
             </button>
           </Link>
         )}
-      {authBtn && !pagesWithAuth.includes(pathname) && (
+      {/* {authBtn && !pagesWithAuth.includes(pathname) && (
         <Link href="/login">
           <button className="hidden md:flex rounded px-2 py-1 text-y border-2 border-transparent bg-y/10 hover:shadow-y/10 shadow-xl hover:bg-y/25 hover:border-[#FED25B] hover:scale-[1.05]">
             Login / Signup
           </button>
         </Link>
-      )}
+      )} */}
     </>
   );
 };

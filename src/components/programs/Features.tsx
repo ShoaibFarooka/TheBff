@@ -126,7 +126,10 @@ const ProgramFeatures = ({ program, setCurrentFeature }: Props) => {
                       )}
                       height={392}
                       width={332}
-                      onClick={() => setSelected(index)}
+                      onClick={() => {
+                        setSelected(index)
+                        setCurrentFeature(feature)
+                      }}
                     />
 
                     <div className="absolute bg-[#B5BCFF] top-full -translate-y-1/2 left-1/2 -translate-x-1/2 w-[81%] rounded-md">

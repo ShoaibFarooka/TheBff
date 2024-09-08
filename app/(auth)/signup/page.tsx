@@ -1,4 +1,4 @@
-import Auth from "@/components/Auth";
+import Signup from "@/components/auth/Signup";
 import { Suspense } from "react";
 
 const page = () => (
@@ -9,8 +9,7 @@ const page = () => (
       </div>
     }
   >
-    {" "}
-    <Auth signup />{" "}
+    <Signup />
   </Suspense>
 );
 

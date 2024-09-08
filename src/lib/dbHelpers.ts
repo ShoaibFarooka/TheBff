@@ -66,28 +66,28 @@ export const getUserDataWithSubscription = async (email: string) => {
 
     const past40Min = new Date(new Date().getTime() - 40 * 60 * 1000);
 
-    const user = (await User.findOne({ email }, '-_id')
+    const user = (await User.findOne({ email })
       .populate("stats", "-_id")
       .populate("sessions", undefined, undefined, {
         startTime: { $gte: past40Min },
       })
       .select("razorpayCustomerId name email phone")
-      .lean()) as UserType;
+      .lean()) as UserType & { _id: string };
 
     if (!user) return null;
-
     Object.assign(data, user);
 
     if (!user.razorpayCustomerId)
       return data
 
     const subscriptions = await SubscriptionModel.find({
-      customer_id: user.razorpayCustomerId,
+      // userId: new Schema.ObjectId(user._id)
+      userId: user._id,
+      status: { $in: ["active", "paused"] },
     })
-      .populate("plan")
-      .select("id plan_id customer_id current_end current_start status")
+      .populate("plan", "-_id name amount currency period interval programId")
+      // .select("id plan_id customer_id current_end current_start status")
       .lean();
-
     data.subscriptions = subscriptions as any;
 
 
@@ -220,13 +220,15 @@ export const getUserData = async (
   options?: {
     select?: string;
   }
-): Promise<(UserType & Document) | null> => {
+) => {
   const { select } = options || {};
 
-  const user = await User.findOne({ email }, select, { lean: true });
+  const user = await User.findOne({ email }, select).lean();
 
-  return user as any;
+  return user;
 };
+
+export const getUserById = async (id: string) => User.findById(id).lean();
 
 export const saveUserStats = async (
   email: string,

@@ -1,15 +1,13 @@
 "use client";
 // import cross from "@/assets/Cross.png";
 import Spinner from "@/components/ui/Spinner";
-import { getSubscriptions } from "@/lib/subscription/server";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { Program } from "@/types/program";
+import { api } from "@/trpc/react";
+import { Feature, Program } from "@/types/program";
 import { Plan } from "@/types/subscription";
 import clsx from "clsx";
-import { useEffect, useMemo, useState, useTransition } from "react";
-import toast from "react-hot-toast";
+import { useMemo, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
-import { useProgram } from "../state";
 import ProductCard from "./ProductCard";
 
 const periodMap = {
@@ -29,6 +27,7 @@ interface Props {
   setOverlayVisible: (visible: boolean) => void;
   plans: Plan[];
   program: Program;
+  feature: Feature;
 }
 
 export default function ChoosePlan({
@@ -36,10 +35,8 @@ export default function ChoosePlan({
   overlayVisible,
   setOverlayVisible,
   program,
+  feature,
 }: Props) {
-  const [isPending, startTransition] = useTransition();
-  const [isLoading, startSubscriptionTransition] = useTransition();
-
   const [billingInterval, setBillingInterval] = useState<Interval>({
     period: "monthly",
     interval: 1,
@@ -78,29 +75,21 @@ export default function ChoosePlan({
     document.body.style.overflow = "auto";
   };
 
-  const subscription = useProgram(
-    (state) => state.subscriptions[plans?.[0]?.programId]
-  );
-  const setSubscription = useProgram((state) => state.setSubscription);
+  // fetching all subscriptions at once to avoid multiple requests as one might not have too many subscriptions
+  const {
+    data: subscriptions,
+    isLoading: isPending
+  } = api.subscriptions.get.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
 
-  useEffect(() => {
-    if (subscription !== undefined) return;
+  const subscription = useMemo(() => {
+    if (!subscriptions) return;
 
-    startTransition(() => {
-      getSubscriptions()
-        .then((res) => {
-          if (res.error) return toast.error(res.error);
-
-          for (const sub of res.subscriptions!) {
-            setSubscription(sub.plan.programId, sub as any);
-          }
-        })
-        .catch((err: any) => {
-          console.log(err);
-        });
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plans, subscription]);
+    const sub = subscriptions.find((x) => x.programId === `${program.id}.${feature?.id}`);
+    return sub;
+  }, [subscriptions, program.id]);
 
   if (!plans || !plans.length)
     return (
@@ -112,7 +101,6 @@ export default function ChoosePlan({
   if (isPending)
     return (
       <div className="fixed top-0 left-0 w-screen center h-screen bg-black bg-opacity-30 backdrop-blur-md z-30">
-        {/* show loader */}
         <Spinner size={45} />
       </div>
     );
@@ -120,11 +108,9 @@ export default function ChoosePlan({
   if (!overlayVisible) return null;
 
   return (
-    // <Dialog open={overlayVisible} onOpenChange={onClose}>
     <div className="fixed inset-0 bg-black/20 backdrop-blur w-screen h-screen flex items-center justify-center z-40">
       <div
         className="!min-w-min fixed border-none !overflow-auto !min-h-min"
-      // onInteractOutside={e => e.preventDefault()}
       >
         <div className="!min-w-[90vw] !min-h-min px-5 md:px-10 overflow-auto py-3 bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-[24px]">
           <div className="w-full mb-4">
@@ -140,7 +126,7 @@ export default function ChoosePlan({
               </button>
 
               <h2 className="text-2xl md:text-5xl font-bold text-[#F2BD4D] text-center mb-4 ">
-                Choose Plan for {program.name}
+                Choose Plan for {feature.title}
               </h2>
             </div>
 
@@ -155,7 +141,7 @@ export default function ChoosePlan({
                 <button
                   key={`interval-${interval.period}-${interval.interval}`}
                   className={clsx(
-                    "px-4 py-2 hover:bg-blue-300 hover:text-white rounded-md focus:text-white",
+                    "px-4 py-2 text-primary hover:bg-blue-300 hover:text-white rounded-md focus:text-white",
                     {
                       "bg-[#6557FF] text-white":
                         billingInterval.period === interval.period &&
@@ -177,7 +163,7 @@ export default function ChoosePlan({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 justify-center md:items-center py-6 px-5 max-w-5xl mx-auto">
+          <div className="flex justify-center gap-10 md:items-center py-6 px-5 max-w-5xl mx-auto">
             {plans &&
               plans.length > 0 &&
               plans
@@ -189,34 +175,28 @@ export default function ChoosePlan({
                 .map((plan, index) => (
                   <ProductCard
                     plan={plan}
-                    // billingInterval={billingInterval}
                     key={`product-${index}`}
                     subscription={subscription}
                   />
                 ))}
 
-            {/* 
-                    Custom / Enterprise plan
-                  */}
-            <ProductCard
+            {/* Custom / Enterprise plan */}
+            {/* <ProductCard
               plan={
                 {
-                  item: {
-                    name: "Enterprise",
-                  },
-                  id: "enterprise",
+                  name: "Enterprise",
+                  // id: "enterprise",
                   features: [
                     "All features in Premium Plan",
                     "Bulk Discount",
                     "24*7 Support",
                   ],
-                } as any
+                } as Plan
               }
-            />
+            /> */}
           </div>
         </div>
       </div>
     </div>
-    // </Dialog>
   );
 }

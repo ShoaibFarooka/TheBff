@@ -1,36 +1,33 @@
 import type { Plan as PlanType } from '@/types/subscription';
 // import type { ObjectId } from 'mongoose';
-import { Document, Schema, model, models } from 'mongoose';
+import { Document, Model, Schema, model, models } from 'mongoose';
 
-type ModelType = PlanType & Document;
+type PlandDoc = PlanType & Document;
+type PlanModel = Model<PlandDoc>;
 
-const planSchema = new Schema<ModelType>({
+const planSchema = new Schema<PlandDoc, PlanModel>({
     _id: {
         type: Schema.Types.ObjectId,
         required: true,
         auto: true,
         get: (v: any) => v != null ? v.toString() : v,
-    },
-    id: {
-        type: String,
-        required: true,
-        unique: true,
         index: true,
     },
-    item: {
-        name: {
-            type: String,
-            required: true,
-        },
-        amount: {
-            type: Number,
-            required: true,
-        },
-        currency: {
-            type: String,
-            required: true,
-            default: 'INR',
-        }
+    name: {
+        type: String,
+        required: true,
+    },
+    category: {
+        type: String,
+        required: true,
+    },
+    amount: {
+        type: Number,
+        required: false,
+    },
+    currency: {
+        type: String,
+        required: false,
     },
     period: {
         type: String,
@@ -60,32 +57,33 @@ const planSchema = new Schema<ModelType>({
             required: true,
         }
     ],
-    active: {
+    premium: {
         type: Boolean,
-        default: true,
-    },
-    // reference to the subscriptions model for the plan
-    subscriptions: [{
-        type: String,
-        ref: 'Subscription',
-        refPath: 'plan_id',
-    }],
+        required: false,
+    }
 }, {
     timestamps: true,
-    toObject: { virtuals: true },
-    toJSON: { getters: true }
+    toObject: { virtuals: true, getters: true },
+    toJSON: { virtuals: true, getters: true },
 });
 
 planSchema.virtual('program', {
     ref: 'Program',
-    localField: 'programId',
-    foreignField: 'id',
+    localField: 'programId', // this field should match with program.features[].id
+    foreignField: 'features.id',
     justOne: true,
     match: {
         id: '$programId',
     },
 })
 
-const Plan = models.Plan || model<ModelType>('Plan', planSchema);
+planSchema.virtual('subscriptions', {
+    ref: 'Subscription',
+    localField: 'id',
+    foreignField: 'planId',
+    justOne: false,
+})
+
+const Plan: PlanModel = models.Plan || model<PlandDoc, PlanModel>('Plan', planSchema);
 
 export default Plan;

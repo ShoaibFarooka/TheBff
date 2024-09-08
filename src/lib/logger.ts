@@ -66,3 +66,4 @@ export class Logger {
 }
 
 export const logger = new Logger(true);
+export const prodLogger = new Logger(); 

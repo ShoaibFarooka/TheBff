@@ -16,7 +16,7 @@ import Link from "next/link";
 import { useRouter } from "nextjs-toploader/app";
 
 import { FaUser } from "react-icons/fa";
-import { IoReaderOutline } from "react-icons/io5";
+import { IoCartOutline, IoReaderOutline } from "react-icons/io5";
 
 
 interface ProfileProps {
@@ -61,12 +61,14 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
         </SheetHeader>
 
         <div className="grow">
-          <Link href="/dashboard">
-            <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
-              <FaUser size={30} />
-              <p className="ml-5">Dashboard</p>
-            </div>
-          </Link>
+          <SheetTrigger asChild>
+            <Link href="/dashboard">
+              <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
+                <FaUser size={30} />
+                <p className="ml-5">Dashboard</p>
+              </div>
+            </Link>
+          </SheetTrigger>
 
           {/* <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
             <TbReportAnalytics size={30} />
@@ -78,12 +80,23 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
                   <p className="ml-5">Queries</p>
                 </div> */}
 
-          <Link href="/blogs">
-            <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
-              <IoReaderOutline size={30} />
-              <p className="ml-5">Blogs</p>
-            </div>
-          </Link>
+          <SheetTrigger asChild>
+            <Link href="/blogs">
+              <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
+                <IoReaderOutline size={30} />
+                <p className="ml-5">Blogs</p>
+              </div>
+            </Link>
+          </SheetTrigger>
+
+          <SheetTrigger asChild>
+            <Link href="/cart">
+              <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
+                <IoCartOutline size={30} />
+                <p className="ml-5">Cart</p>
+              </div>
+            </Link>
+          </SheetTrigger>
 
           {/* <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
             <FiGift size={30} />
