@@ -77,11 +77,10 @@ export const getUserDataWithSubscription = async (email: string) => {
     if (!user) return null;
     Object.assign(data, user);
 
-    if (!user.razorpayCustomerId)
-      return data
+    // if (!user.razorpayCustomerId)
+    //   return data
 
     const subscriptions = await SubscriptionModel.find({
-      // userId: new Schema.ObjectId(user._id)
       userId: user._id,
       status: { $in: ["active", "paused"] },
     })
