@@ -85,10 +85,14 @@ const Cart = ({ cart: initialData }: CartProps) => {
                     <div key={`item-${i + 1}`} className="gradient-bg p-4 md:px-10 shadow-md rounded-md flex justify-between">
                         <div className="">
                             <h2 className="text-xl font-semibold">{item.plan?.name}</h2>
-                            <p className="text-gray-300">
-                                Price: ₹{(item.plan?.amount / 100)?.toLocaleString('en-IN')} {' '}
-                                | {getDurationText(item.plan?.period, item.plan?.interval)}
-                            </p>
+                            {
+                                item.plan?.amount && (
+                                    <p className="text-gray-300">
+                                        Price: ₹{(item.plan.amount / 100)?.toLocaleString('en-IN')} {' '}
+                                        | {getDurationText(item.plan?.period, item.plan?.interval)}
+                                    </p>
+                                )
+                            }
                         </div>
                         <div className="">
                             <Button
