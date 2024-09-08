@@ -137,7 +137,7 @@ function Programs({ programs, images, plans }: Props) {
       }
 
       {/* ============================== Image Gallery ======================= */}
-      {images && images.length && <Gallery images={images ?? []} />}
+      {images && images.length > 0 ? <Gallery images={images ?? []} /> : null}
 
       {/* ============================== Pricing ======================= */}
       <div className="py-20 relative" id="pricing">
