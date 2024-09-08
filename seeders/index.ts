@@ -4,26 +4,16 @@ import { disconnectDB } from '@/lib/dbConnection';
 import { consola } from 'consola';
 import { seedClasses } from './classes';
 import { seedCoaches } from './coaches';
+import seedCoupons from './coupon';
 import seedPlans from './plans';
 import seedPrograms from './programs';
 
 import dotenv from 'dotenv';
-import { seedOffers } from './offers';
 import { seedProgramsGallery, seedSuggestedPlans } from './others';
 dotenv.config();
 
 const args = process.argv.slice(2);
 let seed: string[] = [];
-
-const seederss: Record<string, Function> = {
-    classes: seedClasses,
-    programs: seedPrograms,
-    coaches: seedCoaches,
-    galleryImages: seedProgramsGallery,
-    offers: seedOffers,
-    suggestedPlans: seedSuggestedPlans,
-    plans: seedPlans
-}
 
 const seeders = [
     {
@@ -57,10 +47,10 @@ const seeders = [
         fn: seedProgramsGallery
     },
     {
-        label: 'Offers',
-        value: 'offers',
-        hint: 'Seed offers data',
-        fn: seedOffers
+        label: 'Coupons',
+        value: 'coupons',
+        hint: 'Seed coupons data',
+        fn: seedCoupons
     },
     {
         label: 'Suggested Plans',

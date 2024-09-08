@@ -1,15 +1,8 @@
 import connectDB from "@/lib/dbConnection";
 import { Plan as PlanModel } from "@/models";
-import type { Program } from "@/types/program";
 import { Plan } from "@/types/subscription";
 import consola from "consola";
 import { readFileSync, writeFileSync } from "fs";
-
-export type Programs = {
-    _id: string;
-    programs: Program[];
-}
-
 
 const plans: Plan[] = JSON.parse(readFileSync("seeders/data/plans.json", "utf-8")) as unknown as Plan[];
 
@@ -17,11 +10,6 @@ async function savePlans() {
     try {
         consola.info('Seeding plans...');
         await connectDB();
-
-        // const programsIds = programs.map(p => p.id);
-        // for await (const program of programs) {
-        //     await ProgramModel.findOneAndUpdate({ id: program.id }, program, { upsert: true });
-        // }
 
         const promises = plans.map(async (plan) => {
             if (!plan._id)
@@ -32,7 +20,7 @@ async function savePlans() {
         await Promise.all(promises);
 
         await loadPlans(true);
-        console.log('Programs added successfully');
+        console.log('Plans added successfully');
     } catch (err: any) {
         console.error(err);
     }

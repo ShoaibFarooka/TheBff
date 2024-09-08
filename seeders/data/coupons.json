@@ -1,0 +1,18 @@
+[
+    {
+        "code": "OFFER1",
+        "description": "Get 10% off on all products",
+        "type": "percentage",
+        "discount": 10,
+        "active": true,
+        "expiryDate": "2022-12-31"
+    },
+    {
+        "code": "OFFER2",
+        "description": "Get $10 off on all products",
+        "type": "flat",
+        "discount": 10,
+        "active": true,
+        "expiryDate": "2022-12-31"
+    }
+]
