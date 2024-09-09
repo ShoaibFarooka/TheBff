@@ -11,6 +11,7 @@ export { default as Cart } from "./cart";
 export { default as Coach } from "./coach";
 export { default as Coupon } from "./coupon";
 export { default as NewsSubscriber } from "./newsSubscriber";
+export { default as Order } from "./order";
 export { default as Plan } from "./plan";
 export { default as Program } from "./program";
 export { default as Session } from "./session";
