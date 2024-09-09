@@ -2,7 +2,7 @@ import { calculateDiscount } from "@/lib";
 import { authenticate } from "@/lib/auth";
 import { logger } from "@/lib/logger";
 import { razorpay, RAZORPAY_KEY_SECRET } from "@/lib/subscription";
-import { Cart, Coupon, Plan, Subscription, User } from "@/models";
+import { Cart, Coupon, Order, Plan, Subscription, User } from "@/models";
 import { SubscriptionStatus } from "@/types/subscription";
 import { Customers } from "razorpay/dist/types/customers";
 import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils";
@@ -12,7 +12,7 @@ import { CreateOrderInput, VerifyPaymentInput } from "./payment.input";
 // get the cart of the user, if the user does not have a cart, throw an error
 // calculate the total amount of the cart and create a new razorpay order
 export const createOrder = async (ctx: ProtectedTRPCContext, input: CreateOrderInput) => {
-  try {    
+  try {
     const [cart, coupon] = await Promise.all([
       Cart.findOne({ user: ctx.user!._id }),
 
@@ -82,6 +82,10 @@ export const createOrder = async (ctx: ProtectedTRPCContext, input: CreateOrderI
         }),
       })
     });
+
+    promises.push(
+      Order.create(order)
+    )
 
     await Promise.all(promises);
 
