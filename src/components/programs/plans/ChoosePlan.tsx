@@ -6,7 +6,7 @@ import { api } from "@/trpc/react";
 import { Feature, Program } from "@/types/program";
 import { Plan } from "@/types/subscription";
 import clsx from "clsx";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import ProductCard from "./ProductCard";
@@ -106,6 +106,15 @@ export default function ChoosePlan({
     const sub = subscriptions.find((x) => x.programId === `${program.id}.${feature?.id}`);
     return sub;
   }, [subscriptions, program.id, feature?.id]);
+
+  useEffect(() => {
+    // disable scroll when overlay is open
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   if (!isPlanLoading && (!plans || !plans.length)) {
     onClose();
