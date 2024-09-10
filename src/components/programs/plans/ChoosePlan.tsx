@@ -105,7 +105,7 @@ export default function ChoosePlan({
 
     const sub = subscriptions.find((x) => x.programId === `${program.id}.${feature?.id}`);
     return sub;
-  }, [subscriptions, program.id]);
+  }, [subscriptions, program.id, feature?.id]);
 
   if (!isPlanLoading && (!plans || !plans.length)) {
     onClose();
