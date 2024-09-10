@@ -1,0 +1,477 @@
+[
+    {
+        "name": "Online Dance Fitness",
+        "description": "Dance Online Fitness",
+        "amount": 400000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/online-fitness-dance-classes.jpeg",
+        "programId": "dance.online-fitness",
+        "features": [
+            "3x/week Sessions",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report",
+            "Live Session"
+        ]
+    },
+    {
+        "name": "In-Home Dance Fitness",
+        "description": "Dance In-Home Fitness",
+        "amount": 600000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/in-home-dance-fitness.jpeg",
+        "programId": "dance.in-home-fitness",
+        "features": [
+            "3x/week Sessions",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "Online Dance Styles",
+        "description": "Online Dance Styles",
+        "amount": 400000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/online-dance-styles.jpeg",
+        "programId": "dance.online-dance-styles",
+        "features": [
+            "3x/week Sessions",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report",
+            "Live Session"
+        ]
+    },
+    {
+        "name": "In-Home Dance Styles",
+        "description": "In-Home Dance Styles",
+        "amount": 600000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/in-home-dance-styles.jpeg",
+        "programId": "dance.in-home-dance-styles",
+        "features": [
+            "3x/week Sessions",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "Wedding Choreography",
+        "description": "Wedding Choreography",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/wedding-dance-classes.jpeg",
+        "programId": "dance.wedding-choreography",
+        "features": [
+            "3x/week Sessions",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "Online Cardio Sessions",
+        "description": "Online Cardio Sessions",
+        "amount": 250000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/cardio.jpeg",
+        "programId": "online-gym-training.cardio",
+        "features": [
+            "3x/week Sessions",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report",
+            "Live Session"
+        ]
+    },
+    {
+        "name": "Online Posture Correction",
+        "description": "Online Posture Correction",
+        "amount": 500000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/posture-correction.jpeg",
+        "programId": "online-gym-training.posture-correction",
+        "features": [
+            "3x/week Sessions",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report",
+            "Live Session"
+        ]
+    },
+    {
+        "name": "Workout Plan",
+        "description": "Workout Plan",
+        "amount": 150000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/workout-plan.jpeg",
+        "programId": "online-gym-training.workout-plan",
+        "features": [
+            "plan for 3x/week",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report",
+            "one-time consultation"
+        ]
+    },
+    {
+        "name": "Online Personal Yoga Sessions",
+        "description": "Online Personal Yoga Sessions",
+        "amount": 500000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/online-personal-yoga-class.jpeg",
+        "programId": "yoga.online-personal-yoga-classes",
+        "features": [
+            "3x/week Sessions",
+            "Predefined Yoga Routines",
+            "30 Days Access",
+            "Basic Meditation Techniques",
+            "Email Support",
+            "General Breathing Exercises",
+            "Standard Warm-Up and Cool-Down Routines",
+            "Monthly progress report",
+            "Live Session"
+        ]
+    },
+    {
+        "name": "Online Group Yoga Classes",
+        "description": "Online Group Yoga Classes",
+        "amount": 250000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/online-group-yoga-classes.jpeg",
+        "programId": "yoga.online-group-yoga-classes",
+        "features": [
+            "3x/week Sessions",
+            "Predefined Yoga Routines",
+            "30 Days Access",
+            "Basic Meditation Techniques",
+            "Email Support",
+            "General Breathing Exercises",
+            "Standard Warm-Up and Cool-Down Routines",
+            "Monthly progress report",
+            "Live Session"
+        ]
+    },
+    {
+        "name": "In-Home Personal Yoga Classes",
+        "description": "In-Home Personal Yoga Classes",
+        "amount": 800000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/in-home-personal-yoga-classes.jpeg",
+        "programId": "yoga.in-home-personal-yoga-classes",
+        "features": [
+            "3x/week Sessions",
+            "Predefined Yoga Routines",
+            "30 Days Access",
+            "Basic Meditation Techniques",
+            "Email Support",
+            "General Breathing Exercises",
+            "Standard Warm-Up and Cool-Down Routines",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "In-Home Group Yoga Classes",
+        "description": "In-Home Group Yoga Classes",
+        "amount": 300000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/in-home-yoga-group-classes.jpeg",
+        "programId": "yoga.in-home-group-yoga-classes",
+        "features": [
+            "3x/week Sessions",
+            "Predefined Yoga Routines",
+            "30 Days Access",
+            "Basic Meditation Techniques",
+            "Email Support",
+            "General Breathing Exercises",
+            "Standard Warm-Up and Cool-Down Routines",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "Yoga Plan",
+        "description": "Yoga Plan",
+        "amount": 200000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/yoga-plan.jpeg",
+        "programId": "yoga.yoga-plan",
+        "features": [
+            "plan for 3x/week",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report",
+            "one-time consultation"
+        ]
+    },
+    {
+        "name": "Weight Management - Nutrition",
+        "description": "Weight Management - Nutrition",
+        "amount": 300000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/weight-management-nutrition.jpeg",
+        "programId": "nutrition.weight-management",
+        "features": [
+            "General Meal Plans",
+            "Predefined Diet Templates",
+            "Basic Calorie Tracking",
+            "Email Support for Queries",
+            "Weekly Recipe Suggestions",
+            "30 Days Access",
+            "Standard Food Substitution Options",
+            "One Initial Consultation",
+            "Nutritional Tips via Email",
+            "Certified Dieticians",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "Disease Relief Plan - Nutrition",
+        "description": "Disease Relief Plan - Nutrition",
+        "amount": 400000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/lifestyle-disease-nutrition.jpeg",
+        "programId": "nutrition.diseases-relief-plan",
+        "features": [
+            "General Meal Plans",
+            "Predefined Diet Templates",
+            "Basic Calorie Tracking",
+            "Email Support for Queries",
+            "Weekly Recipe Suggestions",
+            "30 Days Access",
+            "Standard Food Substitution Options",
+            "One Initial Consultation",
+            "Nutritional Tips via Email",
+            "Certified Dieticians",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "Modelling Specific Nutrition",
+        "description": "Modelling Specific Nutrition",
+        "amount": 400000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/modelling-specific-nutrition.jpeg",
+        "programId": "nutrition.modelling-specific",
+        "features": [
+            "General Meal Plans",
+            "Predefined Diet Templates",
+            "Basic Calorie Tracking",
+            "Email Support for Queries",
+            "Weekly Recipe Suggestions",
+            "30 Days Access",
+            "Standard Food Substitution Options",
+            "One Initial Consultation",
+            "Nutritional Tips via Email",
+            "Certified Dieticians",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "Sports Nutrition",
+        "description": "Sports Nutrition",
+        "amount": 400000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/sports-nutrition.jpeg",
+        "programId": "nutrition.sports-nutrition",
+        "features": [
+            "General Meal Plans",
+            "Predefined Diet Templates",
+            "Basic Calorie Tracking",
+            "Email Support for Queries",
+            "Weekly Recipe Suggestions",
+            "30 Days Access",
+            "Standard Food Substitution Options",
+            "One Initial Consultation",
+            "Nutritional Tips via Email",
+            "Certified Dieticians",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "General Guidance - Nutrition",
+        "description": "General Guidance - Nutrition",
+        "amount": 150000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/general-guidance-nutrition.jpeg",
+        "programId": "nutrition.general-guidance",
+        "features": [
+            "General Meal Plan",
+            "Email Support for Queries",
+            "Standard Food Substitution Options",
+            "One-Time Consultation",
+            "Certified Dieticians"
+        ]
+    },
+    {
+        "name": "In-Home Fitness Training",
+        "description": "In-Home Fitness Training",
+        "amount": 1000000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/in-home-fitness-training.jpeg",
+        "programId": "in-home-training.in-home-fitness",
+        "features": [
+            "3x/week Sessions",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "In-Home Specialized Training",
+        "description": "In-Home Specialized Training",
+        "amount": 1200000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/specialized-training-in-home.jpeg",
+        "programId": "in-home-training.specialized-training",
+        "features": [
+            "3x/week Sessions",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "In-Home Holistic Wellness",
+        "description": "In-Home Holistic Wellness",
+        "amount": 1500000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/holistic-wellness-in-home.jpeg",
+        "programId": "in-home-training.holistic-wellness",
+        "features": [
+            "3x/week Sessions",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "Chakra Balancing",
+        "description": "Chakra Balancing",
+        "amount": 700000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/chakra-healing.jpeg",
+        "programId": "sound-healing.chakra-balancing",
+        "features": [
+            "4 sessions/month",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "Deep Relaxation",
+        "description": "Deep Relaxation",
+        "amount": 500000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/sound-bath.jpeg",
+        "programId": "sound-healing.deep-relaxation",
+        "features": [
+            "4 sessions/month",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report"
+        ]
+    },
+    {
+        "name": "Group Sound Healing",
+        "description": "Group Sound Healing",
+        "amount": 200000,
+        "currency": "INR",
+        "period": "monthly",
+        "category": "standard",
+        "interval": 1,
+        "image": "/images/programs/group-sound-healing.jpeg",
+        "programId": "sound-healing.group-sound-healing",
+        "features": [
+            "4 sessions/month",
+            "30 days validity",
+            "Certified Trainers",
+            "email support",
+            "Monthly progress report"
+        ]
+    }
+]

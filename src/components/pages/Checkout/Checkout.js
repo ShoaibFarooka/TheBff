@@ -1,7 +1,7 @@
 import React from "react";
+import Footer from "../../common/Footer";
 import Header from "../../common/Header";
 import NewsletterSection from "../../common/NewsletterSection";
-import Footer from "../../common/Footer";
 
 const Checkout = () => {
   return (
@@ -130,16 +130,16 @@ const Checkout = () => {
                       <h5>How it works</h5>
                       <ul className="work-it">
                         <li>
-                          Live workouts: Choose from the wide variety of online
-                          workouts and join in from anywhere
+                        <b>Purchase Confirmation:</b> Once you purchase a plan, you will receive a confirmation email with all the details, including information about your assigned trainer.
                         </li>
                         <li>
-                          Live workouts: Choose from the wide variety of online
-                          workouts and join in from anywhere
+                        <b>Personalized Call:</b> Our support team will give you a call to discuss your specific requirements and preferences to ensure we tailor the experience to your needs.
                         </li>
                         <li>
-                          Live workouts: Choose from the wide variety of online
-                          workouts and join in from anywhere
+                        <b>Scheduling Your Sessions:</b>
+
+For online plans, your sessions will be scheduled and you’ll receive all the details via email, including the links for virtual classes.
+For in-home services, your trainer will visit your location for the first session at the scheduled time.
                         </li>
                       </ul>
                     </div>

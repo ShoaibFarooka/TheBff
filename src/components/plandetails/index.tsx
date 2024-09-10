@@ -155,15 +155,18 @@ function PlanDetails({ plan, suggestedPlans }: CheckoutProps) {
                             <div className='px-3 text-lg text-white space-y-3'>
                                 <div>
                                     <span className='inline-block w-4 h-4 bg-y rounded-full mr-2 my-auto'></span>
-                                    Live workouts: Choose from the wide variety of online workouts and join in from anywhere
+                                    Purchase Confirmation: Once you purchase a plan, you will receive a confirmation email with all the details, including information about your assigned trainer.
                                 </div>
                                 <div>
                                     <span className='inline-block w-4 h-4 bg-y rounded-full mr-2 my-auto'></span>
-                                    Live workouts: Choose from the wide variety of online workouts and join in from anywhere
+                                    Personalized Call: Our support team will give you a call to discuss your specific requirements and preferences to ensure we tailor the experience to your needs.
                                 </div>
                                 <div>
                                     <span className='inline-block w-4 h-4 bg-y rounded-full mr-2 my-auto'></span>
-                                    Live workouts: Choose from the wide variety of online workouts and join in from anywhere
+                                    Scheduling Your Sessions:
+
+                                    For online plans, your sessions will be scheduled and you’ll receive all the details via email, including the links for virtual classes.
+                                    For in-home services, your trainer will visit your location for the first session at the scheduled time.
                                 </div>
                             </div>
                         </div>
