@@ -153,7 +153,7 @@ const BookSlot = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-md center z-20">
-          <div className="relative py-5 rounded-md bg-gradient-to-r to-[#4A2F70] from-[#344363] md:min-w-[80vw] overflow-auto md:max-h-[85vh] z-50">
+          <div className="relative py-16 rounded-md gradient-bg md:min-w-[80vw] overflow-auto md:max-h-[85vh] z-50">
             <div className="absolute right-4 top-4">
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -165,13 +165,13 @@ const BookSlot = () => {
 
             {isPending && (
               <div className="flex items-center justify-center">
-                <p className="text-gray-500">Fetching coach details...</p>
+                <p className="text-gray-300">Fetching coach details...</p>
               </div>
             )}
 
             {!isPending && !coaches.length && (
               <div className="flex items-center justify-center">
-                <p className="text-neutral-200">
+                <p className="text-neutral-200 text-lg">
                   No coaches found for your subscriptions. Please try again
                   later.
                 </p>
