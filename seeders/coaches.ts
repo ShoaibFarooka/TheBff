@@ -16,20 +16,52 @@ import consola from "consola";
 
 const coaches: CoachType[] = [
     {
-        name: "Coach 1",
-        email: 'coach1@thebff.com',
-        profileImage: "https://via.placeholder.com/150",
-        calendarLink: "https://calendly.com/thebffupdates/coaching-class",
-        programIds: ["dance.fitness", "at-gym-workout.strength-training"],
-        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIzMjI1MjU2LCJqdGkiOiI0ZmRiNzk4My1mYmIwLTRiOTItOTk3MC0zZTMyMDgyZGY5YWEiLCJ1c2VyX3V1aWQiOiI4MzEyZTAwNC0zZTY5LTQ1NTAtYTNjZi1iOThjZjZmODY4YWEifQ.cD03tgWyHLU73_QBpUJGhkoZ3wMksNKEYePz59mnlArZIX-H1_RP97w2VdXkp0r928xw00blKxdVW0t8tkFLpA'
+        name: "Gurpreet Singh",
+        email: 'gaggisidhugaggi95@gmail.com',
+        profileImage: "/assets/coach_gurpreet_singh.png",
+        calendarLink: "https://calendly.com",
+        programIds: ["online-gym-training.cardio", "online-gym-training.posture-correction", "online-gym-training.workout-plan", "yoga.online-personal-yoga-classes", "yoga.online-group-yoga-classes", "yoga.in-home-personal-yoga-classes", "yoga.in-home-group-yoga-classes", "yoga.yoga-plan", "nutrition.weight-management", "nutrition.diseases-relief-plan", "nutrition.modelling-specific", "nutrition.sports-nutrition", "nutrition.general-guidance", "in-home-training.in-home-fitness", "in-home-training.specialized-training", "in-home-training.holistic-wellness", "sound-healing.chakra-balancing", "sound-healing.deep-relaxation", "sound-healing.group-sound-healing"],
+        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI1OTY1MjEwLCJqdGkiOiIzY2Y3NWY4MS05YTQ2LTQzYWEtOTdiNi1jOWU4MDYzN2Q5NmIiLCJ1c2VyX3V1aWQiOiI2YzI0Yjk1Yy02ZDBiLTRlYTAtOGFkMC04MzVlODEwM2NmNGUifQ.EIdHcelUl04Y5gl3XOLQ3LmuffSHCoyM1vx6nHn-a3OjYNOnS4NBln0YKFoK8iPYqeKjJ5MuARiRtNU7Y6ASCw'
     },
     {
-        name: "Coach 2",
-        email: 'coach2@thebff.com',
-        profileImage: "https://via.placeholder.com/150",
-        calendarLink: "https://calendar.google.com",
-        programIds: ["at-gym-workout.strength-training"],
-        calendlyToken: 'mytoken'
+        name: "Harpreet Singh",
+        email: 'gaggisidhugaggi95@gmail.com',
+        profileImage: "/assets/coach_harpreet_singh.png",
+        calendarLink: "https://calendly.com",
+        programIds: ["online-gym-training.cardio", "online-gym-training.posture-correction", "online-gym-training.workout-plan", "in-home-training.in-home-fitness", "in-home-training.specialized-training", "in-home-training.holistic-wellness"],
+        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI1OTY1MjEwLCJqdGkiOiIzY2Y3NWY4MS05YTQ2LTQzYWEtOTdiNi1jOWU4MDYzN2Q5NmIiLCJ1c2VyX3V1aWQiOiI2YzI0Yjk1Yy02ZDBiLTRlYTAtOGFkMC04MzVlODEwM2NmNGUifQ.EIdHcelUl04Y5gl3XOLQ3LmuffSHCoyM1vx6nHn-a3OjYNOnS4NBln0YKFoK8iPYqeKjJ5MuARiRtNU7Y6ASCw'
+    },
+    {
+        name: "Arpandeep Singh",
+        email: 'gaggisidhugaggi95@gmail.com',
+        profileImage: "/assets/coach_arpandeep_singh.png",
+        calendarLink: "https://calendly.com",
+        programIds: ["online-gym-training.cardio", "online-gym-training.posture-correction", "online-gym-training.workout-plan", "yoga.online-personal-yoga-classes", "yoga.online-group-yoga-classes", "yoga.in-home-personal-yoga-classes", "yoga.in-home-group-yoga-classes", "yoga.yoga-plan", "nutrition.weight-management", "nutrition.diseases-relief-plan", "nutrition.modelling-specific", "nutrition.sports-nutrition", "nutrition.general-guidance", "in-home-training.in-home-fitness", "in-home-training.specialized-training", "in-home-training.holistic-wellness"],
+        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI1OTY1MjEwLCJqdGkiOiIzY2Y3NWY4MS05YTQ2LTQzYWEtOTdiNi1jOWU4MDYzN2Q5NmIiLCJ1c2VyX3V1aWQiOiI2YzI0Yjk1Yy02ZDBiLTRlYTAtOGFkMC04MzVlODEwM2NmNGUifQ.EIdHcelUl04Y5gl3XOLQ3LmuffSHCoyM1vx6nHn-a3OjYNOnS4NBln0YKFoK8iPYqeKjJ5MuARiRtNU7Y6ASCw'
+    },
+    {
+        name: "Diksha Parihar",
+        email: 'gaggisidhugaggi95@gmail.com',
+        profileImage: "/assets/coach__diksha_parihar.png",
+        calendarLink: "https://calendly.com",
+        programIds: ["nutrition.weight-management", "nutrition.diseases-relief-plan", "nutrition.modelling-specific", "nutrition.sports-nutrition", "nutrition.general-guidance"],
+        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI1OTY1MjEwLCJqdGkiOiIzY2Y3NWY4MS05YTQ2LTQzYWEtOTdiNi1jOWU4MDYzN2Q5NmIiLCJ1c2VyX3V1aWQiOiI2YzI0Yjk1Yy02ZDBiLTRlYTAtOGFkMC04MzVlODEwM2NmNGUifQ.EIdHcelUl04Y5gl3XOLQ3LmuffSHCoyM1vx6nHn-a3OjYNOnS4NBln0YKFoK8iPYqeKjJ5MuARiRtNU7Y6ASCw'
+    },
+    {
+        name: "Dinesh Maru",
+        email: 'gaggisidhugaggi95@gmail.com',
+        profileImage: "/assets/coach_dinesh_maru.png",
+        calendarLink: "https://calendly.com",
+        programIds: ["dance.online-fitness", "dance.in-home-fitness", "dance.online-dance-styles", "dance.in-home-dance-style", "dance.wedding-choreography"],
+        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI1OTY1MjEwLCJqdGkiOiIzY2Y3NWY4MS05YTQ2LTQzYWEtOTdiNi1jOWU4MDYzN2Q5NmIiLCJ1c2VyX3V1aWQiOiI2YzI0Yjk1Yy02ZDBiLTRlYTAtOGFkMC04MzVlODEwM2NmNGUifQ.EIdHcelUl04Y5gl3XOLQ3LmuffSHCoyM1vx6nHn-a3OjYNOnS4NBln0YKFoK8iPYqeKjJ5MuARiRtNU7Y6ASCw'
+    },
+    {
+        name: "Prachi Dabas",
+        email: 'gaggisidhugaggi95@gmail.com',
+        profileImage: "/assets/coach_prachi_dabas.png",
+        calendarLink: "https://calendly.com",
+        programIds: ["yoga.online-personal-yoga-classes", "yoga.online-group-yoga-classes", "yoga.in-home-personal-yoga-classes", "yoga.in-home-group-yoga-classes", "yoga.yoga-plan"],
+        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI1OTY1MjEwLCJqdGkiOiIzY2Y3NWY4MS05YTQ2LTQzYWEtOTdiNi1jOWU4MDYzN2Q5NmIiLCJ1c2VyX3V1aWQiOiI2YzI0Yjk1Yy02ZDBiLTRlYTAtOGFkMC04MzVlODEwM2NmNGUifQ.EIdHcelUl04Y5gl3XOLQ3LmuffSHCoyM1vx6nHn-a3OjYNOnS4NBln0YKFoK8iPYqeKjJ5MuARiRtNU7Y6ASCw'
     }
 ]
 

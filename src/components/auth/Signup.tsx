@@ -186,12 +186,12 @@ const Signup = () => {
                   ? "Sign Up and join for fitness" */}
                             {/* : " */}
                             {/* "} */}
-                            Welcome back! Login to your account.
+                            Start your fitness journey with best friend in fitness.
                         </h2>
-                        <p className="text-white mt-1 text-lg">
+                        {/* <p className="text-white mt-1 text-lg">
                             {" "}
                             Sunt aute cupidatat excepteur aliquip ad enim tempor.{" "}
-                        </p>
+                        </p> */}
                     </div>
                 </div>
 

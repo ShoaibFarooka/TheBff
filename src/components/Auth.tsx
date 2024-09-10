@@ -234,14 +234,15 @@ const Auth = ({ signup = false }: IAuth) => {
 
           <div className="absolute bottom-0 left-0 w-10/12 pl-10 pb-10">
             <h2 className="text-3xl font-semibold text-[#FED25B]">
-              {signup
-                ? "Sign Up and join for fitness"
-                : "Welcome back! Login to your account."}
+              {/* {signup
+                ? "Let's become best friends in fitness, to make you healthy!"
+                : " */}
+              Start your fitness journey with best friend in fitness.
             </h2>
-            <p className="text-white mt-1 text-lg">
+            {/* <p className="text-white mt-1 text-lg">
               {" "}
               Sunt aute cupidatat excepteur aliquip ad enim tempor.{" "}
-            </p>
+            </p> */}
           </div>
         </div>
 
