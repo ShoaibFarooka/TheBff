@@ -125,9 +125,9 @@ export default function ChoosePlan({
   return (
     <div className="fixed inset-0 bg-black/20 backdrop-blur w-screen h-screen flex items-center justify-center z-40">
       <div
-        className="!min-w-min fixed border-none max-h-[90vh] overflow-y-auto bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-[24px] custom-scroll-bar"
+        className="!min-w-min fixed border-none gradient-bg rounded-3xl"
       >
-        <div className="!min-w-[90vw] px-5 md:px-10 py-3">
+        <div className="!min-w-[90vw] px-5 md:px-10 py-3 max-h-[90vh] overflow-y-auto custom-scroll-bar">
           <div className="w-full mb-4">
             <div className="relative flex justify-center items-center">
               <button
