@@ -111,10 +111,12 @@ async function sendConfirmationEmails(
             return;
         }
 
+        const totalAmount = parseFloat(String(order.amount)) / 100;
+
         // Format subscription plans for email templates
         const formattedPlans = subscriptions.map(sub => ({
             name: sub.plan.name,
-            amount: sub.plan.amount ?? 0,
+            amount: sub.plan.amount ? sub.plan.amount / 100 : 0,
             startDate: (sub.startDate as Date).toLocaleDateString('en-In', { year: 'numeric', month: 'short', day: 'numeric' }), // 01 Jan 2022 
             endDate: (sub.endDate as Date).toLocaleDateString('en-In', { year: 'numeric', month: 'short', day: 'numeric' })
         }));
@@ -127,7 +129,7 @@ async function sendConfirmationEmails(
             text: `Your order has been confirmed.`,
             html: subscriptionConfirmationTemplate({
                 plans: formattedPlans,
-                totalAmount: order.amount as number
+                totalAmount
             })
         });
 
@@ -140,7 +142,7 @@ async function sendConfirmationEmails(
             html: adminNotificationTemplate({
                 user,
                 plans: formattedPlans,
-                totalAmount: order.amount as number
+                totalAmount
             })
         });
 
