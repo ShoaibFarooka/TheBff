@@ -48,7 +48,7 @@ const BookSlot = () => {
 
     try {
       const res = await getServerData(startTransition, async () =>
-        getCoaches({ programIds: subscriptions.map((s) => s.plan.programId) })
+        getCoaches({ programIds: subscriptions.map((s) => s.plan?.programId) })
       );
 
       if (res.error) {
@@ -226,20 +226,12 @@ const BookSlot = () => {
                           {coach.programIds
                             .filter((pid) =>
                               subscriptions.some(
-                                (s) => s.plan.programId === pid
+                                (s) => s.plan?.programId === pid
                               )
                             )
                             .map(convertProgramIdToReadable)
                             .join(", ")}
                         </p>
-                        {/* <div className="flex justify-center mt-4">
-                          <TwitterIcon className="h-6 w-6 text-blue-500 dark:text-blue-300 mx-2" />
-                            <LinkedinIcon className="h-6 w-6 text-blue-700 dark:text-blue-300 mx-2" />
-                            <GithubIcon className="h-6 w-6 text-zinc-600 dark:text-zinc-50 mx-2" />
-                        </div> */}
-                        {/* <Button className="mt-8 w-full bg-zinc-900 text-zinc-50 rounded-md py-2 text-sm font-medium shadow transition-colors hover:bg-zinc-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 dark:focus-visible:ring-zinc-300">
-                          Schedule a slot
-                        </Button> */}
                         <div className="center mt-4">
                           {isLoading ? (
                             <p className="text-gray-500">Loading...</p>
@@ -250,10 +242,6 @@ const BookSlot = () => {
                             />
                           )}
                         </div>
-
-                        {/* <div className="text-center mt-4 text-zinc-500 dark:text-zinc-400">
-                          <p>Other Helpful Info</p>
-                        </div> */}
                       </Card>
                     ))}
                   </div>
