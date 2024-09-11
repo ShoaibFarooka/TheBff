@@ -90,8 +90,10 @@ async function sendConfirmationEmails(
     meta: Meta
 ) {
     try {
+        // Connect to the database
         await connectDB();
 
+        // Fetch subscriptions and user details concurrently
         const [subscriptions, user] = await Promise.all([
             Subscription
                 .find({
@@ -102,19 +104,22 @@ async function sendConfirmationEmails(
                 .lean<Array<SubscriptionType & { plan: PlanType }>>(),
             User
                 .findOne({ _id: meta.userId }).lean<UserType>()
-        ])
+        ]);
 
+        // If no user or subscriptions found, exit the function
         if (!user || !subscriptions.length) {
             return;
         }
 
+        // Format subscription plans for email templates
         const formattedPlans = subscriptions.map(sub => ({
             name: sub.plan.name,
             amount: sub.plan.amount ?? 0,
             startDate: (sub.startDate as Date).toLocaleDateString('en-In', { year: 'numeric', month: 'short', day: 'numeric' }), // 01 Jan 2022 
             endDate: (sub.endDate as Date).toLocaleDateString('en-In', { year: 'numeric', month: 'short', day: 'numeric' })
-        }))
+        }));
 
+        // Prepare user confirmation email
         const userEmailPromise = sendEmail({
             from: `TheBFF Subscriptions <${process.env.EMAIL_USER}>`,
             to: user.email,
@@ -124,8 +129,9 @@ async function sendConfirmationEmails(
                 plans: formattedPlans,
                 totalAmount: order.amount as number
             })
-        })
+        });
 
+        // Prepare admin notification email
         const adminEmailPromise = sendEmail({
             from: `TheBFF Subscriptions <${process.env.EMAIL_USER}>`,
             to: process.env.EMAIL_USER!,
@@ -136,11 +142,13 @@ async function sendConfirmationEmails(
                 plans: formattedPlans,
                 totalAmount: order.amount as number
             })
-        })
+        });
 
+        // Send both emails concurrently
         await Promise.all([userEmailPromise, adminEmailPromise]);
 
     } catch (error) {
+        // Log any errors encountered during the process
         prodLogger.error("Failed to send confirmation emails", error);
     }
 }
