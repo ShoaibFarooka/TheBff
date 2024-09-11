@@ -77,7 +77,7 @@ const UserStats: React.FC<{
 
   return (
     <>
-      <div className="relative max-h-[300px] custom-scrollbar overflow-auto bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1 shadow-2xl shadow-[#4A2F70]/50">
+      <div className="relative max-h-[300px] custom-scroll-bar overflow-auto bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1 shadow-2xl shadow-[#4A2F70]/50">
         {isModalOpen && (
           <StatsForm
             isModalOpen={isModalOpen}
