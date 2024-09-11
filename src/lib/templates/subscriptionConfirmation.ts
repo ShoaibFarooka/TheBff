@@ -152,7 +152,7 @@ const adminNotificationTemplate = ({
             </td>
           </tr>
           <tr>
-            <td>
+            <td style="padding: 20px; color: #333333;">
                 <p style="font-size: 16px; line-height: 1.5;">
                     <b>Sub Total:</b> ${subTotal}
                 </p>
@@ -172,7 +172,7 @@ const adminNotificationTemplate = ({
             </td>
           </tr>
           <tr>
-            <td>
+            <td style="padding: 20px; color: #333333;">
               <p style="font-size: 16px; line-height: 1.5;">
                 Please take necessary actions to process this subscription.
               </p>
