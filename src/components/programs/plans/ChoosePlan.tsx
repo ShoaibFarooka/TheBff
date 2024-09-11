@@ -142,7 +142,7 @@ export default function ChoosePlan({
                 />
               </button>
 
-              <h2 className="text-2xl md:text-5xl font-bold text-[#F2BD4D] text-center mb-4 ">
+              <h2 className="text-2xl md:text-5xl font-bold text-[#F2BD4D] text-center mb-1 md:mb-4 mt-10 md:mt-0">
                 Choose Plan for {feature.title}
               </h2>
             </div>
@@ -180,7 +180,7 @@ export default function ChoosePlan({
             </div>
           </div>
 
-          <div className="flex justify-center gap-10 md:items-center py-6 px-5 max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-center gap-10 md:items-center py-6 px-5 max-w-5xl mx-auto">
             {plans &&
               plans.length > 0 &&
               plans
