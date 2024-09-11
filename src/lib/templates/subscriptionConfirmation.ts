@@ -135,7 +135,7 @@ const adminNotificationTemplate = ({
                     <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">Plan</th>
                     <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">Start Date</th>
                     <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">End Date</th>
-                    <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">Total Amount</th>
+                    <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">Amount</th>
                   </tr>
                 </thead>
                 <tbody>
