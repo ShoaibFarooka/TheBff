@@ -1,12 +1,13 @@
 "use client";
 // import cross from "@/assets/Cross.png";
 import Spinner from "@/components/ui/Spinner";
+import { useDisableBodyScroll } from "@/lib/hooks";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { Feature, Program } from "@/types/program";
 import { Plan } from "@/types/subscription";
 import clsx from "clsx";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import ProductCard from "./ProductCard";
@@ -42,6 +43,7 @@ export default function ChoosePlan({
     period: "monthly",
     interval: 1,
   });
+  useDisableBodyScroll();
 
   const onClose = () => {
     setOverlayVisible(false);
@@ -106,15 +108,6 @@ export default function ChoosePlan({
     const sub = subscriptions.find((x) => x.programId === `${program.id}.${feature?.id}`);
     return sub;
   }, [subscriptions, program.id, feature?.id]);
-
-  useEffect(() => {
-    // disable scroll when overlay is open
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, []);
 
   if (!isPlanLoading && (!plans || !plans.length)) {
     onClose();
