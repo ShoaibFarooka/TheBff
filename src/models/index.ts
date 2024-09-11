@@ -13,9 +13,9 @@ export { default as Coupon } from "./coupon";
 export { default as NewsSubscriber } from "./newsSubscriber";
 export { default as Order } from "./order";
 export { default as Plan } from "./plan";
-export { default as Program } from "./program";
-export { default as Session } from "./session";
-export { default as Subscription } from "./subscription";
+export { default as Program } from "./Program";
+export { default as Session } from "./Session";
+export { default as Subscription } from "./Subscription";
 export { default as User } from "./user";
-export { default as UserStats } from "./userstats";
+export { default as UserStats } from "./Userstats";
 
