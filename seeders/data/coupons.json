@@ -5,8 +5,22 @@
     "description": "Test coupon",
     "discount": 10,
     "type": "percentage",
-    "active": true,
+    "active": false,
     "expiryDate": "2025-12-31T00:00:00.000Z",
+    "updatedAt": "2024-09-11T12:31:31.682Z",
     "id": "66dd56dc7f51456415b1fa85"
+  },
+  {
+    "_id": "66e18da35b292a75c6d2c2d5",
+    "code": "GURPREET10",
+    "description": "10% discount",
+    "discount": 10,
+    "type": "percentage",
+    "expiryDate": "2025-12-31T00:00:00.000Z",
+    "active": true,
+    "createdAt": "2024-09-11T12:31:31.688Z",
+    "updatedAt": "2024-09-11T12:31:31.688Z",
+    "__v": 0,
+    "id": "66e18da35b292a75c6d2c2d5"
   }
 ]
