@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { calculateDiscount } from "@/lib"
 import { makeOrderPayment } from "@/lib/subscription/client"
 import { api } from "@/trpc/react"
+import { Coupon } from "@/types/coupon"
 import Script from 'next/script'
 import { useRouter } from "nextjs-toploader/app"
 import { useCallback, useMemo, useState } from "react"
@@ -20,16 +21,19 @@ const Payment = ({ amount }: PaymentProps) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [couponCode, setCouponCode] = useState('')
+    const [coupon, setCoupon] = useState<Coupon | null>(null)
 
     const router = useRouter()
     const utils = api.useUtils()
 
-    const { data: coupon, refetch: getCoupon, isFetching: isCouponLoading } =
+    const { data, refetch: getCoupon, isFetching: isCouponLoading } =
         api.coupon.get.useQuery(couponCode, {
             enabled: false,
             onSettled(data) {
                 if (data && 'error' in data) {
                     toast.error(data.error ?? "Failed to get coupon")
+                } else {
+                    setCoupon(() => data!)
                 }
             },
         })
@@ -70,7 +74,7 @@ const Payment = ({ amount }: PaymentProps) => {
             setIsLoading(() => true)
             if (!order) {
                 const data = await createOrder({
-                    couponCode: coupon && 'error' in coupon ? undefined : coupon?.code
+                    couponCode: coupon?.code
                 })
                 order = data && 'error' in data ? null : data
 
