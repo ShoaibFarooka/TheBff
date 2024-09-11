@@ -166,7 +166,7 @@ const BookSlot = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-md center z-20">
-          <div className="relative py-16 rounded-md gradient-bg md:min-w-[80vw] overflow-auto max-h-[85vh] custom-scroll-bar">
+          <div className="relative py-16 rounded-md gradient-bg min-w-[80vw] overflow-auto max-h-[85vh] custom-scroll-bar">
             <div className="absolute right-4 top-4">
               <button
                 onClick={() => setIsModalOpen(false)}
