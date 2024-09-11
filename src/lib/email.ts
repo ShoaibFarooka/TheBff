@@ -15,12 +15,13 @@ const transporter = createTransport({
 
 
 type EmailOptions = {
+    from?: string;
     to: string;
     subject: string;
     replyTo?: string;
 } & (
-    { text?: undefined; html: string } | { text: string; html?: string } | { text: string; html: string }
-)
+        { text?: undefined; html: string } | { text: string; html?: string } | { text: string; html: string }
+    )
 
 type Options = {
     throwOnError?: boolean;
