@@ -1,6 +1,7 @@
 "use client";
 // import cross from "@/assets/Cross.png";
 import Spinner from "@/components/ui/Spinner";
+import { useDisableBodyScroll } from "@/lib/hooks";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { Feature, Program } from "@/types/program";
@@ -42,6 +43,7 @@ export default function ChoosePlan({
     period: "monthly",
     interval: 1,
   });
+  useDisableBodyScroll();
 
   const onClose = () => {
     setOverlayVisible(false);
@@ -105,7 +107,7 @@ export default function ChoosePlan({
 
     const sub = subscriptions.find((x) => x.programId === `${program.id}.${feature?.id}`);
     return sub;
-  }, [subscriptions, program.id]);
+  }, [subscriptions, program.id, feature?.id]);
 
   if (!isPlanLoading && (!plans || !plans.length)) {
     onClose();
@@ -125,9 +127,9 @@ export default function ChoosePlan({
   return (
     <div className="fixed inset-0 bg-black/20 backdrop-blur w-screen h-screen flex items-center justify-center z-40">
       <div
-        className="!min-w-min fixed border-none !overflow-auto !min-h-min"
+        className="!min-w-min fixed border-none gradient-bg rounded-3xl"
       >
-        <div className="!min-w-[90vw] !min-h-min px-5 md:px-10 overflow-auto py-3 bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-[24px]">
+        <div className="!min-w-[90vw] px-5 md:px-10 py-3 max-h-[90vh] overflow-y-auto custom-scroll-bar">
           <div className="w-full mb-4">
             <div className="relative flex justify-center items-center">
               <button
@@ -140,7 +142,7 @@ export default function ChoosePlan({
                 />
               </button>
 
-              <h2 className="text-2xl md:text-5xl font-bold text-[#F2BD4D] text-center mb-4 ">
+              <h2 className="text-2xl md:text-5xl font-bold text-[#F2BD4D] text-center mb-1 md:mb-4 mt-10 md:mt-0">
                 Choose Plan for {feature.title}
               </h2>
             </div>
@@ -178,7 +180,7 @@ export default function ChoosePlan({
             </div>
           </div>
 
-          <div className="flex justify-center gap-10 md:items-center py-6 px-5 max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-center gap-10 md:items-center py-6 px-5 max-w-5xl mx-auto">
             {plans &&
               plans.length > 0 &&
               plans

@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button"
 import { calculateDiscount } from "@/lib"
 import { makeOrderPayment } from "@/lib/subscription/client"
 import { api } from "@/trpc/react"
+import { Coupon } from "@/types/coupon"
 import Script from 'next/script'
 import { useRouter } from "nextjs-toploader/app"
 import { useCallback, useMemo, useState } from "react"
 import toast from "react-hot-toast"
+import { RxCross2 } from "react-icons/rx"
 import Spinner from "../ui/Spinner"
 import { Input } from "../ui/input"
 
@@ -20,16 +22,22 @@ const Payment = ({ amount }: PaymentProps) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [couponCode, setCouponCode] = useState('')
+    const [coupon, setCoupon] = useState<Coupon | null>(null)
 
     const router = useRouter()
     const utils = api.useUtils()
 
-    const { data: coupon, refetch: getCoupon, isFetching: isCouponLoading } =
+    const { isFetching: isCouponLoading } =
         api.coupon.get.useQuery(couponCode, {
-            enabled: false,
+            enabled: !!couponCode,
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            refetchOnReconnect: false,
             onSettled(data) {
                 if (data && 'error' in data) {
                     toast.error(data.error ?? "Failed to get coupon")
+                } else {
+                    setCoupon(() => data!)
                 }
             },
         })
@@ -70,7 +78,7 @@ const Payment = ({ amount }: PaymentProps) => {
             setIsLoading(() => true)
             if (!order) {
                 const data = await createOrder({
-                    couponCode: coupon && 'error' in coupon ? undefined : coupon?.code
+                    couponCode: coupon?.code
                 })
                 order = data && 'error' in data ? null : data
 
@@ -104,7 +112,7 @@ const Payment = ({ amount }: PaymentProps) => {
             setIsLoading(() => false)
         }
 
-    }, [user, orderData, createOrder, verifyPayment, couponCode]
+    }, [user, orderData, createOrder, verifyPayment, coupon, utils.payment]
     )
 
     const isPending = isUserLoading || isOrderPending || isVerificationPending || isLoading
@@ -137,7 +145,6 @@ const Payment = ({ amount }: PaymentProps) => {
                         onSubmit={(e) => {
                             e.preventDefault()
                             setCouponCode(() => (e.target as any).coupon.value)
-                            getCoupon()
                         }}
                     >
                         <Input
@@ -146,13 +153,11 @@ const Payment = ({ amount }: PaymentProps) => {
                             className="border bg-neutral-100 border-gray-300 rounded-lg px-4 py-2 text-neutral-900"
                             defaultValue={couponCode}
                             name="coupon"
-                        // onChange={(e) => setCouponCode(e.target.value.toLocaleUpperCase())}
                         />
                         <Button
                             variant='default'
                             className='text-white bg-[#6557FF] hover:bg-[#6557FF]/80 text-lg'
                             size='lg'
-                            // onClick={() => getCoupon()}
                             disabled={isCouponLoading}
                             type="submit"
                         >
@@ -170,6 +175,16 @@ const Payment = ({ amount }: PaymentProps) => {
                             <div className="flex items-center gap-2">
                                 <p className="font-semibold">Coupon applied:</p>
                                 <p className="font-semibold text-[#F2BD4D]">{coupon.code}</p>
+                                {/* A cross button to remove */}
+                                <button
+                                    className="text-red-500"
+                                    onClick={() => {
+                                        setCoupon(() => null)
+                                        setCouponCode(() => '')
+                                    }}
+                                >
+                                    <RxCross2 />
+                                </button>
                             </div>
                         )
                 }

@@ -74,13 +74,13 @@ const Cart = ({ cart: initialData }: CartProps) => {
     }
 
     return (
-        <div className="container mx-auto !pb-24">
+        <div className="container mx-auto !pb-24 pt-16 md:pt-24">
             <div className="text-center mb-16">
                 <h1 className="text-2xl md:text-4xl font-bold">Your Cart</h1>
                 <p className="text-gray-300">Here are the items in your cart</p>
             </div>
 
-            <div className="gap-4 mb-16">
+            <div className="gap-4 mb-16 space-y-4">
                 {cart?.items.map((item, i) => (
                     <div key={`item-${i + 1}`} className="gradient-bg p-4 md:px-10 shadow-md rounded-md flex justify-between">
                         <div className="">

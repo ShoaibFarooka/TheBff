@@ -23,10 +23,10 @@ const ImageWithTitle = ({
 }) => {
   return (
     <div className="col-span-1 w-full h-[12rem] md:h-[18rem] lg:h-[22rem] cursor-pointer">
-      <div className={"relative mx-auto w-[90%] h-full "}>
+      <div className={"relative mx-auto w-[90%] h-full"}>
         <Image
           className={
-            "w-[100%] h-full shadow-xl hover:shadow-purple-400 rounded-xl mx-auto " +
+            "w-[100%] h-80 shadow-xl hover:shadow-purple-400 rounded-xl mx-auto my-auto" +
             (active1 && "shadow-purple-400/60")
           }
           src={image}
@@ -171,12 +171,12 @@ const ProgramFeatures = ({ program, setCurrentFeature }: Props) => {
           </h1>
         </div>
 
-        <div className="flex px-5 flex-col md:flex-row justify-around lg:px-[80px] gap-y-10 h-full bg-red-100/0">
-          <div className="w-full md:w-1/2 h-full bg-green-100/0 lg:pr-[3rem]">
+        <div className="flex px-5 flex-col md:flex-row justify-around lg:px-[80px] gap-y-10 gap-5 h-full">
+          <div className="w-full md:w-1/2 h-full bg-green-100/0 lg:pr-[3rem] my-auto">
             <Image
               src={program.features[selected].image ?? ""}
               alt={program.features[selected].title ?? ""}
-              className="max-w-full md:max-w-[75%] max-h-[60vh] object-cover transition-all duration-200 rounded-xl my-auto ml-auto"
+              className="max-w-full lg:max-w-[75%] h-60 md:h-72 object-cover transition-all duration-200 rounded-xl ml-auto"
               width={500}
               height={500}
             />

@@ -75,7 +75,7 @@ export const createOrder = async (ctx: ProtectedTRPCContext, input: CreateOrderI
         orderId: order.id,
         programId: plan.programId,
         status: SubscriptionStatus.pending,
-        startDate: Date.now(),
+        startDate: new Date(),
         endDate: caclulateEndDate({
           period: plan.period,
           interval: plan.interval,
@@ -122,27 +122,20 @@ export const verifyPayment = async (ctx: ProtectedTRPCContext, input: VerifyPaym
     // create subscription for the user in database
     const planIds = (order.notes!?.plans as string)!?.split(",");
 
-    // get all subscriptions mathcing the plan ids and status pending
-    const subscriptions = await Subscription.find({
+    const subscriptionPromise = Subscription.updateMany({
       userId: ctx.user!._id,
       planId: { $in: planIds },
-      status: SubscriptionStatus.pending,
-    });
-
-    if (!subscriptions || subscriptions.length === 0) {
-      return { error: "No pending subscriptions found" };
-    }
-
-    // update the status of the subscriptions to active
-    subscriptions.forEach((sub) => {
-      sub.status = SubscriptionStatus.active;
-      sub.markModified("status");
-    });
+      status: SubscriptionStatus.pending
+    }, {
+      status: SubscriptionStatus.active
+    })
 
     // empty cart
+    const cartPromise = Cart.updateOne({ user: ctx.user!._id }, { items: [] });
+
     await Promise.all([
-      Cart.updateOne({ user: ctx.user!._id }, { items: [] }),
-      Subscription.bulkSave(subscriptions)
+      cartPromise,
+      subscriptionPromise
     ])
 
     return { success: true };

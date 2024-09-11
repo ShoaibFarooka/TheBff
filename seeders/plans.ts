@@ -48,7 +48,7 @@ async function loadPlans(skipConfirmation = false) {
         const plans = await PlanModel.find();
 
         // sort plans by programId
-        plans.sort((a, b) => a.programId.localeCompare(b.programId as string));
+        // plans.sort((a, b) => a.programId.localeCompare(b.programId as string));
 
         writeFileSync("seeders/data/plans.json", JSON.stringify(plans, null, 2));
     }
