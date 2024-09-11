@@ -12,6 +12,13 @@ import { IoClose } from "react-icons/io5";
 import { useDashboardState, UserData } from "../state";
 import CalendlyModal from "./CalendlyModal";
 
+// a function which converts programId into a readable format
+// Example: online-gym-training.in-home-fitness => Online Gym Training -> In Home Fitness
+const convertProgramIdToReadable = (programId: string) => {
+  const parts = programId.split(".");
+  return parts.map(capitalizeFirstLetter).join(" -> ");
+}
+
 const BookSlot = () => {
   const ref = useRef<HTMLDivElement>(null);
   const [isPending, startTransition] = useTransition();
@@ -111,6 +118,8 @@ const BookSlot = () => {
   if (userData.sessions?.length > 0)
     return (
       <div className="">
+        <div id="book" ref={ref} style={{ zIndex: 10000 }}></div>
+
         <h1 className="text-xl md:text-3xl font-bold text-center text-neutral-100">
           Upcoming Sessions
         </h1>
@@ -136,6 +145,12 @@ const BookSlot = () => {
             </div>
           ))}
         </div>
+
+        {/* Book another slot */}
+        <div className="center mt-4">
+          <Button onClick={() => setIsModalOpen(true)} className="animate-vibrate hover:animate-none">Book a slot</Button>
+        </div>
+
       </div>
     );
 
@@ -184,7 +199,7 @@ const BookSlot = () => {
                   Book a slot
                 </h1>
                 <p className=" text-neutral-100 text-center">
-                  Select a coach to book a slot
+                  Select a coach to continue.
                 </p>
 
                 <div className="p-4">
@@ -194,8 +209,8 @@ const BookSlot = () => {
                         key={`coach-${i}`}
                         className="col-span-1 mx-auto w-80 mt-10 py-6 px-8 bg-white shadow-lg rounded-lg dark:bg-zinc-800 mb-4"
                       >
-                        <div className="flex justify-center -mt-16">
-                          <Avatar className="h-20 w-20 border-2 border-zinc-200 dark:border-zinc-800">
+                        <div className="flex justify-center -mt-[4.6rem]">
+                          <Avatar className="h-24 w-24 bg-zinc-50/80 backdrop-blur-md dark:border-zinc-800 p-2">
                             <AvatarImage
                               src={coach.profileImage}
                             />
@@ -209,7 +224,12 @@ const BookSlot = () => {
                         </h2>
                         <p className="text-center text-zinc-500 mt-2 dark:text-zinc-400">
                           {coach.programIds
-                            .map((id) => capitalizeFirstLetter(id))
+                            .filter((pid) =>
+                              subscriptions.some(
+                                (s) => s.plan.programId === pid
+                              )
+                            )
+                            .map(convertProgramIdToReadable)
                             .join(", ")}
                         </p>
                         {/* <div className="flex justify-center mt-4">
