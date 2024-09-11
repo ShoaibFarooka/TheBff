@@ -74,7 +74,7 @@ const Cart = ({ cart: initialData }: CartProps) => {
     }
 
     return (
-        <div className="container mx-auto !pb-24">
+        <div className="container mx-auto !pb-24 pt-16 md:pt-24">
             <div className="text-center mb-16">
                 <h1 className="text-2xl md:text-4xl font-bold">Your Cart</h1>
                 <p className="text-gray-300">Here are the items in your cart</p>
