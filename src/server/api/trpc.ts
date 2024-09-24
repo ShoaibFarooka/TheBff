@@ -31,6 +31,9 @@ import { ZodError } from "zod";
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   // const { session, user } = await uncachedValidateRequest();
 
+  // get token from the request headers
+  const token = Object.fromEntries(opts.headers.entries())
+
   return {
     // session,
     headers: opts.headers,

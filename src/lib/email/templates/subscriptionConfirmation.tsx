@@ -1,11 +1,11 @@
 const subscriptionConfirmationTemplate = ({
-    plans,
-    totalAmount
+  plans,
+  totalAmount
 }: {
-    plans: { name: string; startDate: string; endDate: string }[];
-    totalAmount: number;
+  plans: { name: string; startDate: string; endDate: string }[];
+  totalAmount: number;
 }) => {
-    return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
   <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -81,23 +81,23 @@ const subscriptionConfirmationTemplate = ({
 
 // a template to send notification to admin team informing about a new subscription
 const adminNotificationTemplate = ({
-    user,
-    plans,
-    coupon,
-    totalAmount
+  user,
+  plans,
+  coupon,
+  totalAmount
 }: {
-    user: {
-        name: string;
-        email: string;
-        phone: string;
-    };
-    plans: { name: string; startDate: string; endDate: string; amount: number }[];
-    coupon?: string;
-    totalAmount: number;
+  user: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  plans: { name: string; startDate: string; endDate: string; amount: number }[];
+  coupon?: string;
+  totalAmount: number;
 }) => {
-    const subTotal = plans.reduce((total, plan) => total + plan.amount, 0);
+  const subTotal = plans.reduce((total, plan) => total + plan.amount, 0);
 
-    return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -162,7 +162,7 @@ const adminNotificationTemplate = ({
                         <b>Coupon Code:</b> ${coupon}
                     </p>
                     ` : ''
-        }
+    }
 
                 <p style="font-size: 16px; line-height: 1.5;">
                     <b> Total Amount:</b> ${totalAmount}
@@ -201,4 +201,3 @@ const adminNotificationTemplate = ({
 
 
 export { adminNotificationTemplate, subscriptionConfirmationTemplate };
-

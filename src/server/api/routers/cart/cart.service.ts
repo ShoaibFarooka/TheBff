@@ -1,3 +1,5 @@
+import { sendEmail } from "@/lib/email";
+import { adminCartNotificationTemplate } from "@/lib/email/templates/cart";
 import { logger } from "@/lib/logger";
 import { Cart, Plan, Subscription } from "@/models";
 import { Cart as CartType } from "@/types/cart";
@@ -89,6 +91,15 @@ export const addItem = async (ctx: ProtectedTRPCContext, item: AddItemInput):
       cart.markModified("items");
       cart.markModified("subTotal");
 
+      sendEmail({
+        to: process.env.EMAIL_USER!,
+        subject: "New cart update received",
+        text: `A new item has been added to the cart`,
+        html: adminCartNotificationTemplate({
+          user: ctx.user!, items: [planDetails]
+        })
+      })
+
       // Save the updated cart
       await cart.save();
 
@@ -106,6 +117,16 @@ export const addItem = async (ctx: ProtectedTRPCContext, item: AddItemInput):
     });
     // Save the new cart
     await newCart.save();
+
+    sendEmail({
+      to: process.env.EMAIL_USER!,
+      subject: "New cart update received",
+      text: `A new item has been added to the cart`,
+      html: adminCartNotificationTemplate({
+        user: ctx.user!, items: [planDetails]
+      })
+    })
+
     return newCart;
   } catch (err: any) {
     // Log the error and return an error message

@@ -22,7 +22,7 @@ const emailVerificationTemplate = (
                         <td style="padding: 20px; color: #333333;">
                             <p style="font-size: 16px; line-height: 1.5;">Hello,</p>
                             <p style="font-size: 16px; line-height: 1.5;">
-                                Thank you for signing up! Please confirm your email address by clicking the button below.
+                                Welcome to TheBFF! We're excited to have you on board. To get started, please verify your email address.
                             </p>
                             <p style="text-align: center; margin: 30px 0;">
                                 <a href="${verificationLink}" style="background-color: #007bff; color: #ffffff; text-decoration: none; padding: 12px 20px; border-radius: 5px; display: inline-block; font-size: 16px;">

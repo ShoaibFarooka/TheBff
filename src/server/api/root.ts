@@ -1,5 +1,6 @@
 import { cartRouter } from "./routers/cart/cart.procedure";
 import { couponRouter } from "./routers/coupon/coupon.procedure";
+import { emailRouter } from "./routers/email/email.procedure";
 import { paymentRouter } from "./routers/payment/payment.procedure";
 import { planRouter } from "./routers/plan/plan.procedure";
 import { subscriptionRouter } from "./routers/subscription/subscription.procedure";
@@ -13,6 +14,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   coupon: couponRouter,
   plan: planRouter,
+  email: emailRouter,
 });
 
 export type AppRouter = typeof appRouter;

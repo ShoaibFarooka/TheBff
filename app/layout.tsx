@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import "@/styles/globals.scss";
 import { TRPCReactProvider } from "@/trpc/react";
+import { GoogleTagManager } from '@next/third-parties/google';
 import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 
@@ -49,6 +50,10 @@ export default function RootLayout({
           </div>
         </TRPCReactProvider>
 
+        {/* <GoogleAnalytics gaId="G-45ZWLCE7NH" /> */}
+
+        {/* Includes analytics as well */}
+        <GoogleTagManager gtmId="G-45ZWLCE7NH" /> 
       </body>
     </html>
   );

@@ -1,8 +1,8 @@
 // import type {  } from 'razorpay'
 import connectDB from "@/lib/dbConnection";
 import { sendEmail } from "@/lib/email";
+import { adminNotificationTemplate, subscriptionConfirmationTemplate } from "@/lib/email/templates/subscriptionConfirmation";
 import { logger, prodLogger } from "@/lib/logger";
-import { adminNotificationTemplate, subscriptionConfirmationTemplate } from "@/lib/templates/subscriptionConfirmation";
 import { Order, Subscription, User } from "@/models";
 import { Plan as PlanType, SubscriptionStatus, Subscription as SubscriptionType } from "@/types/subscription";
 import { User as UserType } from "@/types/user";

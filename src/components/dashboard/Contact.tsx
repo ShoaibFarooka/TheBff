@@ -1,41 +1,38 @@
 "use client";
 
 import { useAuth } from "@/hooks/auth";
-import { sendEmail } from "@/lib/email";
-import { getServerData } from "@/lib/utils";
-import { useTransition } from "react";
+import { api } from "@/trpc/react";
 import toast from "react-hot-toast";
 
 const Contact = () => {
   const { user } = useAuth();
-  const [isPending, startTransition] = useTransition();
+
+  const mutation = api.email.sendContactRequest.useMutation({
+    onMutate() {
+      toast.loading("Submitting query...", {
+        id: "submit-query",
+      });
+    },
+    onSettled(data, error) {
+      if (!data || error) {
+        return toast.error("Failed to submit query.", {
+          id: "submit-query",
+        });
+      }
+      toast.success("Query submitted successfully.", {
+        id: "submit-query",
+      });
+    },
+  });
 
   const submitQuery = async (form: FormData) => {
-    const tid = toast.loading("Submitting query...");
-    try {
-      await getServerData(startTransition, async () => {
-        const res = await sendEmail(
-          {
-            to: "thebffupdates@gmail.com",
-            subject: `New query from ${user?.name} (${user?.email})`,
-            text: `Name: ${user?.name}\nEmail: ${user?.email}\nID:${String(user?._id)}\n\n${form.get(
-              "message"
-            )}`,
-            replyTo: user?.email,
-          },
-          { throwOnError: false }
-        );
 
-        if (res.success) {
-          toast.success("Query submitted successfully.", { id: tid });
-        } else {
-          toast.error("Failed to submit query.", { id: tid });
-        }
-      });
-    } catch (error: any) {
-      console.log(error);
-      toast.error("Failed to submit query.", { id: tid });
-    }
+    mutation.mutate({
+      email: user?.email!,
+      name: user?.name!,
+      message: form.get("message") as string,
+    })
+
   };
 
   return (
@@ -45,7 +42,7 @@ const Contact = () => {
       <form action={submitQuery}>
         <textarea
           name="message"
-          className="my-10 p-5 rounded-lg w-full "
+          className="my-10 p-5 rounded-lg w-full text-neutral-600"
           placeholder="Type your query here"
           disabled={!user}
           required
@@ -55,10 +52,10 @@ const Contact = () => {
         <div className="text-center">
           <button
             className="bg-[#514ED8] text-white w-full py-3 rounded-lg"
-            disabled={!user || isPending}
+            disabled={!user || mutation.isLoading}
             type="submit"
           >
-            {isPending ? "Submitting..." : "Submit Query"}
+            {mutation.isLoading ? "Submitting..." : "Submit Query"}
           </button>
         </div>
       </form>

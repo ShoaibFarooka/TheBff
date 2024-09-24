@@ -133,6 +133,7 @@ export const verifyPayment = async (ctx: ProtectedTRPCContext, input: VerifyPaym
     // empty cart
     const cartPromise = Cart.updateOne({ user: ctx.user!._id }, { items: [] });
 
+    // send notification email to admin
     await Promise.all([
       cartPromise,
       subscriptionPromise
@@ -175,8 +176,6 @@ export async function getRazorpayCustomer(options?: {
       // @ts-ignore - 0 is not working as expected
       fail_existing: "0",
     })) as unknown as Customers.RazorpayCustomer;
-
-    logger.log(customer);
 
     if (!customer || !customer.id) {
       throw new Error("Failed to create Razorpay user.");

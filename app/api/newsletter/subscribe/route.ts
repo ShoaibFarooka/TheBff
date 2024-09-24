@@ -1,7 +1,7 @@
 import { getQueryParams, isEmail } from "@/lib";
 import { connectDB } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
-import newsletterConfirmationTemplate from "@/lib/templates/newsletterConfirmation";
+import newsletterConfirmationTemplate from "@/lib/email/templates/newsletterConfirmation";
 import { NewsSubscriber } from "@/models";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";

@@ -6,27 +6,16 @@ import { UserRole, User as UserType } from "@/types/user";
 import bcrypt from "bcryptjs";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import nodemailer from "nodemailer";
 import { cache } from "react";
 import { baseUrl } from "./config";
+import { sendEmail, transporter } from "./email";
+import emailVerificationTemplate from "./email/templates/emailVerification";
+import { registrationNotification, welcomeEmailTemplate } from "./email/templates/user";
 import { devLog, getURL } from "./helpers";
 import { logger } from "./logger";
-import emailVerificationTemplate from "./templates/emailVerification";
+
 // methods to login, register, and authenticate users
-
 const secret = process.env.JWT_SECRET! || "secret";
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  // === add this === //
-  tls: { rejectUnauthorized: false },
-});
 
 // function to verify JWT token
 function verifyToken(token: string) {
@@ -187,10 +176,21 @@ export async function register({
       role: UserRole.USER,
       address
     });
-    await user.save();
+
+    const promises = []
+    promises.push(user.save()) // save user to db
 
     // send verification email
-    await sendVerifcationLinks({ method: "ew", email, phone: phone ?? "" });
+    promises.push(sendVerifcationLinks({ method: "ew", email, phone: phone ?? "" }))
+
+    // send notification to admin
+    promises.push(sendEmail({
+      to: process.env.EMAIL_USER!,
+      subject: "New User Registration",
+      html: registrationNotification({ name, email, phone: phone ?? "" })
+    }))
+
+    await Promise.all(promises)
 
     return { success: true };
   } catch (error) {
@@ -271,7 +271,18 @@ export async function verifyEmail(token: string) {
     if (!user) return { success: false, message: "User not found" };
 
     user.emailVerified = true;
-    await user.save();
+
+    const promises: Promise<any>[] = [user.save()];
+
+    // send welcome email
+    promises.push(sendEmail({
+      to: user.email,
+      subject: "Welcome to TheBff",
+      html: welcomeEmailTemplate({ name: user.name }),
+      text: `Welcome to TheBff, ${user.name}`
+    }))
+
+    await Promise.all(promises);
 
     return { success: true, message: "Email verified successfully" };
   } catch (error: any) {
