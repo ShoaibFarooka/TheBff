@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { TransitionStartFunction } from "react";
 import { twMerge } from "tailwind-merge";
- 
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -29,4 +29,19 @@ export async function getServerData<T = any>(startTransition: TransitionStartFun
 // sleep
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
-} 
+}
+
+
+// a function which takes a promise or an async function and returns awaited result, with proper generic type
+// returns [result, error] tuple, where one of them will be null
+
+export async function safePromise<T, E = Error>(
+  promiseOrFn: Promise<T> | (() => Promise<T>)
+): Promise<[T, null] | [null, E]> {
+  try {
+    const result = await (typeof promiseOrFn === "function" ? promiseOrFn() : promiseOrFn);
+    return [result, null];
+  } catch (error) {
+    return [null, error as E];
+  }
+}
