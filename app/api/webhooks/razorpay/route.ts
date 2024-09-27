@@ -3,6 +3,7 @@ import connectDB from "@/lib/dbConnection";
 import { sendEmail } from "@/lib/email";
 import { adminNotificationTemplate, subscriptionConfirmationTemplate } from "@/lib/email/templates/subscriptionConfirmation";
 import { logger, prodLogger } from "@/lib/logger";
+import { safePromise } from "@/lib/utils";
 import { Order, Subscription, User } from "@/models";
 import { Plan as PlanType, SubscriptionStatus, Subscription as SubscriptionType } from "@/types/subscription";
 import { User as UserType } from "@/types/user";
@@ -75,8 +76,12 @@ export async function POST(req: Request) {
                 order,
                 { upsert: true }
             ),
-            sendConfirmationEmails(order, meta)
         ])
+
+        // send confirmation emails
+        safePromise( // ignore errors
+            sendConfirmationEmails(order, meta)
+        )
 
         return new Response("Webhook processed", { status: 200 });
     } catch (error) {
