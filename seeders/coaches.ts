@@ -62,15 +62,15 @@ const coaches: CoachType[] = [
         calendarLink: "https://calendly.com",
         programIds: ["yoga.online-personal-yoga-classes", "yoga.online-group-yoga-classes", "yoga.in-home-personal-yoga-classes", "yoga.in-home-group-yoga-classes", "yoga.yoga-plan"],
         calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI1OTY1MjEwLCJqdGkiOiIzY2Y3NWY4MS05YTQ2LTQzYWEtOTdiNi1jOWU4MDYzN2Q5NmIiLCJ1c2VyX3V1aWQiOiI2YzI0Yjk1Yy02ZDBiLTRlYTAtOGFkMC04MzVlODEwM2NmNGUifQ.EIdHcelUl04Y5gl3XOLQ3LmuffSHCoyM1vx6nHn-a3OjYNOnS4NBln0YKFoK8iPYqeKjJ5MuARiRtNU7Y6ASCw'
-    },
-    {
-        name: "Ashif Khan",
-        email: 'gaggisidhugaggi95@gmail.com',
-        profileImage: "/assets/coach_ashif.png",
-        calendarLink: "https://calendly.com",
-        programIds: ["online-gym-training.cardio", "online-gym-training.posture-correction", "online-gym-training.workout-plan", "in-home-training.in-home-fitness"],
-        calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI1OTY1MjEwLCJqdGkiOiIzY2Y3NWY4MS05YTQ2LTQzYWEtOTdiNi1jOWU4MDYzN2Q5NmIiLCJ1c2VyX3V1aWQiOiI2YzI0Yjk1Yy02ZDBiLTRlYTAtOGFkMC04MzVlODEwM2NmNGUifQ.EIdHcelUl04Y5gl3XOLQ3LmuffSHCoyM1vx6nHn-a3OjYNOnS4NBln0YKFoK8iPYqeKjJ5MuARiRtNU7Y6ASCw'
-    },
+    }
+//     {
+//         name: "Ashif Khan",
+//         email: 'gaggisidhugaggi95@gmail.com',
+//         profileImage: "/assets/coach_ashif.png",
+//         calendarLink: "https://calendly.com",
+//         programIds: ["online-gym-training.cardio", "online-gym-training.posture-correction", "online-gym-training.workout-plan", "in-home-training.in-home-fitness"],
+//         calendlyToken: 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI1OTY1MjEwLCJqdGkiOiIzY2Y3NWY4MS05YTQ2LTQzYWEtOTdiNi1jOWU4MDYzN2Q5NmIiLCJ1c2VyX3V1aWQiOiI2YzI0Yjk1Yy02ZDBiLTRlYTAtOGFkMC04MzVlODEwM2NmNGUifQ.EIdHcelUl04Y5gl3XOLQ3LmuffSHCoyM1vx6nHn-a3OjYNOnS4NBln0YKFoK8iPYqeKjJ5MuARiRtNU7Y6ASCw'
+//     },
 ]
 
 async function seedCoaches() {
