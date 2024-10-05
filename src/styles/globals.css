@@ -1,0 +1,265 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+  }
+}
+:root {
+  --primary-color: 44, 99%, 68%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  :root {
+    --background: 265, 41%, 15%;
+    --foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 0% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --ring: 215 20.2% 65.1%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --ring: 217.2 32.6% 17.5%;
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    background: radial-gradient(130.69% 72.54% at 50% 50%, rgba(0, 0, 0, 0.35) 99.99%, rgba(0, 0, 0, 0.23) 100%), radial-gradient(229.67% 123.39% at 6.13% 14.64%, rgba(36, 37, 73, 0.2) 24.18%, rgba(36, 37, 73, 0.2) 70.49%), rgba(217, 217, 217, 0.01);
+  }
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.container > * + * {
+  margin-top: 1rem;
+}
+
+.container > * + *:last-child {
+  margin-bottom: 1rem;
+}
+
+ul li {
+  margin-right: 40px;
+  margin-left: 40px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px; /* Adjust the width as needed */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #888;
+  width: 10px; /* Adjust the background color as needed */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #F2BD4D; /* Adjust the thumb color as needed */
+  border-radius: 4px;
+  /* Adjust the border-radius as needed */
+}
+
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: 0;
+  scrollbar-color: #888 #f1f1f1;
+  /* Adjust the thumb and track colors as needed */
+}
+
+.zoomIn {
+  animation-name: zoomIn;
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+  transform-origin: 100% 100%;
+}
+
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.zoomOut {
+  animation-name: zoomOut;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+  transform-origin: 100% 100%;
+}
+
+@keyframes zoomOut {
+  0% {
+    opacity: 1;
+    transform: none;
+    -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(24px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+}
+.animate-slideInRight {
+  animation: slideInRight 0.3s both;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.3s both;
+}
+
+.animate-slideOutRight {
+  animation: slideOutRight 0.3s both;
+}
+
+.animate-vibrate {
+  animation: vibrate 2s infinite;
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideOutRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes vibrate {
+  0% {
+    transform: translateX(0);
+  }
+  5% {
+    transform: translateX(15px);
+    scale: 1.1;
+  }
+  10% {
+    transform: translateX(-15px);
+    scale: 1;
+  }
+  15% {
+    transform: translateX(15px);
+    scale: 1.1;
+  }
+  20% {
+    transform: translateX(-15px);
+    scale: 1.05;
+  }
+  25% {
+    transform: translateX(0);
+    scale: 1;
+  }
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+@media (min-width: 768px) {
+  .navigation-button {
+    display: flex;
+  }
+}
+.tooltip:hover .tooltip-text {
+  opacity: 1;
+  bottom: 100%;
+}
+
+.instagram-logo-gradient {
+  background-image: linear-gradient(45deg, #f09433 0%, #e6675c 25%, #df4786 50%, #d81b60 75%, #d1003a 100%);
+}
+
+.gmail-logo-gradient {
+  background: linear-gradient(to right, #D14836, #F9CA24, #FFE082, #BBDEFB, #4895EF);
+}/*# sourceMappingURL=globals.css.map */

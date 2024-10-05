@@ -1,0 +1,52 @@
+[
+  {
+    "_id": "66dd56dc7f51456415b1fa85",
+    "code": "TEST",
+    "description": "Test coupon",
+    "discount": 10,
+    "type": "percentage",
+    "active": false,
+    "expiryDate": "2025-12-31T00:00:00.000Z",
+    "updatedAt": "2024-09-26T09:58:19.333Z",
+    "id": "66dd56dc7f51456415b1fa85"
+  },
+  {
+    "_id": "66e18da35b292a75c6d2c2d5",
+    "code": "GURPREET10",
+    "description": "10% discount",
+    "discount": 10,
+    "type": "percentage",
+    "expiryDate": "2025-12-31T00:00:00.000Z",
+    "active": true,
+    "createdAt": "2024-09-11T12:31:31.688Z",
+    "updatedAt": "2024-09-26T09:58:19.334Z",
+    "__v": 0,
+    "id": "66e18da35b292a75c6d2c2d5"
+  },
+  {
+    "_id": "66f512c6d7b9d7aad6e9a9de",
+    "code": "GURPREET53",
+    "description": "53% discount",
+    "discount": 53.84,
+    "type": "percentage",
+    "expiryDate": "2025-12-31T00:00:00.000Z",
+    "active": true,
+    "createdAt": "2024-09-26T07:52:38.385Z",
+    "updatedAt": "2024-09-26T09:58:19.334Z",
+    "__v": 0,
+    "id": "66f512c6d7b9d7aad6e9a9de"
+  },
+  {
+    "_id": "66f52e4fe38fb11040cca663",
+    "code": "GURPREET57",
+    "description": "57% discount",
+    "discount": 57,
+    "type": "percentage",
+    "expiryDate": "2025-12-31T00:00:00.000Z",
+    "active": true,
+    "createdAt": "2024-09-26T09:50:07.730Z",
+    "updatedAt": "2024-09-26T09:58:19.334Z",
+    "__v": 0,
+    "id": "66f52e4fe38fb11040cca663"
+  }
+]

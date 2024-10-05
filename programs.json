@@ -1,0 +1,300 @@
+[
+  {
+    "_id": "657d6794486bebbd7d86f66f",
+    "id": "dance",
+    "name": "Dance",
+    "title": "Personalized Online Dance Classes to Get You Moving!",
+    "description": "Looking for a fun workout alternative? Try our online dance classes! You can get fit, learn different styles, or prepare for your wedding dance. It's really cool! Don't just take our word for it - come join us and see for yourself just how fun our classes are!",
+    "image": "/images/stock/dance.jpeg",
+    "caption": "our fun, easy and upbeat dance classes perfect for everyone! We Help you feel fabulous as you learn to dance.",
+    "featureTitle": "Choose Your Dance Motivation",
+    "featureDescription": "Find your reason to dance and crush those fitness goals with the best live onlinedance classes in the town",
+    "features": [
+      {
+        "id": "1",
+        "name": "Fitness Dance Workout",
+        "title": "Work Outs that Don’t Feel like Work",
+        "description": "Enroll in live fitness dance classes to be in your best shape. Let our internationally certified trainers guide you through the perfect workout with our fun and energetic online live dance classes. Try Zumba or Bhangra, weight loss or body tone, aerobics, or stretching; there really is something for everyone here!",
+        "image": "/images/programs/dance-1.jpeg",
+        "_id": "657d6794486bebbd7d86f670"
+      },
+      {
+        "id": "2",
+        "name": "Versatile Dance Styles",
+        "title": "Personalized Dance Routines to Suit Your Needs.",
+        "description": "Why limit yourself to a stuffy studio when you can dance anywhere you want? Get your dance training from the comfort of your own home (or your favorite park, if thats your thing). Join our electrifying salsa, hip-hop, ballroom, jazz, Bollywood, freestyle, and countless other dance classes! Choose from our range of dance classes to find the right dance style that’s best for you.",
+        "image": "/images/programs/dance-2.jpeg",
+        "_id": "657d6794486bebbd7d86f671"
+      },
+      {
+        "id": "3",
+        "name": "Versatile Dance Styles",
+        "title": "Learn Iconic Hook Steps for Wedding Dance Performance at Home",
+        "description": "Wanna make your big day or your bestie's even more special with akiller dance performance? Let us help! Learn from the best wedding choreographers and rock the party with Bollywood, couple, sangeet, haldi, mehendi, reception, or group wedding performances! Time to slay the party with your dance moves!",
+        "image": "/images/programs/dance-3.jpeg",
+        "_id": "657d6794486bebbd7d86f672"
+      }
+    ],
+    "createdAt": "2023-12-16T09:02:12.296Z",
+    "updatedAt": "2023-12-16T09:02:12.296Z"
+  },
+  {
+    "_id": "657d6794486bebbd7d86f673",
+    "id": "gym",
+    "name": "At-Gym",
+    "title": "Upgrade Your Gym Game with An Extra Dose Of Power",
+    "description": "Sweat now, shine later. We offer it all - Strength training, HIIT, Functional Fitness, Crossfit, Bodybuilding, and customized workout plans. These high-energy, high-intensity online fitness classes will take your usual gym routine to the next level! Get ready to crush your goals with our expert guidance.",
+    "image": "/images/stock/gym.jpeg",
+    "caption": "No more excuses for not having an expert trainer at your gym. Get online training from industry-accredited and certified trainers!",
+    "featureTitle": "Meet the Ultimate At-Gym Companion",
+    "featureDescription": "Are you a fitness newbie or a seasoned pro? Either way, we have classes to help you reach your goals and unleash your inner athlete!",
+    "features": [
+      {
+        "id": "1",
+        "name": "Online Strength Training Classes",
+        "title": "Flex Those Muscles with BFF’s Inclusive Resistance Training Programs",
+        "description": "Looking to sculpt those muscles and increase your strength? Our online strength training classes are the perfect solution for anyone looking to take their fitness to the next level. BFF’s fitness coaches will guide you with resistance training exercises based on your preferences, goals, and fitness level.",
+        "image": "/images/programs/atgym-1.jpeg",
+        "_id": "657d6794486bebbd7d86f674"
+      },
+      {
+        "id": "2",
+        "name": "HIIT Training and Exercises",
+        "title": "Get fit, Stay lit: The Intensive Path to a Stronger You!",
+        "description": "HIIT workouts are all the rage these days, but they can be extremely risky if you do not have the right equipment and a qualified trainer by your side. No matter what your fitness level is, our professionals will guide you and keep you safe so that you can achieve your health, fitness, and performance goals. Join the club and let’s HIIT it!",
+        "image": "/images/programs/atgym-2.jpeg",
+        "_id": "657d6794486bebbd7d86f675"
+      },
+      {
+        "id": "3",
+        "name": "Functional Strength Training",
+        "title": "Strong Inside and Out: Build Resilience for a Better Tomorrow",
+        "description": "Tired of feeling weak and prone to injuries from traditional workouts? BFF’s Functional strength training targets real-life movements, flexibility, and agility, and equips you with the skills you need to tackle daily challenges. Plus, it reduces injury risk, so why settle for isolated muscle workouts when you can transform your life? Try our online functional training program now!",
+        "image": "/images/programs/atgym-3.jpeg",
+        "_id": "657d6794486bebbd7d86f676"
+      },
+      {
+        "id": "4",
+        "name": "CrossFit Training",
+        "title": "No more gym hour restrictions or lack of motivation - reach your fitness goals like never before!",
+        "description": "Not seeing progress in your workouts despite hard training? Get some extra motivation, expert guidance, and personalized workouts through BFF’s integrated CrossFit online training system. With daily workouts specifically tailored to your goals, you’ll see the results you’ve been waiting for in no time. Stop putting off your fitness routine and sign up today!",
+        "image": "/images/programs/atgym-4.jpeg",
+        "_id": "657d6794486bebbd7d86f677"
+      },
+      {
+        "id": "5",
+        "name": "Sort Your Daily Workout Routine",
+        "title": "Guidance like None Other: Healthy Lifestyle is No Longer a Struggle",
+        "description": "Our fitness coach tracks your fitness as it happens so you can feel good about yourself and see results all day. Get the best workout tips and advice to develop an effective fitness strategy.",
+        "image": "/images/programs/atgym-5.jpeg",
+        "_id": "657d6794486bebbd7d86f678"
+      }
+    ],
+    "createdAt": "2023-12-16T09:02:12.297Z",
+    "updatedAt": "2023-12-16T09:02:12.297Z"
+  },
+  {
+    "_id": "657d6794486bebbd7d86f679",
+    "id": "home-gym",
+    "name": "At-Home",
+    "title": "No Time for Gym? Join Our Live Online Fitness Workouts",
+    "description": "Join our live interactive fitness workout classes to get fit without leaving your house. Choose from a variety of options including bodyweight training, resistance band training, HIIT, Pilates, and personalized workout plans tailored to your fitness goals.",
+    "image": "/images/stock/home-gym.jpeg",
+    "caption": "No time to workout? BFF's home program keeps you fit without sacrificing your schedule.",
+    "featureTitle": "Personalized Home Workouts",
+    "featureDescription": "No Gym, No Problem: Get world-class training online in the comfort of your home.",
+    "features": [
+      {
+        "id": "1",
+        "name": "Body Weight Training at Home",
+        "title": "Convenient and Cost-Effective Way to Exercise Anywhere, Anytime",
+        "description": "To develop strength & resistance, you don’t need a gym. Just your body will do! Strength training is the secret to a healthy body. With BFF’s strength training workout at home, you don’t need to buy expensive equipment or gym fees. Transform your physique and get the muscles you've been dreaming of. No more excuses, no more laziness - BFF’s online strength training at home got you covered!",
+        "image": "/images/programs/inhome-1.jpeg",
+        "_id": "657d6794486bebbd7d86f67a"
+      },
+      {
+        "id": "2",
+        "name": "HIIT Training/Workout at Home",
+        "title": "Stop Putting Yourself at Risk without Proper HIIT Training! ",
+        "description": "Want to burn fat, build muscle, and get in shape fast? HIIT training is where it's at! But let's be real, it's not for the faint of heart. Luckily, we've got you covered with customized programs and group training options that cater to your level of fitness and injury recovery. And the best part? You can sweat it out in the comfort of your own home! So, what are you waiting for? Join us now and let's HIIT it together!",
+        "image": "/images/programs/inhome-2.jpeg",
+        "_id": "657d6794486bebbd7d86f67b"
+      },
+      {
+        "id": "3",
+        "name": "Resistance Band Workouts at Home",
+        "title": "Frustrated with Lack of Weights at Home? Join Us for a Versatile Body Workout!",
+        "description": "Resistance band training is one of the most versatile and effective methods for enhancing athletic performance, building strength, and improving mobility. Our online resistance band workout program is ideal for people of all ages and fitness levels, especially those who don't have access to weights at home or work.",
+        "image": "/images/programs/inhome-3.jpeg",
+        "_id": "657d6794486bebbd7d86f67c"
+      },
+      {
+        "id": "4",
+        "name": "Online Pilates Classes at Home",
+        "title": "Ready to Break Up with Boring Workouts? Join Our Pilates Exercise and Discover a New You",
+        "description": "If you are looking for an at-home online pilates workout, this program is for you. Our virtual pilates training will help you build strength and endurance while improving your balance and core stability. Bid adios to Pilates DVDs and webinars, and take make way for an amazing body with BFF’s Pilates onlineworkouts!",
+        "image": "/images/programs/inhome-4.jpeg",
+        "_id": "657d6794486bebbd7d86f67d"
+      },
+      {
+        "id": "5",
+        "name": "Personalised Home Workout Routine",
+        "title": "Best Workout Plan Exists and We Can Prove it!",
+        "description": "The right diet and exercise plan can help you feel better about yourself. With our experts by your side, you can become a more confident and effective version of yourself. Get your doubts cleared on fitness, and diet, talk about your goals, or ask for a home workout plan. Our trainers and nutritionists believe in result-oriented guidance. All you need to do is, Ask!",
+        "image": "/images/programs/inhome-5.jpeg",
+        "_id": "657d6794486bebbd7d86f67e"
+      }
+    ],
+    "createdAt": "2023-12-16T09:02:12.297Z",
+    "updatedAt": "2023-12-16T09:02:12.297Z"
+  },
+  {
+    "_id": "657d6794486bebbd7d86f67f",
+    "id": "yoga",
+    "name": "Yoga",
+    "title": "BFF - Your Personal Yoga Mat Mate and Way to Mindfulness",
+    "description": "Want to reduce stress and stay mindful while you exercise? Try our online live yoga classes that focus on the full mind-body connection. Whether you're a seasoned yogi or a newbie to the mat, our interactive yoga classes offer something for everyone. Choose your type as Hatha, Vinyasa, Ashtanga, or Power Yoga or simply let us help you find it!",
+    "image": "/images/stock/yoga.jpeg",
+    "caption": "Want a holistic workout experience? Enroll in our online yoga sessions designed around your schedule! ",
+    "featureTitle": "Online Yoga Classes",
+    "featureDescription": "Yoga techniques that tap into the powers of meditation and wellness.",
+    "features": [
+      {
+        "id": "1",
+        "name": "Online Hatha Yoga Classes and Workouts",
+        "title": "The Purest Hatha Yoga Experience is Online. Join the Practice toDetoxify Your Body, Spirit, and Mind.",
+        "description": "BFF’s Hatha yoga classes are for people of all ages, body types, and experience levels. Train with the finest yoga trainers and coaches in your city, all from your home. After all, you deserve it! Combine our live yoga workouts with a healthy diet and lifestyle changes and you could be feeling amazing in no time!",
+        "image": "/images/programs/yoga-1.jpeg",
+        "_id": "657d6794486bebbd7d86f680"
+      },
+      {
+        "id": "2",
+        "name": "Live Vinyasa Yoga Sessions",
+        "title": "Wanna Feel Great? Try BFF’s Vinyasa Yoga Classes.",
+        "description": "Vinyasa Yoga, or as some like to call it \"flow yoga\", is like a graceful dance between poses where you seamlessly transition from one posture to the next, making it a style that truly flows. When you feel the energy of your power breath and the strength of your poses flowing throughout your entire being, you will immediately want to return to the mat. By the way, it’s great for weight loss!",
+        "image": "/images/programs/yoga-2.jpeg",
+        "_id": "657d6794486bebbd7d86f681"
+      },
+      {
+        "id": "3",
+        "name": "Online Live Ashtanga Yoga Classes",
+        "title": "Join Any Class, Any Day at Your Convenience.",
+        "description": "Want to improve your strength and stamina but feel too lazy to hit the gym? Our Ashtanga yoga classes will set the tone for your body. Our classes are guided by the coolest yoga practitioners, who guide you through your posture and breathing. Why wait? Join the way to find peace and calm in your busy life with our live and interactive yoga classes.",
+        "image": "/images/programs/yoga-3.jpeg",
+        "_id": "657d6794486bebbd7d86f682"
+      },
+      {
+        "id": "4",
+        "name": "Online Power Yoga Sessions",
+        "title": "Power yoga is not about flexibility, it's about strength and balance",
+        "description": "Battling the daily grind can feel like a full-time job. But, worry not! Our power yoga classes are live, interactive, and fun. Each session is a unique experience - changing the sequence of postures, deepening your practice, and helping you connect your mind and body. You'll enjoy a sweat-soaked and relaxing class with great people in the BFF community.",
+        "image": "/images/programs/yoga-4.jpeg",
+        "_id": "657d6794486bebbd7d86f683"
+      },
+      {
+        "id": "5",
+        "name": "General Yoga Guidance and Support",
+        "title": "Post your queries and get help from our experts to pick the best yoga routine for you.",
+        "description": "Whether you are a beginner or advanced, our experts are here to help you learn the best yoga practices. We have a wide variety of classes in our playlists on an array of topics including cardio, strength, and core.",
+        "image": "/images/programs/yoga-5.jpeg",
+        "_id": "657d6794486bebbd7d86f684"
+      }
+    ],
+    "createdAt": "2023-12-16T09:02:12.297Z",
+    "updatedAt": "2023-12-16T09:02:12.297Z"
+  },
+  {
+    "_id": "657d6794486bebbd7d86f685",
+    "id": "meditation",
+    "name": "Meditation",
+    "title": "Find your Zen, Anytime, Anywhere with Our Meditation Classes",
+    "description": "Need a break from the daily grind? Our guided meditation classes offer a sanctuary of serenity and relaxation. Increase your focus and improve your overall well-being. Choose your starting point - beginner, intermediate, or advanced and Let BFF’s experts guide you to a healthier, more purposeful future.",
+    "image": "/images/stock/meditation.jpeg",
+    "caption": "Become your better self with our all-rounder live and interactive meditation classes!",
+    "featureTitle": "Online Meditation Classes",
+    "featureDescription": "Relax your mind and calm your emotions with a free guided meditation that you can practice anywhere, anytime",
+    "features": [
+      {
+        "id": "1",
+        "name": "Meditation Classes for Beginners",
+        "title": "The Key to Meditation is Not Only Focus but Good Meditation Coaches and Instructors!",
+        "description": "Whether you’re a complete beginner or have tried meditation in the past, our online meditation sessions will make you feel calm, composed, and full of positivity. Choose group classes or one-on-one sessions at your convenience and transform yourself spiritually.",
+        "image": "/images/programs/meditation-1.jpeg",
+        "_id": "657d6794486bebbd7d86f686"
+      },
+      {
+        "id": "2",
+        "name": "Online meditation classes",
+        "title": "Experience the Next Level of Meditation And Mindfulness with BFF!",
+        "description": "Stressed out and short on time? Find peace and relaxation with our online meditation program. Our fast, easy, and fun classes help you master physical, mental, and spiritual well-being, even during the busiest times of the day. Start your journey to stress relief today!",
+        "image": "/images/programs/meditation-2.jpeg",
+        "_id": "657d6794486bebbd7d86f687"
+      },
+      {
+        "id": "3",
+        "name": "Meditation Classes for Advanced Learners",
+        "title": "You are a meditation junkie, but you can only go so far with a book, candle, and yoga mat. You need us!",
+        "description": "Join us for a premium experience that you’ll never forget. We will help you develop an enriching and rewarding meditation practice by guiding you through a variety of techniques so that you can focus your energies on becoming centered and achieving your goals.",
+        "image": "/images/programs/meditation-3.jpeg",
+        "_id": "657d6794486bebbd7d86f688"
+      }
+    ],
+    "createdAt": "2023-12-16T09:02:12.298Z",
+    "updatedAt": "2023-12-16T09:02:12.298Z"
+  },
+  {
+    "_id": "657d6794486bebbd7d86f689",
+    "id": "nutrition",
+    "name": "Nutrition",
+    "title": "Improve Your Gut Health - Consult Experts on Diet & Nutrition",
+    "description": "Need some help with lifestyle changes? Want to say goodbye to fad diets and quick fixes? We know it’s a battle! But your health is our priority. We're here to help you with weight management, PCOS (PCOD) relief plan, psoriasis relief, thyroid relief, general nutrition guidance, and more.",
+    "image": "/images/stock/nutrition.jpeg",
+    "caption": "Your body has a unique nutrition profile, just like your fingerprint. We’ll help you find the perfect meal plan for your unique body.",
+    "featureTitle": "Customized Diet and Nutrition Plans",
+    "featureDescription": "Let our expert dieticians and nutritionist help you design a diet that works out for you",
+    "features": [
+      {
+        "id": "1",
+        "name": "Online Weight Loss/Weight Gain Programs",
+        "title": "You can’t lose/gain weight without eating right. Simplify weight management with us.",
+        "description": "Tired of fad diets that promise the world but never deliver? With our customized personalized diet plans and workouts, we can help you manage your weight be it- weight loss or weight gain with no hassle. Our health coach will work with you to develop a healthy menu plan and exercise routine, providing ongoing support and motivation throughout your program.",
+        "image": "/images/programs/nutrition-1.jpeg",
+        "_id": "657d6794486bebbd7d86f68a"
+      },
+      {
+        "id": "2",
+        "name": "PCOS/PCOD Diet Plans",
+        "title": "It's time to take your health and fitness seriously! Manage your PCOS condition with a diet plan made just for you!.",
+        "description": "PCOS can be a very hard condition to deal with. Not only does it cause many unwanted symptoms, but it also makes it harder for you to lose weight and stay fit. This is where we can make a real difference! We take a personalized approach to your needs, tailoring our workouts and diet plans based on your experience, dedication level, health concerns (dietary restrictions or allergies), and long-term goals.",
+        "image": "/images/programs/nutrition-2.jpeg",
+        "_id": "657d6794486bebbd7d86f68b"
+      },
+      {
+        "id": "3",
+        "name": "Psoriasis Diet Program",
+        "title": "Soothe Your Skin And Satisfy Your Appetite With Our Psoriasis DietPlan",
+        "description": "One of the most effective ways to deal with psoriasis is through a proper diet. Eating isn't easy, but knowing what to eat, when to eat, and how much to eat is even harder! With our personalized diet plans, you get support aimed at achieving relief, regaining your confidence, and living your best life. Now kick the discomfort and pain out of your life and ooze confidence with BFF!",
+        "image": "/images/programs/nutrition-3.jpeg",
+        "_id": "657d6794486bebbd7d86f68c"
+      },
+      {
+        "id": "4",
+        "name": "Thyroid Diet Chart",
+        "title": "Thyroid Got You Down? Let Our Diet Plan Pick You Up!",
+        "description": "We know what it's like to feel exhausted, sluggish, and unable to lose weight. But if you're experiencing thyroid issues like hypothyroidism or hyperthyroidism, managing your symptoms doesn't have to be difficult - especially with a customized diet plan. Get access to the best dieticians and nutritionists in the industry to control your thyroid with a specialized meal plan.",
+        "image": "/images/programs/nutrition-4.jpeg",
+        "_id": "657d6794486bebbd7d86f68d"
+      },
+      {
+        "id": "5",
+        "name": "Diet and Nutrition Plans",
+        "title": "Discover that one diet plan that will change your life",
+        "description": "Nutrition and fitness should be enjoyable, but it can be hard to figure out how to put a plan together that works for you. Diet plans are a great way to reach your goals faster. These goals can be related to weight issues, chronic health conditions, or optimizing your nutrition. Get a budget-friendly way to a healthier lifestyle with our expert guidance.",
+        "image": "/images/programs/nutrition-5.jpeg",
+        "_id": "657d6794486bebbd7d86f68e"
+      }
+    ],
+    "createdAt": "2023-12-16T09:02:12.298Z",
+    "updatedAt": "2023-12-16T09:02:12.298Z"
+  }
+]

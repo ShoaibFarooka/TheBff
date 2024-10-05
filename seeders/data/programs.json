@@ -1,0 +1,260 @@
+[
+    {
+        "id": "dance",
+        "name": "Dance Classes",
+        "description": "Our fun, easy, and upbeat dance classes are perfect for everyone. We help you feel fabulous as you learn to dance!",
+        "image": "/images/stock/dance.jpeg",
+        "featureTitle": "Choose Your Dance Motivation",
+        "featureDescription": "Find your reason to dance and crush those fitness goals with the best live online dance classes in the town",
+        "features": [
+            {
+                "id": "online-fitness",
+                "title": "Online Fitness",
+                "heading": "Work Outs that Don’t Feel like Work",
+                "subheading": "Fitness Dance Workout",
+                "description": "Enroll in live fitness dance classes to be in your best shape. Let our internationally certified trainers guide you through the perfect workout with our fun and energetic online live dance classes. Try Zumba or Bhangra, weight loss or body tone, aerobics, or stretching; there really is something for everyone here!",
+                "image": "/images/programs/online-fitness-dance-classes.jpeg"
+            },
+            {
+                "id": "in-home-fitness",
+                "title": "In-home Fitness",
+                "heading": "Work Outs that Don’t Feel like Work",
+                "subheading": "Fitness Dance Workout",
+                "description": "Enroll in in-home fitness dance classes to be in your best shape. Let our internationally certified trainers guide you through the perfect workout with our fun and energetic in-home dance classes. Try Zumba or Bhangra, weight loss or body tone, aerobics, or stretching; there really is something for everyone here!",
+                "image": "/images/programs/in-home-dance-fitness.jpeg"
+            },
+            {
+                "id": "online-dance-styles",
+                "title": "Online Dance Styles",
+                "heading": "Personalized Dance Routines to Suit Your Needs.",
+                "subheading": "Versatile Dance Style",
+                "description": "Why limit yourself to a stuffy studio when you can dance anywhere you want? Get your dance training from the comfort of your own home (or your favorite park, if that's your thing). Join our electrifying salsa, hip-hop, ballroom, jazz, Bollywood, freestyle, and countless other dance classes! Choose from our range of dance classes to find the right dance style that’s best for you.",
+                "image": "/images/programs/online-dance-styles.jpeg"
+            },
+            {
+                "id": "in-home-dance-styles",
+                "title": "In-home Dance Styles",
+                "heading": "Personalized Dance Routines to Suit Your Needs.",
+                "subheading": "Versatile Dance Style",
+                "description": "Why limit yourself to a stuffy studio when you can dance anywhere you want? Get your dance training from the comfort of your own home (or your favorite park, if that's your thing). Join our electrifying salsa, hip-hop, ballroom, jazz, Bollywood, freestyle, and countless other dance classes! Choose from our range of dance classes to find the right dance style that’s best for you.",
+                "image": "/images/programs/in-home-dance-styles.jpeg"
+            },
+            {
+                "id": "wedding-choreography",
+                "title": "Wedding Choreography",
+                "heading": "Learn Iconic Hook Steps for Wedding Dance Performance at Home",
+                "subheading": "Indian Wedding Dance Choreography",
+                "description": "Wanna make your big day or your bestie's even more special with a killer dance performance? Let us help! Learn from the best wedding choreographers and rock the party with Bollywood, couple, sangeet, haldi, mehendi, reception, or group wedding performances! Time to slay the party with your dance moves!",
+                "image": "/images/programs/wedding-dance-classes.jpeg"
+            }
+        ],
+        "coaches": []
+    },
+    {
+        "id": "online-gym-training",
+        "name": "Online Gym training",
+        "description": "No more excuses for not having an expert trainer at your gym. Get online training from industry-accredited and certiﬁed trainers!",
+        "image": "/images/stock/gym.jpeg",
+        "featureTitle": "Meet the Ultimate At-Gym Companion",
+        "featureDescription": "Are you a ﬁtness newbie or a seasoned pro? Either way, we have classes to help you reach your goals and unleash your inner athlete!",
+        "features": [
+            {
+                "id": "cardio",
+                "title": "Cardio",
+                "heading": "Get Your Heart Racing Anytime, Anywhere!",
+                "subheading": "Online Personalized Cardio Training",
+                "description": "Stay active and improve your cardiovascular health with our online cardio sessions. From HIIT to low-impact exercises, our trainers provide customized routines to suit your fitness level. Whether your goal is weight loss, endurance building, or heart health, you can achieve it with personalized attention, even at home.",
+                "image": "/images/programs/cardio.jpeg"
+            },
+            {
+                "id": "posture-correction",
+                "title": "Posture Correction",
+                "heading": "Realign Your Body for Optimal Health",
+                "subheading": "Online Posture Correction Training",
+                "description": "Whether you’re dealing with slouching, back pain, or poor alignment, our online posture correction sessions help you develop better habits. With personalized routines and expert guidance, we target the key areas that affect your posture, leading to a stronger core and improved body alignment.",
+                "image": "/images/programs/posture-correction.jpeg"
+            },
+            {
+                "id": "workout-plan",
+                "title": "Workout Plan",
+                "heading": "Guidance like None Other: Healthy Lifestyle is No Longer a Struggle",
+                "subheading": "Sort Your Daily Workout Routine",
+                "description": "Plan your workout with experts for faster results. Our ﬁtness coach tracks your ﬁtness as it happens so you can feel good about yourself and see results all day. Get the best workout tips and advice to develop an effective ﬁtness strategy.",
+                "image": "/images/programs/workout-plan.jpeg"
+            }
+        ],
+        "coaches": []
+    },
+    {
+        "id": "yoga",
+        "name": "Yoga",
+        "description": "Want a holistic workout experience? Enroll in our yoga sessions designed around your schedule!",
+        "image": "/images/stock/yoga.jpeg",
+        "featureTitle": "Yoga Classes",
+        "featureDescription": "Yoga techniques that tap into the powers of meditation and wellness.",
+        "features": [
+            {
+                "id": "online-personal-yoga-classes",
+                "title": "Online Personal Yoga Classes",
+                "heading": "Yoga Designed for You",
+                "subheading": "One-on-One Virtual Yoga Classes",
+                "description": "Enjoy personalized yoga classes, designed to address your specific goals, whether it's flexibility, strength, or relaxation. Our online personal sessions allow you to connect with experienced instructors in real-time, ensuring guidance, corrections, and progress at your own pace.",
+                "image": "/images/programs/online-personal-yoga-class.jpeg"
+            },
+            {
+                "id": "online-group-yoga-classes",
+                "title": "Online Group Yoga Classes",
+                "heading": "Energizing Group Yoga Sessions",
+                "subheading": "Virtual Group Yoga Experience",
+                "description": "Whether you’re a beginner or a seasoned yogi, join a supportive community of like-minded individuals in our online group classes. With real-time guidance from experienced instructors, these sessions cater to different levels, offering modifications and challenges to suit everyone.",
+                "image": "/images/programs/online-group-yoga-classes.jpeg"
+            },
+            {
+                "id": "in-home-personal-yoga-classes",
+                "title": "In-home Personal Yoga Classes",
+                "heading": "Personalized Yoga, Wherever You Are",
+                "subheading": "Private In-Home Yoga Instruction",
+                "description": "Practice yoga on your terms with one-on-one in-home yoga sessions. Our certified instructors bring customized yoga routines to your home, helping you progress at your own pace while focusing on your specific needs—whether it’s relaxation, flexibility, or strength training.",
+                "image": "/images/programs/in-home-personal-yoga-classes.jpeg"
+            },
+            {
+                "id": "in-home-group-yoga-classes",
+                "title": "In-home Group Yoga Classes",
+                "heading": "Group Yoga in Your Living Room",
+                "subheading": "In-Home Yoga for Friends and Family",
+                "description": "Gather your loved ones for an immersive and energizing yoga experience. Our instructors tailor each session to accommodate all skill levels, ensuring everyone gets the support they need. Enjoy the flexibility and convenience of hosting a yoga class in your own space.",
+                "image": "/images/programs/in-home-yoga-group-classes.jpeg"
+            },
+            {
+                "id": "yoga-plan",
+                "title": "Yoga Plan",
+                "heading": "A Yoga Plan that Fits Your Life",
+                "subheading": "Tailored Yoga Programs for Every Lifestyle",
+                "description": "Stay committed to your wellness journey with a personalized yoga plan. Our plans include a mix of personal and group sessions, with online or in-home options. Track your progress with ongoing support from our expert instructors, ensuring you continually improve and reach your goals.",
+                "image": "/images/programs/yoga-plan.jpeg"
+            }
+        ],
+        "coaches": []
+    },
+    {
+        "id": "nutrition",
+        "name": "Nutrition",
+        "description": "Your body has a unique nutrition proﬁle, just like your ﬁngerprint. We’ll help you ﬁnd the perfect meal plan for your unique body.",
+        "image": "/images/stock/nutrition.jpeg",
+        "featureTitle": "Customized Diet and Nutrition Plans",
+        "featureDescription": "Let our expert dieticians and nutritionist help you design a diet that works out for you.",
+        "features": [
+            {
+                "id": "weight-management",
+                "title": "Weight Management",
+                "heading": "You can’t lose/gain weight without eating right. Simplify weight management with us.",
+                "subheading": "Online Weight Loss/Weight Gain Programs",
+                "description": "Tired of fad diets that promise the world but never deliver? With our customized personalized diet plans and workouts, we can help you manage your weight be it- weight loss or weight gain with no hassle. Our health coach will work with you to develop a healthy menu plan and exercise routine, providing ongoing support and motivation throughout your program.",
+                "image": "/images/programs/weight-management-nutrition.jpeg"
+            },
+            {
+                "id": "diseases-relief-plan",
+                "title": "Diseases Relief Plan",
+                "heading": "Targeted Nutrition for Better Health",
+                "subheading": "Managing Lifestyle Diseases with Nutrition",
+                "description": "Whether you’re managing diabetes, thyroid imbalances, PCOD, high blood pressure, or cholesterol, our expert nutritionists provide customized diet plans to help you manage your condition. These plans focus on reducing symptoms, improving your overall health, and preventing disease progression. With the right balance of nutrients, you'll be better equipped to manage your health and feel your best every day.",
+                "image": "/images/programs/lifestyle-disease-nutrition.jpeg"
+            },
+            {
+                "id": "modelling-specific",
+                "title": "Modelling Specific",
+                "heading": "Nutrition for a Fit and Glowing You",
+                "subheading": "Personalized Diet for Models",
+                "description": "Whether you’re preparing for a photoshoot or maintaining your look, our modeling-specific diet plans focus on lean muscle retention, skin health, and overall vitality. Customized to your body type, our plans ensure you stay energized and healthy while achieving your aesthetic goals. Work with our experts to find a balance between looking great and feeling your best.",
+                "image": "/images/programs/modelling-specific-nutrition.jpeg"
+            },
+            {
+                "id": "sports-nutrition",
+                "title": "Sports Nutrition",
+                "heading": "Maximize Performance with the Right Nutrition",
+                "subheading": "Tailored Sports Nutrition Plans",
+                "description": "Achieve your athletic goals with a personalized sports nutrition plan. Whether you're an endurance athlete, strength trainer, or team player, our experts provide the nutritional strategies needed to boost performance and recovery. With a focus on proper fueling, hydration, and recovery, we ensure your body has the nutrients it needs to perform at its best.",
+                "image": "/images/programs/sports-nutrition.jpeg"
+            },
+            {
+                "id": "general-guidance",
+                "title": "General Guidance",
+                "heading": "Nourish Your Body, Feel Your Best",
+                "subheading": "Personalized Nutrition for Your Lifestyle",
+                "description": " Whether you’re looking to improve your daily eating habits or make healthier choices, our general nutrition guidance focuses on providing a well-rounded, balanced diet. From macronutrients to micronutrients, we offer advice on portion control, healthy eating patterns, and nutrient-dense foods that support energy, immune function, and overall well-being.",
+                "image": "/images/programs/general-guidance-nutrition.jpeg"
+            }
+        ],
+        "coaches": []
+    },
+    {
+        "id": "in-home-training",
+        "name": "In-Home Training",
+        "description": "Achieve your fitness goals without ever leaving your home. Our personalized in-home training sessions are designed to fit seamlessly into your lifestyle, bringing professional fitness coaching directly to your door.",
+        "image": "/images/stock/in-home.jpeg",
+        "featureTitle": "Choose Your Training Focus",
+        "featureDescription": "Find the perfect workout that aligns with your fitness goals with the best in-home training sessions available.",
+        "features": [
+            {
+                "id": "in-home-fitness",
+                "title": "Fitness",
+                "heading": "Workouts Tailored to You, Anytime, Anywhere",
+                "subheading": "Personalized Fitness Programs",
+                "description": "Get fit and stay motivated with our in-home training programs. Our certified trainers develop customized workout routines that cater to your specific needs, whether it's weight loss, muscle toning, or flexibility improvement. From strength training to HIIT, yoga to pilates, our in-home sessions ensure you have the guidance and accountability to reach your fitness goals.",
+                "image": "/images/programs/in-home-fitness-training.jpeg"
+            },
+            {
+                "id": "specialized-training",
+                "title": "Specialized Training",
+                "heading": "Focused Training for Targeted Results",
+                "subheading": "Specific Programs for Your Needs",
+                "description": "Want to improve your athletic performance, recover from an injury, or train for a specific event? Our in-home trainers specialize in various disciplines, offering targeted programs such as sports conditioning, rehabilitation exercises, prenatal and postnatal fitness, and more. Get the specialized attention you need, right in your living room.",
+                "image": "/images/programs/specialized-training-in-home.jpeg"
+            },
+            {
+                "id": "holistic-wellness",
+                "title": "Holistic Wellness",
+                "heading": "Integrating Mind and Body Wellness",
+                "subheading": "Comprehensive Health and Wellness Coaching",
+                "description": "Elevate your fitness journey with a holistic approach to wellness. Our in-home sessions include not only physical training but also guidance on nutrition, mental health, and lifestyle changes. From meditation and stress relief techniques to balanced diet planning, our trainers help you cultivate a healthy, sustainable lifestyle.",
+                "image": "/images/programs/holistic-wellness-in-home.jpeg"
+            }
+        ],
+        "coaches": []
+    },
+    {
+        "id": "sound-healing",
+        "name": "Sound Healing",
+        "description": "Immerse yourself in the restorative vibrations of sound. Our personalized sound healing sessions are crafted to harmonize your mind, body, and spirit, offering deep relaxation and healing from within.",
+        "image": "/images/stock/sound-healing.jpeg",
+        "featureTitle": "Choose Your Healing Experience",
+        "featureDescription": "Find the perfect sound healing session that resonates with your needs and restores balance in your life.",
+        "features": [
+            {
+                "id": "chakra-balancing",
+                "title": "Chakra Balancing",
+                "heading": "Realign Your Energies, Anywhere, Anytime",
+                "subheading": "Personalized Chakra Healing",
+                "description": "Restore your energy flow with our chakra balancing sessions. Our expert sound healers use instruments like singing bowls and tuning forks, attuned to specific frequencies, to help clear blockages and realign your energy centers. Whether you're seeking emotional release, spiritual connection, or physical healing, our sessions are designed to meet your unique needs.",
+                "image": "/images/programs/chakra-healing.jpeg"
+            },
+            {
+                "id": "deep-relaxation",
+                "title": "Deep Relaxation",
+                "heading": "Journey to Inner Peace",
+                "subheading": "Tailored Sound Healing Sessions",
+                "description": "Achieve profound relaxation and stress relief with our customized sound healing sessions. Using a combination of gongs, chimes, and other sound instruments, our healers create a therapeutic soundscape that calms the mind and body. Perfect for those seeking a deeper connection to their inner peace or needing relief from anxiety and tension.",
+                "image": "/images/programs/sound-bath.jpeg"
+            },
+            {
+                "id": "group-sound-healing",
+                "title": "Group Sound Healing",
+                "heading": "Harmonizing Mind, Body, and Spirit",
+                "subheading": "Comprehensive Sound Therapy",
+                "description": "Embrace a holistic approach to healing with our sound therapy sessions. Beyond just relaxation, we offer guidance on incorporating sound healing into your daily routine to support overall wellness. Whether it's meditation, chakra tuning, or energy clearing, our sessions are designed to help you maintain balance and harmony in every aspect of your life.",
+                "image": "/images/programs/group-sound-healing.jpeg"
+            }
+        ],
+        "coaches": []
+    }
+]

@@ -1,0 +1,98 @@
+// @import "~slick-carousel/slick/slick.css"; 
+// @import "~slick-carousel/slick/slick-theme.css";
+
+// $animationSpeed: s;
+
+// .slidetrack {
+//     animation: 10s scroll infinite linear;
+
+//     &::-webkit-scrollbar {
+//         display: none;
+//     }
+//     -ms-overflow-style: none;  /* IE and Edge */
+//     scrollbar-width: none;  /* Firefox */
+// }
+
+// @keyframes scroll {
+// 	0% { transform: translateX(0); }
+// 	100% { transform: translateX(calc(-250px * 7))}
+// }
+
+
+.customScroller {
+
+    /* width */
+    &::-webkit-scrollbar {
+        width: 5px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: var(--primary-color);
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: rgba(254, 210, 91);
+        border-radius: 100px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(254, 210, 91, 0.7);
+    }
+
+    
+}
+
+// dots in slick
+.dots {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+
+
+    li {
+        cursor: pointer;
+        transition: all 0.3s ease;        
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin: 5px !important;
+
+        .slick-active & {
+            background: #F2BD4D!important;
+        }
+
+        button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: transparent;
+
+            &:hover {
+                background: #F2BD4D!important;
+            }
+        }
+    }
+    
+    li.slick-active {
+        background: #F2BD4D!important;
+    }
+    li.slick-active > button {
+        background: #F2BD4D!important;
+    }
+    li > button {
+        background: rgba(255, 255, 255, 0.7);
+    }
+
+}

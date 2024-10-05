@@ -1,0 +1,967 @@
+{
+    "$schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_meta": {
+        "template_version": 0
+    },
+    "fixtures": [
+        {
+            "name": "prod_dance_standard",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Dance Standard",
+                "description": "Standard plan for dance",
+                "metadata": {
+                    "program": "dance"
+                },
+                "features": [
+                    {
+                        "name": "Create personal dashboard"
+                    },
+                    {
+                        "name": "Trainer Support"
+                    },
+                    {
+                        "name": "Rewards & Achievement's"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_dance_standard_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_dance_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 250000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_dance_standard_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_dance_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 450000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_dance_standard_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_dance_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 550000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_dance_standard",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "name": "prod_dance_premium",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Dance Premium",
+                "description": "Premium plan for dance",
+                "metadata": {
+                    "program": "dance",
+                    "featured": true
+                },
+                "features": [
+                    {
+                        "name": "All features in Stadard"
+                    },
+                    {
+                        "name": "Pause Membership on your ease"
+                    },
+                    {
+                        "name": "Custom Nutrition Plans"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_dance_premium_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_dance_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 350000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_dance_premium_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_dance_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 550000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_dance_premium_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_dance_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 650000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_dance_premium",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "_desc": "plan for gym",
+            "name": "prod_gym_standard",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Gym Standard",
+                "description": "Standard plan for gym",
+                "metadata": {
+                    "program": "gym"
+                },
+                "features": [
+                    {
+                        "name": "Create personal dashboard"
+                    },
+                    {
+                        "name": "Trainer Support"
+                    },
+                    {
+                        "name": "Rewards & Achievement's"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_gym_standard_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_gym_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 250000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_gym_standard_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_gym_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 450000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_gym_standard_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_gym_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 550000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_gym_standard",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "name": "prod_gym_premium",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Gym Premium",
+                "description": "Premium plan for gym",
+                "metadata": {
+                    "program": "gym",
+                    "featured": true
+                },
+                "features": [
+                    {
+                        "name": "All features in Stadard"
+                    },
+                    {
+                        "name": "Pause Membership on your ease"
+                    },
+                    {
+                        "name": "Custom Nutrition Plans"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_gym_premium_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_gym_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 350000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_gym_premium_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_gym_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 550000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_gym_premium_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_gym_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 650000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_gym_premium",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "_desc": "plan for Home Gym",
+            "name": "prod_home_gym_standard",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Home Gym Standard",
+                "description": "Standard plan for Home Gym",
+                "metadata": {
+                    "program": "home-gym"
+                },
+                "features": [
+                    {
+                        "name": "Create personal dashboard"
+                    },
+                    {
+                        "name": "Trainer Support"
+                    },
+                    {
+                        "name": "Rewards & Achievement's"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_home_gym_standard_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_home_gym_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 900000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_home_gym_standard_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_home_gym_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 2100000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_home_gym_standard_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_home_gym_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 2600000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_home_gym_standard",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "name": "prod_home_gym_premium",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Home Gym Premium",
+                "description": "Premium plan for Home Gym",
+                "metadata": {
+                    "program": "home-gym",
+                    "featured": true
+                },
+                "features": [
+                    {
+                        "name": "All features in Stadard"
+                    },
+                    {
+                        "name": "Pause Membership on your ease"
+                    },
+                    {
+                        "name": "Custom Nutrition Plans"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_home_gym_premium_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_home_gym_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 1100000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_home_gym_premium_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_home_gym_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 2600000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_home_gym_premium_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_home_gym_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 3100000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_home_gym_premium",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "_desc": "plan for yoga",
+            "name": "prod_yoga_standard",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Yoga Standard",
+                "description": "Standard plan for Yoga",
+                "metadata": {
+                    "program": "yoga"
+                },
+                "features": [
+                    {
+                        "name": "Create personal dashboard"
+                    },
+                    {
+                        "name": "Trainer Support"
+                    },
+                    {
+                        "name": "Rewards & Achievement's"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_yoga_standard_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_yoga_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 250000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_yoga_standard_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_yoga_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 450000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_yoga_standard_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_yoga_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 550000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_yoga_standard",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "name": "prod_yoga_premium",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Yoga Premium",
+                "description": "Premium plan for Yoga",
+                "metadata": {
+                    "program": "yoga",
+                    "featured": true
+                },
+                "features": [
+                    {
+                        "name": "All features in Stadard"
+                    },
+                    {
+                        "name": "Pause Membership on your ease"
+                    },
+                    {
+                        "name": "Custom Nutrition Plans"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_yoga_premium_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_yoga_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 350000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_yoga_premium_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_yoga_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 550000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_yoga_premium_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_yoga_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 650000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_yoga_premium",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "_desc": "plan for meditation",
+            "name": "prod_meditation_standard",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Meditation Standard",
+                "description": "Standard plan for Meditation",
+                "metadata": {
+                    "program": "meditation"
+                },
+                "features": [
+                    {
+                        "name": "Create personal dashboard"
+                    },
+                    {
+                        "name": "Trainer Support"
+                    },
+                    {
+                        "name": "Rewards & Achievement's"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_meditation_standard_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_meditation_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 250000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_meditation_standard_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_meditation_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 450000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_meditation_standard_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_meditation_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 550000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_meditation_standard",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "name": "prod_meditation_premium",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Meditation Premium",
+                "description": "Premium plan for Meditation",
+                "metadata": {
+                    "program": "meditation",
+                    "featured": true
+                },
+                "features": [
+                    {
+                        "name": "All features in Stadard"
+                    },
+                    {
+                        "name": "Pause Membership on your ease"
+                    },
+                    {
+                        "name": "Custom Nutrition Plans"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_meditation_premium_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_meditation_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 350000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_meditation_premium_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_meditation_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 550000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_meditation_premium_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_meditation_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 650000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_meditation_premium",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "//": "plan for nutrition",
+            "name": "prod_nutrition_standard",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Nutrition Standard",
+                "description": "Standard plan for Nutrition",
+                "metadata": {
+                    "program": "nutrition"
+                },
+                "features": [
+                    {
+                        "name": "Create personal dashboard"
+                    },
+                    {
+                        "name": "Trainer Support"
+                    },
+                    {
+                        "name": "Rewards & Achievement's"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_nutrition_standard_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_nutrition_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 250000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_nutrition_standard_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_nutrition_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 450000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_nutrition_standard_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_nutrition_standard:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 550000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_nutrition_standard",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        },
+        {
+            "name": "prod_nutrition_premium",
+            "path": "/v1/products",
+            "method": "post",
+            "params": {
+                "name": "Nutrition Premium",
+                "description": "Premium plan for Nutrition",
+                "metadata": {
+                    "program": "nutrition",
+                    "featured": true
+                },
+                "features": [
+                    {
+                        "name": "All features in Stadard"
+                    },
+                    {
+                        "name": "Pause Membership on your ease"
+                    },
+                    {
+                        "name": "Custom Nutrition Plans"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "price_nutrition_premium_month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_nutrition_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 350000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 1
+                }
+            }
+        },
+        {
+            "name": "price_nutrition_premium_3month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_nutrition_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 550000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 3
+                }
+            }
+        },
+        {
+            "name": "price_nutrition_premium_6month",
+            "path": "/v1/prices",
+            "method": "post",
+            "params": {
+                "product": "${prod_nutrition_premium:id}",
+                "currency": "inr",
+                "billing_scheme": "per_unit",
+                "unit_amount": 650000,
+                "recurring": {
+                    "interval": "month",
+                    "interval_count": 6
+                }
+            }
+        },
+        {
+            "name": "coupon_nutrition_premium",
+            "path": "/v1/coupons",
+            "method": "post",
+            "params": {
+                "amount_off": 1000,
+                "currency": "inr",
+                "duration": "forever",
+                "max_redemptions": 1
+            }
+        }
+    ]
+}

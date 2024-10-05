@@ -1,0 +1,362 @@
+[
+    {
+        "name": "Online Dance Fitness",
+        "description": "Dance Online Fitness",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/online-fitness-dance-classes.jpeg",
+        "programId": "dance.online-fitness",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "In-Home Dance Fitness",
+        "description": "Dance In-Home Fitness",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/in-home-dance-fitness.jpeg",
+        "programId": "dance.in-home-fitness",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Online Dance Styles",
+        "description": "Online Dance Styles",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/online-dance-styles.jpeg",
+        "programId": "dance.online-dance-styles",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "In-Home Dance Styles",
+        "description": "In-Home Dance Styles",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/in-home-dance-styles.jpeg",
+        "programId": "dance.in-home-dance-styles",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Wedding Choreography",
+        "description": "Wedding Choreography",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/wedding-dance-classes.jpeg",
+        "programId": "dance.wedding-choreography",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Online Cardio Sessions",
+        "description": "Online Cardio Sessions",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/cardio.jpeg",
+        "programId": "online-gym-training.cardio",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Online Posture Correction",
+        "description": "Online Posture Correction",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/posture-correction.jpeg",
+        "programId": "online-gym-training.posture-correction",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Workout Plan",
+        "description": "Workout Plan",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/workout-plan.jpeg",
+        "programId": "online-gym-training.workout-plan",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Online Personal Yoga Sessions",
+        "description": "Online Personal Yoga Sessions",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/online-personal-yoga-class.jpeg",
+        "programId": "yoga.online-personal-yoga-classes",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Online Group Yoga Classes",
+        "description": "Online Group Yoga Classes",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/online-group-yoga-classes.jpeg",
+        "programId": "yoga.online-group-yoga-classes",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "In-Home Personal Yoga Classes",
+        "description": "In-Home Personal Yoga Classes",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/in-home-personal-yoga-classes.jpeg",
+        "programId": "yoga.in-home-personal-yoga-classes",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "In-Home Group Yoga Classes",
+        "description": "In-Home Group Yoga Classes",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/in-home-yoga-group-classes.jpeg",
+        "programId": "yoga.in-home-group-yoga-classes",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Yoga Plan",
+        "description": "Yoga Plan",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/yoga-plan.jpeg",
+        "programId": "yoga.yoga-plan",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Weight Management - Nutrition",
+        "description": "Weight Management - Nutrition",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/weight-management-nutrition.jpeg",
+        "programId": "nutrition.weight-management",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Disease Relief Plan - Nutrition",
+        "description": "Disease Relief Plan - Nutrition",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/lifestyle-disease-nutrition.jpeg",
+        "programId": "nutrition.diseases-relief-plan",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Modelling Specific Nutrition",
+        "description": "Modelling Specific Nutrition",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/modelling-specific-nutrition.jpeg",
+        "programId": "nutrition.modelling-specific",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Sports Nutrition",
+        "description": "Sports Nutrition",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/sports-nutrition.jpeg",
+        "programId": "nutrition.sports-nutrition",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "General Guidance - Nutrition",
+        "description": "General Guidance - Nutrition",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/general-guidance-nutrition.jpeg",
+        "programId": "nutrition.general-guidance",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "In-Home Fitness Training",
+        "description": "In-Home Fitness Training",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/in-home-fitness-training.jpeg",
+        "programId": "in-home-training.in-home-fitness",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "In-Home Specialized Training",
+        "description": "In-Home Specialized Training",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/specialized-training-in-home.jpeg",
+        "programId": "in-home-training.specialized-training",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "In-Home Holistic Wellness",
+        "description": "In-Home Holistic Wellness",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/holistic-wellness-in-home.jpeg",
+        "programId": "in-home-training.holistic-wellness",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Chakra Balancing",
+        "description": "Chakra Balancing",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/chakra-healing.jpeg",
+        "programId": "sound-healing.chakra-balancing",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Deep Relaxation",
+        "description": "Deep Relaxation",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/sound-bath.jpeg",
+        "programId": "sound-healing.deep-relaxation",
+        "features": [
+            "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    },
+    {
+        "name": "Group Sound Healing",
+        "description": "Group Sound Healing",
+        "currency": "INR",
+        "period": "monthly",
+        "category": "enterprise",
+        "interval": 1,
+        "image": "/images/programs/group-sound-healing.jpeg",
+        "programId": "sound-healing.group-sound-healing",
+        "features": [
+           "All features in premium",
+      "bulk discounts",
+      "24*7 Support"
+        ]
+    }
+]

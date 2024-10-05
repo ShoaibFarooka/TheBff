@@ -1,0 +1,63 @@
+.customScroller {
+  /* width */
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+.customScroller::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+.customScroller::-webkit-scrollbar-track {
+  background: var(--primary-color);
+}
+.customScroller::-webkit-scrollbar-thumb {
+  background: rgb(254, 210, 91);
+  border-radius: 100px;
+}
+.customScroller::-webkit-scrollbar-thumb:hover {
+  background: rgba(254, 210, 91, 0.7);
+}
+
+.dots {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+.dots li {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 5px !important;
+}
+.slick-active .dots li {
+  background: #F2BD4D !important;
+}
+.dots li button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: transparent;
+}
+.dots li button:hover {
+  background: #F2BD4D !important;
+}
+.dots li.slick-active {
+  background: #F2BD4D !important;
+}
+.dots li.slick-active > button {
+  background: #F2BD4D !important;
+}
+.dots li > button {
+  background: rgba(255, 255, 255, 0.7);
+}/*# sourceMappingURL=Home.module.css.map */
