@@ -100,7 +100,7 @@ export async function login({
     const user = await User.findOne({ email });
     if (!user) return { success: false, message: "User not found" };
 
-    if (user.role !== role) return { success: false, message: "Role mismatch" };
+    // if (user.role !== role) return { success: false, message: "Role mismatch" };
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return { success: false, message: "Incorrect password" };
@@ -130,7 +130,7 @@ export async function login({
     logger.log("Setting cookie", token);
     cookie.set("token", token, { maxAge: 30 * 24 * 60 * 60 * 1000 }); // 30 days
 
-    return { success: true };
+    return { success: true, role: user?.role };
     // return { success: true, token, user }
   } catch (error) {
     console.error(error);
@@ -182,6 +182,58 @@ export async function register({
 
     // send verification email
     promises.push(sendVerifcationLinks({ method: "ew", email, phone: phone ?? "" }))
+
+    // send notification to admin
+    promises.push(sendEmail({
+      to: process.env.EMAIL_USER!,
+      subject: "New User Registration",
+      html: registrationNotification({ name, email, phone: phone ?? "" })
+    }))
+
+    await Promise.all(promises)
+
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
+}
+
+export async function registerClient({
+  email,
+  password,
+  isDirectClient = true,
+  name,
+  phone,
+  address,
+}: {
+  email: string;
+  password: string;
+  isDirectClient: boolean;
+  name: string;
+  phone?: string;
+  address: UserType['address']
+}) {
+  try {
+    console.log(email)
+    console.log(password)
+    // check if user already exists, if so return error, else create user, hash password, send verification email, and return success
+    await connectDB();
+    const exist = await User.findOne({ email });
+    if (exist) return { success: false, message: "Client already exists" };
+
+    const user = new User({
+      email,
+      password,
+      isDirectClient,
+      name,
+      phone,
+      role: UserRole.USER,
+      address
+    });
+
+    const promises = []
+    promises.push(user.save()) // save user to db
 
     // send notification to admin
     promises.push(sendEmail({
