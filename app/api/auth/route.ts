@@ -6,7 +6,7 @@ export const POST = async (req: NextRequest) => {
     try {
 
         const body = await req.json();
-        const { name, email, phone, password, signup, isDirectClient = false, address, cb } = body;
+        const { name, email, phone, password, signup, isDirectClient = false, amount, planId, address, cb } = body;
         
         if (signup || isDirectClient) {
             if (!name || !phone) return new Response(JSON.stringify({ error: "Name and Phone are required" }), { status: 400 })
@@ -14,7 +14,7 @@ export const POST = async (req: NextRequest) => {
 
         if (!email || !password) return new Response(JSON.stringify({ error: "Email and Password are required" }), { status: 400 })
 
-        if(isDirectClient) return handleDirectClient(name, email, phone, password, address)
+        if(isDirectClient) return handleDirectClient(name, email, phone, password, address, amount, planId)
         if (!signup) return handelLogin(email, password);
         return handelSignup(name, email, phone, password, address);
 
@@ -40,9 +40,9 @@ async function handelSignup (name: string, email: string, phone: string, passwor
 
 }
 
-async function handleDirectClient (name: string, email: string, phone: string, password: string, address: any) {
+async function handleDirectClient (name: string, email: string, phone: string, password: string, address: any, amount: number, planId: string) {
     
-    const res = await registerClient({ name, email, phone, isDirectClient : true, password, address });
+    const res = await registerClient({ name, email, phone, isDirectClient : true, password, address, amount, planId });
     return new Response(JSON.stringify({ success: !!res.success, message: res.message  }), { status: !!res.success ? 200 : 400 })
 
 }

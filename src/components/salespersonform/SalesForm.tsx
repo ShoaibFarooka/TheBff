@@ -20,6 +20,8 @@ type MyFormData = {
     email: string;
     phone: string;
     isDirectClient: boolean;
+    amount: number;
+    planId: string;
     address: {
         house: string;
         area: string;
@@ -38,7 +40,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         const formData = new FormData(e.currentTarget)
 
         // convert data to MyFormData format
-        const { username: name, email, phone, isDirectClient = true, address } = Object.entries(Object.fromEntries(formData)).reduce((acc, [key, value]) => {
+        const { username: name, email, phone, isDirectClient = true, address, amount = 0, planId = null} = Object.entries(Object.fromEntries(formData)).reduce((acc, [key, value]) => {
             if (key.includes('.')) {
                 const [parent, child] = key.split('.')
                 if (!acc[parent]) acc[parent] = {}
@@ -50,6 +52,9 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
             return acc
         }, {} as Record<string, any>) as MyFormData
 
+        if (!planId){
+            return toast.error("Please enter the plan for the client.");
+        }
         if (!name || !phone)
             return toast.error("Please enter your name and phone number.");
 
@@ -67,7 +72,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, isDirectClient, name, phone, password: "default123", address, signup: true }),
+                body: JSON.stringify({ email, isDirectClient, amount, planId, name, phone, password: "default123", address, signup: true }),
             });
 
             if (res.status == 200) {
@@ -76,7 +81,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     data.message ?? "You have been signed up successfully. Redirecting..."
                 );
                 onSuccess?.();
-                router.push("/onboarding");
+                router.push("/payment-link-generated");
             } else {
                 const data = await res.json();
                 const { emailVerified, phoneVerified } = data;
@@ -109,6 +114,9 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     extras={{ minLength: 10, maxLength: 10 }}
                 />
                 <InputGroup label="Email" name="email" type="email" />
+                <h3 className="text-lg text-white text-center">Plan Information</h3>
+                <InputGroup label="Plan Name" name="planId" />
+                <InputGroup label="Amount" name="amount" />
                 {/* Address */}
                 <Separator className="my-3 bg-zinc-600" />
                 <h3 className="text-lg text-white text-center">Address</h3>

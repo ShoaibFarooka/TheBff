@@ -1,6 +1,6 @@
 import Dashboard from "@/components/dashboard";
 import { DashboardStateProvider } from "@/components/dashboard/state";
-import { authenticate } from "@/lib/auth";
+import { authenticate, getAuthUser } from "@/lib/auth";
 import { getUserDataWithSubscription } from "@/lib/dbHelpers";
 import { Session } from "@/types/session";
 import { Plan, Subscription } from "@/types/subscription";
@@ -20,6 +20,13 @@ type UserData = User & {
 };
 
 export default async function Page() {
+
+  const user = await getAuthUser()
+  const role = user?.user?.role
+  if(role === 1 || role === 4){
+    return redirect("/sales-person-form");
+  }
+
   const auth = await authenticate();
   if (!auth.success || auth.unAuthenticated)
     return redirect("/login?cb=/dashboard");

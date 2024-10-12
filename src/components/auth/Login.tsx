@@ -55,8 +55,8 @@ export const LoginForm = ({ onSuccess, onFailure }: LoginFormProps) => {
                 onSuccess?.();
                 
                 const role = data?.role;
-                role === 3 && router.push(searchParams.get("cb") ?? "/dashboard")
-                role === 4 && router.push("/sales-person-form")
+                role === 3 && router.push(searchParams.get("cb") ?? "/dashboard");
+                (role === 4 || role === 1) && router.push("/sales-person-form");
             } else {
                 const data = await res.json();
                 const { emailVerified, phoneVerified } = data;
