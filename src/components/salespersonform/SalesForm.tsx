@@ -52,13 +52,13 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     type IntervalOption = {
         interval : string;
     };
-    const [programOptions, setProgramOptions] = useState<ProgramOption[]>([]);      
+    const [programOptions, setProgramOptions] = useState<ProgramOption[]>([]);
     const [selectedProgram, setSelectedProgram] = useState<string>("");
-    const [planOptions, setPlanOptions] = useState<PlanOption[]>([]);      
+    const [planOptions, setPlanOptions] = useState<PlanOption[]>([]);
     const [selectedPlan, setSelectedPlan] = useState<string>("");
-    const [periodOptions, setPeriodOptions] = useState<PeriodOption[]>([]);      
+    const [periodOptions, setPeriodOptions] = useState<PeriodOption[]>([]);
     const [selectedPeriod, setSelectedPeriod] = useState<string>("");
-    const [intervalOptions, setIntervalOptions] = useState<IntervalOption[]>([]);      
+    const [intervalOptions, setIntervalOptions] = useState<IntervalOption[]>([]);
     const [selectedInterval, setSelectedInterval] = useState<string>("");
 
     const getProgramOptions = async() => {
@@ -69,11 +69,11 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const getPlanOptions = async () => {
         const res = await fetch(`/api/plans/plans-options?selectedProgram=${selectedProgram}`);
         const data = await res.json();
-    
+
         if (data?.success) {
             // Use a Set to track unique programIds
             const uniqueProgramIds = new Set<string>();
-            
+
             const uniquePlans = data.data.filter((plan: PlanOption) => {
                 if (!uniqueProgramIds.has(plan.programId)) {
                     uniqueProgramIds.add(plan.programId);
@@ -81,22 +81,22 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                 }
                 return false; // Filter out duplicate programIds
             });
-    
+
             setPlanOptions(uniquePlans);
         } else {
             // Handle error accordingly
             console.error("Failed to fetch plan options:", data?.message);
         }
     }
-    
+
     const getPeriodOptions = async () => {
         const res = await fetch(`/api/plans/period-options?selectedPlan=${selectedPlan}`);
         const data = await res.json();
-    
+
         if (data?.success) {
             // Use a Set to track unique periods
             const uniquePeriods = new Set<string>();
-    
+
             const uniquePeriodOptions = data.data.filter((option: PeriodOption) => {
                 if (!uniquePeriods.has(option.period)) {
                     uniquePeriods.add(option.period);
@@ -104,7 +104,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                 }
                 return false; // Filter out duplicate periods
             });
-    
+
             setPeriodOptions(uniquePeriodOptions);
         } else {
             // Handle error accordingly
@@ -117,11 +117,11 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
             // Fetch the interval options based on selectedPlan and selectedPeriod
             const res = await fetch(`/api/plans/interval-options?selectedPeriod=${selectedPeriod}&selectedPlan=${selectedPlan}`);
             const data = await res.json();
-    
+
             if (data?.success) {
                 // Use a Set to track unique intervals
                 const uniqueIntervals = new Set<string>();
-    
+
                 const uniqueIntervalOptions = data.data.filter((option: IntervalOption) => {
                     if (!uniqueIntervals.has(option.interval)) {
                         uniqueIntervals.add(option.interval);
@@ -129,7 +129,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     }
                     return false; // Filter out duplicate intervals
                 });
-    
+
                 setIntervalOptions(uniqueIntervalOptions);
             } else {
                 // Handle error accordingly
@@ -147,8 +147,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
             return router.push("/dashboard");
         }
     }
-    
-    
+
+
     useEffect(() => {
         hasPermission()
         getProgramOptions()
@@ -369,32 +369,7 @@ const SalesForm = () => {
 
     return (
         <main className="mt-[5.5rem] min-h-[70vh] px-5 md:px-14 lg:px-40">
-            <div className="grid grid-cols-1 md:grid-cols-2 w-full h-full backdrop-blur-md rounded-lg">
-                {/* ================= { LHS } ================= */}
-                <div className="col-span-1 w-full h-full relative hidden md:block">
-                    <Image
-                        src={authImage}
-                        width={500}
-                        className="max-h-full"
-                        alt="Auth"
-                    />
-
-                    <div className="absolute bottom-0 left-0 w-10/12 pl-10 pb-10">
-                        <h2 className="text-3xl font-semibold text-[#FED25B]">
-                            {/* {signup
-                  ? "Sign Up and join for fitness" */}
-                            {/* : " */}
-                            {/* "} */}
-                            Start your fitness journey with best friend in fitness.
-                        </h2>
-                        {/* <p className="text-white mt-1 text-lg">
-                            {" "}
-                            Sunt aute cupidatat excepteur aliquip ad enim tempor.{" "}
-                        </p> */}
-                    </div>
-                </div>
-
-                {/* ================= { RHS } ================= */}
+            <div className="grid w-full h-full backdrop-blur-md rounded-lg">
                 <div className="col-span-1">
                     {/* <AuthForm signup={signup} /> */}
                     <RegisterForm />
