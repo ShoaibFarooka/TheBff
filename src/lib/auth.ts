@@ -64,7 +64,6 @@ export const getAuthUser = async() => {
       };
 
     const decoded = jwt.verify(token.value, secret) as any;
-    console.log("decoded", decoded)
     if (!decoded)
       return {
         success: false,
@@ -72,7 +71,6 @@ export const getAuthUser = async() => {
         message: "Invalid token",
       };
 
-    console.log(decoded)
     return { success: true, user: decoded };
   } catch (error: any) {
     if (error instanceof JsonWebTokenError)
@@ -243,7 +241,10 @@ export async function registerClient({
   phone,
   address,
   amount,
-  planId
+  planId,
+  program, 
+  period,
+  interval
 }: {
   email: string;
   password: string;
@@ -252,7 +253,10 @@ export async function registerClient({
   phone?: string;
   address: UserType['address'];
   amount: number;
-  planId: string
+  planId: string;
+  program: string;
+  period: string;
+  interval: string
 }) {
   try {
     // check if user already exists, if so return error, else create user, hash password, send verification email, and return success
@@ -284,7 +288,7 @@ export async function registerClient({
       html: registrationNotification({ name, email, phone: phone ?? "" })
     }))
 
-    const plan = await Plan.findOne({ name: planId });
+    const plan = await Plan.findOne({ programId: planId, interval: interval, period: period });
 
     const order = await razorpay.orders.create({
       // amount is already in paisa

@@ -4,10 +4,11 @@ import { isEmail } from "@/lib";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "nextjs-toploader/app";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Separator } from "../ui/separator";
 import InputGroup from "../auth/InputGroup";
+import { getAuthUser } from "@/lib/auth";
 
 type RegisterFormProps = {
     onSuccess?: Function;
@@ -22,6 +23,9 @@ type MyFormData = {
     isDirectClient: boolean;
     amount: number;
     planId: string;
+    program: string;
+    period: string;
+    interval: string;
     address: {
         house: string;
         area: string;
@@ -34,13 +38,151 @@ type MyFormData = {
 const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const router = useRouter()
     const [isLoading, setLoading] = useState(false)
+    type ProgramOption = {
+        id: string;
+        name: string;
+    };
+    type PlanOption = {
+        programId: string;
+        name: string;
+    };
+    type PeriodOption = {
+        period : string;
+    };
+    type IntervalOption = {
+        interval : string;
+    };
+    const [programOptions, setProgramOptions] = useState<ProgramOption[]>([]);      
+    const [selectedProgram, setSelectedProgram] = useState<string>("");
+    const [planOptions, setPlanOptions] = useState<PlanOption[]>([]);      
+    const [selectedPlan, setSelectedPlan] = useState<string>("");
+    const [periodOptions, setPeriodOptions] = useState<PeriodOption[]>([]);      
+    const [selectedPeriod, setSelectedPeriod] = useState<string>("");
+    const [intervalOptions, setIntervalOptions] = useState<IntervalOption[]>([]);      
+    const [selectedInterval, setSelectedInterval] = useState<string>("");
+
+    const getProgramOptions = async() => {
+        const res = await fetch('/api/programs/programs-options')
+        const data = await res.json()
+        setProgramOptions(data?.data)
+    }
+    const getPlanOptions = async () => {
+        const res = await fetch(`/api/plans/plans-options?selectedProgram=${selectedProgram}`);
+        const data = await res.json();
+    
+        if (data?.success) {
+            // Use a Set to track unique programIds
+            const uniqueProgramIds = new Set<string>();
+            
+            const uniquePlans = data.data.filter((plan: PlanOption) => {
+                if (!uniqueProgramIds.has(plan.programId)) {
+                    uniqueProgramIds.add(plan.programId);
+                    return true; // Keep this plan
+                }
+                return false; // Filter out duplicate programIds
+            });
+    
+            setPlanOptions(uniquePlans);
+        } else {
+            // Handle error accordingly
+            console.error("Failed to fetch plan options:", data?.message);
+        }
+    }
+    
+    const getPeriodOptions = async () => {
+        const res = await fetch(`/api/plans/period-options?selectedPlan=${selectedPlan}`);
+        const data = await res.json();
+    
+        if (data?.success) {
+            // Use a Set to track unique periods
+            const uniquePeriods = new Set<string>();
+    
+            const uniquePeriodOptions = data.data.filter((option: PeriodOption) => {
+                if (!uniquePeriods.has(option.period)) {
+                    uniquePeriods.add(option.period);
+                    return true; // Keep this period option
+                }
+                return false; // Filter out duplicate periods
+            });
+    
+            setPeriodOptions(uniquePeriodOptions);
+        } else {
+            // Handle error accordingly
+            console.error("Failed to fetch period options:", data?.message);
+        }
+    }
+
+    const getIntervalOptions = async () => {
+        try {
+            // Fetch the interval options based on selectedPlan and selectedPeriod
+            const res = await fetch(`/api/plans/interval-options?selectedPeriod=${selectedPeriod}&selectedPlan=${selectedPlan}`);
+            const data = await res.json();
+    
+            if (data?.success) {
+                // Use a Set to track unique intervals
+                const uniqueIntervals = new Set<string>();
+    
+                const uniqueIntervalOptions = data.data.filter((option: IntervalOption) => {
+                    if (!uniqueIntervals.has(option.interval)) {
+                        uniqueIntervals.add(option.interval);
+                        return true; // Keep this interval option
+                    }
+                    return false; // Filter out duplicate intervals
+                });
+    
+                setIntervalOptions(uniqueIntervalOptions);
+            } else {
+                // Handle error accordingly
+                console.error("Failed to fetch interval options:", data?.message);
+            }
+        } catch (error) {
+            console.error("Error fetching interval options:", error);
+        }
+    };
+
+    const hasPermission = async() => {
+        const user = await getAuthUser()
+        const role = user?.user?.role
+        if(role === 3){
+            return router.push("/dashboard");
+        }
+    }
+    
+    
+    useEffect(() => {
+        hasPermission()
+        getProgramOptions()
+    }, [])
+    useEffect(() => {
+        selectedProgram && getPlanOptions();
+    }, [selectedProgram])
+    useEffect(() => {
+        selectedProgram && selectedPlan && getPeriodOptions();
+    }, [selectedProgram, selectedPlan])
+    useEffect(() => {
+        selectedPeriod && selectedProgram && selectedPlan && getIntervalOptions();
+    }, [selectedProgram, selectedPlan, selectedPeriod])
+
+
+    const handleProgramChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedProgram(e.target.value); // Set the selected program
+    };
+    const handlePlanChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedPlan(e.target.value); // Set the selected plan
+    };
+    const handlePeriodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedPeriod(e.target.value); // Set the selected plan
+    };
+    const handleIntervalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedInterval(e.target.value); // Set the selected plan
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
 
         // convert data to MyFormData format
-        const { username: name, email, phone, isDirectClient = true, address, amount = 0, planId = null} = Object.entries(Object.fromEntries(formData)).reduce((acc, [key, value]) => {
+        const { username: name, email, phone, isDirectClient = true, address, amount = 0, program, planId = null, period, interval} = Object.entries(Object.fromEntries(formData)).reduce((acc, [key, value]) => {
             if (key.includes('.')) {
                 const [parent, child] = key.split('.')
                 if (!acc[parent]) acc[parent] = {}
@@ -52,8 +194,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
             return acc
         }, {} as Record<string, any>) as MyFormData
 
-        if (!planId){
-            return toast.error("Please enter the plan for the client.");
+        if (!planId || !program || !period || !interval){
+            return toast.error("Please enter plan information.");
         }
         if(!amount){
             return toast.error("Please enter the amount for the plan.")
@@ -75,7 +217,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, isDirectClient, amount, planId, name, phone, password: "default123", address, signup: true }),
+                body: JSON.stringify({ email, isDirectClient, amount, planId, program, interval, period, name, phone, password: "default123", address, signup: true }),
             });
 
             if (res.status == 200) {
@@ -118,7 +260,80 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                 />
                 <InputGroup label="Email" name="email" type="email" />
                 <h3 className="text-lg text-white text-center">Plan Information</h3>
-                <InputGroup label="Plan Name" name="planId" />
+
+                <div className="flex flex-col w-full">
+                    <label className="text-white text-lg mb-1">{"Program Name"}</label>
+                    <select
+                        className="px-5 py-2 rounded-md bg-gray-800 text-white outline-none" // Set the background color
+                        value={selectedProgram}
+                        name="program"
+                        onChange={handleProgramChange}
+                    >
+                        <option className="bg-gray-700 text-white" value="">
+                            Select a program
+                        </option>
+                        {programOptions.map((option, index) => (
+                            <option key={index} value={option.id}>
+                                {option.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="flex flex-col w-full">
+                    <label className="text-white text-lg mb-1">{"Plan Name"}</label>
+                    <select
+                        className="px-5 py-2 rounded-md bg-gray-800 text-white outline-none" // Set the background color
+                        value={selectedPlan}
+                        name="planId"
+                        onChange={handlePlanChange}
+                    >
+                        <option className="bg-gray-700 text-white" value="">
+                            Select a plan
+                        </option>
+                        {planOptions.map((option, index) => (
+                            <option key={index} value={option.programId}>
+                                {option.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="flex flex-col w-full">
+                    <label className="text-white text-lg mb-1">{"Period"}</label>
+                    <select
+                        className="px-5 py-2 rounded-md bg-gray-800 text-white outline-none" // Set the background color
+                        value={selectedPeriod}
+                        name="period"
+                        onChange={handlePeriodChange}
+                    >
+                        <option className="bg-gray-700 text-white" value="">
+                            Select a period
+                        </option>
+                        {periodOptions.map((option, index) => (
+                            <option key={index} value={option.period}>
+                                {option.period}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="flex flex-col w-full">
+                    <label className="text-white text-lg mb-1">{"Interval"}</label>
+                    <select
+                        className="px-5 py-2 rounded-md bg-gray-800 text-white outline-none" // Set the background color
+                        value={selectedInterval}
+                        name="interval"
+                        onChange={handleIntervalChange}
+                    >
+                        <option className="bg-gray-700 text-white" value="">
+                            Select an Interval
+                        </option>
+                        {intervalOptions.map((option, index) => (
+                            <option key={index} value={option.interval}>
+                                {option.interval}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
                 <InputGroup label="Amount" name="amount" />
                 {/* Address */}
                 <Separator className="my-3 bg-zinc-600" />
