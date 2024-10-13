@@ -303,20 +303,21 @@ export async function registerClient({
       return { error: "Failed to create order" };
     }
 
-    promises.push(
-      Subscription.create({
-        userId: savedUser?._id,
-        planId: plan?._id,
-        orderId: order?.id,
-        programId: plan?.programId,
-        status: SubscriptionStatus.pending,
-        startDate: new Date(),
-        endDate: caclulateEndDate({
-          period: plan?.period ?? "daily",
-          interval: plan?.interval ?? 1,
-        }),
-      })
-    );
+    const subscription = new Subscription({
+      userId: savedUser?._id,
+      planId: plan?._id,
+      orderId: order?.id,
+      programId: plan?.programId,
+      status: SubscriptionStatus.pending,
+      price: 1000,
+      startDate: new Date(),
+      endDate: caclulateEndDate({
+        period: plan?.period ?? "daily",
+        interval: plan?.interval ?? 1,
+      }),
+    });
+    
+    promises.push(await subscription.save());
     promises.push(
       Order.create(order)
     )

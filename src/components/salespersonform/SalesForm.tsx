@@ -55,6 +55,9 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         if (!planId){
             return toast.error("Please enter the plan for the client.");
         }
+        if(!amount){
+            return toast.error("Please enter the amount for the plan.")
+        }
         if (!name || !phone)
             return toast.error("Please enter your name and phone number.");
 
