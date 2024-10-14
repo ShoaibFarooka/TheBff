@@ -28,6 +28,7 @@ const SubscriptionSchema = new Schema<SubscriptionDoc, SubscriptionModel>(
       // set: (v: string) => typeof v == 'string' ? new Schema.Types.ObjectId(v) : v,
     },
     programId: { type: String, required: true },
+    reference_id : {type: String, required: false},
     status: {
       type: String,
       required: true,

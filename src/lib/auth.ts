@@ -279,7 +279,10 @@ export async function registerClient({
     // promises.push(user.save()) // save user to db
     const savedUser = await user.save()
     promises.push(savedUser)
-    promises.push(sendPaymentLink(email, phone, name, amount))
+    const result = await sendPaymentLink(email, phone, name, amount);
+    if (result.success) {
+        promises.push(Promise.resolve(result));
+    }
 
     // send notification to admin
     promises.push(sendEmail({
@@ -312,6 +315,7 @@ export async function registerClient({
       planId: plan?._id,
       orderId: order?.id,
       programId: plan?.programId,
+      reference_id: result.reference_id,
       status: SubscriptionStatus.pending,
       price: amount,
       startDate: new Date(),
@@ -606,7 +610,7 @@ export const sendPaymentLink = async (email: string, phone?: string, name?: stri
     devLog(url);
     await transporter.sendMail(mailOptions);
 
-    return { success: false };
+    return { success: true, reference_id: res?.data?.reference_id };
 
   }catch(error){
     console.error("Error sending payment link to the email address: ", error);
