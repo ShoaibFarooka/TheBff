@@ -197,7 +197,7 @@ export async function getRazorpayCustomer(options?: {
   }
 }
 
-function caclulateEndDate({
+export function caclulateEndDate({
   startDate = new Date(),
   period,
   interval

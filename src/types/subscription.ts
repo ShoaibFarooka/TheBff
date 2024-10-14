@@ -28,6 +28,7 @@ export type Subscription = {
     userId: string | ObjectId;
     programId: string;
     status: SubscriptionStatus;
+    price: number;
     startDate: Date | number;
     endDate: Date | number;
     cancelledAt?: Date | number;
