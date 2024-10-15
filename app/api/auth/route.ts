@@ -44,6 +44,6 @@ async function handelSignup (name: string, email: string, phone: string, passwor
 async function handleDirectClient (name: string, email: string, phone: string, password: string, address: any, amount: number, planId: string, interval: string, period: string, program: string) {
     
     const res = await registerClient({ name, email, phone, isDirectClient : true, password, address, amount, planId, interval, period, program });
-    return new Response(JSON.stringify({ success: !!res.success, message: res.message  }), { status: !!res.success ? 200 : 400 })
+    return new Response(JSON.stringify({ success: !!res.success, message: res.message, paymentLink: res.paymentLink  }), { status: !!res.success ? 200 : 400 })
 
 }

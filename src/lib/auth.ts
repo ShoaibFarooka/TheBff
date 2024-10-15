@@ -332,7 +332,7 @@ export async function registerClient({
 
     await Promise.all(promises)
 
-    return { success: true };
+    return { success: true, paymentLink: result.paymentLink };
   } catch (error) {
     console.error(error);
     return { success: false };
@@ -610,7 +610,7 @@ export const sendPaymentLink = async (email: string, phone?: string, name?: stri
     devLog(url);
     await transporter.sendMail(mailOptions);
 
-    return { success: true, reference_id: res?.data?.reference_id };
+    return { success: true, reference_id: res?.data?.reference_id, paymentLink: res?.data?.short_url };
 
   }catch(error){
     console.error("Error sending payment link to the email address: ", error);

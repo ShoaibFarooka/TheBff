@@ -1,12 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import React, { Suspense } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { FaWhatsapp } from "react-icons/fa";
 import { FiMail, FiPlus } from "react-icons/fi";
 
 const PaymentLinkGenerated = () => {
+    const router = useRouter();
   return (
     <Suspense
       fallback={
@@ -21,7 +23,16 @@ const PaymentLinkGenerated = () => {
                 <div className="loader">Loading..</div>
             </div>
             }>
+            <div className="flex-col mt-24 ml-24 text-white">
+                <button
+                    onClick={() => router.push("/direct-client-form")}
+                    className="text-white bg-blue-500 px-4 py-2 rounded-md hover:bg-blue-600 transition-all"
+                >
+                    Back
+                </button>
+            </div>
             <div className="min-h-[70vh] center flex-col mt-24 text-white">
+
                 <div className="max-w-2xl center flex-col">
                 <h2 className="text-5xl text-center mb-12 font-semibold">Payment Successfully Generated !</h2>
 
@@ -39,6 +50,15 @@ const PaymentLinkGenerated = () => {
                     Once your payment is confirmed, we’ll notify you via email.
                     If you encounter any issues or have any questions, feel free to contact our support team.
                 </p>
+                <a 
+                    href={localStorage.getItem("paymentLink") || "#"} 
+                    className="mt-6 text-lg text-center block"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                >
+                    {localStorage.getItem("paymentLink")}
+                </a>
+
 
                 </div>
 
