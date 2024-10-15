@@ -24,7 +24,7 @@ export default async function Page() {
   const user = await getAuthUser()
   const role = user?.user?.role
   if(role === 1 || role === 4){
-    return redirect("/sales-person-form");
+    return redirect("/direct-client-form");
   }
 
   const auth = await authenticate();
