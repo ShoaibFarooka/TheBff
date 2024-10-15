@@ -242,7 +242,7 @@ export async function registerClient({
   address,
   amount,
   planId,
-  program,
+  program, 
   period,
   interval
 }: {
@@ -259,6 +259,7 @@ export async function registerClient({
   interval: string
 }) {
   try {
+    // check if user already exists, if so return error, else create user, hash password, send verification email, and return success
     await connectDB();
     const exist = await User.findOne({ email });
     if (exist) return { success: false, message: "Client already exists" };
@@ -275,6 +276,7 @@ export async function registerClient({
     });
 
     const promises = []
+    // promises.push(user.save()) // save user to db
     const savedUser = await user.save()
     promises.push(savedUser)
     const result = await sendPaymentLink(email, phone, name, amount);
@@ -282,10 +284,7 @@ export async function registerClient({
         promises.push(Promise.resolve(result));
     }
 
-    // Send payment link and get the link back
-    const paymentLinkResult = await sendPaymentLink(email, phone, name, amount)
-    const paymentLink = paymentLinkResult.paymentLink
-
+    // send notification to admin
     promises.push(sendEmail({
       to: process.env.EMAIL_USER!,
       subject: "New User Registration",
@@ -295,6 +294,7 @@ export async function registerClient({
     const plan = await Plan.findOne({ programId: planId, interval: interval, period: period });
 
     const order = await razorpay.orders.create({
+      // amount is already in paisa
       amount: amount,
       currency: "INR",
       receipt: savedUser._id as string,
@@ -324,18 +324,113 @@ export async function registerClient({
         interval: plan?.interval ?? 1,
       }),
     });
-
+    
     promises.push(await subscription.save());
     promises.push(
-        Order.create(order)
+      Order.create(order)
     )
 
     await Promise.all(promises)
 
-    return { success: true, paymentLink };
+    return { success: true };
   } catch (error) {
     console.error(error);
     return { success: false };
+  }
+}
+
+export const addSuperUser = async ({
+  email,
+  password,
+  name,
+  phone,
+  role = UserRole.USER,
+}: {
+  email: string;
+  password: string;
+  name: string;
+  phone?: string;
+  callbackUrl?: string;
+  role: UserRole;
+}) => {
+  try {
+    const auth = await authenticate(UserRole.ADMIN);
+    if (!auth.success)
+      return { success: false, message: auth.message ?? "Not authorized" };
+
+    await connectDB();
+    const exist = await User.findOne({ email });
+    if (exist) return { success: false, message: "User already exists" };
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      email,
+      password: hashedPassword,
+      name,
+      phone,
+      role,
+      emailVerified: true,
+      phoneVerified: true,
+    });
+    await user.save();
+
+    // notify user of account creation
+    const mailOptions = {
+      to: user.email,
+      subject: `You've been added as ${role} in TheBff`,
+      html: `
+                <h1>Welcome to TheBff</h1>
+                <p>You've been added as ${role} in TheBff</p>
+                <p>Use the following credentials to login</p>
+                <p>Email: ${user.email}</p>
+                <p>Password: ${password}</p>
+                <p>Click <a href="${process.env.BASE_URL ?? "http://localhost:3000"
+        }">here</a> to login</p>    
+            `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
+};
+
+// verify email
+export async function verifyEmail(token: string) {
+  try {
+    const decoded = verifyToken(token);
+    if (!decoded || !decoded.email || !decoded.verifyEmail)
+      return { success: false, message: "Invalid token" };
+
+    await connectDB();
+    const user = await User.findOne({ email: decoded.email });
+    if (!user) return { success: false, message: "User not found" };
+
+    user.emailVerified = true;
+
+    const promises: Promise<any>[] = [user.save()];
+
+    // send welcome email
+    promises.push(sendEmail({
+      to: user.email,
+      subject: "Welcome to TheBff",
+      html: welcomeEmailTemplate({ name: user.name }),
+      text: `Welcome to TheBff, ${user.name}`
+    }))
+
+    await Promise.all(promises);
+
+    return { success: true, message: "Email verified successfully" };
+  } catch (error: any) {
+    console.error(error);
+    return {
+      success: false,
+      message: error.message ?? "Error verifying email",
+    };
   }
 }
 
@@ -485,14 +580,14 @@ export const createPaymentLink = async (email: string, phone?: string, name?: st
       }
     });
     return { success: true, data: response.data };
-
+    
   } catch (error) {
     console.error("Error creating razorpay link: ", error);
     return { success: false };
   }
 }
 
-export const sendPaymentLink = async (email: string, phone?: string, name?: string, amount?: number) => {
+export const sendPaymentLink = async (email: string, phone?: string, name?: string, amount?: number)=> {
   try {
     const emailToken = jwt.sign({ email, verifyEmail: true }, secret, {
       expiresIn: "1h",
@@ -500,7 +595,6 @@ export const sendPaymentLink = async (email: string, phone?: string, name?: stri
     const url = `${getURL()}/verify-token?token=${emailToken}`;
 
     const res = await createPaymentLink(email, phone, name, amount)
-    const paymentLink = res?.data?.short_url
 
     const auth = await authenticate([UserRole.SALES, UserRole.ADMIN])
 
@@ -509,17 +603,18 @@ export const sendPaymentLink = async (email: string, phone?: string, name?: stri
       from: process.env.EMAIL_USER,
       to: recipientEmails,
       subject: "Payment Link For Direct Client",
-      html: directClientPaymentLink(paymentLink),
+      html: directClientPaymentLink(res?.data?.short_url),
     };
 
+    //* Remove log
     devLog(url);
     await transporter.sendMail(mailOptions);
 
     return { success: true, reference_id: res?.data?.reference_id };
 
-  } catch(error) {
+  }catch(error){
     console.error("Error sending payment link to the email address: ", error);
-    return { success: false, paymentLink: null };
+    return { success: false };
   }
 }
 
