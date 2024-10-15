@@ -19,7 +19,7 @@ const Profile = dynamic(() => import("./user/Profile"), {
   ),
 });
 
-const pagesWithAuth = ["/", "/profile", "/dashboard", "/programs", "/checkout", "/cart", "/sales-person-form"];
+const pagesWithAuth = ["/", "/profile", "/dashboard", "/programs", "/checkout", "/cart", "/direct-client-registration"];
 
 const AuthProfile = ({
   authBtn = true,
