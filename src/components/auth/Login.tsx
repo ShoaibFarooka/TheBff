@@ -53,10 +53,10 @@ export const LoginForm = ({ onSuccess, onFailure }: LoginFormProps) => {
                     data.message ??
                     "You have been logged in successfully.")
                 onSuccess?.();
-
+                
                 const role = data?.role;
                 role === 3 && router.push(searchParams.get("cb") ?? "/dashboard");
-                (role === 4 || role === 1) && router.push("/direct-client-registration");
+                (role === 4 || role === 1) && router.push("/sales-person-form");
             } else {
                 const data = await res.json();
                 const { emailVerified, phoneVerified } = data;
@@ -147,7 +147,7 @@ const Login = () => {
 
                     <div className="absolute bottom-0 left-0 w-10/12 pl-10 pb-10">
                         <h2 className="text-3xl font-semibold text-[#FED25B]">
-
+                        
                 Start your fitness journey with best friend in fitness.
                         </h2>
                         {/* <p className="text-white mt-1 text-lg">
