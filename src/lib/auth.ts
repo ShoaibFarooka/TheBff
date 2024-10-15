@@ -312,7 +312,7 @@ export async function registerClient({
       orderId: order?.id,
       programId: plan?.programId,
       status: SubscriptionStatus.pending,
-      price: 1000,
+      price: amount,
       startDate: new Date(),
       endDate: caclulateEndDate({
         period: plan?.period ?? "daily",
