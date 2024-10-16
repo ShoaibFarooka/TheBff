@@ -56,7 +56,7 @@ const paymentConfirmationTemplate = ({
                   </p>
   
                   <p style="font-size: 16px; line-height: 1.5;">
-                    To access your subscription or manage your account, please visit our website: <a href="${process.env.NEXT_PUBLIC_APP_URL}">${process.env.NEXT_PUBLIC_APP_URL}</a>
+                    To access your subscription or manage your account, please visit our website: <a href="${process.env.NEXT_PUBLIC_APP_URL}">${process.env.NEXT_PUBLIC_APP_URL || "https://www.thebff.in/login"}</a>
                   </p>
                   <p style="font-size: 16px; line-height: 1.5;">
                     Thank you,<br>The BFF Team

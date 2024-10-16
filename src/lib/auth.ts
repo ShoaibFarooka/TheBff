@@ -298,9 +298,12 @@ export async function registerClient({
         promises.push(Promise.resolve(result));
     }
 
+    const admin = await User.findOne({ role: UserRole.ADMIN });
+    const adminEmail = admin?.email || process.env.EMAIL_USER!
+
     // send notification to admin
     promises.push(sendEmail({
-      to: process.env.EMAIL_USER!,
+      to: adminEmail!,
       subject: "New User Registration",
       html: registrationNotification({ name, email, phone: phone ?? "" })
     }))
