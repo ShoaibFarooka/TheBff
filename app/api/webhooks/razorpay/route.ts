@@ -1,6 +1,8 @@
 // import type {  } from 'razorpay'
+import { generatePassword } from "@/lib/auth";
 import connectDB from "@/lib/dbConnection";
 import { sendEmail } from "@/lib/email";
+import { paymentConfirmationTemplate } from "@/lib/email/templates/paymentConfirmation";
 import { adminNotificationTemplate, subscriptionConfirmationTemplate } from "@/lib/email/templates/subscriptionConfirmation";
 import { logger, prodLogger } from "@/lib/logger";
 import { safePromise } from "@/lib/utils";
@@ -23,11 +25,23 @@ const relevantEvents = new Set([
 ]);
 
 export async function POST(req: Request) {
-    try {
+    try {  
         const body = await req.json();
+        const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+
+        const isValid = Razorpay.validateWebhookSignature(
+            JSON.stringify(body),
+            req.headers.get("X-Razorpay-Signature") || "",
+            secret || ""
+        );
+        if (!isValid) {
+            logger.log("❌ Invalid webhook signature.");
+            return new Response("Invalid signature", { status: 400 });
+        }
         if(body?.event !== "payment_link.paid"){
             return new Response("Event Not Recognised", { status: 400 });
         }
+
         const referenceId = body?.payload?.payment_link?.entity?.reference_id;
 
         if (!referenceId) {
@@ -40,20 +54,18 @@ export async function POST(req: Request) {
         subscription.status = SubscriptionStatus.active ; // Or any other logic you'd like
         await subscription.save();
 
+        const user = await User.findOne({_id: subscription?.userId})
+        const password = await generatePassword(user?.email!, user?.phone!)
+
+        const promises = []
+        promises.push(sendEmail({
+            to: user?.email!,
+            subject: "Payment Confirmation",
+            html: paymentConfirmationTemplate({ plan: subscription?.programId, totalAmount: body?.payload?.payment_link?.entity?.amount_paid / 100, email: user?.email!, password: password! })
+          }))
+
         return NextResponse.json({ success: true, message: "Subscription updated successfully" }, { status: 200 });
         
-        // const secret = process.env.RAZORPAY_SECRET;
-
-        // const isValid = Razorpay.validateWebhookSignature(
-        //     JSON.stringify(body),
-        //     req.headers.get("X-Razorpay-Signature") || "",
-        //     secret || ""
-        // );
-
-        // if (!isValid) {
-        //     logger.log("❌ Invalid webhook signature.");
-        //     return new Response("Invalid signature", { status: 400 });
-        // }
         // logger.log("🔔 Webhook received:", body.event);
 
         // if (!relevantEvents.has(body.event)) {
