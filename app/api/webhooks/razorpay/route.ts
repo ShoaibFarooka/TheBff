@@ -1,6 +1,8 @@
 // import type {  } from 'razorpay'
+import { generatePassword } from "@/lib/auth";
 import connectDB from "@/lib/dbConnection";
 import { sendEmail } from "@/lib/email";
+import { paymentConfirmationTemplate } from "@/lib/email/templates/paymentConfirmation";
 import { adminNotificationTemplate, subscriptionConfirmationTemplate } from "@/lib/email/templates/subscriptionConfirmation";
 import { logger, prodLogger } from "@/lib/logger";
 import { safePromise } from "@/lib/utils";
@@ -28,6 +30,10 @@ export async function POST(req: Request) {
         if(body?.event !== "payment_link.paid"){
             return new Response("Event Not Recognised", { status: 400 });
         }
+        console.log("body", body)
+        console.log("body?.payload?.payment_link", body?.payload?.payment_link)
+        console.log("body?.payload?.payment_link?.entity", body?.payload?.payment_link?.entity)
+
         const referenceId = body?.payload?.payment_link?.entity?.reference_id;
 
         if (!referenceId) {
@@ -39,6 +45,16 @@ export async function POST(req: Request) {
         }
         subscription.status = SubscriptionStatus.active ; // Or any other logic you'd like
         await subscription.save();
+
+        const user = await User.findOne({_id: subscription?.userId})
+        const password = generatePassword(user?.email!, user?.phone!)
+
+        const promises = []
+        promises.push(sendEmail({
+            to: user?.email!,
+            subject: "Payment Confirmation",
+            html: paymentConfirmationTemplate({ plan: subscription?.programId, totalAmount: 1000, email: user?.email!, password: password! })
+          }))
 
         return NextResponse.json({ success: true, message: "Subscription updated successfully" }, { status: 200 });
         

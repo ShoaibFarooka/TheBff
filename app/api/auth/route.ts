@@ -12,10 +12,11 @@ export const POST = async (req: NextRequest) => {
         if (signup || isDirectClient) {
             if (!name || !phone) return new Response(JSON.stringify({ error: "Name and Phone are required" }), { status: 400 })
         }
-
+        if(isDirectClient) {
+            if (!email || !phone) return new Response(JSON.stringify({ error: "Email and Phone are required" }), { status: 400 })
+            return handleDirectClient(name, email, phone, password, address, amount, planId, interval, period, program)
+        }
         if (!email || !password) return new Response(JSON.stringify({ error: "Email and Password are required" }), { status: 400 })
-
-        if(isDirectClient) return handleDirectClient(name, email, phone, password, address, amount, planId, interval, period, program)
         if (!signup) return handelLogin(email, password);
         return handelSignup(name, email, phone, password, address);
 

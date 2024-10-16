@@ -60,6 +60,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const [selectedPeriod, setSelectedPeriod] = useState<string>("");
     const [intervalOptions, setIntervalOptions] = useState<IntervalOption[]>([]);
     const [selectedInterval, setSelectedInterval] = useState<string>("");
+    const [phone, setPhone] = useState<string>("");
 
     const getProgramOptions = async() => {
         const res = await fetch('/api/programs/programs-options')
@@ -217,7 +218,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, isDirectClient, amount, planId, program, interval, period, name, phone, password: "default123", address, signup: true }),
+                body: JSON.stringify({ email, isDirectClient, amount, planId, program, interval, period, name, phone, password: "", address, signup: true }),
             });
 
             if (res.status == 200) {
@@ -250,15 +251,39 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         }
     }
 
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const input = e.target.value;
+        console.log("input", input)
+        const digits = input.replace(/\D/g, ""); // Keep only digits
+        console.log("digits", digits)
+      
+        if (digits.length <= 10) {
+          setPhone(digits);  // Allow up to 10 digits only
+        }
+      };
+
     return <div className="max-h-[80vh] overflow-auto custom-scroll-bar pb-5">
         <div className="h-full center flex-col text-white">
             <form className="mt-2 w-full px-4 md:px-20 space-y-3" onSubmit={handleSubmit}>
                 <InputGroup label="Name" name="username" />
-                <InputGroup
-                    label="WhatsApp Number"
-                    name="phone"
-                    extras={{ minLength: 10, maxLength: 10 }}
-                />
+                <div style={{ display: 'flex', alignItems: 'center' }} className="flex flex-col w-full">
+                    <label className="text-white text-lg mb-1">{"WhatsApp Number"}</label>
+                    <div style={{ display: "flex", width: '100%' }} className="w-full">
+                        <span style={{ marginRight: '5px', marginTop: "3px" }}>+91</span>
+                        <input
+                            className="px-5 py-2 rounded-md bg-white/20 outline-white/80 flex-grow"
+                            type="text"
+                            value={phone}
+                            name="phone"
+                            onChange={handlePhoneChange}
+                            placeholder="Enter 10-digit number"
+                            maxLength={10}
+                            minLength={10}
+                            style={{ padding: '5px' }}
+                            required
+                        />
+                    </div>
+                </div>
                 <InputGroup label="Email" name="email" type="email" />
                 <h3 className="text-lg text-white text-center">Plan Information</h3>
 

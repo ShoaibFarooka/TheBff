@@ -233,6 +233,17 @@ export async function register({
   }
 }
 
+export const generatePassword = (email: string, phone: string): string => {
+  // Extract the first 4 letters of the email
+  const emailPart = email.slice(0, 4);
+
+  // Extract the last 4 digits of the phone number
+  const phonePart = phone.slice(-4);
+
+  // Combine them with the "@" symbol
+  return `${emailPart}@${phonePart}`;
+};
+
 export async function registerClient({
   email,
   password,
@@ -264,13 +275,16 @@ export async function registerClient({
     const exist = await User.findOne({ email });
     if (exist) return { success: false, message: "Client already exists" };
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const defaultPassword = await generatePassword(email, phone!);
+    const hashedPassword = await bcrypt.hash(defaultPassword, 10);
     const user = new User({
       email,
       password : hashedPassword,
       isDirectClient,
       name,
       phone,
+      emailVerified: true,
+      phoneVerified: true,
       role: UserRole.USER,
       address
     });
