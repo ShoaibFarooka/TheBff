@@ -9,6 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Separator } from "../ui/separator";
 import InputGroup from "../auth/InputGroup";
 import { getAuthUser } from "@/lib/auth";
+import Cookies from 'js-cookie';
 
 type RegisterFormProps = {
     onSuccess?: Function;
@@ -217,7 +218,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     data.message ?? "You have been signed up successfully. Redirecting..."
                 );
                 onSuccess?.();
-                localStorage.setItem("paymentLink", data.paymentLink)
+                Cookies.set('paymentLink', data.paymentLink, { expires: 1 }); // Expires in 1 day
                 router.push("/payment-link-generated");
             } else {
                 const data = await res.json();
@@ -246,7 +247,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         console.log("input", input)
         const digits = input.replace(/\D/g, ""); // Keep only digits
         console.log("digits", digits)
-      
+
         if (digits.length <= 10) {
           setPhone(digits);  // Allow up to 10 digits only
         }
