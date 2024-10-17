@@ -141,17 +141,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         }
     };
 
-    const hasPermission = async() => {
-        const user = await getAuthUser()
-        const role = user?.user?.role
-        if(role === 3){
-            return router.push("/dashboard");
-        }
-    }
-
-
     useEffect(() => {
-        hasPermission()
         getProgramOptions()
     }, [])
     useEffect(() => {
@@ -266,7 +256,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         <div className="h-full center flex-col text-white">
             <form className="mt-2 w-full px-4 md:px-20 space-y-3" onSubmit={handleSubmit}>
                 <InputGroup label="Name" name="username" />
-                <div style={{ display: 'flex', alignItems: 'center' }} className="flex flex-col w-full">
+                <div style={{ display: 'flex', alignItems: 'start' }} className="flex flex-col w-full">
                     <label className="text-white text-lg mb-1">{"WhatsApp Number"}</label>
                     <div style={{ display: "flex", width: '100%' }} className="w-full">
                         <span style={{ marginRight: '5px', marginTop: "3px" }}>+91</span>
