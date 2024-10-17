@@ -109,11 +109,11 @@ export default function ChoosePlan({
     return sub;
   }, [subscriptions, program.id, feature?.id]);
 
-  // if (!isPlanLoading && (!plans || !plans.length)) {
-  //   onClose();
-  //   toast.error("No plans found for the selected program");
-  //   return <></>
-  // }
+  if (!isPlanLoading && (!plans || !plans.length)) {
+    onClose();
+    toast.error("No plans found for the selected program");
+    return <></>
+  }
 
   if (isPending || isPlanLoading)
     return (
