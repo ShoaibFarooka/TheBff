@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Assets
 import coach_arpandeep_singh from "@/assets/coach_arpandeep_singh.png";
-// import coach_ashif from "@/assets/coach_ashif.png";
+//import coach_ashif from "@/assets/coach_ashif.png";
 import coach_diksha_parihar from "@/assets/coach_diksha_parihar.png";
 import coach_dinesh_maru from "@/assets/coach_dinesh_maru.png";
 import coach_gurpreet_singh from "@/assets/coach_gurpreet_singh.png";
@@ -20,8 +20,8 @@ const coaches1 = [
   { name: "Harpreet Singh", title: "Personal Trainer", image: coach_harpreet_singh },
   { name: "Dinesh Maru", title: "Dance", image: coach_dinesh_maru },
   { name: "Arpandeep Singh", title: "Personal Trainer", image: coach_arpandeep_singh },
-  { name: "Prachi Dabas", title: "Yoga", image: coach_prachi_dabas }
-  // { name: "Ashif Khan", title: "Personal Trainer", image: coach_ashif },
+  { name: "Prachi Dabas", title: "Yoga", image: coach_prachi_dabas },
+ // { name: "Ashif Khan", title: "Personal Trainer", image: coach_ashif },
 ];
 
 // ===================== {Coach} =====================
