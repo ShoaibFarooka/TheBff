@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 // import Dashboard from "../../app/(admin_only)/admin/page";
 // import logo from '@/assets/logo.png'
 
+import { getAuthUser } from "@/lib/auth";
+import { User } from "@/types/user";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -19,7 +21,7 @@ const Profile = dynamic(() => import("./user/Profile"), {
   ),
 });
 
-const pagesWithAuth = ["/", "/profile", "/dashboard", "/programs", "/checkout", "/cart"];
+const pagesWithAuth = ["/", "/profile", "/dashboard", "/programs", "/checkout", "/cart", "/direct-client-form"];
 
 const AuthProfile = ({
   authBtn = true,
@@ -67,9 +69,18 @@ const AuthProfile = ({
 function Header(props?: any) {
   const [nav, setNav] = useState(false);
   const handleClick = () => setNav(!nav);
+  const [currentUser, setCurrentUser] = useState<User>()
 
   const pathname = usePathname();
   const authenticate = useAuth((s) => s.authenticate);
+
+  const setAuthUser = async() => {
+    const res = await getAuthUser()
+    setCurrentUser(res?.user)
+  }
+  useEffect(() => {
+    setAuthUser();
+  }, [pathname])
 
   useEffect(() => {
     if (pagesWithAuth.includes(pathname) && authenticate) {
@@ -90,22 +101,22 @@ function Header(props?: any) {
         <ul className="hidden md:flex font-semibold max-w-max ml-auto space-x-4 mr-4">
           <Link href="/">
             <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
-              Home
+              {!(currentUser?.role === 4 || currentUser?.role === 1) && "Home"}
             </li>
           </Link>
           <Link href="/programs">
             <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
-              Programs
+              {!(currentUser?.role === 4 || currentUser?.role === 1) && "Programs"}
             </li>
           </Link>
           <Link href="/programs#pricing">
             <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
-              Pricing
+              {!(currentUser?.role === 4 || currentUser?.role === 1) && "Pricing"}       
             </li>
           </Link>
           <Link href="/blog">
             <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
-              Blogs
+              {!(currentUser?.role === 4 || currentUser?.role === 1) && "Blogs"}
             </li>
           </Link>
 

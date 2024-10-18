@@ -61,14 +61,14 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
         </SheetHeader>
 
         <div className="grow">
-          <SheetTrigger asChild>
+          {!(userdata?.role === 4 || userdata?.role === 1) && <SheetTrigger asChild>
             <Link href="/dashboard">
               <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
                 <FaUser size={30} />
                 <p className="ml-5">Dashboard</p>
               </div>
             </Link>
-          </SheetTrigger>
+          </SheetTrigger>}
 
           {/* <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
             <TbReportAnalytics size={30} />
@@ -80,23 +80,23 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
                   <p className="ml-5">Queries</p>
                 </div> */}
 
-          <SheetTrigger asChild>
+          {!(userdata?.role === 4 || userdata?.role === 1) && <SheetTrigger asChild>
             <Link href="/blogs">
               <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
                 <IoReaderOutline size={30} />
                 <p className="ml-5">Blogs</p>
               </div>
             </Link>
-          </SheetTrigger>
+          </SheetTrigger>}
 
-          <SheetTrigger asChild>
+          {!(userdata?.role === 4 || userdata?.role === 1) && <SheetTrigger asChild>
             <Link href="/cart">
               <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
                 <IoCartOutline size={30} />
                 <p className="ml-5">Cart</p>
               </div>
             </Link>
-          </SheetTrigger>
+          </SheetTrigger>}
 
           {/* <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
             <FiGift size={30} />

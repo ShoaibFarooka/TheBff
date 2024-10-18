@@ -53,7 +53,10 @@ export const LoginForm = ({ onSuccess, onFailure }: LoginFormProps) => {
                     data.message ??
                     "You have been logged in successfully.")
                 onSuccess?.();
-                router.push(searchParams.get("cb") ?? "/dashboard");
+                
+                const role = data?.role;
+                role === 3 && router.push(searchParams.get("cb") ?? "/dashboard");
+                (role === 4 || role === 1) && router.push("/direct-client-form");
             } else {
                 const data = await res.json();
                 const { emailVerified, phoneVerified } = data;
