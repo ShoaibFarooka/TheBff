@@ -1,12 +1,15 @@
 // import type {  } from 'razorpay'
+import { generatePassword } from "@/lib/auth";
 import connectDB from "@/lib/dbConnection";
 import { sendEmail } from "@/lib/email";
+import { paymentConfirmationTemplate } from "@/lib/email/templates/paymentConfirmation";
 import { adminNotificationTemplate, subscriptionConfirmationTemplate } from "@/lib/email/templates/subscriptionConfirmation";
 import { logger, prodLogger } from "@/lib/logger";
 import { safePromise } from "@/lib/utils";
 import { Order, Subscription, User } from "@/models";
 import { Plan as PlanType, SubscriptionStatus, Subscription as SubscriptionType } from "@/types/subscription";
 import { User as UserType } from "@/types/user";
+import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { Orders } from "razorpay/dist/types/orders";
 import { Payments } from "razorpay/dist/types/payments";
@@ -22,68 +25,95 @@ const relevantEvents = new Set([
 ]);
 
 export async function POST(req: Request) {
-    try {
+    try {  
         const body = await req.json();
-        const secret = process.env.RAZORPAY_SECRET;
+        const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
         const isValid = Razorpay.validateWebhookSignature(
             JSON.stringify(body),
             req.headers.get("X-Razorpay-Signature") || "",
             secret || ""
         );
-
         if (!isValid) {
             logger.log("❌ Invalid webhook signature.");
             return new Response("Invalid signature", { status: 400 });
         }
-        logger.log("🔔 Webhook received:", body.event);
-
-        if (!relevantEvents.has(body.event)) {
-            logger.log(`🔔❌ Irrelevant event: ${body.event}`);
-            return new Response("Irrelevant event", { status: 200 });
+        if(body?.event !== "payment_link.paid"){
+            return new Response("Event Not Recognised", { status: 400 });
         }
 
-        const orderEntity = body.payload.order.entity as Orders.RazorpayOrder;
-        const paymentEntity = body.payload.payment.entity as Payments.RazorpayPayment;
+        const referenceId = body?.payload?.payment_link?.entity?.reference_id;
 
-        const meta = orderEntity.notes as unknown as Meta;
-
-        // update subscription status
-        const planIds = meta.plans.split(",").map(id => id.trim());
-
-        const order = {
-            ...orderEntity,
-            payment: paymentEntity
+        if (!referenceId) {
+            return NextResponse.json({ success: false, message: "reference_id not found in the request" }, { status: 400 });
         }
+        const subscription = await Subscription.findOne({ reference_id: referenceId });
+        if (!subscription) {
+            return NextResponse.json({ success: false, message: "Subscription not found" }, { status: 404 });
+        }
+        subscription.status = SubscriptionStatus.active ; // Or any other logic you'd like
+        await subscription.save();
 
-        await connectDB();
+        const user = await User.findOne({_id: subscription?.userId})
+        const password = await generatePassword(user?.email!, user?.phone!)
 
-        // update subscription status to active
-        await Promise.all([
-            User.updateOne(
-                { _id: meta.userId },
-                { razorpayCustomerId: meta.customerId }
-            ),
-            Subscription.updateMany({
-                userId: meta.userId,
-                planId: { $in: planIds },
-                status: SubscriptionStatus.pending
-            }, {
-                status: SubscriptionStatus.active
-            }),
-            Order.updateOne(
-                { id: order.id }, // order id
-                order,
-                { upsert: true }
-            ),
-        ])
+        const promises = []
+        promises.push(sendEmail({
+            to: user?.email!,
+            subject: "Payment Confirmation",
+            html: paymentConfirmationTemplate({ plan: subscription?.programId, totalAmount: body?.payload?.payment_link?.entity?.amount_paid / 100, email: user?.email!, password: password! })
+          }))
 
-        // send confirmation emails
-        safePromise( // ignore errors
-            sendConfirmationEmails(order, meta)
-        )
+        return NextResponse.json({ success: true, message: "Subscription updated successfully" }, { status: 200 });
+        
+        // logger.log("🔔 Webhook received:", body.event);
 
-        return new Response("Webhook processed", { status: 200 });
+        // if (!relevantEvents.has(body.event)) {
+        //     logger.log(`🔔❌ Irrelevant event: ${body.event}`);
+        //     return new Response("Irrelevant event", { status: 200 });
+        // }
+
+        // const orderEntity = body.payload.order.entity as Orders.RazorpayOrder;
+        // const paymentEntity = body.payload.payment.entity as Payments.RazorpayPayment;
+
+        // const meta = orderEntity.notes as unknown as Meta;
+
+        // // update subscription status
+        // const planIds = meta.plans.split(",").map(id => id.trim());
+
+        // const order = {
+        //     ...orderEntity,
+        //     payment: paymentEntity
+        // }
+
+        // await connectDB();
+
+        // // update subscription status to active
+        // await Promise.all([
+        //     User.updateOne(
+        //         { _id: meta.userId },
+        //         { razorpayCustomerId: meta.customerId }
+        //     ),
+        //     Subscription.updateMany({
+        //         userId: meta.userId,
+        //         planId: { $in: planIds },
+        //         status: SubscriptionStatus.pending
+        //     }, {
+        //         status: SubscriptionStatus.active
+        //     }),
+        //     Order.updateOne(
+        //         { id: order.id }, // order id
+        //         order,
+        //         { upsert: true }
+        //     ),
+        // ])
+
+        // // send confirmation emails
+        // safePromise( // ignore errors
+        //     sendConfirmationEmails(order, meta)
+        // )
+
+        // return new Response("Webhook processed", { status: 200 });
     } catch (error) {
         logger.error("🔔❌ Webhook processing failed:", error);
         return new Response("Webhook processing failed", { status: 500 });

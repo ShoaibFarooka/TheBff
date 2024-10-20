@@ -1,7 +1,7 @@
 "use server";
 import "@/lib/db";
 import { connectDB } from "@/lib/db";
-import { User } from "@/models";
+import { Order, Plan, Subscription, User } from "@/models";
 import { UserRole, User as UserType } from "@/types/user";
 import bcrypt from "bcryptjs";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
@@ -13,6 +13,11 @@ import emailVerificationTemplate from "./email/templates/emailVerification";
 import { registrationNotification, welcomeEmailTemplate } from "./email/templates/user";
 import { devLog, getURL } from "./helpers";
 import { logger } from "./logger";
+import { razorpay, RAZORPAY_KEY_SECRET } from "@/lib/subscription";
+import { SubscriptionStatus } from "@/types/subscription";
+import { caclulateEndDate } from "@/server/api/routers/payment/payment.service";
+import axios from "axios";
+import directClientPaymentLink from "./email/templates/directClientPaymentLink";
 
 // methods to login, register, and authenticate users
 const secret = process.env.JWT_SECRET! || "secret";
@@ -30,7 +35,7 @@ function verifyToken(token: string) {
 }
 
 const getSuperUserRoleObject = (role: UserRole) =>
-  [UserRole.ADMIN, UserRole.COACH, UserRole.USER].includes(role)
+  [UserRole.ADMIN, UserRole.COACH, UserRole.USER, UserRole.SALES].includes(role)
     ? { role }
     : {};
 
@@ -46,6 +51,34 @@ export type Auth = {
   unAuthenticated?: boolean;
   message?: string;
 };
+
+export const getAuthUser = async() => {
+  try {
+    const cookie = cookies();
+    const token = cookie.get("token");
+    if (!token)
+      return {
+        success: false,
+        unAuthenticated: true,
+        message: "No token found",
+      };
+
+    const decoded = jwt.verify(token.value, secret) as any;
+    if (!decoded)
+      return {
+        success: false,
+        unAuthenticated: true,
+        message: "Invalid token",
+      };
+
+    return { success: true, user: decoded };
+  } catch (error: any) {
+    if (error instanceof JsonWebTokenError)
+      return { success: false, message: "Token expired" };
+    console.error(error);
+    return { success: false, unAuthenticated: true };
+  }
+}
 
 // authenticate
 export const authenticate = cache(
@@ -71,7 +104,7 @@ export const authenticate = cache(
 
       if (Array.isArray(role) && !role.includes(decoded.role))
         return { success: false, message: "Role mismatch" };
-      if (decoded.role !== role)
+      else if (!Array.isArray(role) && decoded.role !== role)
         return { success: false, message: "Role mismatch" };
 
       return { success: true, user: decoded };
@@ -100,7 +133,7 @@ export async function login({
     const user = await User.findOne({ email });
     if (!user) return { success: false, message: "User not found" };
 
-    if (user.role !== role) return { success: false, message: "Role mismatch" };
+    // if (user.role !== role) return { success: false, message: "Role mismatch" };
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return { success: false, message: "Incorrect password" };
@@ -120,7 +153,8 @@ export async function login({
         email: user.email,
         name: user.name,
         phone: user.phone,
-        ...getSuperUserRoleObject(role),
+        role: user.role
+        // ...getSuperUserRoleObject(role),
       },
       secret
     );
@@ -130,7 +164,7 @@ export async function login({
     logger.log("Setting cookie", token);
     cookie.set("token", token, { maxAge: 30 * 24 * 60 * 60 * 1000 }); // 30 days
 
-    return { success: true };
+    return { success: true, role: user?.role };
     // return { success: true, token, user }
   } catch (error) {
     console.error(error);
@@ -193,6 +227,129 @@ export async function register({
     await Promise.all(promises)
 
     return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
+}
+
+export const generatePassword = async (email: string, phone: string): Promise<string> => {
+  // Extract the first 4 letters of the email
+  const emailPart = email.slice(0, 4);
+
+  // Extract the last 4 digits of the phone number
+  const phonePart = phone.slice(-4);
+
+  // Combine them with the "@" symbol
+  return `${emailPart}@${phonePart}`;
+};
+
+export async function registerClient({
+  email,
+  password,
+  isDirectClient = true,
+  name,
+  phone,
+  address,
+  amount,
+  planId,
+  program,
+  period,
+  interval
+}: {
+  email: string;
+  password: string;
+  isDirectClient: boolean;
+  name: string;
+  phone?: string;
+  address: UserType['address'];
+  amount: number;
+  planId: string;
+  program: string;
+  period: string;
+  interval: string
+}) {
+  try {
+    // check if user already exists, if so return error, else create user, hash password, send verification email, and return success
+    await connectDB();
+    const exist = await User.findOne({ email });
+    if (exist) return { success: false, message: "Client already exists" };
+
+    const defaultPassword = await generatePassword(email, phone!);
+    const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+    const user = new User({
+      email,
+      password : hashedPassword,
+      isDirectClient,
+      name,
+      phone,
+      emailVerified: true,
+      phoneVerified: true,
+      role: UserRole.USER,
+      address
+    });
+
+    const promises = []
+    // promises.push(user.save()) // save user to db
+    const savedUser = await user.save()
+    promises.push(savedUser)
+    const result = await sendPaymentLink(email, phone, name, amount);
+    if (result.success) {
+        promises.push(Promise.resolve(result));
+    }
+
+    const admin = await User.findOne({ role: UserRole.ADMIN });
+    const adminEmail = admin?.email || process.env.EMAIL_USER!
+
+    // send notification to admin
+    promises.push(sendEmail({
+      to: adminEmail!,
+      subject: "New User Registration",
+      html: registrationNotification({ name, email, phone: phone ?? "" })
+    }))
+
+    const plan = await Plan.findOne({ programId: planId, interval: interval, period: period });
+
+    const order = await razorpay.orders.create({
+      // amount is already in paisa
+      amount: amount,
+      currency: "INR",
+      receipt: savedUser._id as string,
+      payment_capture: 1 as unknown as boolean,
+      partial_payment: false,
+      notes: {
+        plans: plan?._id as string,
+        userId: savedUser._id as string,
+      },
+    });
+
+    if (!order?.id) {
+      return { error: "Failed to create order" };
+    }
+
+    const subscription = new Subscription({
+      userId: savedUser?._id,
+      planId: plan?._id,
+      orderId: order?.id,
+      programId: plan?.programId,
+      reference_id: result.reference_id,
+      status: SubscriptionStatus.pending,
+      price: amount,
+      startDate: new Date(),
+      endDate: caclulateEndDate({
+        period: plan?.period ?? "daily",
+        interval: plan?.interval ?? 1,
+      }),
+    });
+
+    promises.push(await subscription.save());
+    promises.push(
+      Order.create(order)
+    )
+
+    await Promise.all(promises)
+
+    return { success: true, paymentLink: result.paymentLink };
   } catch (error) {
     console.error(error);
     return { success: false };
@@ -401,6 +558,80 @@ export async function sendVerifcationLinks(data: IParams) {
   } catch (error) {
     console.error(error);
     return { success: false, message: "Something went wrong" };
+  }
+}
+
+export const createPaymentLink = async (email: string, phone?: string, name?: string, amount: number = 0) => {
+  const expireBy = Math.floor(Date.now() / 1000) + 86400; // convert to seconds
+  const referenceId = `REF${Date.now()}${Math.floor(Math.random() * 1000)}`; // e.g., REF1692456234567
+
+  try{
+    const payload = {
+      amount: amount * 100,
+      currency: "INR",
+      accept_partial: true,
+      first_min_partial_amount: 100,
+      expire_by: expireBy,
+      reference_id: referenceId,
+      description: "Payment for TheBFF",
+      customer: {
+        name: name,
+        contact: `+91${phone}`,
+        email: email
+      },
+      notify: {
+        sms: true,
+        email: true
+      },
+      reminder_enable: true,
+      callback_url: process.env.BASE_URL ? `${process.env.BASE_URL}/login` : "http://localhost:3000/login",
+      callback_method: "get"
+    };
+
+
+
+    const response = await axios.post('https://api.razorpay.com/v1/payment_links', payload, {
+      auth: {
+        username: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!, // Your Razorpay Key ID
+        password: process.env.RAZORPAY_KEY_SECRET!  // Your Razorpay Secret
+      }
+    });
+    return { success: true, data: response.data };
+
+  } catch (error) {
+    console.error("Error creating razorpay link: ", error);
+    return { success: false };
+  }
+}
+
+export const sendPaymentLink = async (email: string, phone?: string, name?: string, amount?: number)=> {
+  try {
+    const emailToken = jwt.sign({ email, verifyEmail: true }, secret, {
+      expiresIn: "1h",
+    });
+    const url = `${getURL()}/verify-token?token=${emailToken}`;
+
+    const res = await createPaymentLink(email, phone, name, amount)
+
+    const auth = await authenticate([UserRole.SALES, UserRole.ADMIN])
+
+    const recipientEmails = [auth?.user?.email].filter((email): email is string => email !== undefined);
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: recipientEmails,
+      subject: "Payment Link For Direct Client",
+      html: directClientPaymentLink(res?.data?.short_url),
+    };
+
+    //* Remove log
+    devLog(url);
+    await transporter.sendMail(mailOptions);
+
+    return { success: true, reference_id: res?.data?.reference_id, paymentLink: res?.data?.short_url };
+
+  }catch(error){
+    console.error("Error sending payment link to the email address: ", error);
+    return { success: false };
   }
 }
 
