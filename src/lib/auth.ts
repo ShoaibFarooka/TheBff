@@ -233,7 +233,7 @@ export async function register({
   }
 }
 
-export const generatePassword = (email: string, phone: string): string => {
+export const generatePassword = async (email: string, phone: string): Promise<string> => {
   // Extract the first 4 letters of the email
   const emailPart = email.slice(0, 4);
 
@@ -253,7 +253,7 @@ export async function registerClient({
   address,
   amount,
   planId,
-  program, 
+  program,
   period,
   interval
 }: {
@@ -341,7 +341,7 @@ export async function registerClient({
         interval: plan?.interval ?? 1,
       }),
     });
-    
+
     promises.push(await subscription.save());
     promises.push(
       Order.create(order)
@@ -597,7 +597,7 @@ export const createPaymentLink = async (email: string, phone?: string, name?: st
       }
     });
     return { success: true, data: response.data };
-    
+
   } catch (error) {
     console.error("Error creating razorpay link: ", error);
     return { success: false };

@@ -9,6 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Separator } from "../ui/separator";
 import InputGroup from "../auth/InputGroup";
 import { getAuthUser } from "@/lib/auth";
+import Cookies from 'js-cookie';
 
 type RegisterFormProps = {
     onSuccess?: Function;
@@ -141,17 +142,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         }
     };
 
-    const hasPermission = async() => {
-        const user = await getAuthUser()
-        const role = user?.user?.role
-        if(role === 3){
-            return router.push("/dashboard");
-        }
-    }
-
-
     useEffect(() => {
-        hasPermission()
         getProgramOptions()
     }, [])
     useEffect(() => {
@@ -227,7 +218,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     data.message ?? "You have been signed up successfully. Redirecting..."
                 );
                 onSuccess?.();
-                localStorage.setItem("paymentLink", data.paymentLink)
+                Cookies.set('paymentLink', data.paymentLink, { expires: 1 }); // Expires in 1 day
                 router.push("/payment-link-generated");
             } else {
                 const data = await res.json();
@@ -256,7 +247,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         console.log("input", input)
         const digits = input.replace(/\D/g, ""); // Keep only digits
         console.log("digits", digits)
-      
+
         if (digits.length <= 10) {
           setPhone(digits);  // Allow up to 10 digits only
         }
@@ -266,7 +257,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         <div className="h-full center flex-col text-white">
             <form className="mt-2 w-full px-4 md:px-20 space-y-3" onSubmit={handleSubmit}>
                 <InputGroup label="Name" name="username" />
-                <div style={{ display: 'flex', alignItems: 'center' }} className="flex flex-col w-full">
+                <div style={{ display: 'flex', alignItems: 'start' }} className="flex flex-col w-full">
                     <label className="text-white text-lg mb-1">{"WhatsApp Number"}</label>
                     <div style={{ display: "flex", width: '100%' }} className="w-full">
                         <span style={{ marginRight: '5px', marginTop: "3px" }}>+91</span>
