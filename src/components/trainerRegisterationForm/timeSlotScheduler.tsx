@@ -1,56 +1,78 @@
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
 
-interface TimeSlotSelectorProps {
-    onSelectTimeSlot: (timeSlot: string) => void;
-    onClose: () => void; // New prop to handle closing the modal
-}
+type TimeSlotSelectorProps = {
+  onClose: () => void;
+  onSelectTimeSlots: (timeSlots: string[]) => void;
+  initialSelectedSlots?: string[];
+};
 
-const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({ onSelectTimeSlot, onClose }) => {
-    const [selectedTime, setSelectedTime] = useState('7:00 am');
+const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({ onClose, onSelectTimeSlots, initialSelectedSlots = [] }) => {
+  const [selectedSlots, setSelectedSlots] = useState<string[]>(initialSelectedSlots);
 
-    const timeSlots = [
-        "12:00 AM - 1:00 AM", "1:00 AM - 2:00 AM", "2:00 AM - 3:00 AM",
-        "3:00 AM - 4:00 AM", "4:00 AM - 5:00 AM", "5:00 AM - 6:00 AM",
-        "6:00 AM - 7:00 AM", "7:00 AM - 8:00 AM", "8:00 AM - 9:00 AM",
-        "9:00 AM - 10:00 AM", "10:00 AM - 11:00 AM", "11:00 AM - 12:00 PM",
-        "12:00 PM - 1:00 PM", "1:00 PM - 2:00 PM", "2:00 PM - 3:00 PM",
-        "3:00 PM - 4:00 PM", "4:00 PM - 5:00 PM", "5:00 PM - 6:00 PM",
-        "6:00 PM - 7:00 PM", "7:00 PM - 8:00 PM", "8:00 PM - 9:00 PM",
-        "9:00 PM - 10:00 PM", "10:00 PM - 11:00 PM", "11:00 PM - 12:00 AM"
-    ];
+  const timeSlots = [
+    { display: '12:00 AM - 01:00 AM', value: '00:00-01:00' },
+    { display: '01:00 AM - 02:00 AM', value: '01:00-02:00' },
+    { display: '02:00 AM - 03:00 AM', value: '02:00-03:00' },
+    { display: '03:00 AM - 04:00 AM', value: '03:00-04:00' },
+    { display: '04:00 AM - 05:00 AM', value: '04:00-05:00' },
+    { display: '05:00 AM - 06:00 AM', value: '05:00-06:00' },
+    { display: '06:00 AM - 07:00 AM', value: '06:00-07:00' },
+    { display: '07:00 AM - 08:00 AM', value: '07:00-08:00' },
+    { display: '08:00 AM - 09:00 AM', value: '08:00-09:00' },
+    { display: '09:00 AM - 10:00 AM', value: '09:00-10:00' },
+    { display: '10:00 AM - 11:00 AM', value: '10:00-11:00' },
+    { display: '11:00 AM - 12:00 PM', value: '11:00-12:00' },
+    { display: '12:00 PM - 01:00 PM', value: '12:00-13:00' },
+    { display: '01:00 PM - 02:00 PM', value: '13:00-14:00' },
+    { display: '02:00 PM - 03:00 PM', value: '14:00-15:00' },
+    { display: '03:00 PM - 04:00 PM', value: '15:00-16:00' },
+    { display: '04:00 PM - 05:00 PM', value: '16:00-17:00' },
+    { display: '05:00 PM - 06:00 PM', value: '17:00-18:00' },
+    { display: '06:00 PM - 07:00 PM', value: '18:00-19:00' },
+    { display: '07:00 PM - 08:00 PM', value: '19:00-20:00' },
+    { display: '08:00 PM - 09:00 PM', value: '20:00-21:00' },
+    { display: '09:00 PM - 10:00 PM', value: '21:00-22:00' },
+    { display: '10:00 PM - 11:00 PM', value: '22:00-23:00' },
+    { display: '11:00 PM - 12:00 AM', value: '23:00-00:00' },
+  ];
 
-    return (
-        <div className="bg-gradient-to-br from-purple-800 to-indigo-900 p-6 rounded-3xl text-white max-w-sm mx-auto shadow-lg">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">When would you like to schedule?</h2>
-                <button className="text-gray-400 hover:text-white transition-colors" onClick={onClose}>
-                    <X size={24} />
-                </button>
-            </div>
-
-            <div className="space-y-4">
-                <div className="bg-indigo-800/30 rounded-xl p-4 h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-600 scrollbar-track-indigo-800">
-                    {timeSlots.map((time) => (
-                        <button
-                            key={time}
-                            className={`w-full text-left py-2 px-4 rounded-lg mb-2 transition-colors ${
-                                selectedTime === time
-                                    ? 'bg-indigo-500 text-white'
-                                    : 'hover:bg-indigo-700/50 text-gray-300'
-                            }`}
-                            onClick={() => {
-                                setSelectedTime(time);
-                                onSelectTimeSlot(time); // Call the prop function to set the selected time
-                            }}
-                        >
-                            {time}
-                        </button>
-                    ))}
-                </div>
-            </div>
-        </div>
+  const toggleTimeSlot = (slot: string) => {
+    setSelectedSlots(prev => 
+      prev.includes(slot) 
+        ? prev.filter(s => s !== slot) 
+        : [...prev, slot]
     );
+  };
+
+  const handleSave = () => {
+    onSelectTimeSlots(selectedSlots);
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-gray-800 p-6 rounded-lg max-w-md w-full">
+        <h2 className="text-2xl font-bold mb-4 text-white">Select Available Time Slots</h2>
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          {timeSlots.map(slot => (
+            <button
+              key={slot.value}
+              onClick={() => toggleTimeSlot(slot.value)}
+              className={`p-2 rounded ${
+                selectedSlots.includes(slot.value) ? 'bg-blue-500 text-white' : 'bg-gray-700 text-white'
+              }`}
+            >
+              {slot.display}
+            </button>
+          ))}
+        </div>
+        <div className="flex justify-end space-x-2">
+          <button onClick={onClose} className="px-4 py-2 bg-gray-700 text-white rounded">Cancel</button>
+          <button onClick={handleSave} className="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default TimeSlotSelector;

@@ -1,11 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import { CheckCircle, ChevronDown, ChevronUp, X } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
-import toast, { Toaster } from "react-hot-toast";
-import TimeSlotSelector from "../../../src/components/trainerRegisterationForm/timeSlotScheduler";
-import {ChevronDown, ChevronUp, CheckCircle, AlertTriangle, X} from "lucide-react";
-import {Separator} from "@/components/ui/separator";
-import InputGroup from "@/components/auth/InputGroup";
+import React, { useCallback, useState } from "react";
+import toast from "react-hot-toast";
+import TimeSlotSelector from "./timeSlotScheduler";
 
 type AddressType = {
     house: string;
@@ -23,7 +21,7 @@ type RegisterFormProps = {
 const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const router = useRouter();
     const [isTimeSlotOpen, setIsTimeSlotOpen] = useState(false);
-    const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
+    const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     // States for each file upload
@@ -38,27 +36,19 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const [nameError, setNameError] = useState<string | null>(null);
     const [emailError, setEmailError] = useState<string | null>(null);
     const [passwordError, setPasswordError] = useState<string | null>(null);
+    const [phoneError, setPhoneError] = useState<string | null>(null);
+
+    // Current address state
+    const [currentAddress, setCurrentAddress] = useState<AddressType>({
+        house: "", area: "", pincode: "", city: "", state: ""
+    });
+    const [permanentAddress, setPermanentAddress] = useState<AddressType>({
+        house: "", area: "", pincode: "", city: "", state: ""
+    });
 
     const [sameAsCurrentAddress, setSameAsCurrentAddress] = useState(false);
     const [showCurrentAddress, setShowCurrentAddress] = useState(false);
     const [showPermanentAddress, setShowPermanentAddress] = useState(false);
-
-    // Address states
-    const [currentAddress, setCurrentAddress] = useState<AddressType>({
-        house: "",
-        area: "",
-        pincode: "",
-        city: "",
-        state: "",
-    });
-
-    const [permanentAddress, setPermanentAddress] = useState<AddressType>({
-        house: "",
-        area: "",
-        pincode: "",
-        city: "",
-        state: "",
-    });
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, setter: React.Dispatch<React.SetStateAction<File | null>>) => {
         const file = e.target.files?.[0];
@@ -89,62 +79,96 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const handleRemoveCertification = (index: number) => {
         setCertificationFiles(prev => prev.filter((_, i) => i !== index));
     };
+
     const handleTimeSlotClose = () => {
-        setSelectedTimeSlot("");
         setIsTimeSlotOpen(false);
     };
 
-    const handleCurrentAddressChange = (field: keyof AddressType, value: string) => {
-        setCurrentAddress(prev => ({
-            ...prev,
-            [field]: value
-        }));
+    const handleSelectTimeSlots = (timeSlots: string[]) => {
+        setSelectedTimeSlots(timeSlots);
+    };
 
-        if (sameAsCurrentAddress) {
-            setPermanentAddress(prev => ({
-                ...prev,
-                [field]: value
-            }));
+    const getDisplayTimeSlot = (slot: string) => {
+        const [start, end] = slot.split('-');
+        const startHour = parseInt(start.split(':')[0]);
+        const endHour = parseInt(end.split(':')[0]);
+        const startPeriod = startHour < 12 ? 'AM' : 'PM';
+        const endPeriod = endHour < 12 ? 'AM' : 'PM';
+        const displayStart = `${startHour % 12 || 12}:00 ${startPeriod}`;
+        const displayEnd = `${endHour % 12 || 12}:00 ${endPeriod}`;
+        return `${displayStart} - ${displayEnd}`;
+    };
+
+    const handleAddressChange = useCallback((type: 'current' | 'permanent', field: keyof AddressType, value: string) => {
+        const setter = type === 'current' ? setCurrentAddress : setPermanentAddress;
+        setter(prev => ({ ...prev, [field]: value }));
+        
+        if (sameAsCurrentAddress && type === 'current') {
+            setPermanentAddress(prev => ({ ...prev, [field]: value }));
         }
-    };
+    }, [sameAsCurrentAddress]);
 
-    const handlePermanentAddressChange = (field: keyof AddressType, value: string) => {
-        setPermanentAddress(prev => ({
-            ...prev,
-            [field]: value
-        }));
-    };
-
-    const handleSameAddressToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSameAddressToggle = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setSameAsCurrentAddress(e.target.checked);
         if (e.target.checked) {
             setPermanentAddress(currentAddress);
         }
+    }, [currentAddress]);
+
+    const validatePhone = (phone: string) => {
+        if (phone.length !== 10) {
+            return "Phone number must be exactly 10 digits.";
+        }
+        if (!/^\d+$/.test(phone)) {
+            return "Phone number should only contain digits.";
+        }
+        return null;
+    };
+
+    const validatePassword = (password: string) => {
+        if (password.length < 8) {
+            return "Password must be at least 8 characters long.";
+        }
+        if (password.length > 12) {
+            return "Password cannot be more than 12 characters long.";
+        }
+        return null;
+    };
+
+    const validateEmail = (email: string) => {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return "Please enter a valid email address (e.g., name@example.com).";
+        }
+        return null;
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const form = e.currentTarget;
+        const phoneInput = form.elements.namedItem('mobileNumber') as HTMLInputElement;
+        const passwordInput = form.elements.namedItem('password') as HTMLInputElement;
+        const emailInput = form.elements.namedItem('email') as HTMLInputElement;
         const nameInput = form.elements.namedItem('name') as HTMLInputElement;
+
         // Validate fields
+        const phoneErrorMsg = validatePhone(phoneInput.value);
+        const passwordErrorMsg = validatePassword(passwordInput.value);
+        const emailErrorMsg = validateEmail(emailInput.value);
+
+        setPhoneError(phoneErrorMsg);
+        setPasswordError(passwordErrorMsg);
+        setEmailError(emailErrorMsg);
+
+        if (phoneErrorMsg || passwordErrorMsg || emailErrorMsg) {
+            return; // Don't submit if there are errors
+        }
+
         if (!validateName(nameInput.value)) {
             console.log('e.currentTarget.name', nameInput.value);
             setNameError("Please enter a valid name.");
             return;
         } else setNameError(null);
-
-        if (!validateEmail(e.currentTarget.email.value)) {
-            console.log('e.currentTarget.email', e.currentTarget.email);
-            setEmailError("Please enter a valid email.");
-            return;
-        } else setEmailError(null);
-
-        if (!validatePassword(e.currentTarget.password.value)) {
-            console.log('e.currentTarget.password', e.currentTarget.password);
-            setPasswordError("Password must be at least 8 characters.");
-            return;
-        } else setEmailError(null);
 
         // Ensure required files and time slot are selected
         if (!aadharFile || !agreementFile || !certificationFiles || !profilePhotoFile) {
@@ -152,14 +176,26 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
             return;
         }
 
-        if (!selectedTimeSlot) {
-            alert("Please select an available time slot.");
+        if (selectedTimeSlots.length === 0) {
+            alert("Please select at least one available time slot.");
             return;
         }
 
         const formData = new FormData(e.currentTarget);
-        formData.append("currentAddress", JSON.stringify(currentAddress));
-        formData.append("permanentAddress", JSON.stringify(permanentAddress));
+        formData.append("currentAddress", JSON.stringify({
+            house: currentAddress.house,
+            area: currentAddress.area,
+            pincode: currentAddress.pincode,
+            city: currentAddress.city,
+            state: currentAddress.state,
+        }));
+        formData.append("permanentAddress", JSON.stringify({
+            house: permanentAddress.house,
+            area: permanentAddress.area,
+            pincode: permanentAddress.pincode,
+            city: permanentAddress.city,
+            state: permanentAddress.state,
+        }));
         formData.append("aadharFile", aadharFile);
         formData.append("agreementFile", agreementFile);
         certificationFiles.forEach((file, index) => {
@@ -172,7 +208,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
             formData.append("optionalFile", optionalFile);
         }
 
-        formData.append("availableTimeSlot", selectedTimeSlot);
+        // Add the selected time slots as a JSON string
+        formData.append("availableTimeSlots", JSON.stringify(selectedTimeSlots));
         formData.append("isRegisterTrainer", "true");
 
         try {
@@ -198,77 +235,33 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
 
     // Validation functions
     const validateName = (name: string) => /^[A-Za-z\s]+$/.test(name); // Letters and spaces only
-    const validateEmail = (email: string) => /\S+@\S+\.\S+/.test(email);
-    const validatePassword = (password: string) => password.length >= 8;
 
-    const AddressFields = ({
-                               type,
-                               address,
-                               onChange
-                           }: {
-        type: "current" | "permanent",
-        address: AddressType,
-        onChange: (field: keyof AddressType, value: string) => void
+    const AddressFields = useCallback(({ type, address, onChange, disabled }: {
+        type: 'current' | 'permanent';
+        address: AddressType;
+        onChange: (field: keyof AddressType, value: string) => void;
+        disabled?: boolean;
     }) => (
         <div className="space-y-3 p-4 bg-gray-800 rounded-md">
-            <div className="flex flex-col">
-                <label className="text-white text-sm mb-1">House/Building</label>
-                <input
-                    type="text"
-                    value={address.house}
-                    onChange={(e) => onChange("house", e.target.value)}
-                    className="p-2 rounded-md bg-gray-700 text-white"
-                    disabled={type === "permanent" && sameAsCurrentAddress}
-                />
-            </div>
-            <div className="flex flex-col">
-                <label className="text-white text-sm mb-1">Area/Street</label>
-                <input
-                    type="text"
-                    value={address.area}
-                    onChange={(e) => onChange("area", e.target.value)}
-                    className="p-2 rounded-md bg-gray-700 text-white"
-                    disabled={type === "permanent" && sameAsCurrentAddress}
-                />
-            </div>
-            <div className="flex flex-col">
-                <label className="text-white text-sm mb-1">Pincode</label>
-                <input
-                    type="text"
-                    value={address.pincode}
-                    onChange={(e) => onChange("pincode", e.target.value)}
-                    className="p-2 rounded-md bg-gray-700 text-white"
-                    disabled={type === "permanent" && sameAsCurrentAddress}
-                />
-            </div>
-            <div className="flex flex-col">
-                <label className="text-white text-sm mb-1">City</label>
-                <input
-                    type="text"
-                    value={address.city}
-                    onChange={(e) => onChange("city", e.target.value)}
-                    className="p-2 rounded-md bg-gray-700 text-white"
-                    disabled={type === "permanent" && sameAsCurrentAddress}
-                />
-            </div>
-            <div className="flex flex-col">
-                <label className="text-white text-sm mb-1">State</label>
-                <input
-                    type="text"
-                    value={address.state}
-                    onChange={(e) => onChange("state", e.target.value)}
-                    className="p-2 rounded-md bg-gray-700 text-white"
-                    disabled={type === "permanent" && sameAsCurrentAddress}
-                />
-            </div>
+            {(Object.keys(address) as Array<keyof AddressType>).map((field) => (
+                <div key={field} className="flex flex-col">
+                    <label className="text-white text-sm mb-1">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+                    <input
+                        type="text"
+                        value={address[field]}
+                        onChange={(e) => onChange(field, e.target.value)}
+                        className="p-2 rounded-md bg-gray-700 text-white"
+                        disabled={disabled}
+                    />
+                </div>
+            ))}
         </div>
-    );
+    ), []);
 
     return (
-        <div className="max-h-[80vh] overflow-auto custom-scroll-bar pb-5">
-            <div className="h-full center flex-col text-white">
-                <form className="mt-2 w-full px-4 md:px-20 space-y-3" onSubmit={handleSubmit}>
-                    <h3 className="text-4xl text-white text-center">Trainer Registration</h3>
+            <div className="w-full px-4 md:px-20">
+                <form className="w-full px-4 md:px-20 space-y-3" onSubmit={handleSubmit}>
+                    <h3 className="text-4xl text-white text-center mb-6 pt-10">Trainer Registration</h3>
 
                     {/* Name */}
                     <div className="flex flex-col w-full">
@@ -279,22 +272,47 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
 
                     {/* Email */}
                     <div className="flex flex-col w-full">
-                        <label className="text-white text-lg mb-2">Email</label>
-                        <input type="email" name="email" className="p-2 rounded-md bg-gray-700 text-white" required />
-                        {emailError && <p className="text-red-500">{emailError}</p>}
+                        <label htmlFor="email" className="text-white text-lg mb-2">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="email"
+                            name="email" 
+                            className="p-2 rounded-md bg-gray-700 text-white" 
+                            placeholder="Enter a valid email address"
+                            required 
+                        />
+                        {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                     </div>
 
                     {/* Password */}
                     <div className="flex flex-col w-full">
-                        <label className="text-white text-lg mb-2">Password</label>
-                        <input type="password" name="password" className="p-2 rounded-md bg-gray-700 text-white" required />
-                        {passwordError && <p className="text-red-500">{passwordError}</p>}
+                        <label htmlFor="password" className="text-white text-lg mb-2">Password (8-12 characters)</label>
+                        <input 
+                            type="password" 
+                            id="password"
+                            name="password" 
+                            className="p-2 rounded-md bg-gray-700 text-white" 
+                            placeholder="Enter a password (8-12 characters)"
+                            minLength={8}
+                            maxLength={12}
+                            required 
+                        />
+                        {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
                     </div>
 
                     {/* Mobile Number */}
                     <div className="flex flex-col w-full">
-                        <label className="text-white text-lg mb-2">Mobile Number</label>
-                        <input type="tel" name="mobileNumber" className="p-2 rounded-md bg-gray-700 text-white" required />
+                        <label htmlFor="mobileNumber" className="text-white text-lg mb-2">Mobile Number (10 digits)</label>
+                        <input 
+                            type="tel" 
+                            id="mobileNumber"
+                            name="mobileNumber" 
+                            className="p-2 rounded-md bg-gray-700 text-white" 
+                            placeholder="Enter your 10-digit mobile number"
+                            pattern="[0-9]{10}"
+                            required 
+                        />
+                        {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
                     </div>
 
                     {/* Address Sections */}
@@ -317,7 +335,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                                 <AddressFields
                                     type="current"
                                     address={currentAddress}
-                                    onChange={handleCurrentAddressChange}
+                                    onChange={(field, value) => handleAddressChange('current', field, value)}
                                 />
                             )}
                         </div>
@@ -356,7 +374,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                                     <AddressFields
                                         type="permanent"
                                         address={permanentAddress}
-                                        onChange={handlePermanentAddressChange}
+                                        onChange={(field, value) => handleAddressChange('permanent', field, value)}
+                                        disabled={sameAsCurrentAddress}
                                     />
                                 </div>
                             )}
@@ -369,34 +388,32 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     {/*    <input type="text" name="currentLocation" className="p-2 rounded-md bg-gray-700 text-white" required />*/}
                     {/*</div>*/}
 
-                    {/* Available Time Slots (Expandable) */}
+                    {/* Available Time Slots */}
                     <div className="flex flex-col w-full">
                         <label className="text-white text-lg mb-2">Available Time Slots</label>
-
-                        {/* Display selected time slot or allow to reselect */}
                         <button
                             type="button"
-                            onClick={() => setIsTimeSlotOpen(!isTimeSlotOpen)}
+                            onClick={() => setIsTimeSlotOpen(true)}
                             className="p-2 rounded-md bg-gray-700 text-white"
                         >
-                            {selectedTimeSlot
-                                ? `Selected Time Slot: ${selectedTimeSlot} (Click to Change)`
-                                : "Select Available Time Slot"}
+                            {selectedTimeSlots.length > 0
+                                ? `${selectedTimeSlots.length} time slot(s) selected`
+                                : "Select Available Time Slots"}
                         </button>
-
-                        {/* Expandable TimeSlotSelector component */}
-                        {isTimeSlotOpen && (
-                            <div className="mt-2">
-                                <TimeSlotSelector
-                                    onClose={handleTimeSlotClose}
-                                    onSelectTimeSlot={(timeSlot: string) => {
-                                        setSelectedTimeSlot(timeSlot);
-                                        setIsTimeSlotOpen(false);
-                                    }}
-                                />
+                        {selectedTimeSlots.length > 0 && (
+                            <div className="mt-2 text-sm text-gray-300">
+                                Selected slots: {selectedTimeSlots.map(getDisplayTimeSlot).join(", ")}
                             </div>
                         )}
                     </div>
+
+                    {isTimeSlotOpen && (
+                        <TimeSlotSelector
+                            onClose={handleTimeSlotClose}
+                            onSelectTimeSlots={handleSelectTimeSlots}
+                            initialSelectedSlots={selectedTimeSlots}
+                        />
+                    )}
 
                     {/* File input fields */}
                     <FileInput label="Upload Aadhar Card (PDF/JPG)" file={aadharFile} onFileChange={(e) => handleFileChange(e, setAadharFile)} />
@@ -418,7 +435,6 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     </button>
                 </form>
             </div>
-        </div>
     );
 };
 
