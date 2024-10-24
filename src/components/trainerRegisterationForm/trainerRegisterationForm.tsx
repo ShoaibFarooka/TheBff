@@ -102,7 +102,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const handleAddressChange = useCallback((type: 'current' | 'permanent', field: keyof AddressType, value: string) => {
         const setter = type === 'current' ? setCurrentAddress : setPermanentAddress;
         setter(prev => ({ ...prev, [field]: value }));
-        
+
         if (sameAsCurrentAddress && type === 'current') {
             setPermanentAddress(prev => ({ ...prev, [field]: value }));
         }
@@ -196,16 +196,18 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
             city: permanentAddress.city,
             state: permanentAddress.state,
         }));
+
         formData.append("aadharFile", aadharFile);
         formData.append("agreementFile", agreementFile);
         certificationFiles.forEach((file, index) => {
-            formData.append(`certificationFile${index}`, file);
+            console.log(`File${index}: `, file);
+            formData.append(`certificationFiles`, file);
         });
 
         formData.append("profilePhotoFile", profilePhotoFile);
 
         if (optionalFile) {
-            formData.append("optionalFile", optionalFile);
+            formData.append("verificationFile", optionalFile);
         }
 
         // Add the selected time slots as a JSON string
@@ -259,182 +261,182 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     ), []);
 
     return (
-            <div className="w-full px-4 md:px-20">
-                <form className="w-full px-4 md:px-20 space-y-3" onSubmit={handleSubmit}>
-                    <h3 className="text-4xl text-white text-center mb-6 pt-10">Trainer Registration</h3>
+        <div className="w-full px-4 md:px-20">
+            <form className="w-full px-4 md:px-20 space-y-3" onSubmit={handleSubmit}>
+                <h3 className="text-4xl text-white text-center mb-6 pt-10">Trainer Registration</h3>
 
-                    {/* Name */}
-                    <div className="flex flex-col w-full">
-                        <label className="text-white text-lg mb-2">Name</label>
-                        <input type="text" name="name" className="p-2 rounded-md bg-gray-700 text-white" required />
-                        {nameError && <p className="text-red-500">{nameError}</p>}
-                    </div>
+                {/* Name */}
+                <div className="flex flex-col w-full">
+                    <label className="text-white text-lg mb-2">Name</label>
+                    <input type="text" name="name" className="p-2 rounded-md bg-gray-700 text-white" required />
+                    {nameError && <p className="text-red-500">{nameError}</p>}
+                </div>
 
-                    {/* Email */}
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="email" className="text-white text-lg mb-2">Email Address</label>
-                        <input 
-                            type="email" 
-                            id="email"
-                            name="email" 
-                            className="p-2 rounded-md bg-gray-700 text-white" 
-                            placeholder="Enter a valid email address"
-                            required 
-                        />
-                        {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
-                    </div>
+                {/* Email */}
+                <div className="flex flex-col w-full">
+                    <label htmlFor="email" className="text-white text-lg mb-2">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        className="p-2 rounded-md bg-gray-700 text-white"
+                        placeholder="Enter a valid email address"
+                        required
+                    />
+                    {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
+                </div>
 
-                    {/* Password */}
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="password" className="text-white text-lg mb-2">Password (8-12 characters)</label>
-                        <input 
-                            type="password" 
-                            id="password"
-                            name="password" 
-                            className="p-2 rounded-md bg-gray-700 text-white" 
-                            placeholder="Enter a password (8-12 characters)"
-                            minLength={8}
-                            maxLength={12}
-                            required 
-                        />
-                        {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
-                    </div>
+                {/* Password */}
+                <div className="flex flex-col w-full">
+                    <label htmlFor="password" className="text-white text-lg mb-2">Password (8-12 characters)</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        className="p-2 rounded-md bg-gray-700 text-white"
+                        placeholder="Enter a password (8-12 characters)"
+                        minLength={8}
+                        maxLength={12}
+                        required
+                    />
+                    {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
+                </div>
 
-                    {/* Mobile Number */}
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="mobileNumber" className="text-white text-lg mb-2">Mobile Number (10 digits)</label>
-                        <input 
-                            type="tel" 
-                            id="mobileNumber"
-                            name="mobileNumber" 
-                            className="p-2 rounded-md bg-gray-700 text-white" 
-                            placeholder="Enter your 10-digit mobile number"
-                            pattern="[0-9]{10}"
-                            required 
-                        />
-                        {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
-                    </div>
+                {/* Mobile Number */}
+                <div className="flex flex-col w-full">
+                    <label htmlFor="mobileNumber" className="text-white text-lg mb-2">Mobile Number (10 digits)</label>
+                    <input
+                        type="tel"
+                        id="mobileNumber"
+                        name="mobileNumber"
+                        className="p-2 rounded-md bg-gray-700 text-white"
+                        placeholder="Enter your 10-digit mobile number"
+                        pattern="[0-9]{10}"
+                        required
+                    />
+                    {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
+                </div>
 
-                    {/* Address Sections */}
-                    <div className="space-y-4">
-                        {/* Current Address */}
-                        <div className="border border-gray-700 rounded-lg overflow-hidden">
-                            <button
-                                type="button"
-                                className="w-full p-4 flex justify-between items-center bg-gray-800 hover:bg-gray-700"
-                                onClick={() => setShowCurrentAddress(!showCurrentAddress)}
-                            >
-                                <span className="text-lg">Current Address</span>
-                                {showCurrentAddress ? (
-                                    <ChevronUp className="h-5 w-5" />
-                                ) : (
-                                    <ChevronDown className="h-5 w-5" />
-                                )}
-                            </button>
-                            {showCurrentAddress && (
-                                <AddressFields
-                                    type="current"
-                                    address={currentAddress}
-                                    onChange={(field, value) => handleAddressChange('current', field, value)}
-                                />
-                            )}
-                        </div>
-
-                        {/* Permanent Address */}
-                        <div className="border border-gray-700 rounded-lg overflow-hidden">
-                            <button
-                                type="button"
-                                className="w-full p-4 flex justify-between items-center bg-gray-800 hover:bg-gray-700"
-                                onClick={() => setShowPermanentAddress(!showPermanentAddress)}
-                            >
-                                <span className="text-lg">Permanent Address</span>
-                                {showPermanentAddress ? (
-                                    <ChevronUp className="h-5 w-5" />
-                                ) : (
-                                    <ChevronDown className="h-5 w-5" />
-                                )}
-                            </button>
-                            {showPermanentAddress && (
-                                <div className="space-y-4">
-                                    <div className="flex items-center space-x-2 p-4">
-                                        <input
-                                            type="checkbox"
-                                            id="same-address"
-                                            checked={sameAsCurrentAddress}
-                                            onChange={handleSameAddressToggle}
-                                            className="h-4 w-4"
-                                        />
-                                        <label
-                                            htmlFor="same-address"
-                                            className="text-sm font-medium"
-                                        >
-                                            Same as Current Address
-                                        </label>
-                                    </div>
-                                    <AddressFields
-                                        type="permanent"
-                                        address={permanentAddress}
-                                        onChange={(field, value) => handleAddressChange('permanent', field, value)}
-                                        disabled={sameAsCurrentAddress}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/*/!* Current Location *!/*/}
-                    {/*<div className="flex flex-col w-full">*/}
-                    {/*    <label className="text-white text-lg mb-2">Current Location</label>*/}
-                    {/*    <input type="text" name="currentLocation" className="p-2 rounded-md bg-gray-700 text-white" required />*/}
-                    {/*</div>*/}
-
-                    {/* Available Time Slots */}
-                    <div className="flex flex-col w-full">
-                        <label className="text-white text-lg mb-2">Available Time Slots</label>
+                {/* Address Sections */}
+                <div className="space-y-4">
+                    {/* Current Address */}
+                    <div className="border border-gray-700 rounded-lg overflow-hidden">
                         <button
                             type="button"
-                            onClick={() => setIsTimeSlotOpen(true)}
-                            className="p-2 rounded-md bg-gray-700 text-white"
+                            className="w-full p-4 flex justify-between items-center bg-gray-800 hover:bg-gray-700"
+                            onClick={() => setShowCurrentAddress(!showCurrentAddress)}
                         >
-                            {selectedTimeSlots.length > 0
-                                ? `${selectedTimeSlots.length} time slot(s) selected`
-                                : "Select Available Time Slots"}
+                            <span className="text-lg">Current Address</span>
+                            {showCurrentAddress ? (
+                                <ChevronUp className="h-5 w-5" />
+                            ) : (
+                                <ChevronDown className="h-5 w-5" />
+                            )}
                         </button>
-                        {selectedTimeSlots.length > 0 && (
-                            <div className="mt-2 text-sm text-gray-300">
-                                Selected slots: {selectedTimeSlots.map(getDisplayTimeSlot).join(", ")}
-                            </div>
+                        {showCurrentAddress && (
+                            <AddressFields
+                                type="current"
+                                address={currentAddress}
+                                onChange={(field, value) => handleAddressChange('current', field, value)}
+                            />
                         )}
                     </div>
 
-                    {isTimeSlotOpen && (
-                        <TimeSlotSelector
-                            onClose={handleTimeSlotClose}
-                            onSelectTimeSlots={handleSelectTimeSlots}
-                            initialSelectedSlots={selectedTimeSlots}
-                        />
-                    )}
+                    {/* Permanent Address */}
+                    <div className="border border-gray-700 rounded-lg overflow-hidden">
+                        <button
+                            type="button"
+                            className="w-full p-4 flex justify-between items-center bg-gray-800 hover:bg-gray-700"
+                            onClick={() => setShowPermanentAddress(!showPermanentAddress)}
+                        >
+                            <span className="text-lg">Permanent Address</span>
+                            {showPermanentAddress ? (
+                                <ChevronUp className="h-5 w-5" />
+                            ) : (
+                                <ChevronDown className="h-5 w-5" />
+                            )}
+                        </button>
+                        {showPermanentAddress && (
+                            <div className="space-y-4">
+                                <div className="flex items-center space-x-2 p-4">
+                                    <input
+                                        type="checkbox"
+                                        id="same-address"
+                                        checked={sameAsCurrentAddress}
+                                        onChange={handleSameAddressToggle}
+                                        className="h-4 w-4"
+                                    />
+                                    <label
+                                        htmlFor="same-address"
+                                        className="text-sm font-medium"
+                                    >
+                                        Same as Current Address
+                                    </label>
+                                </div>
+                                <AddressFields
+                                    type="permanent"
+                                    address={permanentAddress}
+                                    onChange={(field, value) => handleAddressChange('permanent', field, value)}
+                                    disabled={sameAsCurrentAddress}
+                                />
+                            </div>
+                        )}
+                    </div>
+                </div>
 
-                    {/* File input fields */}
-                    <FileInput label="Upload Aadhar Card (PDF/JPG)" file={aadharFile} onFileChange={(e) => handleFileChange(e, setAadharFile)} />
-                    <FileInput label="Upload Signed Agreement (PDF/JPG)" file={agreementFile} onFileChange={(e) => handleFileChange(e, setAgreementFile)} />
-                    <MultipleFileInput
-                        label="Upload Certifications (PDF/JPG) - Up to 10 files"
-                        files={certificationFiles}
-                        onFileChange={handleCertificationFileChange}
-                        onFileRemove={handleRemoveCertification}
-                    />
-                    <FileInput label="Upload Profile Photo (PDF/JPG)" file={profilePhotoFile} onFileChange={(e) => handleFileChange(e, setProfilePhotoFile)} />
+                {/*/!* Current Location *!/*/}
+                {/*<div className="flex flex-col w-full">*/}
+                {/*    <label className="text-white text-lg mb-2">Current Location</label>*/}
+                {/*    <input type="text" name="currentLocation" className="p-2 rounded-md bg-gray-700 text-white" required />*/}
+                {/*</div>*/}
 
-                    {/* Optional file input */}
-                    <FileInput label="Upload Police verification certificate or passport (Optional)" file={optionalFile} onFileChange={(e) => handleFileChange(e, setOptionalFile)} />
-
-                    {/* Submit button */}
-                    <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" type="submit">
-                        Register
+                {/* Available Time Slots */}
+                <div className="flex flex-col w-full">
+                    <label className="text-white text-lg mb-2">Available Time Slots</label>
+                    <button
+                        type="button"
+                        onClick={() => setIsTimeSlotOpen(true)}
+                        className="p-2 rounded-md bg-gray-700 text-white"
+                    >
+                        {selectedTimeSlots.length > 0
+                            ? `${selectedTimeSlots.length} time slot(s) selected`
+                            : "Select Available Time Slots"}
                     </button>
-                </form>
-            </div>
+                    {selectedTimeSlots.length > 0 && (
+                        <div className="mt-2 text-sm text-gray-300">
+                            Selected slots: {selectedTimeSlots.map(getDisplayTimeSlot).join(", ")}
+                        </div>
+                    )}
+                </div>
+
+                {isTimeSlotOpen && (
+                    <TimeSlotSelector
+                        onClose={handleTimeSlotClose}
+                        onSelectTimeSlots={handleSelectTimeSlots}
+                        initialSelectedSlots={selectedTimeSlots}
+                    />
+                )}
+
+                {/* File input fields */}
+                <FileInput label="Upload Aadhar Card (PDF/JPG)" file={aadharFile} onFileChange={(e) => handleFileChange(e, setAadharFile)} />
+                <FileInput label="Upload Signed Agreement (PDF/JPG)" file={agreementFile} onFileChange={(e) => handleFileChange(e, setAgreementFile)} />
+                <MultipleFileInput
+                    label="Upload Certifications (PDF/JPG) - Up to 10 files"
+                    files={certificationFiles}
+                    onFileChange={handleCertificationFileChange}
+                    onFileRemove={handleRemoveCertification}
+                />
+                <FileInput label="Upload Profile Photo (PDF/JPG)" file={profilePhotoFile} onFileChange={(e) => handleFileChange(e, setProfilePhotoFile)} />
+
+                {/* Optional file input */}
+                <FileInput label="Upload Police verification certificate or passport (Optional)" file={optionalFile} onFileChange={(e) => handleFileChange(e, setOptionalFile)} />
+
+                {/* Submit button */}
+                <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" type="submit">
+                    Register
+                </button>
+            </form>
+        </div>
     );
 };
 
@@ -468,7 +470,8 @@ const MultipleFileInput = ({ label, files, onFileChange, onFileRemove }: {
     label: string,
     files: File[],
     onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    onFileRemove: (index: number) => void }) => (
+    onFileRemove: (index: number) => void
+}) => (
     <div className="flex flex-col w-full">
         <label className="text-white text-lg mb-2">{label}</label>
         <div className="space-y-2">
