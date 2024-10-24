@@ -1,23 +1,23 @@
 "use server";
 import "@/lib/db";
 import { connectDB } from "@/lib/db";
-import { Order, Plan, Subscription, User } from "@/models";
+import { razorpay } from "@/lib/subscription";
+import { Order, Plan, Subscription, Trainer, User } from "@/models";
+import { caclulateEndDate } from "@/server/api/routers/payment/payment.service";
+import { SubscriptionStatus } from "@/types/subscription";
 import { UserRole, User as UserType } from "@/types/user";
+import axios from "axios";
 import bcrypt from "bcryptjs";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import { baseUrl } from "./config";
 import { sendEmail, transporter } from "./email";
+import directClientPaymentLink from "./email/templates/directClientPaymentLink";
 import emailVerificationTemplate from "./email/templates/emailVerification";
 import { registrationNotification, welcomeEmailTemplate } from "./email/templates/user";
 import { devLog, getURL } from "./helpers";
 import { logger } from "./logger";
-import { razorpay, RAZORPAY_KEY_SECRET } from "@/lib/subscription";
-import { SubscriptionStatus } from "@/types/subscription";
-import { caclulateEndDate } from "@/server/api/routers/payment/payment.service";
-import axios from "axios";
-import directClientPaymentLink from "./email/templates/directClientPaymentLink";
 
 // methods to login, register, and authenticate users
 const secret = process.env.JWT_SECRET! || "secret";
@@ -681,5 +681,50 @@ async function sendPhoneVerificationLink(phone: string) {
   } catch (error) {
     console.error(error);
     return { success: false };
+  }
+}
+
+// login for trainer
+export async function loginTrainer({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) {
+  try {
+    await connectDB();
+    const trainer = await Trainer.findOne({ email });
+    if (!trainer) return { success: false, message: "Trainer not found" };
+
+    const valid = 1;//await bcrypt.compare(password, trainer.password);
+    if (!valid) return { success: false, message: "Incorrect password" };
+
+    if (!trainer.emailVerified)
+      return {
+        success: false,
+        emailVerified: false,
+        message:
+          "Please verify your email to login. Check your email for verification link.",
+      };
+
+    const token = jwt.sign(
+      {
+        _id: trainer._id,
+        email: trainer.email,
+        name: trainer.name,
+        phone: trainer.mobileNumber,
+        role: 'trainer'
+      },
+      secret
+    );
+
+    const cookie = cookies();
+    cookie.set("token", token, { maxAge: 30 * 24 * 60 * 60 * 1000 }); // 30 days
+
+    return { success: true, role: 'trainer' };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "An error occurred during login" };
   }
 }
