@@ -16,6 +16,7 @@ export { default as Plan } from "./plan";
 export { default as Program } from "./Program";
 export { default as Session } from "./Session";
 export { default as Subscription } from "./Subscription";
+export { default as Trainer } from "./trainer";
 export { default as User } from "./user";
 export { default as UserStats } from "./Userstats";
 
