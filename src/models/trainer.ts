@@ -9,15 +9,14 @@ type TrainerDoc = Document & {
     permanentAddress: string;
     currentAddress: string;
     currentLocation: string;
-    availableTimeSlot: string;
-    isRegisterTrainer: boolean;
+    availableTimeSlots: [string];
     emailVerified: boolean;
     phoneVerified: boolean;
-    aadharFileUrl?: string;
-    agreementFileUrl?: string;
-    certificationFileUrl?: string;
-    profilePhotoFileUrl?: string;
-    optionalFileUrl?: string;
+    aadharFileUrl: string;
+    agreementFileUrl: string;
+    certificationFileUrls: [string];
+    profilePhotoFileUrl: string;
+    verificationFileUrl?: string;
 };
 
 type TrainerModel = Model<TrainerDoc>;
@@ -65,32 +64,57 @@ const trainerSchema = new Schema<TrainerDoc, TrainerModel>(
             maxlength: 15
         },
         permanentAddress: {
-            type: String,
-            required: true,
+            house: {
+                type: String,
+                required: true,
+            },
+            area: {
+                type: String,
+                required: true,
+            },
+            pincode: {
+                type: String || Number,
+                required: true,
+            },
+            city: {
+                type: String,
+                required: true,
+            },
+            state: {
+                type: String,
+                required: true,
+            },
         },
         currentAddress: {
-            type: String,
-            required: true,
+            house: {
+                type: String,
+                required: true,
+            },
+            area: {
+                type: String,
+                required: true,
+            },
+            pincode: {
+                type: String || Number,
+                required: true,
+            },
+            city: {
+                type: String,
+                required: true,
+            },
+            state: {
+                type: String,
+                required: true,
+            },
         },
-        currentLocation: {
-            type: String,
-            required: true,
-        },
-        availableTimeSlot: {
-            type: String,
-            required: true,
-        },
-        isRegisterTrainer: {
+        availableTimeSlots: [String],
+        emailVerified: {
             type: Boolean,
             default: false,
         },
-        emailVerified: {
-            type: Boolean,
-            default: true,
-        },
         phoneVerified: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         // File URLs stored in S3
         aadharFileUrl: {
@@ -101,12 +125,12 @@ const trainerSchema = new Schema<TrainerDoc, TrainerModel>(
             type: String,
             required: true,
         },
-        certificationFileUrl: [String],
+        certificationFileUrls: [String],
         profilePhotoFileUrl: {
             type: String,
             required: true,
         },
-        optionalFileUrl: {
+        verificationFileUrl: {
             type: String,
             required: false,
         },
