@@ -1,5 +1,6 @@
 import Trainer from "@/models/trainer";
 import AWS from 'aws-sdk';
+import bcrypt from "bcryptjs";
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
 
@@ -30,6 +31,7 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
     const name = formData.get('name');
     const email = formData.get('email');
     const password = formData.get('password');
+    const hashedPassword = await bcrypt.hash(password, 10);
     const mobileNumber = formData.get('mobileNumber');
     const currentAddress = formData.get('currentAddress');
     const parsedCurrentAddress = JSON.parse(currentAddress);
@@ -147,7 +149,7 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
       const trainer = await Trainer.create({
         name,
         email,
-        password,
+        password: hashedPassword,
         mobileNumber,
         permanentAddress: parsedPermanentAddress,
         currentAddress: parsedCurrentAddress,
