@@ -1,5 +1,7 @@
 "use client";
-import { CheckCircle, ChevronDown, ChevronUp, X } from "lucide-react";
+import { CheckCircle, ChevronDown, ChevronUp, Loader2, X } from "lucide-react";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useRouter } from "nextjs-toploader/app";
 import React, { useCallback, useState } from "react";
 import toast from "react-hot-toast";
@@ -20,6 +22,7 @@ type RegisterFormProps = {
 
 const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const router = useRouter();
+    const pathname = usePathname();
     const [isTimeSlotOpen, setIsTimeSlotOpen] = useState(false);
     const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -49,6 +52,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const [sameAsCurrentAddress, setSameAsCurrentAddress] = useState(false);
     const [showCurrentAddress, setShowCurrentAddress] = useState(false);
     const [showPermanentAddress, setShowPermanentAddress] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, setter: React.Dispatch<React.SetStateAction<File | null>>) => {
         const file = e.target.files?.[0];
@@ -115,12 +120,16 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         }
     }, [currentAddress]);
 
-    const validatePhone = (phone: string) => {
-        if (phone.length !== 10) {
-            return "Phone number must be exactly 10 digits.";
+    const validateName = (name: string) => {
+        if (/\d/.test(name)) {
+            return "Name should not contain numbers";
         }
-        if (!/^\d+$/.test(phone)) {
-            return "Phone number should only contain digits.";
+        return null;
+    };
+
+    const validateEmail = (email: string) => {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return "Please enter a valid email address (e.g., name@example.com).";
         }
         return null;
     };
@@ -135,11 +144,41 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         return null;
     };
 
-    const validateEmail = (email: string) => {
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            return "Please enter a valid email address (e.g., name@example.com).";
+    const validatePhone = (phone: string) => {
+        if (phone.length !== 10) {
+            return "Phone number must be exactly 10 digits.";
+        }
+        if (!/^\d+$/.test(phone)) {
+            return "Phone number should only contain digits.";
         }
         return null;
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        switch (name) {
+            case 'name':
+                setNameError(validateName(value));
+                break;
+            case 'email':
+                setEmailError(validateEmail(value));
+                break;
+            case 'password':
+                setPasswordError(validatePassword(value));
+                break;
+            case 'mobileNumber':
+                setPhoneError(validatePhone(value));
+                break;
+        }
+    };
+
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newName = e.target.value;
+        const error = validateName(newName);
+        setNameError(error);
+        if (!error) {
+            e.target.value = newName;
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -164,7 +203,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
             return; // Don't submit if there are errors
         }
 
-        if (!validateName(nameInput.value)) {
+        if (validateName(nameInput.value) !== null) {
             console.log('e.currentTarget.name', nameInput.value);
             setNameError("Please enter a valid name.");
             return;
@@ -180,6 +219,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
             alert("Please select at least one available time slot.");
             return;
         }
+
+        setIsLoading(true); // Start loading
 
         const formData = new FormData(e.currentTarget);
         formData.append("currentAddress", JSON.stringify({
@@ -225,6 +266,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
             if (res.status === 200) {
                 toast.success(data.message ?? "You have been signed up successfully. Redirecting...");
                 onSuccess?.();
+                // Add redirection here
+                router.push('/trainer/dashboard'); // Redirect to trainer dashboard or appropriate page
             } else {
                 toast.error(data.message ?? "Something went wrong.");
                 onFailure?.();
@@ -232,12 +275,12 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         } catch (error) {
             console.error("Error uploading files:", error);
             onFailure?.();
+        } finally {
+            setIsLoading(false); // Stop loading regardless of outcome
         }
     };
 
     // Validation functions
-    const validateName = (name: string) => /^[A-Za-z\s]+$/.test(name); // Letters and spaces only
-
     const AddressFields = useCallback(({ type, address, onChange, disabled }: {
         type: 'current' | 'permanent';
         address: AddressType;
@@ -261,181 +304,225 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     ), []);
 
     return (
-        <div className="w-full px-4 md:px-20">
-            <form className="w-full px-4 md:px-20 space-y-3" onSubmit={handleSubmit}>
-                <h3 className="text-4xl text-white text-center mb-6 pt-10">Trainer Registration</h3>
+        <div className="h-full center flex-col text-white max-h-full overflow-auto">
+            <div className="w-full px-4 md:px-20">
+                <form className="w-full px-4 md:px-20 space-y-3" onSubmit={handleSubmit}>
+                    <h3 className="text-4xl text-white text-center mb-6 pt-10">Trainer Registration</h3>
 
-                {/* Name */}
-                <div className="flex flex-col w-full">
-                    <label className="text-white text-lg mb-2">Name</label>
-                    <input type="text" name="name" className="p-2 rounded-md bg-gray-700 text-white" required />
-                    {nameError && <p className="text-red-500">{nameError}</p>}
-                </div>
-
-                {/* Email */}
-                <div className="flex flex-col w-full">
-                    <label htmlFor="email" className="text-white text-lg mb-2">Email Address</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="p-2 rounded-md bg-gray-700 text-white"
-                        placeholder="Enter a valid email address"
-                        required
-                    />
-                    {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
-                </div>
-
-                {/* Password */}
-                <div className="flex flex-col w-full">
-                    <label htmlFor="password" className="text-white text-lg mb-2">Password (8-12 characters)</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        className="p-2 rounded-md bg-gray-700 text-white"
-                        placeholder="Enter a password (8-12 characters)"
-                        minLength={8}
-                        maxLength={12}
-                        required
-                    />
-                    {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
-                </div>
-
-                {/* Mobile Number */}
-                <div className="flex flex-col w-full">
-                    <label htmlFor="mobileNumber" className="text-white text-lg mb-2">Mobile Number (10 digits)</label>
-                    <input
-                        type="tel"
-                        id="mobileNumber"
-                        name="mobileNumber"
-                        className="p-2 rounded-md bg-gray-700 text-white"
-                        placeholder="Enter your 10-digit mobile number"
-                        pattern="[0-9]{10}"
-                        required
-                    />
-                    {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
-                </div>
-
-                {/* Address Sections */}
-                <div className="space-y-4">
-                    {/* Current Address */}
-                    <div className="border border-gray-700 rounded-lg overflow-hidden">
-                        <button
-                            type="button"
-                            className="w-full p-4 flex justify-between items-center bg-gray-800 hover:bg-gray-700"
-                            onClick={() => setShowCurrentAddress(!showCurrentAddress)}
-                        >
-                            <span className="text-lg">Current Address</span>
-                            {showCurrentAddress ? (
-                                <ChevronUp className="h-5 w-5" />
-                            ) : (
-                                <ChevronDown className="h-5 w-5" />
-                            )}
-                        </button>
-                        {showCurrentAddress && (
-                            <AddressFields
-                                type="current"
-                                address={currentAddress}
-                                onChange={(field, value) => handleAddressChange('current', field, value)}
-                            />
-                        )}
+                    <div className="max-w-max my-3 mx-auto bg-white rounded-full flex p-1">
+                        <Link href="/trainer/login">
+                            <button
+                                className={`px-8 py-2 rounded-full ${
+                                    pathname === '/trainer/login' 
+                                    ? 'bg-blue-500 text-white' 
+                                    : 'bg-transparent text-black'
+                                }`}
+                            >
+                                Login
+                            </button>
+                        </Link>
+                        <Link href="/trainer/signup">
+                            <button
+                                className={`px-8 py-2 rounded-full ${
+                                    pathname === '/trainer/signup' 
+                                    ? 'bg-blue-500 text-white' 
+                                    : 'bg-transparent text-black'
+                                }`}
+                            >
+                                Sign Up
+                            </button>
+                        </Link>
                     </div>
 
-                    {/* Permanent Address */}
-                    <div className="border border-gray-700 rounded-lg overflow-hidden">
+                    {/* Name */}
+                    <div className="flex flex-col w-full">
+                        <label className="text-white text-lg mb-2">Name</label>
+                        <input 
+                            type="text" 
+                            name="name" 
+                            className="p-2 rounded-md bg-gray-700 text-white" 
+                            onBlur={handleBlur}
+                            required 
+                        />
+                        {nameError && <p className="text-red-500 text-sm mt-1">{nameError}</p>}
+                    </div>
+
+                    {/* Email */}
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="email" className="text-white text-lg mb-2">Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            className="p-2 rounded-md bg-gray-700 text-white"
+                            placeholder="Enter a valid email address"
+                            onBlur={handleBlur}
+                            required
+                        />
+                        {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
+                    </div>
+
+                    {/* Password */}
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="password" className="text-white text-lg mb-2">Password (8-12 characters)</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            className="p-2 rounded-md bg-gray-700 text-white"
+                            placeholder="Enter a password (8-12 characters)"
+                            onBlur={handleBlur}
+                            required
+                        />
+                        {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
+                    </div>
+
+                    {/* Mobile Number */}
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="mobileNumber" className="text-white text-lg mb-2">Mobile Number (10 digits)</label>
+                        <input
+                            type="tel"
+                            id="mobileNumber"
+                            name="mobileNumber"
+                            className="p-2 rounded-md bg-gray-700 text-white"
+                            placeholder="Enter your 10-digit mobile number"
+                            onBlur={handleBlur}
+                            required
+                        />
+                        {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
+                    </div>
+
+                    {/* Address Sections */}
+                    <div className="space-y-4">
+                        {/* Current Address */}
+                        <div className="border border-gray-700 rounded-lg overflow-hidden">
+                            <button
+                                type="button"
+                                className="w-full p-4 flex justify-between items-center bg-gray-800 hover:bg-gray-700"
+                                onClick={() => setShowCurrentAddress(!showCurrentAddress)}
+                            >
+                                <span className="text-lg">Current Address</span>
+                                {showCurrentAddress ? (
+                                    <ChevronUp className="h-5 w-5" />
+                                ) : (
+                                    <ChevronDown className="h-5 w-5" />
+                                )}
+                            </button>
+                            {showCurrentAddress && (
+                                <AddressFields
+                                    type="current"
+                                    address={currentAddress}
+                                    onChange={(field, value) => handleAddressChange('current', field, value)}
+                                />
+                            )}
+                        </div>
+
+                        {/* Permanent Address */}
+                        <div className="border border-gray-700 rounded-lg overflow-hidden">
+                            <button
+                                type="button"
+                                className="w-full p-4 flex justify-between items-center bg-gray-800 hover:bg-gray-700"
+                                onClick={() => setShowPermanentAddress(!showPermanentAddress)}
+                            >
+                                <span className="text-lg">Permanent Address</span>
+                                {showPermanentAddress ? (
+                                    <ChevronUp className="h-5 w-5" />
+                                ) : (
+                                    <ChevronDown className="h-5 w-5" />
+                                )}
+                            </button>
+                            {showPermanentAddress && (
+                                <div className="space-y-4">
+                                    <div className="flex items-center space-x-2 p-4">
+                                        <input
+                                            type="checkbox"
+                                            id="same-address"
+                                            checked={sameAsCurrentAddress}
+                                            onChange={handleSameAddressToggle}
+                                            className="h-4 w-4"
+                                        />
+                                        <label
+                                            htmlFor="same-address"
+                                            className="text-sm font-medium"
+                                        >
+                                            Same as Current Address
+                                        </label>
+                                    </div>
+                                    <AddressFields
+                                        type="permanent"
+                                        address={permanentAddress}
+                                        onChange={(field, value) => handleAddressChange('permanent', field, value)}
+                                        disabled={sameAsCurrentAddress}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/*/!* Current Location *!/*/}
+                    {/*<div className="flex flex-col w-full">*/}
+                    {/*    <label className="text-white text-lg mb-2">Current Location</label>*/}
+                    {/*    <input type="text" name="currentLocation" className="p-2 rounded-md bg-gray-700 text-white" required />*/}
+                    {/*</div>*/}
+
+                    {/* Available Time Slots */}
+                    <div className="flex flex-col w-full">
+                        <label className="text-white text-lg mb-2">Available Time Slots</label>
                         <button
                             type="button"
-                            className="w-full p-4 flex justify-between items-center bg-gray-800 hover:bg-gray-700"
-                            onClick={() => setShowPermanentAddress(!showPermanentAddress)}
+                            onClick={() => setIsTimeSlotOpen(true)}
+                            className="p-2 rounded-md bg-gray-700 text-white"
                         >
-                            <span className="text-lg">Permanent Address</span>
-                            {showPermanentAddress ? (
-                                <ChevronUp className="h-5 w-5" />
-                            ) : (
-                                <ChevronDown className="h-5 w-5" />
-                            )}
+                            {selectedTimeSlots.length > 0
+                                ? `${selectedTimeSlots.length} time slot(s) selected`
+                                : "Select Available Time Slots"}
                         </button>
-                        {showPermanentAddress && (
-                            <div className="space-y-4">
-                                <div className="flex items-center space-x-2 p-4">
-                                    <input
-                                        type="checkbox"
-                                        id="same-address"
-                                        checked={sameAsCurrentAddress}
-                                        onChange={handleSameAddressToggle}
-                                        className="h-4 w-4"
-                                    />
-                                    <label
-                                        htmlFor="same-address"
-                                        className="text-sm font-medium"
-                                    >
-                                        Same as Current Address
-                                    </label>
-                                </div>
-                                <AddressFields
-                                    type="permanent"
-                                    address={permanentAddress}
-                                    onChange={(field, value) => handleAddressChange('permanent', field, value)}
-                                    disabled={sameAsCurrentAddress}
-                                />
+                        {selectedTimeSlots.length > 0 && (
+                            <div className="mt-2 text-sm text-gray-300">
+                                Selected slots: {selectedTimeSlots.map(getDisplayTimeSlot).join(", ")}
                             </div>
                         )}
                     </div>
-                </div>
 
-                {/*/!* Current Location *!/*/}
-                {/*<div className="flex flex-col w-full">*/}
-                {/*    <label className="text-white text-lg mb-2">Current Location</label>*/}
-                {/*    <input type="text" name="currentLocation" className="p-2 rounded-md bg-gray-700 text-white" required />*/}
-                {/*</div>*/}
-
-                {/* Available Time Slots */}
-                <div className="flex flex-col w-full">
-                    <label className="text-white text-lg mb-2">Available Time Slots</label>
-                    <button
-                        type="button"
-                        onClick={() => setIsTimeSlotOpen(true)}
-                        className="p-2 rounded-md bg-gray-700 text-white"
-                    >
-                        {selectedTimeSlots.length > 0
-                            ? `${selectedTimeSlots.length} time slot(s) selected`
-                            : "Select Available Time Slots"}
-                    </button>
-                    {selectedTimeSlots.length > 0 && (
-                        <div className="mt-2 text-sm text-gray-300">
-                            Selected slots: {selectedTimeSlots.map(getDisplayTimeSlot).join(", ")}
-                        </div>
+                    {isTimeSlotOpen && (
+                        <TimeSlotSelector
+                            onClose={handleTimeSlotClose}
+                            onSelectTimeSlots={handleSelectTimeSlots}
+                            initialSelectedSlots={selectedTimeSlots}
+                        />
                     )}
-                </div>
 
-                {isTimeSlotOpen && (
-                    <TimeSlotSelector
-                        onClose={handleTimeSlotClose}
-                        onSelectTimeSlots={handleSelectTimeSlots}
-                        initialSelectedSlots={selectedTimeSlots}
+                    {/* File input fields */}
+                    <FileInput label="Upload Aadhar Card (PDF/JPG)" file={aadharFile} onFileChange={(e) => handleFileChange(e, setAadharFile)} />
+                    <FileInput label="Upload Signed Agreement (PDF/JPG)" file={agreementFile} onFileChange={(e) => handleFileChange(e, setAgreementFile)} />
+                    <MultipleFileInput
+                        label="Upload Certifications (PDF/JPG) - Up to 10 files"
+                        files={certificationFiles}
+                        onFileChange={handleCertificationFileChange}
+                        onFileRemove={handleRemoveCertification}
                     />
-                )}
+                    <FileInput label="Upload Profile Photo (PDF/JPG)" file={profilePhotoFile} onFileChange={(e) => handleFileChange(e, setProfilePhotoFile)} />
 
-                {/* File input fields */}
-                <FileInput label="Upload Aadhar Card (PDF/JPG)" file={aadharFile} onFileChange={(e) => handleFileChange(e, setAadharFile)} />
-                <FileInput label="Upload Signed Agreement (PDF/JPG)" file={agreementFile} onFileChange={(e) => handleFileChange(e, setAgreementFile)} />
-                <MultipleFileInput
-                    label="Upload Certifications (PDF/JPG) - Up to 10 files"
-                    files={certificationFiles}
-                    onFileChange={handleCertificationFileChange}
-                    onFileRemove={handleRemoveCertification}
-                />
-                <FileInput label="Upload Profile Photo (PDF/JPG)" file={profilePhotoFile} onFileChange={(e) => handleFileChange(e, setProfilePhotoFile)} />
+                    {/* Optional file input */}
+                    <FileInput label="Upload Police verification certificate or passport (Optional)" file={optionalFile} onFileChange={(e) => handleFileChange(e, setOptionalFile)} />
 
-                {/* Optional file input */}
-                <FileInput label="Upload Police verification certificate or passport (Optional)" file={optionalFile} onFileChange={(e) => handleFileChange(e, setOptionalFile)} />
-
-                {/* Submit button */}
-                <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" type="submit">
-                    Register
-                </button>
-            </form>
+                    {/* Submit button */}
+                    <button 
+                        className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center justify-center" 
+                        type="submit"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Registering...
+                            </>
+                        ) : (
+                            'Register'
+                        )}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };

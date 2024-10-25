@@ -36,7 +36,8 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({ onClose, onSelectTi
     { display: '11:00 PM - 12:00 AM', value: '23:00-00:00' },
   ];
 
-  const toggleTimeSlot = (slot: string) => {
+  const toggleTimeSlot = (slot: string, event: React.MouseEvent) => {
+    event.preventDefault(); // Prevent default form submission
     setSelectedSlots(prev => 
       prev.includes(slot) 
         ? prev.filter(s => s !== slot) 
@@ -51,16 +52,17 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({ onClose, onSelectTi
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-gray-800 p-6 rounded-lg max-w-md w-full">
+      <div className="bg-gray-800 p-6 rounded-lg max-w-md w-full max-h-[50%] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4 text-white">Select Available Time Slots</h2>
         <div className="grid grid-cols-2 gap-2 mb-4">
           {timeSlots.map(slot => (
             <button
               key={slot.value}
-              onClick={() => toggleTimeSlot(slot.value)}
+              onClick={(e) => toggleTimeSlot(slot.value, e)}
               className={`p-2 rounded ${
                 selectedSlots.includes(slot.value) ? 'bg-blue-500 text-white' : 'bg-gray-700 text-white'
               }`}
+              type="button" // Explicitly set button type to prevent form submission
             >
               {slot.display}
             </button>
