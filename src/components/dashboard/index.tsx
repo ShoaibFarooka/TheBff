@@ -11,6 +11,7 @@ import { useDashboardState } from "./state";
 import StatsGraph from "./StatsGraph";
 import Subscriptions from "./Subscriptions";
 import UserStats from "./UserStats";
+import BookSessionSlot from "./sessions/BookSessionSlot";
 
 type UserData = User & {
   classes: any[];
@@ -63,7 +64,8 @@ export default function Dashboard() {
 
           {/* ===================Scheduled Session================== */}
           <div className="bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl py-5 px-3 lg:px-10 lg:col-span-2 shadow-2xl shadow-[#4A2F70]/50">
-            <BookSlot />
+            {/* <BookSlot /> */}
+            <BookSessionSlot/>
           </div>
 
           {/* =================PROFILE========================== */}
