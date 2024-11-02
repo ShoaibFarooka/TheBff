@@ -3,26 +3,30 @@ import mongoose, { Document, Schema } from "mongoose";
 
 const sessionScema = new Schema<SesionType & Document>(
   {
-    userEmail: {
-      type: String,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
-    coachEmail: {
-      type: String,
+    planId: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
-    meetLink: {
-      type: String,
+    subscriptionId: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
-    startTime: {
+    startDate: {
       type: Date,
       required: true,
     },
-    endTime: {
+    endDate: {
       type: Date,
       required: true,
     },
+    trainerAssigned: {
+      type: Boolean,
+      required: true
+    }
   },
   {
     timestamps: true,
@@ -30,26 +34,33 @@ const sessionScema = new Schema<SesionType & Document>(
   }
 );
 
-sessionScema.virtual("user", {
-  ref: "User",
-  localField: "userEmail",
-  foreignField: "email",
-  justOne: true,
-});
+// sessionScema.virtual("user", {
+//   ref: "User",
+//   localField: "userId",
+//   foreignField: "_id",
+//   justOne: true,
+// });
 
-sessionScema.virtual("coach", {
-  ref: "Coach",
-  localField: "coachEmail",
-  foreignField: "email",
-  justOne: true,
-});
+// sessionScema.virtual("subscription", {
+//   ref: "Subscription",
+//   localField: "subscriptionId",
+//   foreignField: "_id",
+//   justOne: true,
+// });
 
-sessionScema.virtual("programDetails", {
-  ref: "Program",
-  localField: "program",
-  foreignField: "_id",
-  justOne: true,
-});
+// sessionScema.virtual("coach", {
+//   ref: "Coach",
+//   localField: "coachId",
+//   foreignField: "_id",
+//   justOne: true,
+// });
+
+// sessionScema.virtual("programDetails", {
+//   ref: "Program",
+//   localField: "program",
+//   foreignField: "_id",
+//   justOne: true,
+// });
 
 const Session =
   mongoose.models.Session || mongoose.model("Session", sessionScema);

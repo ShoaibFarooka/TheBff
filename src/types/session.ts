@@ -1,7 +1,10 @@
+
+import mongoose from "mongoose";
 export type Session = {
-    userEmail: string;
-    coachEmail: string;
-    meetLink: string;
-    startTime: string | Date;
-    endTime: string | Date;
+    userId: mongoose.Schema.Types.ObjectId;
+    startDate: string | Date;
+    endDate: string | Date;
+    planId: mongoose.Schema.Types.ObjectId;
+    subscriptionId: mongoose.Schema.Types.ObjectId;
+    trainerAssigned: boolean
 }

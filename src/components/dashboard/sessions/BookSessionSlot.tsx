@@ -5,8 +5,22 @@ import dayjs from 'dayjs';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import toast from 'react-hot-toast';
 import { getAuthUser } from '@/lib/auth';
+import subscriptions from 'razorpay/dist/types/subscriptions';
 
 const { Option } = Select;
+
+interface Subscription {
+  id: string;
+  programId: string;
+  plan: {}
+  // Add other properties if needed
+}
+interface Plan {
+  _id: string;
+  interval: number;
+  period: string
+  // Add other properties if needed
+}
 
 const BookSessionSlot = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,35 +28,38 @@ const BookSessionSlot = () => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const [isScheduled, setIsScheduled] = useState(false);
   const [currentUser, setCurrentUser] = useState({ _id: "" })
-  const [userSubscriptions, setUserSubscriptions] = useState([])
+  const [userSubscriptions, setUserSubscriptions] = useState<Subscription[]>([]);
+  const [selectedSubscription, setSelectedSubcription] = useState([]);
+  const [plan, setPlan] = useState<Partial<Plan>>({});
+
+
 
   const getUserSubscriptions = async ({ id }: { id: string }) => {
     try {
-      // Make a GET request to the API endpoint with the user ID
       const res = await fetch(`/api/subscriptions/user-subscriptions?id=${id}`, {
         method: "GET",
       });
-  
-      // Await the response and parse it as JSON
       const data = await res.json();
-  
-      // Check if the response status is OK (200)
       if (res.status === 200) {
-        console.log("User Subscriptions:", data.data); // Accessing the subscriptions data
-        return data.data; // Return the subscription data if needed
+        const subscriptions = data?.data?.map((subscription : any) => {
+          return {
+            id: subscription?._id,
+            programId: subscription?.programId,
+            plan: subscription?.planId,
+          }
+        })
+        setUserSubscriptions(subscriptions)
+        return data.data; 
       } else {
-        // If the response is not successful, show an error message
         toast.error(data.message ?? "Something went wrong.");
       }
     } catch (error) {
-      // Handle any errors that occur during the fetch
       console.error("Error fetching user subscriptions:", error);
     }
   };
 
   const setAuthUser = async() => {
     const res = await getAuthUser()
-    console.log("setAuthUser - res : ", res)
     setCurrentUser(res?.user)
     getUserSubscriptions({id : res?.user?._id});
   }
@@ -78,6 +95,12 @@ const BookSessionSlot = () => {
     { display: '11:00 PM - 12:00 AM', value: '23:00-00:00' },
   ];
 
+  const handleSubscriptionChange = (value: any) => {  
+    const plan = userSubscriptions.find((subscription : any) => subscription.id === value)?.plan
+    setPlan(plan || {})
+    setSelectedSubcription(value);
+  }
+
   const handleDateChange = (date : any) => {
     setSelectedDate(date ? dayjs(date).format('YYYY-MM-DD') : null);
   };
@@ -86,10 +109,83 @@ const BookSessionSlot = () => {
     setSelectedTimeSlot(value);
   };
 
-  const handleSubmit = () => {
+  const isValidPeriod = (period: any): period is 'daily' | 'weekly' | 'monthly' | 'yearly' => {
+    return ["daily", "weekly", "monthly", "yearly"].includes(period);
+  };
+
+  function caclulateEndDate({
+    startDate = new Date(),
+    period,
+    interval
+  }: {
+    startDate?: Date;
+    period: 'daily' | 'weekly' | 'monthly' | 'yearly';
+    interval: number;
+  }) {
+    const endDate = new Date(startDate);
+  
+    // till 11:59:59 PM
+    endDate.setHours(23, 59, 59, 999);
+  
+    switch (period) {
+      case "daily":
+        endDate.setDate(endDate.getDate() + interval);
+        break;
+      case "weekly":
+        endDate.setDate(endDate.getDate() + interval * 7);
+        break;
+      case "monthly":
+        endDate.setMonth(endDate.getMonth() + interval);
+        break;
+      case "yearly":
+        endDate.setFullYear(endDate.getFullYear() + interval);
+        break;
+    }
+  
+    return endDate;
+  }
+
+  const createSession = async (obj : any) => {
+    try {
+      const res = await fetch(`/api/sessions/create-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(obj), 
+      });
+    } catch (error) {
+      console.error("Error Creating Session:", error);
+    }
+  };
+  
+
+  const handleSubmit = async() => {
     if(!isScheduled){
-      console.log("Selected Date:", selectedDate);
-      console.log("Selected Time Slot:", selectedTimeSlot);
+      if (!selectedDate || !selectedSubscription || !selectedTimeSlot) {
+        throw new Error("Required Field Missing");
+      }
+      
+      const startDate = new Date(selectedDate);
+
+      // Then call your function
+      const endDate = caclulateEndDate({ 
+        startDate, 
+        period: isValidPeriod(plan?.period) ? plan.period : 'daily', // Provide a default period if needed
+        interval: plan?.interval || 1     // Provide a default interval if needed
+      });
+      const endDateFormatted = dayjs(endDate).format("YYYY-MM-DD")
+
+      const obj = {
+        subscriptionId : selectedSubscription,
+        startDate : selectedDate,
+        endDate: endDateFormatted,
+        planId : plan?._id,
+        userId: currentUser?._id,
+        trainerAssigned: false
+      }
+
+      const res = await createSession(obj);
       setIsScheduled(true)
       return
     }
@@ -125,8 +221,22 @@ const BookSessionSlot = () => {
         styles={{
           content: {  background: 'linear-gradient(288.21deg, #2E4061 0%, #46256E 100%)' }, // turns the Modal red
         }}
+        style={{
+          marginTop: "175px"
+        }}
       >
         {!isScheduled && <>
+          <Select
+            placeholder="Select Subscription"
+            style={{ width: '100%', margin: '10px 0' }}
+            onChange={handleSubscriptionChange}
+          >
+            {userSubscriptions.map((subscription : any, index) => (
+              <Option key={index} value={subscription.id}>
+                {subscription.programId}
+              </Option>
+            ))}
+          </Select>
           <DatePicker
             placeholder="Select Date"
             style={{ width: '100%', margin: '10px 0' }}
@@ -148,6 +258,9 @@ const BookSessionSlot = () => {
           <div className="confirmation-message flex flex-col items-center justify-center gap-4 p-6 mt-6 text-center rounded-md">
             <CheckCircleOutlined style={{ fontSize: '48px', color: '#52c41a' }} />
             <h2 className="text-2xl font-semibold text-white">Your session has been rescheduled!</h2>
+            <p className="text-lg text-white">
+              <strong>Subscription:</strong> {userSubscriptions.find((subscription : any) => subscription.id === selectedSubscription)?.programId}
+            </p>
             <p className="text-lg text-white">
               <strong>Date:</strong> {selectedDate}
             </p>
