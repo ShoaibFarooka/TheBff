@@ -379,3 +379,37 @@ html {
   color: #ffffff !important;
   border: 2px solid #514ED866;
 }
+
+/* For tabs border */
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+  border-color: #514ED866;
+}
+
+/* For the line to the right and close to the tabs */
+.ant-tabs-top > .ant-tabs-nav::before {
+  border-color: #514ED866;
+}
+
+/* So that there is no gap between the content and tabs */
+.ant-tabs > .ant-tabs-nav {
+  margin-bottom: 0;
+}
+
+/* For content section with border */
+.ant-tabs-content-holder {
+  padding: 15px;
+  border: 1px solid #514ED866; /* Border for the content part */
+  border-top: transparent; /* Remove the top border so that there is no overlap */
+}
+
+/* For the active tab background color */
+.ant-tabs-card .ant-tabs-tab-active {
+  background-color: #2E4061 !important; /* Change background color of the active tab */
+  color: white; /* Optional: Change text color for better contrast */
+}
+
+/* For the active tab border color */
+.ant-tabs-card .ant-tabs-tab-active {
+  border-color: #2E4061 !important; /* Optional: Highlight active tab border with the same color */
+}
+

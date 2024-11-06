@@ -110,7 +110,7 @@ const TrainerScheduledClientTable = () => {
     };
 
     return (
-      <div style={{marginTop: "50px"}}>
+      <div style={{marginTop: "10px"}}>
         <Table<DataType>
           rowHoverable={false}
           columns={columns.map((column) => ({
