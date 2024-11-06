@@ -1,61 +1,66 @@
 "use client";
 
 import { Space, Table, TableProps, Tag } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 
 const TrainerScheduledClientTable = () => {
 
   interface DataType {
     key: string;
-    name: string;
-    age: number;
+    clientName: string;
+    distance: number;
     address: string;
-    tags: string[];
+    sessionTime: string;
+    sessionType: string;
+    status: string;
   }
   
   const columns: TableProps<DataType>['columns'] = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Client Name',
+      dataIndex: 'clientName',
+      key: 'clientName',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'Distance',
+      dataIndex: 'distance',
+      key: 'distance',
+    },
+    
+    {
+      title: 'Session Time',
+      dataIndex: 'sessionTime',
+      key: 'ssessionTime',
     },
     {
-      title: 'Address',
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+      render: (_, { status }) => (
+        <Tag color={"red"} key={status}>
+          {status.toUpperCase()}
+        </Tag>
+      ),
+    },
+    {
+      title: 'Session Type',
+      dataIndex: 'sessionType',
+      key: 'sessionType',
+    },
+    {
+      title: 'Fees/Session',
       dataIndex: 'address',
       key: 'address',
-    },
-    {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
     },
     {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
+        <Space size="large">
+          <div style={{ fontSize: "24px", cursor: "pointer" }}> {/* Adjust fontSize as needed */}
+            <EyeOutlined />
+          </div>
         </Space>
       ),
     },
@@ -64,32 +69,67 @@ const TrainerScheduledClientTable = () => {
   const data: DataType[] = [
     {
       key: '1',
-      name: 'John Brown',
-      age: 32,
+      clientName: 'John Brown',
+      distance: 32,
       address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
+      sessionTime: "11:00 - 12:00",
+      sessionType: "Yoga Care",
+      status: "Scheduled",
     },
     {
       key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
+      clientName: 'John Brown',
+      distance: 32,
+      address: 'New York No. 1 Lake Park',
+      sessionTime: "11:00 - 12:00",
+      sessionType: "Yoga Care",
+      status: "Scheduled",
     },
     {
       key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sydney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
+      clientName: 'John Brown',
+      distance: 32,
+      address: 'New York No. 1 Lake Park',
+      sessionTime: "11:00 - 12:00",
+      sessionType: "Yoga Care",
+      status: "Scheduled",
     },
   ];
 
-  return (
-    <>
-      <Table<DataType> columns={columns} dataSource={data} />
-    </>
-  )
-}
+    const headerStyle = {
+      background: 'hsla(var(--foreground), 0)',
+      color: "#fff",
+      borderBottom: "1px solid #514ED866",
+      borderRight: "none",
+      borderLeft: "none"
+    };
+
+    const cellStyle = {
+      color: "#fff",
+      border: "none",
+    };
+
+    return (
+      <div style={{marginTop: "50px"}}>
+        <Table<DataType>
+          rowHoverable={false}
+          columns={columns.map((column) => ({
+            ...column,
+            onHeaderCell: () => ({
+              style: headerStyle,
+            }),
+            onCell: () => ({
+              style: cellStyle,
+            }),
+          }))}
+          dataSource={data}
+          pagination={false}
+          style={{
+            background: "transparent",
+          }}
+        />
+      </div>
+    );
+  };
 
 export default TrainerScheduledClientTable;
