@@ -10,6 +10,10 @@ const s3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
 
+const getFileExtension = (fileName: string): string => {
+  const extension = fileName.split('.').pop();
+  return extension || "";
+};
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
 
@@ -59,19 +63,19 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   const aadharParams = {
     Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-    Key: `${folderName}/${Date.now()}_${aadharFile.name}`, // Unique file name
+    Key: `${folderName}/${Date.now()}_AadharFile.${getFileExtension(aadharFile.name)}`,
     Body: aadharBuffer,
     ContentType: aadharFile.type || 'application/octet-stream',
   };
   const agreementParams = {
     Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-    Key: `${folderName}/${Date.now()}_${agreementFile.name}`, // Unique file name
+    Key: `${folderName}/${Date.now()}_AgreementFile.${getFileExtension(agreementFile.name)}`,
     Body: agreementBuffer,
     ContentType: agreementFile.type || 'application/octet-stream',
   };
   const profilePhotoParams = {
     Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-    Key: `${folderName}/${Date.now()}_${profilePhotoFile.name}`, // Unique file name
+    Key: `${folderName}/${Date.now()}_ProfilePhoto.${getFileExtension(profilePhotoFile.name)}`,
     Body: profilePhotoBuffer,
     ContentType: profilePhotoFile.type || 'application/octet-stream',
   };
@@ -80,7 +84,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   if (verificationFile) {
     verificationParams = {
       Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-      Key: `${folderName}/${Date.now()}_${verificationFile.name}`, // Unique file name
+      Key: `${folderName}/${Date.now()}_VerificationFile.${getFileExtension(verificationFile.name)}`,
       Body: verificationBuffer,
       ContentType: verificationFile.type || 'application/octet-stream',
     };
@@ -95,10 +99,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       (await s3.upload(profilePhotoParams).promise()).Location,
     ];
 
-    const certificationUploadPromises = certificationFiles.map(async (file: File) => {
+    const certificationUploadPromises = certificationFiles.map(async (file: File, index: number) => {
       const certificationParams = {
         Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-        Key: `${folderName}/${Date.now()}_${file.name}`,
+        Key: `${folderName}/${Date.now()}_CertificateFile${index + 1}.${getFileExtension(file.name)}`,
         Body: Buffer.from(await file.arrayBuffer()),
         ContentType: file.type || 'application/octet-stream',
       };
@@ -121,7 +125,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     certificationFileURLs = results.slice(3, results.length - (verificationFile ? 1 : 0));
 
     if (verificationFile) {
-      verificationFileURL = await uploadPromises[uploadPromises.length - 1];
+      verificationFileURL = uploadPromises[uploadPromises.length - 1];
     }
     const endTime = performance.now();
     console.log('Performance Time For Upload(s): ', (endTime - startTime) / 1000);
