@@ -26,6 +26,14 @@ const sessionScema = new Schema<SesionType & Document>(
     trainerAssigned: {
       type: Boolean,
       required: true
+    },
+    timeSlot: {
+      type: String,
+      required: true
+    },
+    days : {
+      type: [],
+      required: true,
     }
   },
   {

@@ -23,7 +23,7 @@ export const GET = async (req: NextRequest) => {
       .populate({
         path: "planId", // Field in Subscription schema referring to Plan model
         model: Plan, // Specify the model to populate from
-        select: "name description price startDate endDate period interval", // Select fields from Plan if needed
+        select: "name description price startDate endDate period interval features", // Select fields from Plan if needed
       })
       .lean();
 

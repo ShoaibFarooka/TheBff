@@ -6,5 +6,7 @@ export type Session = {
     endDate: string | Date;
     planId: mongoose.Schema.Types.ObjectId;
     subscriptionId: mongoose.Schema.Types.ObjectId;
-    trainerAssigned: boolean
+    trainerAssigned: boolean,
+    timeSlot: String,
+    days: []
 }

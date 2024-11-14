@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Select, DatePicker } from 'antd';
+import { Modal, Select, DatePicker, message } from 'antd';
 import { Button } from '@/components/ui/button';
 import dayjs from 'dayjs';
 import { CheckCircleOutlined } from '@ant-design/icons';
@@ -19,6 +19,7 @@ interface Plan {
   _id: string;
   interval: number;
   period: string
+  features: string[];
   // Add other properties if needed
 }
 
@@ -30,6 +31,8 @@ const BookSessionSlot = () => {
   const [currentUser, setCurrentUser] = useState({ _id: "" })
   const [userSubscriptions, setUserSubscriptions] = useState<Subscription[]>([]);
   const [selectedSubscription, setSelectedSubcription] = useState([]);
+  const [daysCount, setDaysCount] = useState<number>(0);
+  const [selectedDays, setSelectedDays] = useState([]);
   const [plan, setPlan] = useState<Partial<Plan>>({});
 
 
@@ -68,6 +71,17 @@ const BookSessionSlot = () => {
     setAuthUser();
   }, [])
 
+  const days = [
+    { display: "Monday", value: "monday" },
+    { display: "Tuesday", value: "tuesday" },
+    { display: "Wednesday", value: "wednesday" },
+    { display: "Thursday", value: "thursday" },
+    { display: "Friday", value: "friday" },
+    { display: "Saturday", value: "saturday" },
+    { display: "Sunday", value: "sunday" }
+  ];
+  
+
   const timeSlots = [
     { display: '12:00 AM - 01:00 AM', value: '00:00-01:00' },
     { display: '01:00 AM - 02:00 AM', value: '01:00-02:00' },
@@ -96,7 +110,15 @@ const BookSessionSlot = () => {
   ];
 
   const handleSubscriptionChange = (value: any) => {  
-    const plan = userSubscriptions.find((subscription : any) => subscription.id === value)?.plan
+    const plan: Plan = userSubscriptions.find(
+      (subscription: any) => subscription.id === value
+    )?.plan as Plan;
+    
+    const feature = plan?.features?.[0] ?? null;
+    const match = feature.match(/(\d+)x/);
+    const number: number = (match ? match[1] : 0) as number;
+    setDaysCount(number);
+
     setPlan(plan || {})
     setSelectedSubcription(value);
   }
@@ -108,6 +130,14 @@ const BookSessionSlot = () => {
   const handleTimeSlotChange = (value : any) => {
     setSelectedTimeSlot(value);
   };
+
+  const handleDaysChange = (days: any) => {
+    if (days.length <= daysCount) {
+      setSelectedDays(days);
+    } else {
+      message.warning(`You can only select up to ${daysCount} days`);
+    }
+  }
 
   const isValidPeriod = (period: any): period is 'daily' | 'weekly' | 'monthly' | 'yearly' => {
     return ["daily", "weekly", "monthly", "yearly"].includes(period);
@@ -162,8 +192,14 @@ const BookSessionSlot = () => {
 
   const handleSubmit = async() => {
     if(!isScheduled){
-      if (!selectedDate || !selectedSubscription || !selectedTimeSlot) {
-        throw new Error("Required Field Missing");
+      if (!selectedDate || !selectedSubscription || !selectedTimeSlot || !selectedDays) {
+        message.error("Required Field Missing");
+        return;
+      }
+
+      if(selectedDays.length < daysCount) {
+        message.error(`You Need to Seleect ${daysCount} days`);
+        return;
       }
       
       const startDate = new Date(selectedDate);
@@ -182,7 +218,9 @@ const BookSessionSlot = () => {
         endDate: endDateFormatted,
         planId : plan?._id,
         userId: currentUser?._id,
-        trainerAssigned: false
+        trainerAssigned: false,
+        timeSlot: selectedTimeSlot,
+        days: selectedDays
       }
 
       const res = await createSession(obj);
@@ -250,6 +288,19 @@ const BookSessionSlot = () => {
             {timeSlots.map((timeSlot, index) => (
               <Option key={index} value={timeSlot.value}>
                 {timeSlot.display}
+              </Option>
+            ))}
+          </Select>
+          <Select
+            mode="multiple"
+            placeholder="Select Days"
+            value={selectedDays}
+            onChange={handleDaysChange}
+            style={{ width: '100%', margin: '10px 0' }}
+          >
+            {days.map((day) => (
+              <Option key={day.value} value={day.value}>
+                {day.display}
               </Option>
             ))}
           </Select>

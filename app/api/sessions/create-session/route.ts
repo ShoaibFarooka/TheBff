@@ -4,10 +4,10 @@ import Session from "@/models/Session"; // Adjust the path according to your fol
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { startDate, endDate, userId, subscriptionId, planId, trainerAssigned = false } = await req.json();
+    const { startDate, endDate, userId, subscriptionId, planId, trainerAssigned = false, timeSlot = "", days = [] } = await req.json();
 
     // Validate required fields
-    if (!startDate || !endDate || !userId || !subscriptionId || !planId) {
+    if (!startDate || !endDate || !userId || !subscriptionId || !planId || !timeSlot || !days) {
       return NextResponse.json(
         { success: false, message: "All fields are required" },
         { status: 400 }
@@ -26,7 +26,9 @@ export const POST = async (req: NextRequest) => {
       userId: convertedUserId,
       subscriptionId: convertedSubscriptionId,
       planId: convertedPlanId,
-      trainerAssigned: trainerAssigned
+      trainerAssigned: trainerAssigned,
+      timeSlot: timeSlot,
+      days: days,
     });
 
     // Save the session to the database
