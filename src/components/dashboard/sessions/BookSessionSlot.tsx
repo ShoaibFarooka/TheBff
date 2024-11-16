@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Select, DatePicker, message } from 'antd';
+import { Modal, Select, DatePicker, message, Flex } from 'antd';
 import { Button } from '@/components/ui/button';
 import dayjs from 'dayjs';
 import { CheckCircleOutlined } from '@ant-design/icons';
@@ -17,10 +17,19 @@ interface Subscription {
 }
 interface Plan {
   _id: string;
+  name: string;
   interval: number;
   period: string
   features: string[];
   // Add other properties if needed
+}
+
+interface Session {
+  _id: string;
+  planId: Plan;
+  startDate: string;
+  endDate: string;
+  programId: string;
 }
 
 const BookSessionSlot = () => {
@@ -34,11 +43,20 @@ const BookSessionSlot = () => {
   const [daysCount, setDaysCount] = useState<number>(0);
   const [selectedDays, setSelectedDays] = useState([]);
   const [plan, setPlan] = useState<Partial<Plan>>({});
+  const [bookedSlots, setBookedSlots] = useState<Session[]>([]);
 
 
 
   const getUserSubscriptions = async ({ id }: { id: string }) => {
     try {
+      const sessionResponse = await fetch(`/api/sessions/get-user-sessions?id=${id}`, {
+        method: "GET",
+      });
+      const sessionData = await sessionResponse.json();
+      if (sessionResponse.status === 200) {
+        setBookedSlots(sessionData?.data)
+        return sessionData.data; 
+      }
       const res = await fetch(`/api/subscriptions/user-subscriptions?id=${id}`, {
         method: "GET",
       });
@@ -51,7 +69,13 @@ const BookSessionSlot = () => {
             plan: subscription?.planId,
           }
         })
-        setUserSubscriptions(subscriptions)
+        console.log(bookedSlots)
+        const filteredSubscriptions: Subscription[] = subscriptions.filter((subscription: Subscription) => {
+          return !sessionData?.data?.some((slot: Session) => slot.programId === subscription.programId);
+        });
+        
+        setUserSubscriptions(filteredSubscriptions);
+        
         return data.data; 
       } else {
         toast.error(data.message ?? "Something went wrong.");
@@ -64,7 +88,7 @@ const BookSessionSlot = () => {
   const setAuthUser = async() => {
     const res = await getAuthUser()
     setCurrentUser(res?.user)
-    getUserSubscriptions({id : res?.user?._id});
+    getUserSubscriptions({id: res?.user?._id});
   }
 
   useEffect(() => {
@@ -236,14 +260,65 @@ const BookSessionSlot = () => {
 
   return (
     <>
-      <div className="center flex-col gap-4 h-full">
-        <h2 className="text-xl md:text-3xl font-bold text-center text-neutral-100">
-          Book a slot to continue!
-        </h2>
-        <Button onClick={() => setIsModalOpen(true)} className="animate-vibrate hover:animate-none">
-          Book a slot
-        </Button>
-      </div>
+      {!bookedSlots?.length ? (
+        <div className="center flex-col gap-4 h-full">
+          <h2 className="text-xl md:text-3xl font-bold text-center text-neutral-100">
+            Book a slot to continue!
+          </h2>
+          <Button onClick={() => setIsModalOpen(true)} className="animate-vibrate hover:animate-none">
+            Book a slot
+          </Button>
+        </div>
+      ) : (
+        <>
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "16px", // Adjust size as needed
+                }}
+              >
+                {"Subscription Name"}
+              </div>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "16px", // Adjust size as needed
+                }}
+              >
+                {"Start Date - End Date"}
+              </div>
+            </div>
+            {bookedSlots.map((session) => (
+              <div
+                key={session._id}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <div>{session.planId.name}</div>
+                <div>
+                  {`${dayjs(session.startDate).format("DD-MM-YYYY")} - ${dayjs(session.endDate).format("DD-MM-YYYY")}`}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="center mt-2">
+            <Button onClick={() => setIsModalOpen(true)} className="animate-vibrate hover:animate-none">
+              Book a slot
+            </Button>
+          </div>
+        </>
+      )}
 
       <Modal
         open={isModalOpen}
