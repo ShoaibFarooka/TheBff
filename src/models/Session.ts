@@ -1,5 +1,6 @@
 import { Session as SesionType } from "@/types/session";
 import mongoose, { Document, Schema } from "mongoose";
+import { string } from "zod";
 
 const sessionScema = new Schema<SesionType & Document>(
   {
@@ -26,6 +27,10 @@ const sessionScema = new Schema<SesionType & Document>(
     trainerAssigned: {
       type: Boolean,
       required: true
+    },
+    trainerId: {
+      type: String,
+      required: false
     },
     timeSlot: {
       type: String,

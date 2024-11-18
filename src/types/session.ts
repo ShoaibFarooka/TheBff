@@ -7,6 +7,7 @@ export type Session = {
     planId: mongoose.Schema.Types.ObjectId;
     subscriptionId: mongoose.Schema.Types.ObjectId;
     trainerAssigned: boolean,
+    trainerId: string,
     timeSlot: String,
     days: []
 }

@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import TrainerScheduledClientTable from "./TrainerDashboardComponents/TrainerScheduledClientTable";
 import TrainerStatistics from "./TrainerDashboardComponents/TrainerStatictics";
 import { Tabs } from "antd";
+import ClientRequestTable from "./TrainerDashboardComponents/ClientRequestTable";
 
 interface Tab {
   key: string; // Change `number` to `string`
@@ -14,13 +15,13 @@ const TrainerDashboard = () => {
   const tabItems: Tab[] = [
     {
       key: "1", // Now a string
-      label: <div style={{ color: "white" }}>{"Subscribed Clients"}</div>,
+      label: <div style={{ color: "white" }}>{"Clients"}</div>,
       children: <TrainerScheduledClientTable />,
     },
     {
       key: "2", // Now a string
-      label: <div style={{ color: "white" }}>{"Trial Clients"}</div>,
-      children: <TrainerScheduledClientTable />,
+      label: <div style={{ color: "white" }}>{"Requests"}</div>,
+      children: <ClientRequestTable />,
     }
   ];
 
