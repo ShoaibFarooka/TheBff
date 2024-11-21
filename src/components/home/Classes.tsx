@@ -128,7 +128,7 @@ export default function Classes({ classes = content }: { classes?: Class[] }) {
                     // className={` ${index === active && "shadow-lg shadow-white/40 scale-110"
                     // }`}
                     className={cn(
-                      'w-72 !h-36 hover:shadow-white/20 hover:shadow hover:scale-110 duration-300 rounded-md',
+                      'w-auto h-auto hover:shadow-white/20 hover:shadow hover:scale-110 duration-300 rounded-md',
                       index === active ? 'shadow-lg shadow-white/40 scale-110' : ''
                     )}
                     src={c.image!}

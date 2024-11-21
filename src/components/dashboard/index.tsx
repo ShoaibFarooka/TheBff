@@ -2,6 +2,7 @@
 // import ProgressBar from '@/components/dashboard/ProgressBar'
 
 import CardsCarousel from "@/components/dashboard/CardsCarousel";
+import DiscountWrapper from "@/components/DiscountWrapper"; // Import DiscountWrapper
 import { Plan, Subscription } from "@/types/subscription";
 import { Stats, User } from "@/types/user";
 import { useMemo } from "react";
@@ -102,6 +103,9 @@ export default function Dashboard() {
           <Contact />
         </div>
       </div>
+
+      {/* Add DiscountWrapper component here */}
+      <DiscountWrapper />
     </>
   );
 }
