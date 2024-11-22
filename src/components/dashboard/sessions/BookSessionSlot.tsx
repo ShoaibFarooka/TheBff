@@ -55,7 +55,6 @@ const BookSessionSlot = () => {
       const sessionData = await sessionResponse.json();
       if (sessionResponse.status === 200) {
         setBookedSlots(sessionData?.data)
-        return sessionData.data; 
       }
       const res = await fetch(`/api/subscriptions/user-subscriptions?id=${id}`, {
         method: "GET",
@@ -69,7 +68,6 @@ const BookSessionSlot = () => {
             plan: subscription?.planId,
           }
         })
-        console.log(bookedSlots)
         const filteredSubscriptions: Subscription[] = subscriptions.filter((subscription: Subscription) => {
           return !sessionData?.data?.some((slot: Session) => slot.programId === subscription.programId);
         });
@@ -236,17 +234,30 @@ const BookSessionSlot = () => {
       });
       const endDateFormatted = dayjs(endDate).format("YYYY-MM-DD")
 
+      const totalSessions = daysCount * 4 * (plan?.interval || 1);
+
+      // Create the array of session objects
+      const sessions = Array.from({ length: totalSessions }, (_, index) => ({
+        sessionNumber: index + 1,
+        day: selectedDays[index % selectedDays.length], // Distributes days cyclically if needed
+        status: 'pending',
+        can_be_completed: index === 0, // true only for sessionNumber 1 (index 0)
+        timeSlot: selectedTimeSlot,
+      }));
+      
+      // Add the sessions array to the object
       const obj = {
-        subscriptionId : selectedSubscription,
-        startDate : selectedDate,
+        subscriptionId: selectedSubscription,
+        startDate: selectedDate,
         endDate: endDateFormatted,
-        planId : plan?._id,
+        planId: plan?._id,
         userId: currentUser?._id,
         trainerAssigned: false,
         timeSlot: selectedTimeSlot,
-        days: selectedDays
-      }
-
+        days: selectedDays,
+        sessions, // Add the sessions array here
+      };
+      
       const res = await createSession(obj);
       setIsScheduled(true)
       return

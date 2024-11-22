@@ -9,5 +9,6 @@ export type Session = {
     trainerAssigned: boolean,
     trainerId: string,
     timeSlot: String,
-    days: []
+    days: [],
+    sessions: []
 }

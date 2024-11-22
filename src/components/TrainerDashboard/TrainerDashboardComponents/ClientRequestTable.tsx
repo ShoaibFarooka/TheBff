@@ -5,7 +5,6 @@ import { CheckCircleOutlined, CheckOutlined, EyeOutlined } from "@ant-design/ico
 import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
 import { getAuthUser } from "@/lib/auth";
-import { request } from "http";
 
 interface DataType {
 	key: string;
@@ -171,36 +170,6 @@ const ClientRequestTable = () => {
     },
   ];
 
-  // const data: DataType[] = [
-  //   {
-  //     key: '1',
-  //     clientName: 'John Brown',
-  //     distance: 32,
-  //     address: 'New York No. 1 Lake Park',
-  //     timeSlot: "11:00 - 12:00",
-  //     sessionType: "Yoga Care",
-  //     trainerAssinged: "Scheduled",
-  //   },
-  //   {
-  //     key: '2',
-  //     clientName: 'John Brown',
-  //     distance: 32,
-  //     address: 'New York No. 1 Lake Park',
-  //     timeSlot: "11:00 - 12:00",
-  //     sessionType: "Yoga Care",
-  //     trainerAssinged: "Scheduled",
-  //   },
-  //   {
-  //     key: '3',
-  //     clientName: 'John Brown',
-  //     distance: 32,
-  //     address: 'New York No. 1 Lake Park',
-  //     timeSlot: "11:00 - 12:00",
-  //     sessionType: "Yoga Care",
-  //     trainerAssinged: "Scheduled",
-  //   },
-  // ];
-
 	const headerStyle = {
 		background: 'hsla(var(--foreground), 0)',
 		color: "#fff",
@@ -232,6 +201,22 @@ const ClientRequestTable = () => {
 				style={{
 					background: "transparent",
 				}}
+				locale={{
+				emptyText: (
+					<div
+					style={{
+						background: 'linear-gradient(288.21deg, #2E4061 0%, #46256E 100%)',
+						color: 'white',
+						padding: '20px',
+						borderRadius: '8px', // Optional for rounded corners 
+						textAlign: 'center',
+						width: "100%"
+					}}
+					>
+					No Data Available
+					</div>
+          ),
+        }}
 			/>
 		</div>
 	);

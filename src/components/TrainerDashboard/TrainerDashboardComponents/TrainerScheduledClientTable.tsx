@@ -1,27 +1,94 @@
 "use client";
 
-import { Space, Table, TableProps, Tag } from "antd";
-import { EyeOutlined } from "@ant-design/icons";
+import { Modal, Space, Table, TableProps, Tag } from "antd";
+import { CheckCircleOutlined, EyeOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { getAuthUser } from "@/lib/auth";
+import toast from 'react-hot-toast';
+import UserSessionModal from "./UserSessionsModal";
+
+interface DataType {
+	key: string;
+	_id: string;
+	clientName: string;
+	distance: number;
+	address: string;
+	timeSlot: string;
+	sessionType: string;
+	trainerAssinged: string;
+  subscriptionId: string;
+	userId: User;
+	planId: Plan
+}
+interface Plan {
+	name: string;
+	amount: string;
+}
+
+interface User {
+	_id: string;
+	email: string;
+	name: string;
+	phone: string;
+	role: number;
+}
 
 const TrainerScheduledClientTable = () => {
+  const [scheduled, setScheduled] = useState<DataType[]>([]);
+	const [currentUser, setCurrentUser] = useState<Partial<User>>({});
+  const [userSessionModal, setUserSessionModal] = useState(false);
 
-  interface DataType {
-    key: string;
-    clientName: string;
-    distance: number;
-    address: string;
-    sessionTime: string;
-    sessionType: string;
-    status: string;
+  const [modalUser, setModalUser] = useState<Partial<User>>({});
+  const [userSubscription, setModalUserSubscription] = useState("");
+
+  useEffect(() => {
+    setAuthUser();
+  }, [])
+
+	useEffect(() => {
+		if (currentUser?._id) {
+			getScheduledClients();
+		}
+	}, [currentUser]);
+
+  const setAuthUser = async() => {
+    const res = await getAuthUser();
+		setCurrentUser(res?.user)
+  }
+
+  const getScheduledClients = async() => {
+    try {
+      const res = await fetch(`/api/sessions/get-trainer-scheduled-sessions?id=${currentUser?._id}`, {
+        method: "GET",
+      });
+      const data = await res.json();
+      if (res.status === 200) {
+				setScheduled(data?.data)
+				return data?.data;
+			} else {
+				toast.error(data.message ?? "Something went wrong.");
+			}
+    } catch (error) {
+      console.error("Error fetching user subscriptions:", error);
+    }
+  }
+
+  const setModalData = (record: DataType) => {
+    setModalUser(record?.userId)
+    setModalUserSubscription(record?.subscriptionId);
+    setUserSessionModal(true)
   }
   
   const columns: TableProps<DataType>['columns'] = [
     {
-      title: 'Client Name',
-      dataIndex: 'clientName',
-      key: 'clientName',
-      render: (text) => <a>{text}</a>,
-    },
+			title: 'Client Name',
+			dataIndex: 'userId.name', // This is fine for accessing the name of the user
+			key: 'userId.name',
+			render: (_, item) => {
+				const user = item.userId;
+				return <a>{user?.name}</a>;
+			}
+		},		
     {
       title: 'Distance',
       dataIndex: 'distance',
@@ -30,16 +97,16 @@ const TrainerScheduledClientTable = () => {
     
     {
       title: 'Session Time',
-      dataIndex: 'sessionTime',
-      key: 'ssessionTime',
+      dataIndex: 'timeSlot',
+      key: 'timeSlot',
     },
     {
       title: 'Status',
-      key: 'status',
-      dataIndex: 'status',
-      render: (_, { status }) => (
-        <Tag color={"red"} key={status}>
-          {status.toUpperCase()}
+      key: 'trainerAssigned',
+      dataIndex: 'trainerAssigned',
+      render: (item) => (
+        <Tag color={"green"} key={item}>
+          {"In Progress"}
         </Tag>
       ),
     },
@@ -47,69 +114,55 @@ const TrainerScheduledClientTable = () => {
       title: 'Session Type',
       dataIndex: 'sessionType',
       key: 'sessionType',
+			render: (_, item) => {
+				const plan = item.planId;
+				return <a>{plan?.name}</a>;
+			}
     },
     {
       title: 'Fees/Session',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'amount',
+      key: 'amount',
+			render: (_, item) => {
+				const plan = item.planId;
+				return <a>{plan?.amount}</a>;
+			}
     },
     {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <Space size="large">
-          <div style={{ fontSize: "24px", cursor: "pointer" }}> {/* Adjust fontSize as needed */}
-            <EyeOutlined />
-          </div>
-        </Space>
-      ),
+				<Space size="small">
+					<div style={{ fontSize: "24px", cursor: "pointer" }} onClick={() => setModalData(record)}> {/* Adjust fontSize as needed */}
+						<EyeOutlined />
+					</div>
+				</Space>
+			)
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: '1',
-      clientName: 'John Brown',
-      distance: 32,
-      address: 'New York No. 1 Lake Park',
-      sessionTime: "11:00 - 12:00",
-      sessionType: "Yoga Care",
-      status: "Scheduled",
-    },
-    {
-      key: '2',
-      clientName: 'John Brown',
-      distance: 32,
-      address: 'New York No. 1 Lake Park',
-      sessionTime: "11:00 - 12:00",
-      sessionType: "Yoga Care",
-      status: "Scheduled",
-    },
-    {
-      key: '3',
-      clientName: 'John Brown',
-      distance: 32,
-      address: 'New York No. 1 Lake Park',
-      sessionTime: "11:00 - 12:00",
-      sessionType: "Yoga Care",
-      status: "Scheduled",
-    },
-  ];
+  const headerStyle = {
+    background: 'hsla(var(--foreground), 0)',
+    color: "#fff",
+    borderBottom: "1px solid #514ED866",
+    borderRight: "none",
+    borderLeft: "none"
+  };
 
-    const headerStyle = {
-      background: 'hsla(var(--foreground), 0)',
-      color: "#fff",
-      borderBottom: "1px solid #514ED866",
-      borderRight: "none",
-      borderLeft: "none"
-    };
+  const cellStyle = {
+    color: "#fff",
+    border: "none",
+  };
 
-    const cellStyle = {
-      color: "#fff",
-      border: "none",
-    };
-
-    return (
+  return (
+    <>
+      <UserSessionModal 
+        userSessionModal={userSessionModal} 
+        setUserSessionModal={setUserSessionModal}
+        trainerId={currentUser?._id || ""}
+        userId={modalUser?._id || ""}
+        subscriptionId={userSubscription}
+      />
       <div style={{marginTop: "10px"}}>
         <Table<DataType>
           rowHoverable={false}
@@ -122,14 +175,31 @@ const TrainerScheduledClientTable = () => {
               style: cellStyle,
             }),
           }))}
-          dataSource={data}
+          dataSource={scheduled}
           pagination={false}
           style={{
-            background: "transparent",
+            background: "transparent", 
+          }}
+          locale={{
+            emptyText: (
+              <div
+                style={{
+                  background: 'linear-gradient(288.21deg, #2E4061 0%, #46256E 100%)',
+                  color: 'white',
+                  padding: '20px',
+                  borderRadius: '8px', // Optional for rounded corners 
+                  textAlign: 'center',
+                  width: "100%"
+                }}
+              >
+                No Data Available
+              </div>
+            ),
           }}
         />
       </div>
-    );
-  };
+    </>
+  );
+};
 
 export default TrainerScheduledClientTable;

@@ -39,6 +39,10 @@ const sessionScema = new Schema<SesionType & Document>(
     days : {
       type: [],
       required: true,
+    },
+    sessions: {
+      type: [],
+      required: true
     }
   },
   {

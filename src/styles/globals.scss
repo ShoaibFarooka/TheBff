@@ -413,3 +413,8 @@ html {
   border-color: #2E4061 !important; /* Optional: Highlight active tab border with the same color */
 }
 
+:where(.css-dev-only-do-not-override-apn68).ant-table-wrapper .ant-table-tbody>tr.ant-table-placeholder:hover>th,
+:where(.css-dev-only-do-not-override-apn68).ant-table-wrapper .ant-table-tbody>tr.ant-table-placeholder:hover>td,
+:where(.css-dev-only-do-not-override-apn68).ant-table-wrapper .ant-table-tbody>tr.ant-table-placeholder {
+    background: transparent !important; /* Override to transparent */
+}
