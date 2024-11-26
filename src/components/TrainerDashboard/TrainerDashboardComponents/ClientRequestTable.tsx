@@ -1,7 +1,7 @@
 "use client";
 
 import { Space, Table, TableProps, Tag } from "antd";
-import { CheckCircleOutlined, CheckOutlined, EyeOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, CheckOutlined, CloseOutlined, EyeOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
 import { getAuthUser } from "@/lib/auth";
@@ -30,6 +30,11 @@ interface User {
 	name: string;
 	phone: string;
 	role: number;
+	address: Address;
+}
+
+interface Address {
+
 }
 
 const ClientRequestTable = () => {
@@ -106,6 +111,44 @@ const ClientRequestTable = () => {
 			console.error("Error fetching user subscriptions:", error);
 		}
 	}
+
+	const ignoreRequest = async (record: any) => {
+		try {
+			const res = await fetch(`/api/sessions/ignore-requested-session-request`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json", // Specify the content type
+				},
+				body: JSON.stringify({
+					trainerId: currentUser?._id, // Send the user ID
+					record: record, // Send the record data
+				}),
+			});
+	
+			const data = await res.json();
+			if (res.status === 200) {
+				toast.success("Request ignored successfully!"); // Show success message
+	
+				// Update the requests state using the spread operator
+				setRequests((prevRequests: DataType[] | undefined) => {
+					// Ensure prevRequests is an array before applying the filter
+					if (!prevRequests) {
+						return []; // Return an empty array if prevRequests is undefined
+					}
+	
+					return [
+						...prevRequests.filter((req) => req._id !== record._id), // Remove the ignored request
+					];
+				});
+				return data?.data;
+			} else {
+				toast.error(data.message ?? "Something went wrong.");
+			}
+		} catch (error) {
+			console.error("Error fetching user subscriptions:", error);
+		}
+	};
+	
 	
   
   const columns: TableProps<DataType>['columns'] = [
@@ -118,12 +161,25 @@ const ClientRequestTable = () => {
 				return <a>{user?.name}</a>;
 			}
 		},		
-    {
-      title: 'Distance',
-      dataIndex: 'distance',
+		{
+      title: 'Address',
+      dataIndex: 'userId.address',
       key: 'distance',
-    },
+      render: (_, item) => {
+        const user = item.userId;
+        const address = user?.address;
     
+        const concatenatedAddress = address
+          ? Object.values(address).join(', ')
+          : 'No Address';
+    
+        return (
+          <a>
+            {concatenatedAddress}
+          </a>
+        );
+      },
+    },  
     {
       title: 'Session Time',
       dataIndex: 'timeSlot',
@@ -164,6 +220,9 @@ const ClientRequestTable = () => {
 				<Space size="small">
 					<div style={{ fontSize: "24px", cursor: "pointer" }} onClick={() => acceptRequest(record)}> {/* Adjust fontSize as needed */}
 						<CheckCircleOutlined />
+					</div>
+					<div style={{ fontSize: "24px", cursor: "pointer" }} onClick={() => ignoreRequest(record)}> {/* Adjust fontSize as needed */}
+						<CloseOutlined />
 					</div>
 				</Space>
 			)

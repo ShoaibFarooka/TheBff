@@ -31,6 +31,11 @@ interface User {
 	name: string;
 	phone: string;
 	role: number;
+  address: Address;
+}
+
+interface Address {
+
 }
 
 const TrainerScheduledClientTable = () => {
@@ -90,11 +95,24 @@ const TrainerScheduledClientTable = () => {
 			}
 		},		
     {
-      title: 'Distance',
-      dataIndex: 'distance',
+      title: 'Address',
+      dataIndex: 'userId.address',
       key: 'distance',
-    },
+      render: (_, item) => {
+        const user = item.userId;
+        const address = user?.address;
     
+        const concatenatedAddress = address
+          ? Object.values(address).join(', ')
+          : 'No Address';
+    
+        return (
+          <a>
+            {concatenatedAddress}
+          </a>
+        );
+      },
+    },  
     {
       title: 'Session Time',
       dataIndex: 'timeSlot',
@@ -102,11 +120,11 @@ const TrainerScheduledClientTable = () => {
     },
     {
       title: 'Status',
-      key: 'trainerAssigned',
-      dataIndex: 'trainerAssigned',
+      key: 'status',
+      dataIndex: 'status',
       render: (item) => (
-        <Tag color={"green"} key={item}>
-          {"In Progress"}
+        <Tag color={item ? "green" : "yellow"} key={item}>
+          {item ? item : "In Progress"}
         </Tag>
       ),
     },

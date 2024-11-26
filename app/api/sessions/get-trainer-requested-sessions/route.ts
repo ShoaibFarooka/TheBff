@@ -26,7 +26,7 @@ export const GET = async (req: NextRequest) => {
     }
 
     // Get the trainer's address and available time slots
-    let trainerAddressPincode: string | number = ""; 
+    let trainerAddressPincode: string | number = "";
     if (trainer.currentAddress && typeof trainer.currentAddress === "object") {
       const { pincode } = trainer.currentAddress as { pincode: string | number };
       trainerAddressPincode = pincode; // Store the pincode in the variable
@@ -50,7 +50,6 @@ export const GET = async (req: NextRequest) => {
         { status: 400 }
       );
     }
-    
 
     // Fetch all sessions
     const sessions = await Session.find({}).populate({
@@ -71,7 +70,10 @@ export const GET = async (req: NextRequest) => {
       const sessionPincode = session.userId?.address?.pincode;
       const sessionTimeSlot = session.timeSlot; // Extract the time slot from the session
 
-      if (sessionPincode !== trainerAddressPincode || isTrainerAssigned === true) {
+      // New condition: Check if trainerId is not in ignoredBy (if it exists)
+      const isIgnoredByTrainer = Array.isArray(session.ignoredBy) && session.ignoredBy.includes(trainerId);
+
+      if (sessionPincode !== trainerAddressPincode || isTrainerAssigned === true || isIgnoredByTrainer) {
         return false;
       }
 
@@ -87,8 +89,7 @@ export const GET = async (req: NextRequest) => {
         !scheduledSessions.some(
           (scheduledSession) => scheduledSession.timeSlot === filteredSession.timeSlot
         )
-    );    
-    
+    );
 
     // Respond with the filtered sessions
     return NextResponse.json({ success: true, data: nonOverlappingSessions });

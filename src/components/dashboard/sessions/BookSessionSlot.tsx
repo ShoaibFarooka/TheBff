@@ -210,7 +210,25 @@ const BookSessionSlot = () => {
       console.error("Error Creating Session:", error);
     }
   };
+
+  const dayMapping: { [key: string]: number } = {
+    sunday: 0,
+    monday: 1,
+    tuesday: 2,
+    wednesday: 3,
+    thursday: 4,
+    friday: 5,
+    saturday: 6,
+  };
   
+  const daysDifference = (startDate : any, targetDay: any) => {
+    const startDayIndex = dayjs(startDate).day(); // Numeric representation of the start date (0 = Sunday, ..., 6 = Saturday)
+    const targetDayIndex = dayMapping[targetDay]; // `selectedDays` is expected to contain numeric day representations (0 = Sunday, ..., 6 = Saturday)
+  
+    const difference = targetDayIndex - startDayIndex;
+
+    return difference >= 0 ? difference : 7 + difference;
+  };
 
   const handleSubmit = async() => {
     if(!isScheduled){
@@ -237,13 +255,27 @@ const BookSessionSlot = () => {
       const totalSessions = daysCount * 4 * (plan?.interval || 1);
 
       // Create the array of session objects
-      const sessions = Array.from({ length: totalSessions }, (_, index) => ({
-        sessionNumber: index + 1,
-        day: selectedDays[index % selectedDays.length], // Distributes days cyclically if needed
-        status: 'pending',
-        can_be_completed: index === 0, // true only for sessionNumber 1 (index 0)
-        timeSlot: selectedTimeSlot,
-      }));
+      let tempStartDate = dayjs(startDate)
+      const sessions = Array.from({ length: totalSessions }, (_, index) => {
+
+        if (index !== 0 && index % selectedDays.length === 0) {
+          tempStartDate = dayjs(tempStartDate).add(7, "day");
+        } 
+
+        const cycleIndex = index % selectedDays.length;
+
+        const daysAdjustments = daysDifference(startDate, selectedDays[cycleIndex]); // Calculate the days to add  
+        const adjustedDate = tempStartDate.add(daysAdjustments, "day").format("DD-MM-YYYY");
+
+        return {
+          sessionNumber: index + 1,
+          day: selectedDays[index % selectedDays.length], // Distributes days cyclically if needed
+          date: adjustedDate,
+          status: 'pending',
+          can_be_completed: index === 0, // true only for sessionNumber 1 (index 0)
+          timeSlot: selectedTimeSlot,
+        };
+      });      
       
       // Add the sessions array to the object
       const obj = {

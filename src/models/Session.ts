@@ -20,6 +20,14 @@ const sessionScema = new Schema<SesionType & Document>(
       type: Date,
       required: true,
     },
+    status: {
+      type: String,
+      required: false
+    },
+    ignoredBy: {
+      type: [],
+      required: true
+    },
     endDate: {
       type: Date,
       required: true,
