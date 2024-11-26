@@ -11,6 +11,7 @@ import { getCachedData } from "@/lib/data";
 import { getPlans } from "@/lib/subscription/server";
 import type { Program } from "@/types/program";
 
+
 // ========================= get programs page data =========================
 const getProgramsPageData = cache(async () => {
   try {
@@ -60,7 +61,7 @@ export default async function Page() {
         <div className="">
           <h1>Something went wrong</h1>
 
-          <form action={handleRetry}>
+          <form onSubmit={handleRetry}>
             <button
               // onClick={() => {
               //   window.location.reload();
