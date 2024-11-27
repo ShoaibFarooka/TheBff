@@ -1,6 +1,13 @@
 import Session from "@/models/Session"; // Adjust the path according to your folder structure
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import dayjs from "dayjs"; // Ensure you have dayjs installed
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -37,44 +44,24 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
-    const existingSessions = session.sessions;
-
-    // Ensure that the session exists before proceeding
-    if (!Array.isArray(existingSessions)) {
+    // Ensure that the `sessions` array exists
+    if (!Array.isArray(session.sessions)) {
       return NextResponse.json(
         { success: false, message: "Invalid session data structure" },
         { status: 500 }
       );
     }
 
-    // Find the index of the current session
-    const currentSessionIndex = existingSessions.findIndex(
+    // Find the session to update by its sessionNumber
+    const currentSession = session.sessions.find(
       (s: any) => s.sessionNumber === currentSessionNumber
     );
 
-    if (currentSessionIndex === -1) {
+    if (!currentSession) {
       return NextResponse.json(
         { success: false, message: `Session with sessionNumber ${currentSessionNumber} not found` },
         { status: 404 }
       );
-    }
-
-    // Update the current session's status to "cancelled"
-    existingSessions[currentSessionIndex].status = "cancelled";
-
-    if (existingSessions[currentSessionIndex].can_be_completed === true) {
-      // Make the current session's `can_be_completed` false
-      existingSessions[currentSessionIndex].can_be_completed = false;
-
-      // Find the index of the next session
-      const nextSessionIndex = existingSessions.findIndex(
-        (s: any) => s.sessionNumber === currentSessionNumber + 1
-      );
-
-      if (nextSessionIndex !== -1) {
-        // Make the next session's `can_be_completed` true
-        existingSessions[nextSessionIndex].can_be_completed = true;
-      }
     }
 
     // Create the new session object
@@ -87,11 +74,42 @@ export const POST = async (req: NextRequest) => {
       status: "pending",
     };
 
-    // Append the new session object to the `sessions` array
-    existingSessions.push(newSession);
+    // Add the new session
+    session.sessions.push(newSession);
 
-    // Mark the `sessions` array as modified
-    session.markModified("sessions");
+    // Use `.set()` to ensure Mongoose detects changes
+    session.set("sessions", session.sessions);
+
+    // Update the current session's status to "cancelled"
+    currentSession.status = "cancelled";
+
+    if (currentSession.can_be_completed === true) {
+      // Make the current session's `can_be_completed` false
+      currentSession.can_be_completed = false;
+
+      // Find the next session whose status is not "cancelled"
+      const nextValidSession = session.sessions.find(
+        (s: any) => s.status !== "cancelled" && s.sessionNumber > currentSessionNumber
+      );
+
+      if (nextValidSession) {
+        // Set `can_be_completed` for the next valid session
+        nextValidSession.can_be_completed = true;
+      }
+    }
+
+    // Calculate the endDate as the date of the last session in ISO format
+    const lastSession = session.sessions[session.sessions.length - 1];
+    
+    if (lastSession && lastSession.date) {
+      // Parse the last session date (DD-MM-YYYY) in UTC to avoid timezone issues
+      const parsedDate = dayjs(lastSession.date, "DD-MM-YYYY").utc().startOf('day').add(1, "day");
+      
+      if (parsedDate.isValid()) {
+        const endDate = parsedDate.toDate();
+        session.endDate = endDate;
+      } 
+    }
 
     // Save the updated session document
     await session.save();
@@ -99,10 +117,9 @@ export const POST = async (req: NextRequest) => {
     // Respond with a success message and the updated sessions array
     return NextResponse.json({
       success: true,
-      message: "Session added successfully!",
+      message: "Session added successfully and endDate updated!",
       data: session.sessions,
     });
-
   } catch (error: any) {
     console.error("Error in addSession API:", error);
     return NextResponse.json(

@@ -30,7 +30,16 @@ interface Session {
   startDate: string;
   endDate: string;
   programId: string;
+  sessions: Array<{
+    sessionNumber: string;
+    date: string;
+    day: string;
+    status: string; 
+    can_be_completed: boolean;
+    timeSlot: string;
+  }>;
 }
+
 
 const BookSessionSlot = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,6 +53,7 @@ const BookSessionSlot = () => {
   const [selectedDays, setSelectedDays] = useState([]);
   const [plan, setPlan] = useState<Partial<Plan>>({});
   const [bookedSlots, setBookedSlots] = useState<Session[]>([]);
+  const [selectedBookedSlot, setSelectedBookedSlot] = useState<Session>();
 
 
 
@@ -92,6 +102,10 @@ const BookSessionSlot = () => {
   useEffect(() => {
     setAuthUser();
   }, [])
+
+  useEffect(() => {
+    setSelectedBookedSlot(bookedSlots[0]);
+  }, [bookedSlots])
 
   const days = [
     { display: "Monday", value: "monday" },
@@ -301,6 +315,29 @@ const BookSessionSlot = () => {
     setIsModalOpen(false);
   };
 
+  const getUpcommingSession = (slot: Session) => {
+    const currentDate = new Date();
+
+    // Filter sessions to find those that are in the future
+    const futureSessions = slot.sessions.filter((session: any) => {
+      const sessionDate = new Date(session.date); // Convert session date to a Date object
+      return sessionDate > currentDate;
+    });
+  
+    console.log("futureSessions : ", futureSessions)
+    // Sort the future sessions by date in ascending order
+    const sortedFutureSessions = futureSessions.sort(
+      (a : any, b : any) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
+    console.log("sortedFutureSessions : ", sortedFutureSessions)
+  
+    // Return the earliest session (upcoming session) or null if none exist
+    return sortedFutureSessions.length > 0 ? sortedFutureSessions?.[0].timeSlot : null;
+  }
+
+  console.log("bookedSlots : ", bookedSlots)
+
   return (
     <>
       {!bookedSlots?.length ? (
@@ -314,47 +351,13 @@ const BookSessionSlot = () => {
         </div>
       ) : (
         <>
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <div
-                style={{
-                  fontWeight: "bold",
-                  fontSize: "16px", // Adjust size as needed
-                }}
-              >
-                {"Subscription Name"}
-              </div>
-              <div
-                style={{
-                  fontWeight: "bold",
-                  fontSize: "16px", // Adjust size as needed
-                }}
-              >
-                {"Start Date - End Date"}
-              </div>
-            </div>
-            {bookedSlots.map((session) => (
-              <div
-                key={session._id}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <div>{session.planId.name}</div>
-                <div>
-                  {`${dayjs(session.startDate).format("DD-MM-YYYY")} - ${dayjs(session.endDate).format("DD-MM-YYYY")}`}
-                </div>
-              </div>
-            ))}
-          </div>
+          <Flex gap={4} vertical>
+            <span className="text-2xl font-bold">{"Scheduled Session"}</span>
+            <Flex>
+              <span>{selectedBookedSlot?.planId?.name}</span>
+              <span>{ selectedBookedSlot ? getUpcommingSession(selectedBookedSlot) : null}</span>
+            </Flex>
+          </Flex>
           <div className="center mt-2">
             <Button onClick={() => setIsModalOpen(true)} className="animate-vibrate hover:animate-none">
               Book a slot
