@@ -10,6 +10,10 @@ const s3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
 
+const getFileExtension = (fileName: string): string => {
+  const extension = fileName.split('.').pop();
+  return extension || "";
+};
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
 
@@ -31,20 +35,19 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   const profilePhotoFile = formData.get('profilePhotoFile');
   const verificationFile = formData.get('verificationFile') || null;
 
-  console.log('aadhar name:', aadharFile);
-  // console.log('Name: ', name, typeof name);
-  // console.log('Email: ', email, typeof email);
-  // console.log('Password: ', password, typeof password);
-  // console.log('Mobile Number: ', mobileNumber, typeof mobileNumber);
-  // console.log('Current Address: ', currentAddress, typeof currentAddress);
-  // console.log('Permanent Address: ', permanentAddress, typeof permanentAddress);
-  // console.log('Available Time Slots: ', availableTimeSlots, typeof availableTimeSlots);
-  // console.log('Parsed Available Time Slots: ', parsedAvailableTimeSlots, typeof parsedAvailableTimeSlots);
-  // console.log('Aadhar File: ', aadharFile, typeof aadharFile);
-  // console.log('Agreement File: ', agreementFile, typeof agreementFile);
-  // console.log('Certification Files: ', certificationFiles, typeof certificationFiles);
-  // console.log('Profile Photo File: ', profilePhotoFile, typeof profilePhotoFile);
-  // console.log('Verification File: ', verificationFile, typeof verificationFile);
+  console.log('Name: ', name, typeof name);
+  console.log('Email: ', email, typeof email);
+  console.log('Password: ', password, typeof password);
+  console.log('Mobile Number: ', mobileNumber, typeof mobileNumber);
+  console.log('Current Address: ', currentAddress, typeof currentAddress);
+  console.log('Permanent Address: ', permanentAddress, typeof permanentAddress);
+  console.log('Available Time Slots: ', availableTimeSlots, typeof availableTimeSlots);
+  console.log('Parsed Available Time Slots: ', parsedAvailableTimeSlots, typeof parsedAvailableTimeSlots);
+  console.log('Aadhar File: ', aadharFile, typeof aadharFile);
+  console.log('Agreement File: ', agreementFile, typeof agreementFile);
+  console.log('Certification Files: ', certificationFiles, typeof certificationFiles);
+  console.log('Profile Photo File: ', profilePhotoFile, typeof profilePhotoFile);
+  console.log('Verification File: ', verificationFile, typeof verificationFile);
 
   const existingTrainer = await Trainer.findOne({ email });
   if (existingTrainer) {
@@ -52,9 +55,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   }
 
   const folderName = `${name}-${email}`;
-  var splitted = `${aadharFile.name}`.split(".", -1);
-  const aadharName = 'aadhar.' + splitted[1]
-  console.log(aadharName);
 
   let aadharBuffer = Buffer.from(await aadharFile.arrayBuffer());
   let agreementBuffer = Buffer.from(await agreementFile.arrayBuffer());
@@ -63,19 +63,19 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   const aadharParams = {
     Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-    Key: `${folderName}/${Date.now()}_${aadharName}`, // Unique file name
+    Key: `${folderName}/${Date.now()}_AadharFile.${getFileExtension(aadharFile.name)}`,
     Body: aadharBuffer,
     ContentType: aadharFile.type || 'application/octet-stream',
   };
   const agreementParams = {
     Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-    Key: `${folderName}/${Date.now()}_${agreementFile.name}`, // Unique file name
+    Key: `${folderName}/${Date.now()}_AgreementFile.${getFileExtension(agreementFile.name)}`,
     Body: agreementBuffer,
     ContentType: agreementFile.type || 'application/octet-stream',
   };
   const profilePhotoParams = {
     Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-    Key: `${folderName}/${Date.now()}_${profilePhotoFile.name}`, // Unique file name
+    Key: `${folderName}/${Date.now()}_ProfilePhoto.${getFileExtension(profilePhotoFile.name)}`,
     Body: profilePhotoBuffer,
     ContentType: profilePhotoFile.type || 'application/octet-stream',
   };
@@ -84,7 +84,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   if (verificationFile) {
     verificationParams = {
       Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-      Key: `${folderName}/${Date.now()}_${verificationFile.name}`, // Unique file name
+      Key: `${folderName}/${Date.now()}_VerificationFile.${getFileExtension(verificationFile.name)}`,
       Body: verificationBuffer,
       ContentType: verificationFile.type || 'application/octet-stream',
     };
@@ -99,10 +99,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       (await s3.upload(profilePhotoParams).promise()).Location,
     ];
 
-    const certificationUploadPromises = certificationFiles.map(async (file: File) => {
+    const certificationUploadPromises = certificationFiles.map(async (file: File, index: number) => {
       const certificationParams = {
         Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-        Key: `${folderName}/${Date.now()}_${file.name}`,
+        Key: `${folderName}/${Date.now()}_CertificateFile${index + 1}.${getFileExtension(file.name)}`,
         Body: Buffer.from(await file.arrayBuffer()),
         ContentType: file.type || 'application/octet-stream',
       };
@@ -125,15 +125,15 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     certificationFileURLs = results.slice(3, results.length - (verificationFile ? 1 : 0));
 
     if (verificationFile) {
-      verificationFileURL = await uploadPromises[uploadPromises.length - 1];
+      verificationFileURL = uploadPromises[uploadPromises.length - 1];
     }
     const endTime = performance.now();
-    // console.log('Performance Time For Upload(s): ', (endTime - startTime) / 1000);
-    // console.log(aadharFileURL);
-    // console.log(agreementFileURL);
-    // console.log(profilePhotoFileURL);
-    // console.log(verificationFileURL);
-    // console.log(certificationFileURLs);
+    console.log('Performance Time For Upload(s): ', (endTime - startTime) / 1000);
+    console.log(aadharFileURL);
+    console.log(agreementFileURL);
+    console.log(profilePhotoFileURL);
+    console.log(verificationFileURL);
+    console.log(certificationFileURLs);
 
     const trainer = await Trainer.create({
       name,
