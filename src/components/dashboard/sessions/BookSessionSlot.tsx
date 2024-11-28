@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Select, DatePicker, message, Flex } from 'antd';
 import { Button } from '@/components/ui/button';
 import dayjs from 'dayjs';
-import { CheckCircleOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import toast from 'react-hot-toast';
 import { getAuthUser } from '@/lib/auth';
 import subscriptions from 'razorpay/dist/types/subscriptions';
+
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
 
 const { Option } = Select;
 
@@ -21,6 +25,7 @@ interface Plan {
   interval: number;
   period: string
   features: string[];
+  programId: string;
   // Add other properties if needed
 }
 
@@ -314,27 +319,48 @@ const BookSessionSlot = () => {
     setIsScheduled(false)
     setIsModalOpen(false);
   };
-
+  
   const getUpcommingSession = (slot: Session) => {
     const currentDate = new Date();
-
+  
     // Filter sessions to find those that are in the future
     const futureSessions = slot.sessions.filter((session: any) => {
-      const sessionDate = new Date(session.date); // Convert session date to a Date object
+      const sessionDate = dayjs(session.date, "DD-MM-YYYY").toDate(); // Parse session date
       return sessionDate > currentDate;
     });
   
-    console.log("futureSessions : ", futureSessions)
     // Sort the future sessions by date in ascending order
     const sortedFutureSessions = futureSessions.sort(
-      (a : any, b : any) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      (a: any, b: any) =>
+        dayjs(a.date, "DD-MM-YYYY").toDate().getTime() -
+        dayjs(b.date, "DD-MM-YYYY").toDate().getTime()
     );
-
-    console.log("sortedFutureSessions : ", sortedFutureSessions)
   
-    // Return the earliest session (upcoming session) or null if none exist
-    return sortedFutureSessions.length > 0 ? sortedFutureSessions?.[0].timeSlot : null;
-  }
+    // Return null if no sessions are found
+    if (sortedFutureSessions.length === 0) return null;
+  
+    // Get the first session (upcoming session)
+    const nextSession = sortedFutureSessions[0];
+    const sessionDate = dayjs(nextSession.date, "DD-MM-YYYY").toDate();
+  
+    // Format the date as "Mon, Oct 12th"
+    const formattedDate = new Intl.DateTimeFormat("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    }).format(sessionDate);
+  
+    // Add the ordinal suffix for the day (e.g., "12th")
+    const dayWithOrdinal = dayjs(sessionDate).format("Do"); // Requires `dayjs/plugin/customParseFormat`
+  
+    // Extract time from timeSlot
+    const timeSlot = nextSession.timeSlot; // Example: "7:00 - 8:00"
+    const time = timeSlot.split(" - ")[0]; // Extract the time before "-"
+  
+    // Combine the formatted date and time
+    return `${formattedDate.replace(/\d+/, dayWithOrdinal)} on ${time}`;
+  };
+  
 
   console.log("bookedSlots : ", bookedSlots)
 
@@ -351,16 +377,48 @@ const BookSessionSlot = () => {
         </div>
       ) : (
         <>
+          {console.log(selectedBookedSlot)}
           <Flex gap={4} vertical>
             <span className="text-2xl font-bold">{"Scheduled Session"}</span>
-            <Flex>
+            <Flex style={{justifyContent: "space-between"}}>
               <span>{selectedBookedSlot?.planId?.name}</span>
               <span>{ selectedBookedSlot ? getUpcommingSession(selectedBookedSlot) : null}</span>
             </Flex>
+            <div className="border-t border-dashed border-white w-full mt-3 mb-3"></div>
+            {!(selectedBookedSlot?.planId?.name?.toLowerCase().includes("online") || 
+              selectedBookedSlot?.planId?.programId?.toLowerCase().includes("online")) ? (
+                <Flex gap={8}>
+                  <EnvironmentOutlined style={{ fontSize: "16px", color: "#fff" }} />
+                  <span>{"House 123, Lahore"}</span>
+                </Flex>
+              ) : null}
+            <Flex gap={8}>
+              <ClockCircleOutlined style={{ fontSize: "16px", color: "#fff" }} />
+              <span>{"60 mins"}</span>
+            </Flex> 
+            {selectedBookedSlot?.planId?.name?.toLowerCase().includes("online") || 
+              selectedBookedSlot?.planId?.programId?.toLowerCase().includes("online") ? (
+                <Button className="bg-[#514ED8] text-white w-full py-3 rounded-lg mt-5">Join Session</Button>
+              ) : null}
+
+            <div className="border-t border-dashed border-white w-full mt-3 mb-3"></div>
+            <Flex gap={8}>
+              <Button
+                className="text-white w-full py-3 rounded-lg mt-5 border border-white bg-transparent hover:bg-white hover:text-[#514ED8]"
+              >
+                Reschedule
+              </Button>
+              <Button
+                className="text-red-500 w-full py-3 rounded-lg mt-5 bg-transparent hover:bg-red-500 hover:text-white"
+                style={{ border: "none" }}
+              >
+                Cancel Session
+              </Button>
+            </Flex>
           </Flex>
           <div className="center mt-2">
-            <Button onClick={() => setIsModalOpen(true)} className="animate-vibrate hover:animate-none">
-              Book a slot
+            <Button onClick={() => setIsModalOpen(true)} className="bg-[#514ED8] text-white w-full py-3 rounded-lg mt-5">
+              Book a New Slot
             </Button>
           </div>
         </>
