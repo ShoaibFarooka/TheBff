@@ -19,6 +19,7 @@ export const GET = async (req: NextRequest) => {
           _id: "$programId",
           plans: {
             $first: {
+              _id: "$_id",
               image: "$image",
               description: "$description",
               //features: { $push: "$features" },

@@ -1,28 +1,54 @@
 "use client"
+import ChoosePlanLoggedOut from '@/components/choosePlanLoggedOut';
 import { useEffect, useRef, useState } from 'react';
+//import { cache } from "react";
+
 
 interface ProgramCardProps {
-    title: string;
-    image: string;
-    benefits: string[];
-    price: string;
-    originalPrice: string;
-    isPremium: boolean;
+  _id: string;
+  id: string;
+  title: string;
+  image: string;
+  benefits: string[];
+  price: string;
+  originalPrice: string;
+  isPremium: boolean;
 }
   
 interface ProgramPlans {
   _id: string;
   plans: {
+    _id: string;
     image: string;
     description: string;
     features: string[];
     name: string;
     amount: number;
   };
-}
-  
-  const ProgramCard = ({ title, image, benefits, price, originalPrice, isPremium }: ProgramCardProps) => {
-    return (
+} 
+
+const ProgramCard = ({ _id, id,title, image, benefits, price, originalPrice, isPremium }: ProgramCardProps) => {
+    
+
+  const [choosePlanVisible, setChoosePlanVisible] = useState(false);
+  const handleOpenChoosePlan = () => {
+    setChoosePlanVisible(true);
+  };
+
+  // Function to handle closing the ChoosePlan modal
+  const handleCloseChoosePlan = () => {
+    setChoosePlanVisible(false);
+  };
+  return (
+    <>
+      {choosePlanVisible && (
+        <ChoosePlanLoggedOut 
+          _id={_id}
+          planId={id}
+          visible={choosePlanVisible}
+          onClose={() => setChoosePlanVisible(false)}
+        />
+      )}
       <div className="rounded-lg bg-gradient-to-br from-[#2E4061] to-[#46256E] p-6 flex flex-col">
         <div className="relative">
           <img 
@@ -67,11 +93,13 @@ interface ProgramPlans {
             </button>
           </div>
   
-          <button className="w-full mt-4 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" style={{ backgroundColor: '#514ED8' }}>
+          <button className="w-full mt-4 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" style={{ backgroundColor: '#514ED8' }} onClick={() => handleOpenChoosePlan()}>
             Buy Now
           </button>
+
         </div>
       </div>
+    </>
     );
   };
   
@@ -134,13 +162,14 @@ interface ProgramPlans {
     );
   };
   
-const WellnessPrograms = () => {
-    
+const WellnessPrograms = async () => {
+
   const [programPlans, setProgramPlans] = useState<ProgramPlans[]>([]);
   const [loading, setLoading] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -247,6 +276,8 @@ const WellnessPrograms = () => {
             {programPlans?.map((program) => (
               <div key={program._id} className="flex-none w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
                 <ProgramCard 
+                  _id={program.plans._id}
+                  id={program._id}
                   title={program.plans.name || 'Unnamed Program'}
                   image={program.plans.image || '/placeholder-image.jpg'}
                   benefits={typeof program.plans.description === 'string' ? [program.plans.description] : program.plans.description || ['No benefits listed']}

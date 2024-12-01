@@ -110,7 +110,7 @@ const ClientFeedback = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
       setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
     }
   };
 
@@ -191,7 +191,7 @@ const ClientFeedback = () => {
         
         <div className="relative flex justify-center">
           {/* Navigation Buttons */}
-          <div className="mt-10 absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2 mb-4 z-20">
+          <div className="pt-10 absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2 mb-4 z-20">
             <button
               onClick={() => scroll('left')}
               disabled={!canScrollLeft}
