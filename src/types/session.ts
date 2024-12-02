@@ -12,5 +12,6 @@ export type Session = {
     trainerId: string,
     timeSlot: String,
     days: [],
+    sessionStatus: boolean,
     sessions: []
 }

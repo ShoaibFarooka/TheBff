@@ -1,6 +1,6 @@
 import { Session as SesionType } from "@/types/session";
 import mongoose, { Document, Schema } from "mongoose";
-import { string } from "zod";
+import { boolean, string } from "zod";
 
 const sessionScema = new Schema<SesionType & Document>(
   {
@@ -47,6 +47,10 @@ const sessionScema = new Schema<SesionType & Document>(
     days : {
       type: [],
       required: true,
+    },
+    sessionStatus: {
+      type: Boolean,
+      required: false
     },
     sessions: {
       type: [],

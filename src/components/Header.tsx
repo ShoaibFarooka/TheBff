@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Logo from "./Logo";
+import toast from "react-hot-toast";
 
 const Profile = dynamic(() => import("./user/Profile"), {
   ssr: false,
@@ -68,6 +69,7 @@ const AuthProfile = ({
 
 function Header(props?: any) {
   const [nav, setNav] = useState(false);
+  const [completedSessions, setCompletedSessions] = useState([]);
   const handleClick = () => setNav(!nav);
   const [currentUser, setCurrentUser] = useState<User>()
 
@@ -89,6 +91,30 @@ function Header(props?: any) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, authenticate]);
+
+  useEffect(() => {
+    fetchCompletedSessions();
+  }, [])
+
+  const fetchCompletedSessions = async () => {
+    try {
+      const response = await fetch("/api/sessions/completed-sessions", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setCompletedSessions(data?.data || []); // Update state with completed sessions
+    } catch (err : any) {
+      toast.error(err)
+    } 
+  };
 
   return (
     <nav
@@ -119,6 +145,14 @@ function Header(props?: any) {
               {!(currentUser?.role === 4 || currentUser?.role === 1) && "Blogs"}
             </li>
           </Link>
+          {completedSessions.length > 0 ? 
+            <Link href="/blog">
+              <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
+                {!(currentUser?.role === 4 || currentUser?.role === 1) && "Feedback"}
+              </li>
+            </Link>
+            : <></>}
+          
 
           <li>
             {/* Disabled in alpha preview - 1 */}

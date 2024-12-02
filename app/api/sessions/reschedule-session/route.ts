@@ -1,6 +1,6 @@
 // pages/api/sessions/reschedule.ts
 
-import { Plan, User } from "@/models"; // Import relevant models
+import { Plan, Trainer, User } from "@/models"; // Import relevant models
 import Session from "@/models/Session"; // Adjust the path according to your folder structure
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
@@ -62,8 +62,15 @@ export const POST = async (req: NextRequest) => {
     // Save the updated session document (parent session)
     await session.save();
 
+    const trainer = await Trainer.findById(trainerId).select(
+      "name email contactNumber currentAddress"
+    ); // Specify fields you want to include
+    if (trainer) {
+      session.set("trainerDetails", trainer); // Add trainer details to the session
+    }
+
     // Respond with a success message
-    return NextResponse.json({ success: true, message: "Session rescheduled successfully!", data: session?.sessions });
+    return NextResponse.json({ success: true, message: "Session rescheduled successfully!", data: session?.sessions, session: session, trainerDetails: trainer });
 
   } catch (error: any) {
     return NextResponse.json(

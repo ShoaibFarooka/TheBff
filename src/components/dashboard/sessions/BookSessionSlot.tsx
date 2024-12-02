@@ -35,6 +35,14 @@ interface Session {
   startDate: string;
   endDate: string;
   programId: string;
+  days: [];
+  userId: string;
+  subscriptionId: string;
+  trainerAssigned: boolean;
+  trainerId: {
+    _id: string;
+    currentAddress: {}
+  };
   sessions: Array<{
     sessionNumber: string;
     date: string;
@@ -59,8 +67,8 @@ const BookSessionSlot = () => {
   const [plan, setPlan] = useState<Partial<Plan>>({});
   const [bookedSlots, setBookedSlots] = useState<Session[]>([]);
   const [selectedBookedSlot, setSelectedBookedSlot] = useState<Session>();
-
-
+  const [rescheduleModal, setRescheduleModal] = useState<boolean>();
+  const [rescheduleTime, setRescheduleTime] = useState<string>("");
 
   const getUserSubscriptions = async ({ id }: { id: string }) => {
     try {
@@ -326,7 +334,7 @@ const BookSessionSlot = () => {
     // Filter sessions to find those that are in the future
     const futureSessions = slot.sessions.filter((session: any) => {
       const sessionDate = dayjs(session.date, "DD-MM-YYYY").toDate(); // Parse session date
-      return sessionDate > currentDate;
+      return sessionDate > currentDate && session.status.toLowerCase() === "pending";
     });
   
     // Sort the future sessions by date in ascending order
@@ -338,6 +346,30 @@ const BookSessionSlot = () => {
   
     // Return null if no sessions are found
     if (sortedFutureSessions.length === 0) return null;
+  
+    // Get the first session (upcoming session)
+    const nextSession = sortedFutureSessions[0];
+
+    return nextSession;
+  }
+  const getUpcommingSessionDate = (slot: Session) => {
+    const currentDate = new Date();
+  
+    // Filter sessions to find those that are in the future and not cancelled
+    const futureSessions = slot?.sessions?.filter((session: any) => {
+      const sessionDate = dayjs(session.date, "DD-MM-YYYY").toDate(); // Parse session date
+      return sessionDate > currentDate && session.status.toLowerCase() === "pending";
+    });
+  
+    // Sort the future sessions by date in ascending order
+    const sortedFutureSessions = futureSessions.sort(
+      (a: any, b: any) =>
+        dayjs(a.date, "DD-MM-YYYY").toDate().getTime() -
+        dayjs(b.date, "DD-MM-YYYY").toDate().getTime()
+    );
+  
+    // Return null if no sessions are found
+    if (sortedFutureSessions.length === 0) return "Sessions Completed";
   
     // Get the first session (upcoming session)
     const nextSession = sortedFutureSessions[0];
@@ -361,6 +393,128 @@ const BookSessionSlot = () => {
     return `${formattedDate.replace(/\d+/, dayWithOrdinal)} on ${time}`;
   };
   
+  const cancelSession = async () => {
+    try {
+      const lastSession = selectedBookedSlot?.sessions?.[selectedBookedSlot?.sessions.length - 1];
+  
+      if (!lastSession) {
+        console.error("No sessions available.");
+        return;
+      }
+  
+      const lastDay = lastSession.day; // e.g., "Thursday"
+
+      if (selectedBookedSlot?.days?.length === 0) {
+        console.error("sessionDays is empty.");
+        return;
+      }
+
+      let currentDay = lastDay; // Start with the last day
+  
+      // Days array for calculating day indices
+      const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+      const currentDayIndexInWeek = days.findIndex(day => day === currentDay);
+  
+      // Calculate the next day index (wraps around to the start of the array if it's the last day)
+      const currentDayIndex = selectedBookedSlot?.days?.findIndex(day => day === currentDay);
+      const nextDayIndex = (currentDayIndex + 1) % selectedBookedSlot?.days.length;
+  
+      // Get the next day from the array
+      const nextDay = selectedBookedSlot?.days[nextDayIndex];
+      const nextDayIndexInWeek = days.findIndex(day => day === nextDay);
+  
+      const dayDifference = (nextDayIndexInWeek - currentDayIndexInWeek + days.length) % days.length;
+  
+      dayjs.extend(customParseFormat);
+      const parsedDate = dayjs(lastSession.date, "DD-MM-YYYY");
+  
+      const nextSessionDate = dayjs(parsedDate)
+        .add(dayDifference, "day")
+        .format("DD-MM-YYYY");
+  
+      // Prepare the request payload
+      const requestBody = {
+        trainerId: selectedBookedSlot?.trainerId?._id,
+        userId: selectedBookedSlot?.userId,
+        subscriptionId: selectedBookedSlot?.subscriptionId,
+        sessionNumber: lastSession.sessionNumber + 1,
+        nextDay: nextDay,
+        date: nextSessionDate,
+        currentSessionNumber: getUpcommingSession(selectedBookedSlot as Session)?.sessionNumber
+      };
+
+      console.log(requestBody)
+  
+      // API Call
+      const res = await fetch(`/api/sessions/cancel-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      const data = await res.json();
+  
+      if (res.status === 200 && data.success) {
+        toast.success("Session Rescheduled!");
+        if (data?.session) {
+          const updatedSlot = { ...data?.session };
+
+          updatedSlot.trainerId = data?.trainerDetails;
+
+          setSelectedBookedSlot(updatedSlot);
+        }
+      } else {
+        toast.error(data.message || "Failed to update session.");
+      }
+    } catch (error) {
+      console.error("Error while canceling/rescheduling the session:", error);
+      toast.error("Something went wrong. Please try again.");
+    }
+  }; 
+
+  const rescheduleSession = async () => {
+    if (!rescheduleTime) {
+      setRescheduleModal(true);
+      return;
+    }
+  
+    try {
+      // Update the session's time slot in the backend
+      const res = await fetch(`/api/sessions/reschedule-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          trainerId: selectedBookedSlot?.trainerId?._id,
+          userId: selectedBookedSlot?.userId,
+          subscriptionId: selectedBookedSlot?.subscriptionId,
+          sessionNumber: getUpcommingSession(selectedBookedSlot as Session)?.sessionNumber,
+          newTimeSlot: rescheduleTime,
+        }),
+      });
+  
+      const data = await res.json();
+      if (res.status === 200 && data.success) {
+        if (data?.session) {
+          const updatedSlot = { ...data?.session };
+
+          updatedSlot.trainerId = data?.trainerDetails;
+
+          setSelectedBookedSlot(updatedSlot);
+        }
+        
+        toast.success("Session rescheduled successfully!");
+      } else {
+        toast.error(data.message || "Failed to reschedule session.");
+      }
+    } catch (error) {
+      console.error("Error rescheduling session:", error);
+      toast.error("Something went wrong. Please try again.");
+    }
+  };
 
   console.log("bookedSlots : ", bookedSlots)
 
@@ -377,45 +531,110 @@ const BookSessionSlot = () => {
         </div>
       ) : (
         <>
-          {console.log(selectedBookedSlot)}
-          <Flex gap={4} vertical>
+          <Modal
+            open={rescheduleModal}
+            title={
+              <h3 style={{ background: 'linear-gradient(288.21deg, #2E4061 0%, #46256E 100%)', color: 'white' }}>
+                Please Select the time to reschedule
+              </h3>
+            } 
+            onCancel={() => {   
+              setRescheduleModal(false);
+              setRescheduleTime("")
+            }}
+            onOk={() => {   
+              setRescheduleModal(false);
+              setRescheduleTime("");
+              rescheduleSession()
+            }}
+            styles={{
+              content: {  background: 'linear-gradient(288.21deg, #2E4061 0%, #46256E 100%)' }, // turns the Modal red
+            }}
+            width={700}
+            style={{width: "700px", marginTop: "250px"}}
+          >
+            <Select
+              placeholder="Select Time"
+              style={{ width: '100%', margin: '10px 0' }}
+              onChange={(value) => setRescheduleTime(value)}
+              value={rescheduleTime || undefined} // Ensure placeholder is shown when no value is selected
+            >
+              {timeSlots.map((timeSlot, index) => (
+                <Option key={index} value={timeSlot.value}>
+                  {timeSlot.display}
+                </Option>
+              ))}
+            </Select>
+          </Modal>
+          <Flex style={{justifyContent: "space-between", marginBottom: "10px"}}>
             <span className="text-2xl font-bold">{"Scheduled Session"}</span>
-            <Flex style={{justifyContent: "space-between"}}>
-              <span>{selectedBookedSlot?.planId?.name}</span>
-              <span>{ selectedBookedSlot ? getUpcommingSession(selectedBookedSlot) : null}</span>
-            </Flex>
-            <div className="border-t border-dashed border-white w-full mt-3 mb-3"></div>
-            {!(selectedBookedSlot?.planId?.name?.toLowerCase().includes("online") || 
-              selectedBookedSlot?.planId?.programId?.toLowerCase().includes("online")) ? (
-                <Flex gap={8}>
-                  <EnvironmentOutlined style={{ fontSize: "16px", color: "#fff" }} />
-                  <span>{"House 123, Lahore"}</span>
-                </Flex>
-              ) : null}
-            <Flex gap={8}>
-              <ClockCircleOutlined style={{ fontSize: "16px", color: "#fff" }} />
-              <span>{"60 mins"}</span>
-            </Flex> 
-            {selectedBookedSlot?.planId?.name?.toLowerCase().includes("online") || 
-              selectedBookedSlot?.planId?.programId?.toLowerCase().includes("online") ? (
-                <Button className="bg-[#514ED8] text-white w-full py-3 rounded-lg mt-5">Join Session</Button>
-              ) : null}
-
-            <div className="border-t border-dashed border-white w-full mt-3 mb-3"></div>
-            <Flex gap={8}>
-              <Button
-                className="text-white w-full py-3 rounded-lg mt-5 border border-white bg-transparent hover:bg-white hover:text-[#514ED8]"
-              >
-                Reschedule
-              </Button>
-              <Button
-                className="text-red-500 w-full py-3 rounded-lg mt-5 bg-transparent hover:bg-red-500 hover:text-white"
-                style={{ border: "none" }}
-              >
-                Cancel Session
-              </Button>
-            </Flex>
+            <Select
+              placeholder="Select Booked Session"
+              style={{ width: '40%' }}
+              value={selectedBookedSlot?._id}
+              onChange={(value) => {
+                const selectedSlot = bookedSlots.find((slot) => slot._id === value) || ({} as Session);
+                setSelectedBookedSlot(selectedSlot);
+              }}                
+            >
+              {bookedSlots.map((slot : any, index) => (
+                <Option key={index} value={slot._id}>
+                  {slot.planId.programId}
+                </Option>
+              ))}
+            </Select>
           </Flex>
+          {selectedBookedSlot?.trainerAssigned ? 
+            <Flex gap={4} vertical>
+              <>
+              <Flex style={{justifyContent: "space-between"}}>
+                <span>{selectedBookedSlot?.planId?.name}</span>
+                <span>{ selectedBookedSlot ? getUpcommingSessionDate(selectedBookedSlot) : null}</span>
+              </Flex>
+              <div className="border-t border-dashed border-white w-full mt-3 mb-3"></div>
+              {!(selectedBookedSlot?.planId?.name?.toLowerCase().includes("online") || 
+                selectedBookedSlot?.planId?.programId?.toLowerCase().includes("online")) ? (
+                  <Flex gap={8}>
+                    <EnvironmentOutlined style={{ fontSize: "16px", color: "#fff" }} />
+                    <span>
+                      {selectedBookedSlot?.trainerId?.currentAddress
+                      ? Object.values(selectedBookedSlot?.trainerId?.currentAddress).join(', ')
+                      : 'No Address'}
+                    </span>
+                  </Flex>
+                ) : null}
+              <Flex gap={8}>
+                <ClockCircleOutlined style={{ fontSize: "16px", color: "#fff" }} />
+                <span>{"60 mins"}</span>
+              </Flex> 
+              {selectedBookedSlot?.planId?.name?.toLowerCase().includes("online") || 
+                selectedBookedSlot?.planId?.programId?.toLowerCase().includes("online") ? (
+                  <Button className="bg-[#514ED8] text-white w-full py-3 rounded-lg mt-5">Join Session</Button>
+                ) : null}
+
+              <div className="border-t border-dashed border-white w-full mt-3 mb-3"></div>
+              <Flex gap={8}>
+                <Button
+                  className="text-white w-full py-3 rounded-lg mt-5 border border-white bg-transparent hover:bg-white hover:text-[#514ED8]"
+                  onClick={() => setRescheduleModal(true)}
+                >
+                  Reschedule
+                </Button>
+                <Button
+                  className="text-red-500 w-full py-3 rounded-lg mt-5 bg-transparent hover:bg-red-500 hover:text-white"
+                  style={{ border: "none" }}
+                  onClick={cancelSession}
+                >
+                  Cancel Session
+                </Button>
+              </Flex>
+              </>
+            </Flex> : 
+            <div className="flex justify-center items-center">
+              <span className="text-2xl font-bold">Trainer is not yet assigned</span>
+            </div>
+            
+            }
           <div className="center mt-2">
             <Button onClick={() => setIsModalOpen(true)} className="bg-[#514ED8] text-white w-full py-3 rounded-lg mt-5">
               Book a New Slot

@@ -67,24 +67,17 @@ export const GET = async (req: NextRequest) => {
       );
     }
 
-    if (updated) {
-      session.sessions = sessionsArray; // Assign the updated array back to the session
-      session.markModified("sessions"); // Explicitly mark the field as modified
+    // Check if all sessions are marked as completed
+    const allCompleted = sessionsArray.every((s: any) => s.status === "completed");
 
-      console.log(session)
-      
-      try {
-        await session.save(); // Save the changes to the database
-        console.log("Session updated and saved successfully.");
-      } catch (error) {
-        console.error("Error saving session:", error);
-        return NextResponse.json(
-          { success: false, message: "Failed to save session updates" },
-          { status: 500 }
-        );
-      }
+    if (allCompleted) {
+      session.sessionStatus = "completed"; // Set sessionStatus to "completed"
     }
-      
+
+    // Mark modified fields
+    session.sessions = sessionsArray; // Assign the updated array back to the session
+    session.markModified("sessions");
+    session.markModified("sessionStatus");
 
     // Save the updated document
     await session.save();

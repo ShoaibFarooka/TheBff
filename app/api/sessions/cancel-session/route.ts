@@ -4,15 +4,23 @@ import mongoose from "mongoose";
 import dayjs from "dayjs"; // Ensure you have dayjs installed
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
+import Trainer from "@/models/trainer"; // Import the Trainer model if available
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
-
 export const POST = async (req: NextRequest) => {
   try {
     // Parse the request body
-    const { trainerId, userId, subscriptionId, sessionNumber, nextDay, date, currentSessionNumber } = await req.json();
+    const {
+      trainerId,
+      userId,
+      subscriptionId,
+      sessionNumber,
+      nextDay,
+      date,
+      currentSessionNumber,
+    } = await req.json();
 
     // Validate required parameters
     if (!trainerId || !userId || !subscriptionId || !sessionNumber || !nextDay || !date) {
@@ -111,6 +119,14 @@ export const POST = async (req: NextRequest) => {
       } 
     }
 
+    // Fetch the trainer details and populate trainerId
+    const trainer = await Trainer.findById(trainerId).select(
+      "name email contactNumber currentAddress"
+    ); // Specify fields you want to include
+    if (trainer) {
+      session.set("trainerDetails", trainer); // Add trainer details to the session
+    }
+
     // Save the updated session document
     await session.save();
 
@@ -119,6 +135,8 @@ export const POST = async (req: NextRequest) => {
       success: true,
       message: "Session added successfully and endDate updated!",
       data: session.sessions,
+      session: session,
+      trainerDetails: trainer, // Include trainer details in the response
     });
   } catch (error: any) {
     console.error("Error in addSession API:", error);
