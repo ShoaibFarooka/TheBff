@@ -22,7 +22,7 @@ export const GET = async (req: NextRequest) => {
               _id: "$_id",
               image: "$image",
               description: "$description",
-              //features: { $push: "$features" },
+              features: "$features",
               name: "$name",
               amount: "$amount"
             }
