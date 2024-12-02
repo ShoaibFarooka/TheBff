@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 // Client component to handle pathname-dependent rendering
 import dynamic from 'next/dynamic';
 
-const ClientWrapper = dynamic(() => import('@/components/ClientWrapper'), { ssr: false });
+const ClientWrapper = dynamic(() => import('@/components/ClientWrapper'));
 
 export default function RootLayout({
   children,

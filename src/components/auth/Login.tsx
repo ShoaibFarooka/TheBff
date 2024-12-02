@@ -55,8 +55,14 @@ export const LoginForm = ({ onSuccess, onFailure }: LoginFormProps) => {
                 onSuccess?.();
                 
                 const role = data?.role;
-                role === 3 && router.push(searchParams.get("cb") ?? "/dashboard");
-                (role === 4 || role === 1) && router.push("/direct-client-form");
+                const callbackUrl = searchParams?.get("callbackUrl");
+                
+                if (callbackUrl) {
+                    router.push(callbackUrl);
+                } else {
+                    role === 3 && router.push(searchParams?.get("cb") ?? "/dashboard");
+                    (role === 4 || role === 1) && router.push("/direct-client-form");
+                }
             } else {
                 const data = await res.json();
                 const { emailVerified, phoneVerified } = data;

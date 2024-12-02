@@ -54,7 +54,7 @@ export async function getUncachedPlan(id: string, options: PlanOptions = { inclu
   }
 }
 
-export const getPlan = (id: string, options?: PlanOptions) => nextCache(() => getUncachedPlan(id, options), ['plan', id], {
+export const getPlan = async (id: string, options?: PlanOptions) => nextCache(() => getUncachedPlan(id, options), ['plan', id], {
   tags: ['plan', id],
   revalidate: process.env.NODE_ENV === 'development' ? 5 : 3 * 60 * 60,
 })();

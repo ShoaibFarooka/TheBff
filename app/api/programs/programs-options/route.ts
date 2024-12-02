@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import Program from "@/models/Program"; // Adjust the path according to your folder structure
+import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {

@@ -4,12 +4,12 @@ import Programs from "@/components/programs";
 import connectDB from "@/lib/dbConnection";
 import { Program as ProgramModel } from "@/models";
 
-import { revalidatePath } from "next/cache";
-import { cache } from "react";
-
 import { getCachedData } from "@/lib/data";
 import { getPlans } from "@/lib/subscription/server";
 import type { Program } from "@/types/program";
+import { revalidatePath } from "next/cache";
+import { cache } from "react";
+
 
 // ========================= get programs page data =========================
 const getProgramsPageData = cache(async () => {
@@ -60,7 +60,7 @@ export default async function Page() {
         <div className="">
           <h1>Something went wrong</h1>
 
-          <form action={handleRetry}>
+          <form onSubmit={handleRetry}>
             <button
               // onClick={() => {
               //   window.location.reload();

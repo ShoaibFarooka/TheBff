@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { calculateDiscount } from "@/lib"
 import { makeOrderPayment } from "@/lib/subscription/client"
 import { api } from "@/trpc/react"
-import { Coupon } from "@/types/coupon"
+import { Coupon as CouponType } from "@/types/coupon"
 import Script from 'next/script'
 import { useRouter } from "nextjs-toploader/app"
 import { useCallback, useMemo, useState } from "react"
@@ -22,7 +22,7 @@ const Payment = ({ amount }: PaymentProps) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [couponCode, setCouponCode] = useState('')
-    const [coupon, setCoupon] = useState<Coupon | null>(null)
+    const [coupon, setCoupon] = useState<CouponType | null>(null)
 
     const router = useRouter()
     const utils = api.useUtils()
@@ -36,6 +36,9 @@ const Payment = ({ amount }: PaymentProps) => {
             onSettled(data) {
                 if (data && 'error' in data) {
                     toast.error(data.error ?? "Failed to get coupon")
+                } else if (data?.status) {
+                    toast.error("This coupon has already been used")
+                    setCoupon(null)
                 } else {
                     setCoupon(() => data!)
                 }
@@ -124,10 +127,10 @@ const Payment = ({ amount }: PaymentProps) => {
 
         const discount = calculateDiscount(amount, {
             type: coupon.type,
-            discount: coupon.discount
+            discount: coupon.value
         })
 
-        return amount - discount
+        return Math.max(0, amount - discount)
     }, [amount, coupon])
 
     return (
