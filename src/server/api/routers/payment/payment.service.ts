@@ -89,7 +89,7 @@ export const createOrder = async (ctx: ProtectedTRPCContext, input: CreateOrderI
 
     if (coupon) {
       promises.push(
-        Coupon.findByIdAndUpdate(coupon._id, { status: true })
+        Coupon.findByIdAndUpdate(coupon._id, { status: false })
       );
     }
 

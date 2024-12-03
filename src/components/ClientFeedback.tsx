@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 interface TestimonialProps {
   image: string;
@@ -98,21 +98,68 @@ const TestimonialCard = ({ image, feedback, name, designation, rating }: Testimo
   );
 };
 
-const ClientFeedback = () => {
-  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+const ScrollButtons = memo(({ scrollContainerRef }: {
+  scrollContainerRef: React.RefObject<HTMLDivElement>;
+}) => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  const [testimonials, setTestimonials] = useState<TestimonialProps[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  const checkScroll = () => {
+  const checkScroll = useCallback(() => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
       setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
     }
-  };
+  }, [scrollContainerRef]);
+
+  const scroll = useCallback((direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+      setTimeout(checkScroll, 500);
+    }
+  }, [scrollContainerRef, checkScroll]);
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', checkScroll);
+      checkScroll();
+      window.addEventListener('resize', checkScroll);
+      
+      return () => {
+        scrollContainer.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+      };
+    }
+  }, [checkScroll, scrollContainerRef]);
+
+  return (
+    <div className="pt-10 absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2 mb-4 z-20">
+      <ScrollButton 
+        direction="left" 
+        onClick={() => scroll('left')} 
+        disabled={!canScrollLeft}
+      />
+      <ScrollButton 
+        direction="right" 
+        onClick={() => scroll('right')} 
+        disabled={!canScrollRight}
+      />
+    </div>
+  );
+});
+
+ScrollButtons.displayName = 'ScrollButtons';
+
+const ClientFeedback = () => {
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const [testimonials, setTestimonials] = useState<TestimonialProps[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFeedbacks = async () => {
@@ -141,25 +188,6 @@ const ClientFeedback = () => {
 
     fetchFeedbacks();
   }, []);
-
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', checkScroll);
-      checkScroll();
-      return () => scrollContainer.removeEventListener('scroll', checkScroll);
-    }
-  }, []);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 400;
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
 
   if (loading) {
     return (
@@ -190,52 +218,8 @@ const ClientFeedback = () => {
         </div>
         
         <div className="relative flex justify-center">
-          {/* Navigation Buttons */}
-          <div className="pt-10 absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2 mb-4 z-20">
-            <button
-              onClick={() => scroll('left')}
-              disabled={!canScrollLeft}
-              className={`
-                w-10 h-10
-                flex items-center justify-center
-                rounded-full
-                transition-all duration-200
-                ${canScrollLeft 
-                  ? 'bg-[#1a1b2b] text-white hover:bg-[#2a2b3b] cursor-pointer' 
-                  : 'bg-[#1a1b2b]/50 text-gray-600 cursor-not-allowed'}
-                shadow-lg
-              `}
-            >
-              <ScrollButton 
-                direction="left" 
-                onClick={() => scroll('left')} 
-                disabled={!canScrollLeft}
-              />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              disabled={!canScrollRight}
-              className={`
-                w-10 h-10
-                flex items-center justify-center
-                rounded-full
-                transition-all duration-200
-                ${canScrollRight 
-                  ? 'bg-[#1a1b2b] text-white hover:bg-[#2a2b3b] cursor-pointer' 
-                  : 'bg-[#1a1b2b]/50 text-gray-600 cursor-not-allowed'}
-                shadow-lg
-              `}
-            >
-              <ScrollButton 
-                direction="right" 
-                onClick={() => scroll('right')} 
-                disabled={!canScrollRight}
-              />
-            </button>
-          </div> 
-         
-
-          {/* Scrollable container */}
+          <ScrollButtons scrollContainerRef={scrollContainerRef} />
+          
           <div 
             ref={scrollContainerRef}
             className="flex overflow-x-auto gap-6 scroll-smooth hide-scrollbar pb-16"

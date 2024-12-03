@@ -1,6 +1,6 @@
 "use client"
-import ChoosePlanLoggedOut from '@/components/choosePlanLoggedOut';
-import { useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import ChoosePlanLoggedOut from './choosePlanLoggedOut';
 //import { cache } from "react";
 
 
@@ -27,18 +27,16 @@ interface ProgramPlans {
   };
 } 
 
-const ProgramCard = ({ _id, id,title, image, benefits, price, originalPrice, isPremium }: ProgramCardProps) => {
-    
-
+const ProgramCard = ({ _id, id, title, image, benefits, price, originalPrice, isPremium }: ProgramCardProps) => {
   const [choosePlanVisible, setChoosePlanVisible] = useState(false);
   const handleOpenChoosePlan = () => {
     setChoosePlanVisible(true);
   };
 
-  // Function to handle closing the ChoosePlan modal
   const handleCloseChoosePlan = () => {
     setChoosePlanVisible(false);
   };
+
   return (
     <>
       {choosePlanVisible && (
@@ -49,59 +47,51 @@ const ProgramCard = ({ _id, id,title, image, benefits, price, originalPrice, isP
           onClose={() => setChoosePlanVisible(false)}
         />
       )}
-      <div className="rounded-lg bg-gradient-to-br from-[#2E4061] to-[#46256E] p-6 flex flex-col">
-        <div className="relative">
+      <div className="rounded-lg bg-gradient-to-br from-[#2E4061] to-[#46256E] p-6 flex flex-col h-full mb-5 pb-5">
+        {/* Image at the top */}
+        <div className="relative mb-4 flex-start">
           <img 
             src={image} 
             alt={title} 
             className="w-full h-48 object-cover rounded-lg"
           />
-          {/* <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-sm">
-            15% off
-          </span> */}
         </div>
-        
-        <div className="mt-4">
-          <div className="flex items-center gap-2">
-            <h3 className="text-2xl text-white">{title}</h3>
-            {isPremium && (
-              <span className="bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded text-sm">
-                Premium
-              </span>
-            )}
-          </div>
-  
-          <div className="mt-4">
-            <h4 className="text-gray-300 mb-2">Key Benefits</h4>
-            <ul className="space-y-2">
-              {benefits.map((benefit, index) => (
-                <li key={index} className="flex items-center gap-2 text-gray-300">
-                  <img src='/award_star.png' alt='award'></img>
-                  {benefit}
-                </li>
-              ))}
-            </ul>
-          </div>
-  
-          <div className="mt-6 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl text-white">₹{price}</span>
-              {/* <span className="text-gray-400 line-through">₹{originalPrice}</span> */}
-            </div>
-            <button className="p-2 rounded-full bg-gray-700/50">
-              <img src='/add_shopping_cart.png'></img>
-            </button>
-          </div>
-  
-          <button className="w-full mt-4 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" style={{ backgroundColor: '#514ED8' }} onClick={() => handleOpenChoosePlan()}>
-            Buy Now
-          </button>
 
+        {/* Title below the image */}
+        <h3 className="text-2xl text-white mb-2">{title}</h3>                         
+        
+        {/* Benefits section */}
+        <div className="mt-4 flex-grow">
+          <h4 className="text-gray-300 mb-2">Key Benefits</h4>
+          <ul className="space-y-2">
+            {benefits.map((benefit, index) => (
+              <li key={index} className="flex items-center gap-2 text-gray-300">
+                <img src='/award_star.png' alt='award' />
+                {benefit}
+              </li>
+            ))}
+          </ul>
         </div>
+
+        {/* Price section */}
+        <div className="mt-4 mb-4">
+          <span className="text-2xl text-white">₹{price}</span>
+          {/* Uncomment if you want to show the original price */}
+          {/* <span className="text-gray-400 line-through">₹{originalPrice}</span> */}
+        </div>
+
+        {/* Buy Now button at the bottom */}
+        <button 
+          className="w-full mt-auto bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" 
+          style={{ backgroundColor: '#514ED8' }} 
+          onClick={handleOpenChoosePlan}
+        >
+          Buy Now
+        </button>
       </div>
     </>
-    );
-  };
+  );
+};
   
   interface ScrollButtonProps {
     direction: 'left' | 'right';
@@ -112,7 +102,11 @@ const ProgramCard = ({ _id, id,title, image, benefits, price, originalPrice, isP
   const ScrollButton = ({ direction, onClick, disabled }: ScrollButtonProps) => {
     return (
       <button
-        onClick={onClick}
+        type="button"
+        onClick={(e) => {
+          //e.preventDefault();
+          onClick();
+        }}
         disabled={disabled}
         className={`
           w-10 h-10
@@ -162,14 +156,68 @@ const ProgramCard = ({ _id, id,title, image, benefits, price, originalPrice, isP
     );
   };
   
-const WellnessPrograms = async () => {
+// Update the ScrollButtons component to manage its own state
+const ScrollButtons = memo(({ scrollContainerRef }: {
+  scrollContainerRef: React.RefObject<HTMLDivElement>;
+}) => {
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
+  const checkScroll = useCallback(() => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+    }
+  }, [scrollContainerRef]);
+
+  const scroll = useCallback((direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+      setTimeout(checkScroll, 500);
+    }
+  }, [scrollContainerRef, checkScroll]);
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', checkScroll);
+      checkScroll();
+      window.addEventListener('resize', checkScroll);
+      
+      return () => {
+        scrollContainer.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+      };
+    }
+  }, [checkScroll, scrollContainerRef]);
+
+  return (
+    <div className="absolute right-0 bottom-0 flex gap-2 mb-4 mr-4 z-20">
+      <ScrollButton 
+        direction="left" 
+        onClick={() => scroll('left')} 
+        disabled={!canScrollLeft}
+      />
+      <ScrollButton 
+        direction="right" 
+        onClick={() => scroll('right')} 
+        disabled={!canScrollRight}
+      />
+    </div>
+  );
+});
+
+ScrollButtons.displayName = 'ScrollButtons';
+
+const WellnessPrograms = async () => {
   const [programPlans, setProgramPlans] = useState<ProgramPlans[]>([]);
   const [loading, setLoading] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -193,38 +241,6 @@ const WellnessPrograms = async () => {
 
     fetchPlans();
   }, []);
-
-  // Check scroll possibilities
-  const checkScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10); // 10px threshold
-    }
-  };
-
-  // Add scroll event listener
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', checkScroll);
-      // Initial check
-      checkScroll();
-      
-      return () => scrollContainer.removeEventListener('scroll', checkScroll);
-    }
-  }, []);
-
-  // Scroll handlers
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 400; // Adjust this value to control scroll distance
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
 
   if (loading) return (
     <div className="py-12 flex justify-center items-center">
@@ -251,19 +267,8 @@ const WellnessPrograms = async () => {
         </p>
         
         <div className="relative">
-          <div className="absolute right-0 bottom-0 flex gap-2 mb-4 mr-4 z-20">
-            <ScrollButton 
-              direction="left" 
-              onClick={() => scroll('left')} 
-              disabled={!canScrollLeft}
-            />
-            <ScrollButton 
-              direction="right" 
-              onClick={() => scroll('right')} 
-              disabled={!canScrollRight}
-            />
-          </div>
-
+          <ScrollButtons scrollContainerRef={scrollContainerRef} />
+          
           <div 
             ref={scrollContainerRef}
             className="flex overflow-x-auto gap-6 scroll-smooth hide-scrollbar pb-14"
@@ -274,15 +279,15 @@ const WellnessPrograms = async () => {
             }}
           >
             {programPlans?.map((program) => (
-              <div key={program._id} className="flex-none w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+              <div key={program._id} className="flex-none w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-grow">
                 <ProgramCard 
                   _id={program.plans._id}
                   id={program._id}
                   title={program.plans.name || 'Unnamed Program'}
                   image={program.plans.image || '/placeholder-image.jpg'}
-                  benefits={typeof program.plans.description === 'string' ? [program.plans.description] : program.plans.description || ['No benefits listed']}
-                  price={(program.plans.amount/100)?.toString() || '0'}
-                  originalPrice={(program.plans.amount ? (program.plans.amount/100 * 1.15).toFixed(0) : '0')}
+                  benefits={program.plans.features || ['No benefits listed']}
+                  price={(program.plans.amount / 100)?.toString() || '0'}
+                  originalPrice={(program.plans.amount ? (program.plans.amount / 100 * 1.15).toFixed(0) : '0')}
                   isPremium={false}
                 />
               </div>
