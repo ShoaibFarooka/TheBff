@@ -59,7 +59,7 @@ const BookSessionSlot = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const [isScheduled, setIsScheduled] = useState(false);
-  const [currentUser, setCurrentUser] = useState({ _id: "" })
+  const [currentUser, setCurrentUser] = useState({ _id: "", email: "" })
   const [userSubscriptions, setUserSubscriptions] = useState<Subscription[]>([]);
   const [selectedSubscription, setSelectedSubcription] = useState([]);
   const [daysCount, setDaysCount] = useState<number>(0);
@@ -257,76 +257,112 @@ const BookSessionSlot = () => {
     return difference >= 0 ? difference : 7 + difference;
   };
 
-  const handleSubmit = async() => {
-    if(!isScheduled){
+  const handleSubmit = async () => {
+    if (!isScheduled) {
       if (!selectedDate || !selectedSubscription || !selectedTimeSlot || !selectedDays) {
         message.error("Required Field Missing");
         return;
       }
-
-      if(selectedDays.length < daysCount) {
-        message.error(`You Need to Seleect ${daysCount} days`);
+  
+      if (selectedDays.length < daysCount) {
+        message.error(`You Need to Select ${daysCount} days`);
         return;
       }
-      
+  
       const startDate = new Date(selectedDate);
-
-      // Then call your function
-      const endDate = caclulateEndDate({ 
-        startDate, 
-        period: isValidPeriod(plan?.period) ? plan.period : 'daily', // Provide a default period if needed
-        interval: plan?.interval || 1     // Provide a default interval if needed
+  
+      // Calculate end date
+      const endDate = caclulateEndDate({
+        startDate,
+        period: isValidPeriod(plan?.period) ? plan.period : "daily", // Provide a default period if needed
+        interval: plan?.interval || 1, // Provide a default interval if needed
       });
-      const endDateFormatted = dayjs(endDate).format("YYYY-MM-DD")
-
+      const endDateFormatted = dayjs(endDate).format("YYYY-MM-DD");
+  
       const totalSessions = daysCount * 4 * (plan?.interval || 1);
-
+  
       // Create the array of session objects
-      let tempStartDate = dayjs(startDate)
+      let tempStartDate = dayjs(startDate);
       const sessions = Array.from({ length: totalSessions }, (_, index) => {
-
         if (index !== 0 && index % selectedDays.length === 0) {
           tempStartDate = dayjs(tempStartDate).add(7, "day");
-        } 
-
+        }
+  
         const cycleIndex = index % selectedDays.length;
-
-        const daysAdjustments = daysDifference(startDate, selectedDays[cycleIndex]); // Calculate the days to add  
-        const adjustedDate = tempStartDate.add(daysAdjustments, "day").format("DD-MM-YYYY");
-
+  
+        const daysAdjustments = daysDifference(startDate, selectedDays[cycleIndex]); // Calculate the days to add
+        const adjustedDate = tempStartDate.add(daysAdjustments, "day").toDate(); // Use Date object here for API compatibility
+  
         return {
           sessionNumber: index + 1,
           day: selectedDays[index % selectedDays.length], // Distributes days cyclically if needed
           date: adjustedDate,
-          status: 'pending',
+          status: "pending",
           can_be_completed: index === 0, // true only for sessionNumber 1 (index 0)
           timeSlot: selectedTimeSlot,
         };
-      });      
-      
-      // Add the sessions array to the object
-      const obj = {
-        subscriptionId: selectedSubscription,
-        startDate: selectedDate,
-        endDate: endDateFormatted,
-        planId: plan?._id,
-        userId: currentUser?._id,
-        trainerAssigned: false,
-        timeSlot: selectedTimeSlot,
-        days: selectedDays,
-        sessions, // Add the sessions array here
-      };
-      
-      const res = await createSession(obj);
-      setIsScheduled(true)
-      return
+      });
+  
+      try {
+        // Call the API to generate event IDs and Meet links for the sessions
+        const eventIdResponse = await fetch("/api/meet/generate-events", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            numberOfSessions: totalSessions,
+            sessions: sessions,
+            userEmail: currentUser?.email,
+            trainerEmail: "trainer@example.com", // Replace with the actual trainer email
+            isOnline: selectedBookedSlot?.planId?.name?.toLowerCase().includes("online"),
+          }),
+        });
+  
+        const { success, data: events, message: apiMessage } = await eventIdResponse.json();
+  
+        if (!success || !events || events.length !== totalSessions) {
+          throw new Error(apiMessage || "Failed to generate event IDs and Meet links");
+        }
+  
+        // Merge event IDs and Meet links into sessions
+        const updatedSessions = sessions.map((session, index) => ({
+          ...session,
+          eventId: events[index]?.eventId, // Always assign eventId
+          ...(selectedBookedSlot?.planId?.name?.toLowerCase().includes("online") && { meetLink: events[index]?.meetLink || null }), // Append meetLink only if isOnline is true
+        }));        
+  
+        // Prepare the object for session creation
+        const obj = {
+          subscriptionId: selectedSubscription,
+          startDate: selectedDate,
+          endDate: endDateFormatted,
+          planId: plan?._id,
+          userId: currentUser?._id,
+          trainerAssigned: false,
+          timeSlot: selectedTimeSlot,
+          days: selectedDays,
+          sessions: updatedSessions, // Include sessions with event IDs and Meet links here
+        };
+  
+        console.log(updatedSessions);
+  
+        // Call the API to save the sessions (uncomment if the API exists)
+        const res = await createSession(obj);
+        setIsScheduled(true);
+      } catch (error: any) {
+        message.error(error.message || "An error occurred while scheduling sessions.");
+      }
     }
-
-    setSelectedDate(null)
-    setSelectedTimeSlot("")
-    setIsScheduled(false)
+  
+    // Reset form state
+    setSelectedDate(null);
+    setSelectedTimeSlot("");
+    setIsScheduled(false);
     setIsModalOpen(false);
   };
+  
+  
   
   const getUpcommingSession = (slot: Session) => {
     const currentDate = new Date();
@@ -443,8 +479,6 @@ const BookSessionSlot = () => {
         currentSessionNumber: getUpcommingSession(selectedBookedSlot as Session)?.sessionNumber
       };
 
-      console.log(requestBody)
-  
       // API Call
       const res = await fetch(`/api/sessions/cancel-session`, {
         method: "POST",
@@ -515,8 +549,6 @@ const BookSessionSlot = () => {
       toast.error("Something went wrong. Please try again.");
     }
   };
-
-  console.log("bookedSlots : ", bookedSlots)
 
   return (
     <>
