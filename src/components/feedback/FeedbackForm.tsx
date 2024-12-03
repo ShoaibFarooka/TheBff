@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Select, Input, Button, Spin } from "antd";
 import toast, { Toaster } from "react-hot-toast";
-import ResetPassword from "../ResetPasswordModal";
-import InputGroup from "../auth/InputGroup";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -13,6 +11,7 @@ export const Form = () => {
   const [completedSessions, setCompletedSessions] = useState([]);
   const [selectedSession, setSelectedSession] = useState<string | undefined>();
   const [feedback, setFeedback] = useState("");
+  const [rating, setRating] = useState<number | undefined>();
 
   useEffect(() => {
     fetchCompletedSessions();
@@ -49,6 +48,11 @@ export const Form = () => {
       return;
     }
 
+    if (!rating) {
+      toast.error("Please select a rating.");
+      return;
+    }
+
     if (!feedback.trim()) {
       toast.error("Please provide your feedback.");
       return;
@@ -56,12 +60,12 @@ export const Form = () => {
 
     try {
       setLoading(true);
-      const response = await fetch("/api/feedback", {
+      const response = await fetch("/api/feedbacks/session-feedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ sessionId: selectedSession, feedback }),
+        body: JSON.stringify({ session: selectedSession, feedback, stars: rating }),
       });
 
       if (!response.ok) {
@@ -71,6 +75,7 @@ export const Form = () => {
       toast.success("Feedback submitted successfully!");
       setFeedback(""); // Clear the feedback field
       setSelectedSession(undefined); // Reset the selected session
+      setRating(undefined); // Reset the rating
     } catch (err: any) {
       toast.error(err.message || "Failed to submit feedback");
     } finally {
@@ -98,7 +103,21 @@ export const Form = () => {
             >
               {completedSessions.map((session: any) => (
                 <Option key={session._id} value={session._id}>
-                  {session?.subscriptionId?.programId} 
+                  {session?.subscriptionId?.programId}
+                </Option>
+              ))}
+            </Select>
+
+            <Select
+              value={rating}
+              onChange={(value) => setRating(value)}
+              placeholder="Rate your session (1-5)"
+              className="w-full"
+              allowClear
+            >
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Option key={star} value={star}>
+                  {star} Star{star > 1 && "s"}
                 </Option>
               ))}
             </Select>
