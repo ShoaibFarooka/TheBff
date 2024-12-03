@@ -145,7 +145,7 @@ function Header(props?: any) {
           {completedSessions.length > 0 ? 
             <Link href="/feedback">
               <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
-                {!(currentUser?.role === 4 || currentUser?.role === 1) && "Feedback"}
+                {(currentUser?.role === 3) && "Feedback"}
               </li>
             </Link>
             : <></>}
