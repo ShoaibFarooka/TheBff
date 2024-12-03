@@ -1,5 +1,5 @@
 import { CartItem, Cart as CartType } from "@/types/cart";
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, models } from "mongoose";
 
 export type CartItemDocument = CartItem & Document;
 export const itemSchema = new Schema<CartItemDocument>({
@@ -51,6 +51,6 @@ export const cartSchema = new Schema<CartDocument, CartModel>({
 //     justOne: true
 // });
 
-const Cart: CartModel = mongoose.models.Cart || mongoose.model<CartDocument, CartModel>("Cart", cartSchema)
+const Cart: CartModel = (mongoose.models.Cart as CartModel) || mongoose.model<CartDocument, CartModel>("Cart", cartSchema)
 
 export default Cart;

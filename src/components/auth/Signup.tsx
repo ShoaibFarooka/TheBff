@@ -3,6 +3,7 @@ import authImage from "@/assets/Rectangle 77.png";
 import { isEmail } from "@/lib";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -31,6 +32,7 @@ type MyFormData = {
 
 const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const router = useRouter()
+    const searchParams = useSearchParams()
     const [isLoading, setLoading] = useState(false)
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,7 +81,9 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     data.message ?? "You have been signed up successfully. Redirecting..."
                 );
                 onSuccess?.();
-                router.push("/onboarding");
+                
+                const callbackUrl = searchParams?.get("callbackUrl");
+                router.push(callbackUrl || "/onboarding");
             } else {
                 const data = await res.json();
                 const { emailVerified, phoneVerified } = data;

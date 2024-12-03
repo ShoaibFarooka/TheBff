@@ -17,6 +17,11 @@
       scrollbar-width: none;
       /* Firefox */
     }
+    .gradient-text {
+      background: linear-gradient(to right, #D15CD5, #4D4AF1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
   }
 }
 

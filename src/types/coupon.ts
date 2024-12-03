@@ -7,12 +7,12 @@ The discount can be of two types:
 2. Flat discount - discount is a fixed amount
 */
 
+export type CouponTypeEnum = 'percentage' | 'fixed';
+
 export type Coupon = {
     _id: string | ObjectId;
     code: string;
-    description?: string;
-    discount: number;
-    type: 'percentage' | 'flat';
-    expiryDate: Date;
-    active: boolean;
+    type: CouponTypeEnum; 
+    value: number;
+    status: boolean;
 }
