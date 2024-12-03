@@ -79,6 +79,7 @@ function Header(props?: any) {
   const setAuthUser = async() => {
     const res = await getAuthUser()
     setCurrentUser(res?.user)
+    fetchCompletedSessions(res?.user?._id);
   }
   useEffect(() => {
     setAuthUser();
@@ -92,13 +93,9 @@ function Header(props?: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, authenticate]);
 
-  useEffect(() => {
-    fetchCompletedSessions();
-  }, [])
-
-  const fetchCompletedSessions = async () => {
+  const fetchCompletedSessions = async (id: any) => {
     try {
-      const response = await fetch("/api/sessions/completed-sessions", {
+      const response = await fetch(`/api/sessions/completed-sessions?userId=${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
