@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Select, Input, Button, Spin } from "antd";
 import toast, { Toaster } from "react-hot-toast";
+import { User } from "@/types/user";
+import { getAuthUser } from "@/lib/auth";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -12,15 +14,21 @@ export const Form = () => {
   const [selectedSession, setSelectedSession] = useState<string | undefined>();
   const [feedback, setFeedback] = useState("");
   const [rating, setRating] = useState<number | undefined>();
+  const [currentUser, setCurrentUser] = useState<User>()
 
+  const setAuthUser = async() => {
+    const res = await getAuthUser()
+    setCurrentUser(res?.user)
+    fetchCompletedSessions(res?.user?._id);
+  }
   useEffect(() => {
-    fetchCompletedSessions();
-  }, []);
+    setAuthUser();
+  }, [])
 
-  const fetchCompletedSessions = async () => {
+  const fetchCompletedSessions = async (id: any) => {
     try {
       setLoading(true);
-      const response = await fetch("/api/sessions/completed-sessions", {
+      const response = await fetch(`/api/sessions/completed-sessions?userId=${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

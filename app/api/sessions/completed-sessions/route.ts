@@ -4,9 +4,19 @@ import { Subscription } from "@/models";
 
 export const GET = async (req: NextRequest) => {
   try {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId");
+
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, message: "Missing userId query parameter" },
+        { status: 400 }
+      );
+    }
     // Fetch sessions with `status` set to "completed" and populate `subscriptionId`
     const completedSessions = await Session.find({
       "sessions.status": "completed",
+      userId: userId
     })
       .populate("subscriptionId") // Replace with the correct reference if it's different
       .populate({

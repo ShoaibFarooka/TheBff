@@ -79,6 +79,7 @@ function Header(props?: any) {
   const setAuthUser = async() => {
     const res = await getAuthUser()
     setCurrentUser(res?.user)
+    fetchCompletedSessions(res?.user?._id);
   }
   useEffect(() => {
     setAuthUser();
@@ -92,13 +93,9 @@ function Header(props?: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, authenticate]);
 
-  useEffect(() => {
-    fetchCompletedSessions();
-  }, [])
-
-  const fetchCompletedSessions = async () => {
+  const fetchCompletedSessions = async (id: any) => {
     try {
-      const response = await fetch("/api/sessions/completed-sessions", {
+      const response = await fetch(`/api/sessions/completed-sessions?userId=${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -148,7 +145,7 @@ function Header(props?: any) {
           {completedSessions.length > 0 ? 
             <Link href="/feedback">
               <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
-                {!(currentUser?.role === 4 || currentUser?.role === 1) && "Feedback"}
+                {(currentUser?.role === 3) && "Feedback"}
               </li>
             </Link>
             : <></>}
