@@ -79,7 +79,9 @@ function Header(props?: any) {
   const setAuthUser = async() => {
     const res = await getAuthUser()
     setCurrentUser(res?.user)
-    fetchCompletedSessions(res?.user?._id);
+    if(res?.success){
+      res?.user?.role === 3 && fetchCompletedSessions(res?.user?._id);
+    }
   }
   useEffect(() => {
     setAuthUser();
