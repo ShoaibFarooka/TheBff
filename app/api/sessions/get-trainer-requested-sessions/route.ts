@@ -34,6 +34,8 @@ export const GET = async (req: NextRequest) => {
       console.error("Invalid or missing currentAddress.");
     }
 
+    const trainerPreferredPincodes = trainer?.preferredPinCodes
+
     if (!trainerAddressPincode) {
       return NextResponse.json(
         { success: false, message: "Trainer address is missing" },
@@ -73,7 +75,9 @@ export const GET = async (req: NextRequest) => {
       // New condition: Check if trainerId is not in ignoredBy (if it exists)
       const isIgnoredByTrainer = Array.isArray(session.ignoredBy) && session.ignoredBy.includes(trainerId);
 
-      if (sessionPincode !== trainerAddressPincode || isTrainerAssigned === true || isIgnoredByTrainer) {
+      if ((!trainerPreferredPincodes && sessionPincode !== trainerAddressPincode) || 
+      (trainerPreferredPincodes && sessionPincode !== trainerAddressPincode && !trainerPreferredPincodes.includes(sessionPincode))
+       || isTrainerAssigned === true || isIgnoredByTrainer) {
         return false;
       }
 

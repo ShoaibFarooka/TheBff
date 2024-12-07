@@ -17,6 +17,7 @@ type TrainerDoc = Document & {
     certificationFileUrls: [string];
     profilePhotoFileUrl: string;
     verificationFileUrl?: string;
+    preferredPinCodes?: [string];
 };
 
 type TrainerModel = Model<TrainerDoc>;
@@ -134,6 +135,7 @@ const trainerSchema = new Schema<TrainerDoc, TrainerModel>(
             type: String,
             required: false,
         },
+        preferredPinCodes: [String],
     },
     {
         timestamps: true,

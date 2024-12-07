@@ -5,6 +5,7 @@ import dayjs from "dayjs"; // Ensure you have dayjs installed
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
 import Trainer from "@/models/trainer"; // Import the Trainer model if available
+import { Plan } from "@/models";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -130,6 +131,10 @@ export const POST = async (req: NextRequest) => {
     // Save the updated session document
     await session.save();
 
+    const plan = await Plan.findById(session?.planId).select(
+      "name programId"
+    ); 
+
     // Respond with a success message and the updated sessions array
     return NextResponse.json({
       success: true,
@@ -137,6 +142,7 @@ export const POST = async (req: NextRequest) => {
       data: session.sessions,
       session: session,
       trainerDetails: trainer, // Include trainer details in the response
+      plan
     });
   } catch (error: any) {
     console.error("Error in addSession API:", error);

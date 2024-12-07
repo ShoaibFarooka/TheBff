@@ -84,6 +84,10 @@ const UserSessionModal = (props : any) => {
       title: "Date",
       dataIndex: "date",
       key: "date",
+      render: (item: string) => {
+        console.log(item)
+        return dayjs(item).format("DD-MM-YYYY");
+      }
     },
     {
       title: "Time Slot",
@@ -223,11 +227,9 @@ const UserSessionModal = (props : any) => {
       const dayDifference = (nextDayIndexInWeek - currentDayIndexInWeek + days.length) % days.length;
   
       dayjs.extend(customParseFormat);
-      const parsedDate = dayjs(lastSession.date, "DD-MM-YYYY");
   
-      const nextSessionDate = dayjs(parsedDate)
+      const nextSessionDate = dayjs(lastSession.date)
         .add(dayDifference, "day")
-        .format("DD-MM-YYYY");
   
       // Prepare the request payload
       const requestBody = {
@@ -239,8 +241,6 @@ const UserSessionModal = (props : any) => {
         date: nextSessionDate,
         currentSessionNumber: record?.sessionNumber
       };
-
-      console.log(requestBody)
   
       // API Call
       const res = await fetch(`/api/sessions/cancel-session`, {
