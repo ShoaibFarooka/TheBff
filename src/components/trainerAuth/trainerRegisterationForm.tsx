@@ -25,6 +25,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const pathname = usePathname();
     const [isTimeSlotOpen, setIsTimeSlotOpen] = useState(false);
     const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
+		const [pinCodes, setPinCodes] = useState<string>();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     // States for each file upload
@@ -254,7 +255,9 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         // Add the selected time slots as a JSON string
         formData.append("availableTimeSlots", JSON.stringify(selectedTimeSlots));
         formData.append("isRegisterTrainer", "true");
-
+				const preferredPinCodes = pinCodes?.split(",").map((code: any) => code.trim())
+				formData.append("preferredPinCodes", JSON.stringify(preferredPinCodes)); 
+				
         try {
             const res = await fetch("/api/auth/register-trainer", {
                 method: "POST",
@@ -457,7 +460,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                                 </div>
                             )}
                         </div>
-                    </div>
+                    </div> 
 
                     {/*/!* Current Location *!/*/}
                     {/*<div className="flex flex-col w-full">*/}
@@ -482,6 +485,18 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                                 Selected slots: {selectedTimeSlots.map(getDisplayTimeSlot).join(", ")}
                             </div>
                         )}
+                    </div>
+										<div className="flex flex-col w-full">
+                        <label className="text-white text-lg mb-2">Preferred Pin Codes</label>
+                        <input
+													type="text"
+													id="preferredPinCodes"
+													name="preferredPinCodes"
+													className="p-2 rounded-md bg-gray-700 text-white"
+													placeholder="0000, 1111"
+													onChange={(event) => setPinCodes(event.target.value || "")}
+													required
+												/>
                     </div>
 
                     {isTimeSlotOpen && (

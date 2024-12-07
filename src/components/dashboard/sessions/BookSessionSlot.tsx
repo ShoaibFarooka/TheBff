@@ -8,6 +8,7 @@ import { getAuthUser } from '@/lib/auth';
 import subscriptions from 'razorpay/dist/types/subscriptions';
 
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import UserSessionModal from '@/components/TrainerDashboard/TrainerDashboardComponents/UserSessionsModal';
 
 dayjs.extend(customParseFormat);
 
@@ -69,6 +70,8 @@ const BookSessionSlot = () => {
   const [selectedBookedSlot, setSelectedBookedSlot] = useState<Session>();
   const [rescheduleModal, setRescheduleModal] = useState<boolean>();
   const [rescheduleTime, setRescheduleTime] = useState<string>("");
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+  const [userSessionModal, setUserSessionModal] = useState(false);
 
   const getUserSubscriptions = async ({ id }: { id: string }) => {
     try {
@@ -233,6 +236,8 @@ const BookSessionSlot = () => {
         },
         body: JSON.stringify(obj), 
       });
+      const data = await res.json();
+      return data;
     } catch (error) {
       console.error("Error Creating Session:", error);
     }
@@ -258,6 +263,7 @@ const BookSessionSlot = () => {
   };
 
   const handleSubmit = async () => {
+    setSubmitLoading(true)
     if (!isScheduled) {
       if (!selectedDate || !selectedSubscription || !selectedTimeSlot || !selectedDays) {
         message.error("Required Field Missing");
@@ -348,8 +354,12 @@ const BookSessionSlot = () => {
         console.log(updatedSessions);
   
         // Call the API to save the sessions (uncomment if the API exists)
-        const res = await createSession(obj);
+        const data = await createSession(obj);
+        if(data?.success){
+          toast.success("Your Session has been booked !");
+        }
         setIsScheduled(true);
+        setSubmitLoading(false)
       } catch (error: any) {
         message.error(error.message || "An error occurred while scheduling sessions.");
       }
@@ -369,15 +379,14 @@ const BookSessionSlot = () => {
   
     // Filter sessions to find those that are in the future
     const futureSessions = slot.sessions.filter((session: any) => {
-      const sessionDate = dayjs(session.date, "DD-MM-YYYY").toDate(); // Parse session date
+      const sessionDate = dayjs(session.date).toDate(); // Parse session date directly
       return sessionDate > currentDate && session.status.toLowerCase() === "pending";
     });
   
     // Sort the future sessions by date in ascending order
     const sortedFutureSessions = futureSessions.sort(
       (a: any, b: any) =>
-        dayjs(a.date, "DD-MM-YYYY").toDate().getTime() -
-        dayjs(b.date, "DD-MM-YYYY").toDate().getTime()
+        dayjs(a.date).toDate().getTime() - dayjs(b.date).toDate().getTime()
     );
   
     // Return null if no sessions are found
@@ -385,23 +394,22 @@ const BookSessionSlot = () => {
   
     // Get the first session (upcoming session)
     const nextSession = sortedFutureSessions[0];
-
+  
     return nextSession;
-  }
+  };  
   const getUpcommingSessionDate = (slot: Session) => {
     const currentDate = new Date();
   
     // Filter sessions to find those that are in the future and not cancelled
     const futureSessions = slot?.sessions?.filter((session: any) => {
-      const sessionDate = dayjs(session.date, "DD-MM-YYYY").toDate(); // Parse session date
+      const sessionDate = dayjs(session.date).toDate(); // Parse session date directly
       return sessionDate > currentDate && session.status.toLowerCase() === "pending";
     });
   
     // Sort the future sessions by date in ascending order
     const sortedFutureSessions = futureSessions.sort(
       (a: any, b: any) =>
-        dayjs(a.date, "DD-MM-YYYY").toDate().getTime() -
-        dayjs(b.date, "DD-MM-YYYY").toDate().getTime()
+        dayjs(a.date).toDate().getTime() - dayjs(b.date).toDate().getTime()
     );
   
     // Return null if no sessions are found
@@ -409,7 +417,7 @@ const BookSessionSlot = () => {
   
     // Get the first session (upcoming session)
     const nextSession = sortedFutureSessions[0];
-    const sessionDate = dayjs(nextSession.date, "DD-MM-YYYY").toDate();
+    const sessionDate = dayjs(nextSession.date).toDate();
   
     // Format the date as "Mon, Oct 12th"
     const formattedDate = new Intl.DateTimeFormat("en-US", {
@@ -427,7 +435,7 @@ const BookSessionSlot = () => {
   
     // Combine the formatted date and time
     return `${formattedDate.replace(/\d+/, dayWithOrdinal)} on ${time}`;
-  };
+  };  
   
   const cancelSession = async () => {
     try {
@@ -491,11 +499,12 @@ const BookSessionSlot = () => {
       const data = await res.json();
   
       if (res.status === 200 && data.success) {
-        toast.success("Session Rescheduled!");
+        toast.success("Session Cancelled!");
         if (data?.session) {
           const updatedSlot = { ...data?.session };
 
           updatedSlot.trainerId = data?.trainerDetails;
+          updatedSlot.planId = data?.plan
 
           setSelectedBookedSlot(updatedSlot);
         }
@@ -536,6 +545,7 @@ const BookSessionSlot = () => {
           const updatedSlot = { ...data?.session };
 
           updatedSlot.trainerId = data?.trainerDetails;
+          updatedSlot.planId = data?.plan;
 
           setSelectedBookedSlot(updatedSlot);
         }
@@ -563,6 +573,13 @@ const BookSessionSlot = () => {
         </div>
       ) : (
         <>
+          <UserSessionModal
+            userSessionModal={userSessionModal} 
+            setUserSessionModal={setUserSessionModal}
+            trainerId={selectedBookedSlot?.trainerId?._id || ""}
+            userId={currentUser?._id || ""}
+            subscriptionId={selectedBookedSlot?.subscriptionId}
+          />
           <Modal
             open={rescheduleModal}
             title={
@@ -600,21 +617,30 @@ const BookSessionSlot = () => {
           </Modal>
           <Flex style={{justifyContent: "space-between", marginBottom: "10px"}}>
             <span className="text-2xl font-bold">{"Scheduled Session"}</span>
-            <Select
-              placeholder="Select Booked Session"
-              style={{ width: '40%' }}
-              value={selectedBookedSlot?._id}
-              onChange={(value) => {
-                const selectedSlot = bookedSlots.find((slot) => slot._id === value) || ({} as Session);
-                setSelectedBookedSlot(selectedSlot);
-              }}                
-            >
-              {bookedSlots.map((slot : any, index) => (
-                <Option key={index} value={slot._id}>
-                  {slot.planId.programId}
-                </Option>
-              ))}
-            </Select>
+            <Flex style={{justifyContent: "space-between", width: "50%"}} gap={8}>
+              <Select
+                className='w-3/5 '
+                placeholder="Select Booked Session"
+                style={{ height: "38px" }}
+                value={selectedBookedSlot?._id}
+                onChange={(value) => {
+                  const selectedSlot = bookedSlots.find((slot) => slot._id === value) || ({} as Session);
+                  setSelectedBookedSlot(selectedSlot);
+                }}                
+              >
+                {bookedSlots.map((slot : any, index) => (
+                  <Option key={index} value={slot._id}>
+                    {slot.planId.programId}
+                  </Option>
+                ))}
+              </Select>
+              <Button
+                className="text-white w-2/5 rounded-lg border border-white bg-transparent hover:bg-white hover:text-[#514ED8]"
+                onClick={() => setUserSessionModal(true)}
+              >
+                Show Sessions
+            </Button>
+            </Flex>
           </Flex>
           {selectedBookedSlot?.trainerAssigned ? 
             <Flex gap={4} vertical>
@@ -677,6 +703,7 @@ const BookSessionSlot = () => {
 
       <Modal
         open={isModalOpen}
+        confirmLoading={submitLoading}
         title={
           !isScheduled ? (
             <h3 style={{ background: 'linear-gradient(288.21deg, #2E4061 0%, #46256E 100%)', color: 'white' }}>

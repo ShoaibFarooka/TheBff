@@ -69,8 +69,13 @@ export const POST = async (req: NextRequest) => {
       session.set("trainerDetails", trainer); // Add trainer details to the session
     }
 
+    const plan = await Plan.findById(session?.planId).select(
+      "name programId"
+    ); 
+
+
     // Respond with a success message
-    return NextResponse.json({ success: true, message: "Session rescheduled successfully!", data: session?.sessions, session: session, trainerDetails: trainer });
+    return NextResponse.json({ success: true, message: "Session rescheduled successfully!", data: session?.sessions, session: session, trainerDetails: trainer, plan });
 
   } catch (error: any) {
     return NextResponse.json(
