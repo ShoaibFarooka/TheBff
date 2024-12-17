@@ -60,16 +60,17 @@ jobs:
           fi
         working-directory: ${{ working_dir }}
 
-      - name: Cache server dependencies
+      - name: Cache server dependencies and Next.js build cache
         uses: actions/cache@v4
         with:
           path: |
             ${{ working_dir }}/node_modules
             /root/.pnpm-store
-          key: ${{ runner.os }}-node-server-${{ hashFiles('${{ working_dir }}/pnpm-lock.yaml') }}
+            ${{ working_dir }}/.next/cache
+          key: ${{ runner.os }}-pnpm-nextjs-${{ hashFiles('${{ working_dir }}/pnpm-lock.yaml') }}-${{ hashFiles('${{ working_dir }}/**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
           restore-keys: |
-            ${{ runner.os }}-node-server-
-
+            ${{ runner.os }}-pnpm-nextjs-${{ hashFiles('${{ working_dir }}/pnpm-lock.yaml') }}-
+            
       - name: Install server dependencies
         run: pnpm install --frozen-lockfile
         working-directory: ${{ working_dir }}
