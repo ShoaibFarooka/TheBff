@@ -1,23 +1,83 @@
-name: Deploy to Vercel
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - '**'
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
 
 jobs:
-  deploy:
-    if: github.repository == 'thebff/thebff'
+  test:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run tests
+        run: |
+          echo "Running tests..."
+          # Add your actual test command here, e.g., pnpm test
+
+  deploy:
+    if: github.event_name == 'push'
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [20]
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
+          node-version: ${{ matrix.node-version }}
+
+      - name: Pull latest code for production or staging
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Deploying to production"
+            git pull origin main
+            working_dir="/var/www/thebff-main"
+            pm2_server="thebff-production"
+          else
+            echo "Deploying to staging"
+            git pull origin dev
+            working_dir="/var/www/thebff-dev"
+            pm2_server="thebff-staging"
+          fi
+        working-directory: ${{ working_dir }}
+
+      - name: Cache server dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ working_dir }}/node_modules
+            /root/.pnpm-store
+          key: ${{ runner.os }}-node-server-${{ hashFiles('${{ working_dir }}/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node-server-
+
+      - name: Install server dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: ${{ working_dir }}
+
+      - name: Build application
+        run: pnpm build
+        working-directory: ${{ working_dir }}
+
+      - name: Restart server
+        run: pm2 restart "${{ pm2_server }}"
+        working-directory: ${{ working_dir }}
