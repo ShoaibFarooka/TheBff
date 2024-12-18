@@ -14,6 +14,11 @@ jobs:
   test:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,11 +26,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ matrix.node-version }}
 
       - name: Run tests
         run: |
-          echo "Running tests..."
+          echo "Running tests on Node.js ${{ matrix.node-version }}..."
           # Add your actual test command here, e.g., pnpm test
 
   deploy:
@@ -46,39 +51,39 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Pull latest code for production or staging
+        id: deploy_code
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "Deploying to production"
             git pull origin main
-            working_dir="/var/www/thebff-main"
-            pm2_server="thebff-production"
+            echo "working_dir=/var/www/thebff-main" >> $GITHUB_ENV
+            echo "pm2_server=thebff-production" >> $GITHUB_ENV
           else
             echo "Deploying to staging"
             git pull origin dev
-            working_dir="/var/www/thebff-dev"
-            pm2_server="thebff-staging"
+            echo "working_dir=/var/www/thebff-dev" >> $GITHUB_ENV
+            echo "pm2_server=thebff-staging" >> $GITHUB_ENV
           fi
-        working-directory: ${{ working_dir }}
 
       - name: Cache server dependencies and Next.js build cache
         uses: actions/cache@v4
         with:
           path: |
-            ${{ working_dir }}/node_modules
+            ${{ env.working_dir }}/node_modules
             /root/.pnpm-store
-            ${{ working_dir }}/.next/cache
-          key: ${{ runner.os }}-pnpm-nextjs-${{ hashFiles('${{ working_dir }}/pnpm-lock.yaml') }}-${{ hashFiles('${{ working_dir }}/**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+            ${{ env.working_dir }}/.next/cache
+          key: ${{ runner.os }}-pnpm-nextjs-${{ hashFiles('${{ env.working_dir }}/pnpm-lock.yaml') }}-${{ hashFiles('${{ env.working_dir }}/**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-nextjs-${{ hashFiles('${{ working_dir }}/pnpm-lock.yaml') }}-
-            
+            ${{ runner.os }}-pnpm-nextjs-${{ hashFiles('${{ env.working_dir }}/pnpm-lock.yaml') }}-
+
       - name: Install server dependencies
         run: pnpm install --frozen-lockfile
-        working-directory: ${{ working_dir }}
+        working-directory: ${{ env.working_dir }}
 
       - name: Build application
         run: pnpm build
-        working-directory: ${{ working_dir }}
+        working-directory: ${{ env.working_dir }}
 
       - name: Restart server
-        run: pm2 restart "${{ pm2_server }}"
-        working-directory: ${{ working_dir }}
+        run: pm2 restart "${{ env.pm2_server }}"
+        working-directory: ${{ env.working_dir }}
