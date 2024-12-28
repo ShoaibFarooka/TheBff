@@ -25,6 +25,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
     const pathname = usePathname();
     const [isTimeSlotOpen, setIsTimeSlotOpen] = useState(false);
     const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
+    const [pinCodes, setPinCodes] = useState<string>();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     // States for each file upload
@@ -254,6 +255,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
         // Add the selected time slots as a JSON string
         formData.append("availableTimeSlots", JSON.stringify(selectedTimeSlots));
         formData.append("isRegisterTrainer", "true");
+        const preferredPinCodes = pinCodes?.split(",").map((code: any) => code.trim())
+        formData.append("preferredPinCodes", JSON.stringify(preferredPinCodes));
 
         try {
             const res = await fetch("/api/auth/register-trainer", {
@@ -312,22 +315,20 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     <div className="max-w-max my-3 mx-auto bg-white rounded-full flex p-1">
                         <Link href="/trainer/login">
                             <button
-                                className={`px-8 py-2 rounded-full ${
-                                    pathname === '/trainer/login' 
-                                    ? 'bg-blue-500 text-white' 
-                                    : 'bg-transparent text-black'
-                                }`}
+                                className={`px-8 py-2 rounded-full ${pathname === '/trainer/login'
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-transparent text-black'
+                                    }`}
                             >
                                 Login
                             </button>
                         </Link>
                         <Link href="/trainer/signup">
                             <button
-                                className={`px-8 py-2 rounded-full ${
-                                    pathname === '/trainer/signup' 
-                                    ? 'bg-blue-500 text-white' 
-                                    : 'bg-transparent text-black'
-                                }`}
+                                className={`px-8 py-2 rounded-full ${pathname === '/trainer/signup'
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-transparent text-black'
+                                    }`}
                             >
                                 Sign Up
                             </button>
@@ -337,12 +338,12 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     {/* Name */}
                     <div className="flex flex-col w-full">
                         <label className="text-white text-lg mb-2">Name</label>
-                        <input 
-                            type="text" 
-                            name="name" 
-                            className="p-2 rounded-md bg-gray-700 text-white" 
+                        <input
+                            type="text"
+                            name="name"
+                            className="p-2 rounded-md bg-gray-700 text-white"
                             onBlur={handleBlur}
-                            required 
+                            required
                         />
                         {nameError && <p className="text-red-500 text-sm mt-1">{nameError}</p>}
                     </div>
@@ -483,6 +484,18 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                             </div>
                         )}
                     </div>
+                    <div className="flex flex-col w-full">
+                        <label className="text-white text-lg mb-2">Preferred Pin Codes</label>
+                        <input
+                            type="text"
+                            id="preferredPinCodes"
+                            name="preferredPinCodes"
+                            className="p-2 rounded-md bg-gray-700 text-white"
+                            placeholder="0000, 1111"
+                            onChange={(event) => setPinCodes(event.target.value || "")}
+                            required
+                        />
+                    </div>
 
                     {isTimeSlotOpen && (
                         <TimeSlotSelector
@@ -507,8 +520,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                     <FileInput label="Upload Police verification certificate or passport (Optional)" file={optionalFile} onFileChange={(e) => handleFileChange(e, setOptionalFile)} />
 
                     {/* Submit button */}
-                    <button 
-                        className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center justify-center" 
+                    <button
+                        className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center justify-center"
                         type="submit"
                         disabled={isLoading}
                     >

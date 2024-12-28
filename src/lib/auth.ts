@@ -697,16 +697,16 @@ export async function loginTrainer({
     const trainer = await Trainer.findOne({ email });
     if (!trainer) return { success: false, message: "Trainer not found" };
 
-    const valid = 1;//await bcrypt.compare(password, trainer.password);
+    const valid = await bcrypt.compare(password, trainer.password);
     if (!valid) return { success: false, message: "Incorrect password" };
 
-    if (!trainer.emailVerified)
-      return {
-        success: false,
-        emailVerified: false,
-        message:
-          "Please verify your email to login. Check your email for verification link.",
-      };
+    // if (!trainer.emailVerified)
+    //   return {
+    //     success: false,
+    //     emailVerified: false,
+    //     message:
+    //       "Please verify your email to login. Check your email for verification link.",
+    //   };
 
     const token = jwt.sign(
       {

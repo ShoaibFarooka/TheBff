@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Logo from "./Logo";
+import toast from "react-hot-toast";
 
 const Profile = dynamic(() => import("./user/Profile"), {
   ssr: false,
@@ -68,6 +69,7 @@ const AuthProfile = ({
 
 function Header(props?: any) {
   const [nav, setNav] = useState(false);
+  const [completedSessions, setCompletedSessions] = useState([]);
   const handleClick = () => setNav(!nav);
   const [currentUser, setCurrentUser] = useState<User>()
 
@@ -77,6 +79,9 @@ function Header(props?: any) {
   const setAuthUser = async() => {
     const res = await getAuthUser()
     setCurrentUser(res?.user)
+    if(res?.success){
+      res?.user?.role === 3 && fetchCompletedSessions(res?.user?._id);
+    }
   }
   useEffect(() => {
     setAuthUser();
@@ -89,6 +94,26 @@ function Header(props?: any) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, authenticate]);
+
+  const fetchCompletedSessions = async (id: any) => {
+    try {
+      const response = await fetch(`/api/sessions/completed-sessions?userId=${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setCompletedSessions(data?.data || []); // Update state with completed sessions
+    } catch (err : any) {
+      toast.error(err)
+    } 
+  };
 
   return (
     <nav
@@ -119,6 +144,14 @@ function Header(props?: any) {
               {!(currentUser?.role === 4 || currentUser?.role === 1) && "Blogs"}
             </li>
           </Link>
+          {completedSessions.length > 0 ? 
+            <Link href="/feedback">
+              <li className="hover:bg-y/10 hover:text-y px-4 py-1.5 rounded mx-0">
+                {(currentUser?.role === 3) && "Feedback"}
+              </li>
+            </Link>
+            : <></>}
+          
 
           <li>
             {/* Disabled in alpha preview - 1 */}

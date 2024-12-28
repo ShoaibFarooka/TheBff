@@ -14,7 +14,11 @@ import Component42 from "@/assets/Component 42.png";
 import Component43 from "@/assets/Component 43.png";
 import Component44 from "@/assets/Component 44.png";
 import LoginPopup from "@/components/auth/LoginPopup";
+import ClientFeedback from '@/components/ClientFeedback';
+import DiscountWrapper from '@/components/DiscountWrapper';
 import Classes from "@/components/home/Classes";
+import WellnessPrograms from "@/components/wellnessPrograms";
+
 import { Metadata } from "next";
 
 // preload "/fitness.mp4",
@@ -35,21 +39,18 @@ export default async function Home() {
   const classes = pageData?.classes;
   const coaches = pageData?.coches;
 
+  
   return (
     <>
-      {/* <Head>
-        <link rel="preload" href="/fitness.mp4" as="video" />
-      </Head> */}
+      <DiscountWrapper/>
 
       <div id="home" className="relative min-h-[90vh] bg-opacity-20">
-        {/* <div className="w-full bg-[#00000090]"></div> */}
-
         <video
           controls={false}
           autoPlay
           loop
           muted
-          className="w-full h-screen object-cover aboslute top-0 left-0"
+          className="w-full h-screen object-cover absolute top-0 left-0"
         >
           <source src="/fitness.mp4" type="video/mp4" />
           Your browser does not support the video tag.
@@ -98,7 +99,7 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="hidden  md:col-span-1 md:flex flex-col gap-y-7 md:mt-10">
+          <div className="hidden md:col-span-1 md:flex flex-col gap-y-7 md:mt-10">
             <div className="w-full">
               <Image
                 src={Component23}
@@ -149,21 +150,24 @@ export default async function Home() {
 
         {/* ===================== {Overlay} ===================== */}
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 center z-30">
-          <div className="w-full md:w-1/2  mx-auto">
+          <div className="w-full md:w-1/2 mx-auto">
             <h2 className="text-2xl md:text-4xl font-bold text-white text-center backdrop-blur bg-black bg-opacity-50">
-              {" "}
-              Achieve your fitness goals without stepping out of your comfort
-              zone{" "}
+              Achieve your fitness goals without stepping out of your comfort zone
             </h2>
           </div>
         </div>
       </div>
 
+      {/* ============================== Programs ======================= */}
+      <WellnessPrograms />
+
       {/* ============================== YOGA COACHES ======================= */}
       <Coaches coaches={coaches as any} />
 
+      {/* ============================== Feedbacks ======================= */}
+      <ClientFeedback />
+     
       {/* ===================== {Contact Form} ===================== */}
-
       <ContactForm />
 
       <LoginPopup />

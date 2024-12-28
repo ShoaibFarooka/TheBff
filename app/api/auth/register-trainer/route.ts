@@ -34,6 +34,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   const certificationFiles = formData.getAll('certificationFiles');
   const profilePhotoFile = formData.get('profilePhotoFile');
   const verificationFile = formData.get('verificationFile') || null;
+  const preferredPinCodes = formData.get("preferredPinCodes")
+  const array = preferredPinCodes.split(',').map((code: any) => code.trim());
+  const preferredPinCodesString = JSON.parse(JSON.stringify(array));
 
   console.log('Name: ', name, typeof name);
   console.log('Email: ', email, typeof email);
@@ -48,6 +51,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   console.log('Certification Files: ', certificationFiles, typeof certificationFiles);
   console.log('Profile Photo File: ', profilePhotoFile, typeof profilePhotoFile);
   console.log('Verification File: ', verificationFile, typeof verificationFile);
+  console.log("preferredPinCodes", preferredPinCodesString, typeof preferredPinCodesString)
 
   const existingTrainer = await Trainer.findOne({ email });
   if (existingTrainer) {
@@ -147,7 +151,8 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       agreementFileUrl: agreementFileURL,
       certificationFileUrls: certificationFileURLs,
       profilePhotoFileUrl: profilePhotoFileURL,
-      verificationFileUrl: verificationFileURL
+      verificationFileUrl: verificationFileURL,
+      preferredPinCodes: preferredPinCodesString
     })
 
 
