@@ -33,7 +33,7 @@ export const createOrder = async (ctx: ProtectedTRPCContext, input: CreateOrderI
     const cartAmount = cart.items.reduce((acc, item) => acc + item.price, 0);
     const discount = calculateDiscount(cartAmount, {
       type: coupon?.type!,
-      discount: coupon?.discount!
+      discount: coupon?.value!
     }) ?? 0;
     const finalAmount = cartAmount - discount;
 
@@ -86,6 +86,12 @@ export const createOrder = async (ctx: ProtectedTRPCContext, input: CreateOrderI
     promises.push(
       Order.create(order)
     )
+
+    if (coupon) {
+      promises.push(
+        Coupon.findByIdAndUpdate(coupon._id, { status: false })
+      );
+    }
 
     await Promise.all(promises);
 

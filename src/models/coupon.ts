@@ -4,36 +4,28 @@ import { Document, Model, model, models, Schema } from 'mongoose';
 type CouponDoc = CouponType & Document;
 type CouponModel = Model<CouponDoc>;
 
-const couponSchema = new Schema<CouponDoc, CouponDoc>({
+const couponSchema = new Schema<CouponDoc, CouponModel>({
     _id: {
         type: Schema.Types.ObjectId,
-        required: true,
         auto: true,
-        get: (v: any) => v != null ? v.toString() : v,
+        required: true,
+        get: (v: Schema.Types.ObjectId) => v != null && 'toString' in v ? v.toString() : v
     },
     code: {
         type: String,
         required: true,
         unique: true,
     },
-    description: {
+    type: {
         type: String,
+        enum: ['percentage', 'fixed'],
+        required: true,
     },
-    discount: {
+    value: {
         type: Number,
         required: true,
     },
-    type: {
-        type: String,
-        enum: ['percentage', 'flat'],
-        required: true,
-    },
-    expiryDate: {
-        type: Date,
-        required: true,
-        set: (v: any) => v != null ? v : new Date(v),
-    },
-    active: {
+    status: {
         type: Boolean,
         required: true,
         default: true,
