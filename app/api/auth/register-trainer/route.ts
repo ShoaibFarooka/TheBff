@@ -2,8 +2,9 @@ import Trainer from "@/models/trainer";
 import AWS from 'aws-sdk';
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from 'next/server';
-
+//comment for testing workflow
 // Configure AWS S3
+const s4 = 4
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
