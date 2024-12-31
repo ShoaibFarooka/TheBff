@@ -19,8 +19,7 @@ const userSchema = new Schema<UserDoc, UserModel>(
     {
         _id: {
             type: Schema.Types.ObjectId,
-            auto: true,
-            get: (v: Schema.Types.ObjectId) => v?.toString() ?? null
+            auto: true
         },
         name: {
             type: String,
