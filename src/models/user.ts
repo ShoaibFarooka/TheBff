@@ -17,10 +17,10 @@ type UserModel = Model<UserDoc>
 
 const userSchema = new Schema<UserDoc, UserModel>(
     {
-        _id: {
-            type: Schema.Types.ObjectId,
-            auto: true,
-        },
+        // _id: {
+        //     type: Schema.Types.ObjectId,
+        //     auto: true,
+        // },
         name: {
             type: String,
             required: true,
