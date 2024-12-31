@@ -2,19 +2,14 @@ import Trainer from "@/models/trainer";
 import AWS from 'aws-sdk';
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from 'next/server';
-//comment for testing workflow
+
 // Configure AWS S3
-const s4 = 4
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.AWS_REGION,
 });
 
-const getFileExtension = (fileName: string): string => {
-  const extension = fileName.split('.').pop();
-  return extension || "";
-};
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
 
@@ -35,9 +30,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   const certificationFiles = formData.getAll('certificationFiles');
   const profilePhotoFile = formData.get('profilePhotoFile');
   const verificationFile = formData.get('verificationFile') || null;
-  const preferredPinCodes = formData.get("preferredPinCodes")
-  const array = preferredPinCodes.split(',').map((code: any) => code.trim());
-  const preferredPinCodesString = JSON.parse(JSON.stringify(array));
 
   console.log('Name: ', name, typeof name);
   console.log('Email: ', email, typeof email);
@@ -52,7 +44,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   console.log('Certification Files: ', certificationFiles, typeof certificationFiles);
   console.log('Profile Photo File: ', profilePhotoFile, typeof profilePhotoFile);
   console.log('Verification File: ', verificationFile, typeof verificationFile);
-  console.log("preferredPinCodes", preferredPinCodesString, typeof preferredPinCodesString)
 
   const existingTrainer = await Trainer.findOne({ email });
   if (existingTrainer) {
@@ -68,19 +59,19 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   const aadharParams = {
     Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-    Key: `${folderName}/${Date.now()}_AadharFile.${getFileExtension(aadharFile.name)}`,
+    Key: `${folderName}/${Date.now()}_${aadharFile.name}`, // Unique file name
     Body: aadharBuffer,
     ContentType: aadharFile.type || 'application/octet-stream',
   };
   const agreementParams = {
     Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-    Key: `${folderName}/${Date.now()}_AgreementFile.${getFileExtension(agreementFile.name)}`,
+    Key: `${folderName}/${Date.now()}_${agreementFile.name}`, // Unique file name
     Body: agreementBuffer,
     ContentType: agreementFile.type || 'application/octet-stream',
   };
   const profilePhotoParams = {
     Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-    Key: `${folderName}/${Date.now()}_ProfilePhoto.${getFileExtension(profilePhotoFile.name)}`,
+    Key: `${folderName}/${Date.now()}_${profilePhotoFile.name}`, // Unique file name
     Body: profilePhotoBuffer,
     ContentType: profilePhotoFile.type || 'application/octet-stream',
   };
@@ -89,7 +80,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   if (verificationFile) {
     verificationParams = {
       Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-      Key: `${folderName}/${Date.now()}_VerificationFile.${getFileExtension(verificationFile.name)}`,
+      Key: `${folderName}/${Date.now()}_${verificationFile.name}`, // Unique file name
       Body: verificationBuffer,
       ContentType: verificationFile.type || 'application/octet-stream',
     };
@@ -104,10 +95,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       (await s3.upload(profilePhotoParams).promise()).Location,
     ];
 
-    const certificationUploadPromises = certificationFiles.map(async (file: File, index: number) => {
+    const certificationUploadPromises = certificationFiles.map(async (file: File) => {
       const certificationParams = {
         Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-        Key: `${folderName}/${Date.now()}_CertificateFile${index + 1}.${getFileExtension(file.name)}`,
+        Key: `${folderName}/${Date.now()}_${file.name}`,
         Body: Buffer.from(await file.arrayBuffer()),
         ContentType: file.type || 'application/octet-stream',
       };
@@ -130,7 +121,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     certificationFileURLs = results.slice(3, results.length - (verificationFile ? 1 : 0));
 
     if (verificationFile) {
-      verificationFileURL = uploadPromises[uploadPromises.length - 1];
+      verificationFileURL = await uploadPromises[uploadPromises.length - 1];
     }
     const endTime = performance.now();
     console.log('Performance Time For Upload(s): ', (endTime - startTime) / 1000);
@@ -152,8 +143,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       agreementFileUrl: agreementFileURL,
       certificationFileUrls: certificationFileURLs,
       profilePhotoFileUrl: profilePhotoFileURL,
-      verificationFileUrl: verificationFileURL,
-      preferredPinCodes: preferredPinCodesString
+      verificationFileUrl: verificationFileURL
     })
 
 

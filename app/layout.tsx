@@ -19,7 +19,6 @@ export const metadata: Metadata = {
 import dynamic from 'next/dynamic';
 
 const ClientWrapper = dynamic(() => import('@/components/ClientWrapper'));
-
 export default function RootLayout({
   children,
 }: {

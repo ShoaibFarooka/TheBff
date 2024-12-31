@@ -697,7 +697,6 @@ export async function loginTrainer({
     const trainer = await Trainer.findOne({ email });
     if (!trainer) return { success: false, message: "Trainer not found" };
 
-
     const valid = await bcrypt.compare(password, trainer.password);
     if (!valid) return { success: false, message: "Incorrect password" };
 
