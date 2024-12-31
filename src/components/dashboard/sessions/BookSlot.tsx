@@ -126,18 +126,18 @@ const BookSlot = () => {
           {userData.sessions.map((session, i) => (
             <div key={`session-${i}`} className="col-span-1 p-2">
               {/* Session details, date, time, joining link */}
-              {new Date(session.startTime).toLocaleDateString()}
+              {new Date((session as any).startTime).toLocaleDateString()}
               <br />
-              {new Date(session.startTime).toLocaleTimeString("en-IN", {
+              {new Date((session as any).startTime).toLocaleTimeString("en-IN", {
                 hour: "numeric",
                 minute: "numeric",
               })}{" "}
               to{" "}
-              {new Date(session.endTime).toLocaleTimeString("en-IN", {
+              {new Date((session as any).endTime).toLocaleTimeString("en-IN", {
                 hour: "numeric",
                 minute: "numeric",
               })}
-              <a href={session.meetLink} target="_blank">
+              <a href={(session as any).meetLink} target="_blank">
                 <Button>Join Meeting</Button>
               </a>
             </div>
