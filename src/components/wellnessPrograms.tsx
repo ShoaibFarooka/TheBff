@@ -214,7 +214,7 @@ const ScrollButtons = memo(({ scrollContainerRef }: {
 
 ScrollButtons.displayName = 'ScrollButtons';
 
-const WellnessPrograms = async () => {
+const WellnessPrograms = () => {
   const [programPlans, setProgramPlans] = useState<ProgramPlans[]>([]);
   const [loading, setLoading] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
