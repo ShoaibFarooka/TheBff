@@ -15,4 +15,5 @@ export type Coupon = {
     type: CouponTypeEnum; 
     value: number;
     status: boolean;
+    discount: number
 }
