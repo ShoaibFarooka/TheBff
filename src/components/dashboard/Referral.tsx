@@ -97,7 +97,7 @@ const Referral = () => {
 
   useEffect(() => {
     getUserReferrals();
-  }, [user, generateReferrals])
+  }, [user])
 
   const headerStyle = {
     background: 'hsla(var(--foreground), 0)',
@@ -162,8 +162,14 @@ const Referral = () => {
             ),
           }}
         />
-        <Button onClick={() => generateReferrals()} className="bg-[#514ED8] text-white w-full py-3 rounded-lg mt-5">
-          Generate New Referral
+        <Button 
+          onClick={async() => {
+            await generateReferrals()
+            await getUserReferrals()
+          }} 
+          className="bg-[#514ED8] text-white w-full py-3 rounded-lg mt-5"
+        >
+            Generate New Referral
         </Button>
       </Modal>
       <div className=" bg-gradient-to-r from-[#4A2F70] to-[#344363] rounded-3xl px-5 py-5 lg:col-span-1">
