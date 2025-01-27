@@ -5,7 +5,6 @@ import dayjs from 'dayjs';
 import { CheckCircleOutlined, ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import toast from 'react-hot-toast';
 import { getAuthUser } from '@/lib/auth';
-import subscriptions from 'razorpay/dist/types/subscriptions';
 
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import UserSessionModal from '@/components/TrainerDashboard/TrainerDashboardComponents/UserSessionsModal';
@@ -58,7 +57,7 @@ interface Session {
 const BookSessionSlot = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
   const [isScheduled, setIsScheduled] = useState(false);
   const [currentUser, setCurrentUser] = useState({ _id: "", email: "" })
   const [userSubscriptions, setUserSubscriptions] = useState<Subscription[]>([]);
@@ -267,11 +266,13 @@ const BookSessionSlot = () => {
     if (!isScheduled) {
       if (!selectedDate || !selectedSubscription || !selectedTimeSlot || !selectedDays) {
         message.error("Required Field Missing");
+        setSubmitLoading(false)
         return;
       }
   
       if (selectedDays.length < daysCount) {
         message.error(`You Need to Select ${daysCount} days`);
+        setSubmitLoading(false)
         return;
       }
   
@@ -361,15 +362,20 @@ const BookSessionSlot = () => {
         setIsScheduled(true);
         setSubmitLoading(false)
       } catch (error: any) {
+        setSubmitLoading(false)
         message.error(error.message || "An error occurred while scheduling sessions.");
       }
     }
   
     // Reset form state
     setSelectedDate(null);
-    setSelectedTimeSlot("");
+    setSelectedTimeSlot(null);
     setIsScheduled(false);
     setIsModalOpen(false);
+
+    setSelectedSubcription([])
+    setSelectedDays([])
+
   };
   
   
@@ -722,6 +728,7 @@ const BookSessionSlot = () => {
       >
         {!isScheduled && <>
           <Select
+            value={selectedSubscription}
             placeholder="Select Subscription"
             style={{ width: '100%', margin: '10px 0' }}
             onChange={handleSubscriptionChange}
@@ -736,11 +743,13 @@ const BookSessionSlot = () => {
             placeholder="Select Date"
             style={{ width: '100%', margin: '10px 0' }}
             onChange={handleDateChange}
+            value={selectedDate ? dayjs(selectedDate) : null}
           />
           <Select
             placeholder="Select Time"
             style={{ width: '100%', margin: '10px 0' }}
             onChange={handleTimeSlotChange}
+            value={selectedTimeSlot}
           >
             {timeSlots.map((timeSlot, index) => (
               <Option key={index} value={timeSlot.value}>

@@ -27,16 +27,6 @@ export const GET = async (req: NextRequest) => {
       })
       .lean();
 
-    if (!subscriptions.length) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "No subscriptions found for this user",
-        },
-        { status: 404 }
-      );
-    }
-
     // Respond with the fetched subscription data
     return NextResponse.json({ success: true, data: subscriptions });
   } catch (error: any) {
