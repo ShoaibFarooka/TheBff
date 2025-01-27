@@ -133,6 +133,30 @@ const Payment = ({ amount }: PaymentProps) => {
         return Math.max(0, amount - discount)
     }, [amount, coupon])
 
+    const applyReferralCode = async (code: any) => {
+        try {
+            const res = await fetch(`/api/referrals/avail-referral`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                code: code,
+                userId: user?._id
+              }),
+            });
+            const data = await res.json();
+            if (res.status === 200) {
+              toast.success(data?.message ?? "Referral Availed Successfully");
+              setCoupon(data?.data?.coupon)
+            } else {
+              toast.error(data?.message ?? "Something went wrong.");
+            }
+        } catch (error) {
+            console.error("Error fetching user subscriptions:", error);
+        }
+    };
+
     return (
         <div className="">
             <Script src="https://checkout.razorpay.com/v1/checkout.js" />
@@ -147,6 +171,10 @@ const Payment = ({ amount }: PaymentProps) => {
                         className="flex items-center gap-2"
                         onSubmit={(e) => {
                             e.preventDefault()
+                            if((e.target as any).coupon.value?.includes("REFERRAL")){
+                                applyReferralCode((e.target as any).coupon.value);
+                                return
+                            }
                             setCouponCode(() => (e.target as any).coupon.value)
                         }}
                     >

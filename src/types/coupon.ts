@@ -16,4 +16,5 @@ export type Coupon = {
     value: number;
     status: boolean;
     discount: number
+    userId: string | ObjectId
 }
