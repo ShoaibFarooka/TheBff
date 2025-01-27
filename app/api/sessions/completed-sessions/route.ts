@@ -13,10 +13,16 @@ export const GET = async (req: NextRequest) => {
         { status: 400 }
       );
     }
-    // Fetch sessions with `status` set to "completed" and populate `subscriptionId`
+
+    // Fetch sessions where all elements in `sessions` array have `status` === "completed"
     const completedSessions = await Session.find({
-      "sessions.status": "completed",
-      userId: userId
+      userId: userId,
+      feedback_submitted: { $exists: false }, // Fetch documents where the `feedback_submitted` field does not exist
+      sessions: {
+        $not: {
+          $elemMatch: { status: { $ne: "completed" } }, // Exclude documents with any non-completed status
+        },
+      },
     })
       .populate("subscriptionId") // Replace with the correct reference if it's different
       .populate({
@@ -24,14 +30,7 @@ export const GET = async (req: NextRequest) => {
         model: Subscription,
         select: "_id userId planId programId", // Ensure address is populated for comparison
       })
-      .lean(); // Using `.lean()` for plain JS objects instead of Mongoose documents
-
-    if (!completedSessions || completedSessions.length === 0) {
-      return NextResponse.json(
-        { success: true, message: "No completed sessions found", data: [] },
-        { status: 200 }
-      );
-    }
+      .lean(); // Using `.lean()` for plain JS objects instead of Mongoose documents    
 
     return NextResponse.json({
       success: true,

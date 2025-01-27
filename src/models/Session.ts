@@ -48,13 +48,13 @@ const sessionScema = new Schema<SesionType & Document>(
       type: [],
       required: true,
     },
-    sessionStatus: {
-      type: Boolean,
-      required: false
-    },
     sessions: {
       type: [],
       required: true
+    },
+    feedback_submitted: {
+      type: Boolean,
+      required: false
     }
   },
   {

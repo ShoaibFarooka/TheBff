@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Session from "@/models/Session"; // Ensure this is the correct path to your model
+import { Subscription } from "@/models"; // Adjust the import for your Subscription model
+import { SubscriptionStatus } from "@/types/subscription";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -23,6 +25,30 @@ export const POST = async (req: NextRequest) => {
         { status: 404 }
       );
     }
+
+    // Retrieve subscriptionId from the session
+    const { subscriptionId } = session;
+
+    if (!subscriptionId) {
+      return NextResponse.json(
+        { success: false, message: "Session does not have a subscriptionId" },
+        { status: 400 }
+      );
+    }
+
+    // Find the subscription using the subscriptionId
+    const subscription = await Subscription.findById(subscriptionId);
+
+    if (!subscription) {
+      return NextResponse.json(
+        { success: false, message: "Subscription not found" },
+        { status: 404 }
+      );
+    }
+
+    // Update the subscription's status to "active"
+    subscription.status = SubscriptionStatus.active;
+    await subscription.save();
 
     // Update the session by setting trainerAssigned to true and adding trainerId
     session.trainerAssigned = true;

@@ -94,7 +94,7 @@ const BookSessionSlot = () => {
           }
         })
         const filteredSubscriptions: Subscription[] = subscriptions.filter((subscription: Subscription) => {
-          return !sessionData?.data?.some((slot: Session) => slot.programId === subscription.programId);
+          return !sessionData?.data?.some((slot: Session) => slot?.planId?.programId === subscription?.programId);
         });
         
         setUserSubscriptions(filteredSubscriptions);
