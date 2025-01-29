@@ -230,7 +230,16 @@ const ClientFeedback = () => {
             }}
           >
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="flex-none w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+              <div
+                key={index}
+                className={`flex-none w-full ${
+                  testimonials.length === 1
+                    ? "md:w-full lg:w-full"
+                    : testimonials.length === 2
+                    ? "md:w-[calc(50%-12px)] lg:w-[calc(50%-12px)]"
+                    : "md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+                }`}
+              >
                 <TestimonialCard {...testimonial} />
               </div>
             ))}
