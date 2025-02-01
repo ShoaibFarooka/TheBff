@@ -29,7 +29,7 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
   const handleLogout = (e: React.MouseEvent) => {
     e.stopPropagation();
     // delete token from cookie
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
     window.location.href = "/"; // hard refresh to clear cache
   };
@@ -61,7 +61,7 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
         </SheetHeader>
 
         <div className="grow">
-          {!(userdata?.role === 4 || userdata?.role === 1) && <SheetTrigger asChild>
+          {!(userdata?.role === 4 || userdata?.role === 1 || userdata?.role === "trainer") && <SheetTrigger asChild>
             <Link href="/dashboard">
               <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
                 <FaUser size={30} />
@@ -80,7 +80,7 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
                   <p className="ml-5">Queries</p>
                 </div> */}
 
-          {!(userdata?.role === 4 || userdata?.role === 1) && <SheetTrigger asChild>
+          {!(userdata?.role === 4 || userdata?.role === 1 || userdata?.role === "trainer") && <SheetTrigger asChild>
             <Link href="/blogs">
               <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
                 <IoReaderOutline size={30} />
@@ -89,7 +89,7 @@ const Profile: React.FC<ProfileProps> = ({ userdata }) => {
             </Link>
           </SheetTrigger>}
 
-          {!(userdata?.role === 4 || userdata?.role === 1) && <SheetTrigger asChild>
+          {!(userdata?.role === 4 || userdata?.role === 1 || userdata?.role === "trainer") && <SheetTrigger asChild>
             <Link href="/cart">
               <div className="flex items-center mb-2 p-2 hover:bg-gray-400/20 rounded">
                 <IoCartOutline size={30} />

@@ -2,7 +2,8 @@ export enum UserRole {
   ADMIN = 1,
   COACH = 2,
   USER = 3,
-  SALES = 4
+  SALES = 4,
+  TRAINER = "trainer"
 }
 
 // ======================= USER =======================
