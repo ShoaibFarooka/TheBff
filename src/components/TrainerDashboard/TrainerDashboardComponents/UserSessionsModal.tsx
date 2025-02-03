@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Table, Button, Space, Select } from "antd";
+import { Modal, Table, Button, Space, Select, DatePicker } from "antd";
 import { CheckCircleOutlined, CheckOutlined, CloseOutlined, ScheduleOutlined } from "@ant-design/icons";
 import toast from 'react-hot-toast';
 import dayjs from "dayjs";
@@ -16,6 +16,7 @@ interface SessionData {
   status: string;
   date: string;
   can_be_completed: boolean;
+  endDate: Date;
 }
 
 
@@ -28,6 +29,7 @@ const UserSessionModal = (props : any) => {
   const [rescheduleTime, setRescheduleTime] = useState<string>("");
   const [rescheduledRecord, setRescheduledRecord] = useState<SessionData | null>(null);
   const [sessionDays, setSessionDays] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
 
   // Fetch data from an API
@@ -170,6 +172,7 @@ const UserSessionModal = (props : any) => {
           subscriptionId: subscriptionId,
           sessionNumber: rescheduledRecord?.sessionNumber,
           newTimeSlot: rescheduleTime,
+          newDate: selectedDate
         }),
       });
   
@@ -353,11 +356,13 @@ const UserSessionModal = (props : any) => {
         onCancel={() => {   
           setRescheduleModal(false);
           setRescheduleTime("")
+          setSelectedDate(null)
         }}
         onOk={() => {   
           setRescheduleModal(false);
           setRescheduleTime("");
           rescheduleSession({} as SessionData)
+          setSelectedDate(null)
         }}
         styles={{
           content: {  background: 'linear-gradient(288.21deg, #2E4061 0%, #46256E 100%)' }, // turns the Modal red
@@ -377,6 +382,12 @@ const UserSessionModal = (props : any) => {
             </Option>
           ))}
         </Select>
+        <DatePicker
+          placeholder="Select Date"
+          style={{ width: '100%', margin: '10px 0' }}
+          onChange={(date : any) => setSelectedDate(date ? dayjs(date).format('YYYY-MM-DD') : null)}
+          value={selectedDate ? dayjs(selectedDate) : null}
+        />
       </Modal>
     </>
   );
