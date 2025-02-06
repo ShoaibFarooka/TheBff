@@ -3,6 +3,7 @@ import { Modal, Table, Button, Space, Select, DatePicker } from "antd";
 import { CheckCircleOutlined, CheckOutlined, CloseOutlined, ScheduleOutlined } from "@ant-design/icons";
 import toast from 'react-hot-toast';
 import dayjs from "dayjs";
+import { Tooltip } from "antd";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 
@@ -113,16 +114,31 @@ const UserSessionModal = (props : any) => {
       key: "action",
       render: (_: any, record: SessionData) => (
         <Space size="small">
-          {isCurrentDateTimeAfter(record) && record?.can_be_completed === true ? <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => completeSession(record)}> {/* Adjust fontSize as needed */}
-            <CheckCircleOutlined />
-          </div> : <></>}
-          {!isCurrentDateTimeAfter(record) && record?.status == "pending" ? <><div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => rescheduleSession(record)}> 
-            <ScheduleOutlined />
-          </div>
-          <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => cancelSession(record)}> 
-            <CloseOutlined />
-          </div></> : <>-</>}
-          
+          {isCurrentDateTimeAfter(record) && record?.can_be_completed === true ? (
+            <Tooltip title="Complete">
+              <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => completeSession(record)}>
+                <CheckCircleOutlined />
+              </div>
+            </Tooltip>
+          ) : (
+            <></>
+          )}
+          {!isCurrentDateTimeAfter(record) && record?.status == "pending" ? (
+            <>
+              <Tooltip title="Reschedule">
+                <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => rescheduleSession(record)}>
+                  <ScheduleOutlined />
+                </div>
+              </Tooltip>
+              <Tooltip title="Cancel">
+                <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => cancelSession(record)}>
+                  <CloseOutlined />
+                </div>
+              </Tooltip>
+            </>
+          ) : (
+            <>-</>
+          )}
         </Space>
       ),
     },

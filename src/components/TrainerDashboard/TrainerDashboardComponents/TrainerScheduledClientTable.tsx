@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getAuthUser } from "@/lib/auth";
 import toast from 'react-hot-toast';
 import UserSessionModal from "./UserSessionsModal";
+import { Tooltip } from "antd";
 
 interface DataType {
 	key: string;
@@ -151,9 +152,11 @@ const TrainerScheduledClientTable = () => {
       key: 'action',
       render: (_, record) => (
 				<Space size="small">
-					<div style={{ fontSize: "24px", cursor: "pointer" }} onClick={() => setModalData(record)}> {/* Adjust fontSize as needed */}
-						<EyeOutlined />
-					</div>
+          <Tooltip title="View">
+            <div style={{ fontSize: "24px", cursor: "pointer" }} onClick={() => setModalData(record)}> {/* Adjust fontSize as needed */}
+              <EyeOutlined />
+            </div>
+          </Tooltip>
 				</Space>
 			)
     },
