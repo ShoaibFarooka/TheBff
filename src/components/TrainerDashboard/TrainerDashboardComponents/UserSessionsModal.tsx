@@ -57,7 +57,14 @@ const UserSessionModal = (props : any) => {
       console.error("Error fetching session data:", error);
     }
   };
-  
+
+  const isCurrentDateTimeAfter = (record: any) => {
+    const sessionDate = dayjs(record.date);
+    const [sessionHours, sessionMinutes] = record?.timeSlot.split("-")[0].split(":").map(Number);
+    const sessionDateTime = sessionDate.hour(sessionHours).minute(sessionMinutes); // Set the extracted time to session date
+    
+    return dayjs().isAfter(sessionDateTime); // Compare with current date and time
+  }  
 
   // useEffect to call the API when the modal opens
   useEffect(() => {
@@ -106,13 +113,13 @@ const UserSessionModal = (props : any) => {
       key: "action",
       render: (_: any, record: SessionData) => (
         <Space size="small">
-          {record?.can_be_completed === true ? <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => completeSession(record)}> {/* Adjust fontSize as needed */}
+          {isCurrentDateTimeAfter(record) && record?.can_be_completed === true ? <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => completeSession(record)}> {/* Adjust fontSize as needed */}
             <CheckCircleOutlined />
           </div> : <></>}
-          {record?.status === "pending" ? <><div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => rescheduleSession(record)}> {/* Adjust fontSize as needed */}
+          {!isCurrentDateTimeAfter(record) && record?.status == "pending" ? <><div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => rescheduleSession(record)}> 
             <ScheduleOutlined />
           </div>
-          <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => cancelSession(record)}> {/* Adjust fontSize as needed */}
+          <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => cancelSession(record)}> 
             <CloseOutlined />
           </div></> : <>-</>}
           
