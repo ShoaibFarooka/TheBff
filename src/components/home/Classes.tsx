@@ -92,57 +92,62 @@ export default function Classes({ classes = content }: { classes?: Class[] }) {
     <div>
       <div className="h pb-28 flex justify-around flex-col lg:flex-row px-[20px] lg:px-[100px] lg:pt-[50px] ">
         <div className="w-full lg:w-1/2 lg:flex items-center justify-center my-8 lg:my-0">
-          <div className="">
-            <Swiper
-              slidesPerView={3}
-              spaceBetween={30}
-              centeredSlides={true}
-              pagination={{
-                clickable: true,
-              }}
-              modules={[Autoplay, Mousewheel]}
-              direction="vertical"
-              className="mySwiper md:h-[80vh]"
-              autoplay={{
-                delay: 4 * 1000,
-                disableOnInteraction: false,
-              }}
-              onSlideChange={(e: SwiperClass) => setActive(e.realIndex)}
-              mousewheel={{ forceToAxis: true }}
-              loop
-              breakpoints={{
-                320: {
-                  direction: "horizontal",
-                  spaceBetween: 15,
-                },
-                1080: {
-                  direction: "vertical",
-                  spaceBetween: 30,
-                },
-              }}
-            >
-              {classes?.map((c, index?: any) => (
-                <SwiperSlide key={index} className="max-h-max">
-                  <Image
-                    key={index}
-                    // className={` ${index === active && "shadow-lg shadow-white/40 scale-110"
-                    // }`}
-                    className={cn(
-                      'w-auto h-auto hover:shadow-white/20 hover:shadow hover:scale-110 duration-300 rounded-md',
-                      index === active ? 'shadow-lg shadow-white/40 scale-110' : ''
-                    )}
-                    src={c.image!}
-                    alt={c.title!}
-                    onClick={() => setActive(index)}
-                    width={300}
-                    height={300}
-                  />
-                </SwiperSlide>
-              ))}
-
-              <div id="pagination"></div>
-            </Swiper>
-          </div>
+          <Swiper
+            slidesPerView={3}
+            spaceBetween={30}
+            centeredSlides={true}
+            pagination={{ clickable: true }}
+            modules={[Autoplay, Mousewheel]}
+            direction="vertical"
+            className="mySwiper md:h-[80vh]"
+            autoplay={{
+              delay: 4000,
+              disableOnInteraction: false,
+            }}
+            onSlideChange={(e: SwiperClass) => setActive(e.realIndex)}
+            mousewheel={{ forceToAxis: true }}
+            loop
+            breakpoints={{
+              320: {
+                direction: "horizontal",
+                spaceBetween: 15, // Ensures spacing on small screens
+                slidesPerView: 1, // Single image on very small screens
+              },
+              480: {
+                direction: "horizontal",
+                spaceBetween: 15,
+                slidesPerView: 2, // Show 2 images on medium screens
+              },
+              768: {
+                direction: "horizontal",
+                spaceBetween: 20,
+                slidesPerView: 3, // Show 3 images as intended
+              },
+              1080: {
+                direction: "vertical",
+                spaceBetween: 20,
+                slidesPerView: 3, // Maintain 3 images on larger screens
+              },
+            }}
+          >
+            {classes?.map((c, index) => (
+              <SwiperSlide key={index} className="flex justify-center items-center">
+                <Image
+                  key={index}
+                  className={cn(
+                    "rounded-md duration-300 object-cover object-center",
+                    "w-full max-w-[300px] h-auto max-h-[300px]", // Ensures responsiveness
+                    index === active ? "shadow-lg shadow-white/40 scale-110" : ""
+                  )}
+                  src={c.image!}
+                  alt={c.title!}
+                  onClick={() => setActive(index)}
+                  width={300}
+                  height={300}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
         <div className="w-full lg:w-1/2 content h-full my-auto">

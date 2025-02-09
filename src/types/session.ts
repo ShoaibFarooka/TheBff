@@ -10,8 +10,8 @@ export type Session = {
     subscriptionId: mongoose.Schema.Types.ObjectId;
     trainerAssigned: boolean,
     trainerId: string,
-    timeSlot: String,
+    timeSlot: string,
     days: [],
-    sessionStatus: boolean,
-    sessions: []
+    sessions: [],
+    feedback_submitted: boolean
 }

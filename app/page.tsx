@@ -50,7 +50,7 @@ export default async function Home() {
           autoPlay
           loop
           muted
-          className="w-full h-screen object-cover absolute top-0 left-0"
+          // className="w-full h-screen object-cover absolute top-0 left-0"
         >
           <source src="/fitness.mp4" type="video/mp4" />
           Your browser does not support the video tag.

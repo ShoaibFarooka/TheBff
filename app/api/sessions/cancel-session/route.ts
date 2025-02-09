@@ -73,6 +73,44 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
+    // Parse `date` (new session's date) and `endDate` for comparison
+    // Parse `date` (new session's date) and `endDate` for comparison
+    const newSessionDate = dayjs.utc(date).startOf("day");
+    const sessionEndDate = session.endDate ? dayjs.utc(session.endDate).startOf("day") : null;
+
+    // Update the current session's status to "cancelled"
+    currentSession.status = "cancelled";
+
+    if (currentSession.can_be_completed === true) {
+      currentSession.can_be_completed = false;
+
+      // Find the next session whose status is not "cancelled"
+      const nextValidSession = session.sessions.find(
+        (s: any) => s.status !== "cancelled" && s.sessionNumber > currentSessionNumber
+      );
+
+      if (nextValidSession) {
+        nextValidSession.can_be_completed = true;
+      }
+    }
+
+    // If new session date is **after** endDate, do NOT create a new session
+    if (sessionEndDate && newSessionDate.isAfter(sessionEndDate)) {
+      // session.set("sessions", session.sessions);
+      session.markModified("sessions");
+      await session.save(); // Save the cancellation of the current session
+
+      return NextResponse.json(
+        {
+          success: true,
+          message: "Current session cancelled. No new session created as the date exceeds endDate.",
+          data: session.sessions,
+          session: session,
+        },
+        { status: 200 }
+      );
+    }
+
     // Create the new session object
     const newSession = {
       sessionNumber,
@@ -85,40 +123,7 @@ export const POST = async (req: NextRequest) => {
 
     // Add the new session
     session.sessions.push(newSession);
-
-    // Use `.set()` to ensure Mongoose detects changes
     session.set("sessions", session.sessions);
-
-    // Update the current session's status to "cancelled"
-    currentSession.status = "cancelled";
-
-    if (currentSession.can_be_completed === true) {
-      // Make the current session's `can_be_completed` false
-      currentSession.can_be_completed = false;
-
-      // Find the next session whose status is not "cancelled"
-      const nextValidSession = session.sessions.find(
-        (s: any) => s.status !== "cancelled" && s.sessionNumber > currentSessionNumber
-      );
-
-      if (nextValidSession) {
-        // Set `can_be_completed` for the next valid session
-        nextValidSession.can_be_completed = true;
-      }
-    }
-
-    // Calculate the endDate as the date of the last session in ISO format
-    const lastSession = session.sessions[session.sessions.length - 1];
-    
-    if (lastSession && lastSession.date) {
-      // Parse the last session date (DD-MM-YYYY) in UTC to avoid timezone issues
-      const parsedDate = dayjs(lastSession.date, "DD-MM-YYYY").utc().startOf('day').add(1, "day");
-      
-      if (parsedDate.isValid()) {
-        const endDate = parsedDate.toDate();
-        session.endDate = endDate;
-      } 
-    }
 
     // Fetch the trainer details and populate trainerId
     const trainer = await Trainer.findById(trainerId).select(
@@ -131,18 +136,16 @@ export const POST = async (req: NextRequest) => {
     // Save the updated session document
     await session.save();
 
-    const plan = await Plan.findById(session?.planId).select(
-      "name programId"
-    ); 
+    const plan = await Plan.findById(session?.planId).select("name programId");
 
     // Respond with a success message and the updated sessions array
     return NextResponse.json({
       success: true,
-      message: "Session added successfully and endDate updated!",
+      message: "Session added successfully and endDate remains unchanged.",
       data: session.sessions,
       session: session,
       trainerDetails: trainer, // Include trainer details in the response
-      plan
+      plan,
     });
   } catch (error: any) {
     console.error("Error in addSession API:", error);

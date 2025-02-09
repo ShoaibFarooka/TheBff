@@ -5,6 +5,7 @@ import { CheckCircleOutlined, CheckOutlined, CloseOutlined, EyeOutlined } from "
 import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
 import { getAuthUser } from "@/lib/auth";
+import { Tooltip } from "antd";
 
 interface DataType {
 	key: string;
@@ -218,12 +219,17 @@ const ClientRequestTable = () => {
       key: 'action',
       render: (_, record) => (
 				<Space size="small">
-					<div style={{ fontSize: "24px", cursor: "pointer" }} onClick={() => acceptRequest(record)}> {/* Adjust fontSize as needed */}
-						<CheckCircleOutlined />
-					</div>
-					<div style={{ fontSize: "24px", cursor: "pointer" }} onClick={() => ignoreRequest(record)}> {/* Adjust fontSize as needed */}
-						<CloseOutlined />
-					</div>
+					<Tooltip title="Accept">
+						<div style={{ fontSize: "24px", cursor: "pointer" }} onClick={() => acceptRequest(record)}> {/* Adjust fontSize as needed */}
+							<CheckCircleOutlined />
+						</div>
+					</Tooltip>
+
+					<Tooltip title="Reject">
+						<div style={{ fontSize: "24px", cursor: "pointer" }} onClick={() => ignoreRequest(record)}> {/* Adjust fontSize as needed */}
+							<CloseOutlined />
+						</div>
+					</Tooltip>
 				</Space>
 			)
     },

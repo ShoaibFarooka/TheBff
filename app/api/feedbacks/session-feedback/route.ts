@@ -1,70 +1,76 @@
-import { User } from '@/models';
-import Feedback from '@/models/feedback';
-import Session from '@/models/Session'; // Assuming you have a Session model
+
+import { Session, User } from "@/models";
+import Feedback from "@/models/feedback";
+import AWS from 'aws-sdk';
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
 
-// POST API to create feedback
-export const POST = async (req: NextRequest) => {
+// Configure AWS S3
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
+
+const getFileExtension = (fileName: string): string => {
+  const extension = fileName.split('.').pop();
+  return extension || "";
+};
+
+export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
-    const body = await req.json(); // Parse the request body
-    const { session: sessionId, stars, feedback } = body;
+    const formData = await (req as any).formData();
 
-    // Validate required fields
-    if (!sessionId || !stars || !feedback) {
-      return NextResponse.json(
-        { success: false, message: 'Missing required fields: session, stars, feedback' },
-        { status: 400 }
-      );
+    const session = formData.get("session")
+    const feedbackText = formData.get("feedback");
+    const rating = formData.get("stars");
+    const userId = formData.get("userId");
+    const attachmentFile = formData.get("file") || null;
+
+    let attachmentFileUrl = null;
+
+    if (attachmentFile) {
+      const attachmentBuffer = Buffer.from(await attachmentFile.arrayBuffer());
+      const folderName = `feedback-attachments/${userId}`;
+      const attachmentParams = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME as string,
+        Key: `${folderName}/${Date.now()}_Attachment.${getFileExtension(attachmentFile.name)}`,
+        Body: attachmentBuffer,
+        ContentType: attachmentFile.type || 'application/octet-stream',
+      };
+
+      console.log("Started Uploading Attachment...");
+      const uploadResult = await s3.upload(attachmentParams).promise();
+      attachmentFileUrl = uploadResult.Location;
+      console.log("Attachment Uploaded to: ", attachmentFileUrl);
     }
 
-    // Find the session by ID and populate the userId
-    const session = await Session.findById(sessionId).populate({
-      path: 'userId',
+    const sessionDoc = await Session.findById(session).populate({
+      path: "userId",
       model: User,
-      select: 'name _id', // Select only the required fields
+      select: "name _id", // Select only the required fields
     });
 
-    if (!session) {
-      return NextResponse.json(
-        { success: false, message: 'Session not found' },
-        { status: 404 }
-      );
-    }
+    sessionDoc.feedback_submitted = true;
+    await sessionDoc.save()
 
-    // Extract user details from the populated userId
-    const { name: userName, _id: userId } = session.userId;
+    const { name: userName, _id: _userId } = sessionDoc.userId;
 
-    if (!userName || !userId) {
-      return NextResponse.json(
-        { success: false, message: 'User information is missing' },
-        { status: 400 }
-      );
-    }
-
-    // Create feedback document in the database
-    const newFeedback = await Feedback.create({
-      stars,
-      text: feedback,
-      image: "", // Default value
-      status: false, // Default value
-      userId, // Use the extracted userId
-      sessionId: session._id,
-      name: userName, // Add user name to the feedback
+    const userIdObj = new mongoose.Types.ObjectId(_userId as string);
+    const feedback = await Feedback.create({
+      sessionId: sessionDoc?.id,
+      userId: userIdObj,
+      name: userName,
+      text: feedbackText,
+      stars: rating,
+      image: attachmentFileUrl,
+      status: false
     });
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Feedback created successfully',
-        data: newFeedback,
-      },
-      { status: 201 }
-    );
-  } catch (error: any) {
-    console.error('Error creating feedback:', error.message);
-    return NextResponse.json(
-      { success: false, message: 'Internal server error', error: error.message },
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ message: "Feedback submitted successfully!", feedback }), { status: 200 });
+  } catch (error) {
+    console.error("Feedback Submission Error: ", error);
+    return new Response(JSON.stringify({ error: "Unable to submit feedback!" }), { status: 500 });
   }
 };
+

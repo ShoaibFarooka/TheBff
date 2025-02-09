@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Table, Button, Space, Select } from "antd";
+import { Modal, Table, Button, Space, Select, DatePicker } from "antd";
 import { CheckCircleOutlined, CheckOutlined, CloseOutlined, ScheduleOutlined } from "@ant-design/icons";
 import toast from 'react-hot-toast';
 import dayjs from "dayjs";
+import { Tooltip } from "antd";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 
@@ -16,6 +17,7 @@ interface SessionData {
   status: string;
   date: string;
   can_be_completed: boolean;
+  endDate: Date;
 }
 
 
@@ -28,6 +30,7 @@ const UserSessionModal = (props : any) => {
   const [rescheduleTime, setRescheduleTime] = useState<string>("");
   const [rescheduledRecord, setRescheduledRecord] = useState<SessionData | null>(null);
   const [sessionDays, setSessionDays] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
 
   // Fetch data from an API
@@ -55,7 +58,14 @@ const UserSessionModal = (props : any) => {
       console.error("Error fetching session data:", error);
     }
   };
-  
+
+  const isCurrentDateTimeAfter = (record: any) => {
+    const sessionDate = dayjs(record.date);
+    const [sessionHours, sessionMinutes] = record?.timeSlot.split("-")[0].split(":").map(Number);
+    const sessionDateTime = sessionDate.hour(sessionHours).minute(sessionMinutes); // Set the extracted time to session date
+    
+    return dayjs().isAfter(sessionDateTime); // Compare with current date and time
+  }  
 
   // useEffect to call the API when the modal opens
   useEffect(() => {
@@ -104,16 +114,31 @@ const UserSessionModal = (props : any) => {
       key: "action",
       render: (_: any, record: SessionData) => (
         <Space size="small">
-          {record?.can_be_completed === true ? <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => completeSession(record)}> {/* Adjust fontSize as needed */}
-            <CheckCircleOutlined />
-          </div> : <></>}
-          {record?.status === "pending" ? <><div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => rescheduleSession(record)}> {/* Adjust fontSize as needed */}
-            <ScheduleOutlined />
-          </div>
-          <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => cancelSession(record)}> {/* Adjust fontSize as needed */}
-            <CloseOutlined />
-          </div></> : <>-</>}
-          
+          {isCurrentDateTimeAfter(record) && record?.can_be_completed === true ? (
+            <Tooltip title="Complete">
+              <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => completeSession(record)}>
+                <CheckCircleOutlined />
+              </div>
+            </Tooltip>
+          ) : (
+            <></>
+          )}
+          {!isCurrentDateTimeAfter(record) && record?.status == "pending" ? (
+            <>
+              <Tooltip title="Reschedule">
+                <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => rescheduleSession(record)}>
+                  <ScheduleOutlined />
+                </div>
+              </Tooltip>
+              <Tooltip title="Cancel">
+                <div style={{ fontSize: "18px", cursor: "pointer" }} onClick={() => cancelSession(record)}>
+                  <CloseOutlined />
+                </div>
+              </Tooltip>
+            </>
+          ) : (
+            <>-</>
+          )}
         </Space>
       ),
     },
@@ -170,6 +195,7 @@ const UserSessionModal = (props : any) => {
           subscriptionId: subscriptionId,
           sessionNumber: rescheduledRecord?.sessionNumber,
           newTimeSlot: rescheduleTime,
+          newDate: selectedDate
         }),
       });
   
@@ -353,11 +379,13 @@ const UserSessionModal = (props : any) => {
         onCancel={() => {   
           setRescheduleModal(false);
           setRescheduleTime("")
+          setSelectedDate(null)
         }}
         onOk={() => {   
           setRescheduleModal(false);
           setRescheduleTime("");
           rescheduleSession({} as SessionData)
+          setSelectedDate(null)
         }}
         styles={{
           content: {  background: 'linear-gradient(288.21deg, #2E4061 0%, #46256E 100%)' }, // turns the Modal red
@@ -377,6 +405,12 @@ const UserSessionModal = (props : any) => {
             </Option>
           ))}
         </Select>
+        <DatePicker
+          placeholder="Select Date"
+          style={{ width: '100%', margin: '10px 0' }}
+          onChange={(date : any) => setSelectedDate(date ? dayjs(date).format('YYYY-MM-DD') : null)}
+          value={selectedDate ? dayjs(selectedDate) : null}
+        />
       </Modal>
     </>
   );

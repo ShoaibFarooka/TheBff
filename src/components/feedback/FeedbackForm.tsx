@@ -4,9 +4,47 @@ import { Select, Input, Button, Spin } from "antd";
 import toast, { Toaster } from "react-hot-toast";
 import { User } from "@/types/user";
 import { getAuthUser } from "@/lib/auth";
+import { CheckCircle } from "lucide-react";
 
 const { Option } = Select;
 const { TextArea } = Input;
+
+const FileInput = ({
+  label,
+  onFileChange,
+  file,
+}: {
+  label: string;
+  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  file: File | null;
+}) => (
+  <div className="flex flex-col w-full">
+    <label className="text-white text-lg mb-2">{label}</label>
+    <div className="relative flex items-center justify-center border border-dashed border-gray-500 rounded-lg h-32 hover:bg-gray-700 transition-colors">
+      <input
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        type="file"
+        accept=".jpg, .jpeg, .png"
+        onChange={onFileChange}
+      />
+      <div className="text-center text-gray-300">
+        {file ? (
+          <>
+            <CheckCircle className="text-green-500 mx-auto" size={32} />
+            <p className="mt-2 text-sm text-white">{file.name}</p>
+          </>
+        ) : (
+          <>
+            <p className="mb-1 text-lg">Click to browse</p>
+            <p className="text-sm mt-2 text-gray-400">
+              Accepted formats: JPG, PNG
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  </div>
+);
 
 export const Form = () => {
   const [isLoading, setLoading] = useState(false);
@@ -14,26 +52,31 @@ export const Form = () => {
   const [selectedSession, setSelectedSession] = useState<string | undefined>();
   const [feedback, setFeedback] = useState("");
   const [rating, setRating] = useState<number | undefined>();
-  const [currentUser, setCurrentUser] = useState<User>()
+  const [currentUser, setCurrentUser] = useState<User>();
+  const [file, setFile] = useState<File | null>(null);
 
-  const setAuthUser = async() => {
-    const res = await getAuthUser()
-    setCurrentUser(res?.user)
+  const setAuthUser = async () => {
+    const res = await getAuthUser();
+    setCurrentUser(res?.user);
     fetchCompletedSessions(res?.user?._id);
-  }
+  };
+
   useEffect(() => {
     setAuthUser();
-  }, [])
+  }, []);
 
   const fetchCompletedSessions = async (id: any) => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/sessions/completed-sessions?userId=${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `/api/sessions/completed-sessions?userId=${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -66,14 +109,26 @@ export const Form = () => {
       return;
     }
 
+    if (!file) {
+      toast.error("Please upload a file.");
+      return;
+    }
+
     try {
       setLoading(true);
+
+      // Construct the FormData object
+      const formData = new FormData();
+      formData.append("session", selectedSession);
+      formData.append("feedback", feedback);
+      formData.append("stars", rating.toString());
+      formData.append("file", file);
+      formData.append("userId", currentUser?._id!)
+
+      // Send the FormData object to the backend
       const response = await fetch("/api/feedbacks/session-feedback", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ session: selectedSession, feedback, stars: rating }),
+        body: formData, // Send as FormData
       });
 
       if (!response.ok) {
@@ -84,6 +139,7 @@ export const Form = () => {
       setFeedback(""); // Clear the feedback field
       setSelectedSession(undefined); // Reset the selected session
       setRating(undefined); // Reset the rating
+      setFile(null); // Clear the file
     } catch (err: any) {
       toast.error(err.message || "Failed to submit feedback");
     } finally {
@@ -91,9 +147,23 @@ export const Form = () => {
     }
   };
 
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setter: React.Dispatch<React.SetStateAction<File | null>>
+  ) => {
+    const file = e.target.files?.[0];
+    if (file && (file.type === "application/pdf" || file.type.startsWith("image/"))) {
+      setter(file);
+    } else {
+      setter(null);
+    }
+  };
+
   return (
     <div className="h-full center flex-col text-white max-h-full overflow-auto">
-      <h3 className="text-4xl text-white text-center mb-6 pt-10">Feedback Form</h3>
+      <h3 className="text-4xl text-white text-center mb-6 pt-10">
+        Feedback Form
+      </h3>
 
       <form className="mt-2 w-full px-4 md:px-20 space-y-5" onSubmit={handleSubmit}>
         {isLoading ? (
@@ -129,6 +199,12 @@ export const Form = () => {
                 </Option>
               ))}
             </Select>
+
+            <FileInput
+              label=""
+              file={file}
+              onFileChange={(e) => handleFileChange(e, setFile)}
+            />
 
             <TextArea
               rows={5}

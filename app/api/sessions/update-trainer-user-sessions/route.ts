@@ -1,7 +1,8 @@
-import { Plan, User } from "@/models";
+import { Plan, Subscription, User } from "@/models";
 import Session from "@/models/Session"; // Adjust the path according to your folder structure
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { SubscriptionStatus } from "@/types/subscription";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -9,10 +10,10 @@ export const GET = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
     const trainerId = searchParams.get("trainerId");
     const userId = searchParams.get("userId");
-    const subscriptionId = searchParams.get("subscriptionId");
+    const _subscriptionId = searchParams.get("subscriptionId");
 
     // Validate required parameters
-    if (!trainerId || !userId || !subscriptionId) {
+    if (!trainerId || !userId || !_subscriptionId) {
       return NextResponse.json(
         { success: false, message: "All parameters (trainerId, userId, subscriptionId) are required" },
         { status: 400 }
@@ -22,7 +23,7 @@ export const GET = async (req: NextRequest) => {
     // Ensure the parameters are treated as ObjectId
     const trainerObjectId = new mongoose.Types.ObjectId(trainerId);
     const userObjectId = new mongoose.Types.ObjectId(userId);
-    const subscriptionObjectId = new mongoose.Types.ObjectId(subscriptionId);
+    const subscriptionObjectId = new mongoose.Types.ObjectId(_subscriptionId);
 
     // Fetch the single session document
     const session = await Session.findOne({
@@ -71,13 +72,37 @@ export const GET = async (req: NextRequest) => {
     const allCompleted = sessionsArray.every((s: any) => s.status === "completed");
 
     if (allCompleted) {
-      session.sessionStatus = "completed"; // Set sessionStatus to "completed"
+      session.status = "completed"; // Set status to "completed"
     }
+
+    // Retrieve subscriptionId from the session
+    const { subscriptionId } = session;
+
+    if (!subscriptionId) {
+      return NextResponse.json(
+        { success: false, message: "Session does not have a subscriptionId" },
+        { status: 400 }
+      );
+    }
+
+    // Find the subscription using the subscriptionId
+    const subscription = await Subscription.findById(subscriptionId);
+
+    if (!subscription) {
+      return NextResponse.json(
+        { success: false, message: "Subscription not found" },
+        { status: 404 }
+      );
+    }
+
+    // Update the subscription's status to "active"
+    subscription.status = SubscriptionStatus.expired;
+    await subscription.save();
 
     // Mark modified fields
     session.sessions = sessionsArray; // Assign the updated array back to the session
     session.markModified("sessions");
-    session.markModified("sessionStatus");
+    session.markModified("status");
 
     // Save the updated document
     await session.save();

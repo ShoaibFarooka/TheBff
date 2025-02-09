@@ -82,7 +82,7 @@ export const getAuthUser = async() => {
 
 // authenticate
 export const authenticate = cache(
-  async (role: UserRole | UserRole[] = UserRole.USER)
+  async (role: UserRole | UserRole[] = [UserRole.USER, UserRole.TRAINER])
     : Promise<Auth> => {
     try {
       const cookie = cookies();
