@@ -13,6 +13,7 @@ import StatsGraph from "./StatsGraph";
 import Subscriptions from "./Subscriptions";
 import UserStats from "./UserStats";
 import BookSessionSlot from "./sessions/BookSessionSlot";
+import Referral from "./Referral";
 
 type UserData = User & {
   classes: any[];
@@ -103,6 +104,10 @@ export default function Dashboard() {
 
           {/* ======================Contact Trainer============== */}
           <Contact />
+
+          {/* ======================Refferel============== */}
+          <Referral/>
+
         </div>
       </div>
 

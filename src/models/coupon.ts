@@ -30,6 +30,10 @@ const couponSchema = new Schema<CouponDoc, CouponModel>({
         required: true,
         default: true,
     },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User', // Reference to the User model
+    },
 }, {
     timestamps: true,
     toObject: { virtuals: true, getters: true },

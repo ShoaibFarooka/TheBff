@@ -26,7 +26,7 @@ export const POST = async (req: NextRequest) => {
         code: couponCode,
         type: discount.type,
         value: discount.value,
-        status: true, // Set status to false by default
+        status: false, // Set status to false by default
     });
 
     // Save the new coupon object
