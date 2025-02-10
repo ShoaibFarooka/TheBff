@@ -60,6 +60,10 @@ const planSchema = new Schema<PlandDoc, PlanModel>({
     premium: {
         type: Boolean,
         required: false,
+    },
+    isPopular: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true,

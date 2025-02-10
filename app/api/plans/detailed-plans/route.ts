@@ -6,11 +6,12 @@ export const GET = async (req: NextRequest) => {
     const plans = await Plan.aggregate([
       {
         $match: {
-          amount: { 
-            $exists: true, 
+          amount: {
+            $exists: true,
             $ne: null,
             $gt: 0  // Only include amounts greater than 0
-          }
+          },
+          isPopular: true
         }
       },
       { $sort: { amount: 1 } },
@@ -30,6 +31,8 @@ export const GET = async (req: NextRequest) => {
         }
       }
     ]);
+
+    console.log('Fetched Popular Plans: ', plans);
 
     return NextResponse.json({ success: true, data: plans });
   } catch (error: any) {

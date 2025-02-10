@@ -270,7 +270,7 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                 toast.success(data.message ?? "You have been signed up successfully. Redirecting...");
                 onSuccess?.();
                 // Add redirection here
-                router.push('/trainer/dashboard'); // Redirect to trainer dashboard or appropriate page
+                router.push('/trainer/login'); // Redirect to trainer dashboard or appropriate page
             } else {
                 toast.error(data.message ?? "Something went wrong.");
                 onFailure?.();
@@ -316,8 +316,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                         <Link href="/trainer/login">
                             <button
                                 className={`px-8 py-2 rounded-full ${pathname === '/trainer/login'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-transparent text-black'
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-transparent text-black'
                                     }`}
                             >
                                 Login
@@ -326,8 +326,8 @@ const RegisterForm = ({ onSuccess, onFailure }: RegisterFormProps) => {
                         <Link href="/trainer/signup">
                             <button
                                 className={`px-8 py-2 rounded-full ${pathname === '/trainer/signup'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-transparent text-black'
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-transparent text-black'
                                     }`}
                             >
                                 Sign Up

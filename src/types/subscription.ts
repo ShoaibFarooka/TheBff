@@ -18,6 +18,7 @@ export type Plan = {
     programId: string;
     features: string[];
     premium?: boolean;
+    isPopular?: boolean;
 }
 
 
