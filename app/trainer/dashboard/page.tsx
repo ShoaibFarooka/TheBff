@@ -6,8 +6,8 @@ export default async function Page() {
 
   const auth = await getAuthUser();
   console.log(auth)
-  if (!auth?.user || !(auth?.user?.role === "trainer")){
-    redirect('/');
+  if (!auth?.user || !(auth?.user?.role === "trainer")) {
+    redirect('/trainer/login');
   }
 
   return (

@@ -26,11 +26,16 @@ interface ProfileProps {
 const Profile: React.FC<ProfileProps> = ({ userdata }) => {
   const router = useRouter();
 
+  console.log('UserData: ', userdata);
+
   const handleLogout = (e: React.MouseEvent) => {
     e.stopPropagation();
     // delete token from cookie
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
+    console.log('Logging Out: ', userdata)
+    if (userdata?.role === 'trainer') {
+      return window.location.href = '/trainer/login';
+    }
     window.location.href = "/"; // hard refresh to clear cache
   };
 
